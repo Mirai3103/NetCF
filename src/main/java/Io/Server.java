@@ -32,6 +32,9 @@ public class Server extends  ServerSocket{
 
         }
         eventHandlers.get(eventType).add(callback);
+        for (var socket :clients){
+            socket.on(eventType,  callback);
+        }
     }
 
     public Server(int port, int backlog, InetAddress bindAddr) throws IOException {
@@ -48,6 +51,12 @@ public class Server extends  ServerSocket{
                     if (eventHandlers.containsKey("onConnection")) {
                         for (Callback callback : eventHandlers.get("onConnection")) {
                             callback.invoke(client);
+                        }
+                    }
+                    for (String eventType : eventHandlers.keySet()) {
+                        if (eventType.equals("onConnection")) continue;
+                        for (Callback callback : eventHandlers.get(eventType)) {
+                            client.on(eventType, callback);
                         }
                     }
                 } catch (IOException e) {

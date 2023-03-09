@@ -27,7 +27,6 @@ public class Account {
                 case MANAGER -> "Quản lý";
                 case EMPLOYEE -> "Nhân viên";
                 case USER -> "Khách hàng";
-                default -> "Unknown";
             };
         }
     }
@@ -46,8 +45,8 @@ public class Account {
     @Column(name = "balance",nullable = false)
     private double balance = 0;
     @Temporal(TemporalType.TIMESTAMP)
-    @Column(name = "created_at",nullable = false)
+    @Column(name = "createdAt",nullable = false)
     private java.util.Date createdAt = new java.util.Date();
-    @Column(name = "deleted_at",nullable = true)
+    @Column(name = "deletedAt",nullable = true)
     private java.util.Date deletedAt;
 }
