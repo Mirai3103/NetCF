@@ -7,7 +7,6 @@ public class Context {
         instance = instance==null?new Context():instance;
         return instance;
     }
-    private
     public Context() {
     }
 }
