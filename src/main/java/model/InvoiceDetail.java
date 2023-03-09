@@ -7,7 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "invoiceDetail")
+@Table(name = "InvoiceDetail")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -19,8 +19,14 @@ public class InvoiceDetail {
     private int id;
     @Column(name = "invoiceId", nullable = false)
     private int invoiceId;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "invoiceId", insertable = false, updatable = false)
+    private Invoice invoice;
     @Column(name = "productId", nullable = false)
     private int productId;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "productId", insertable = false, updatable = false)
+    private Product product;
     @Column(name = "price", nullable = false)
     private int price; //gia ban
     @Column(name = "quantity", nullable = false)

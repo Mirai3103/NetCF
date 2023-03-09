@@ -7,9 +7,10 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.Date;
+import java.util.List;
 
 @Entity
-@Table(name = "product")
+@Table(name = "Product")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -66,5 +67,8 @@ public class Product {
 
     @Column(name = "deletedAt",nullable = true)
     private Date deletedAt;
+
+    @OneToMany(mappedBy = "product")
+    private List<InvoiceDetail> invoiceDetails;
 
 }

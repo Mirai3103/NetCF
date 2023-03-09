@@ -5,15 +5,50 @@
     http://xmlns.jcp.org/xml/ns/persistence/persistence_2_2.xsd"
 >
     <persistence-unit name="NetCFMySQL" transaction-type="RESOURCE_LOCAL">
-    <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
+        <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
+        <class>model.Session</class>
+        <class>model.Account</class>
+        <class>model.Computer</class>
+        <class>model.ComputerUsage</class>
+        <class>model.Invoice</class>
+        <class>model.InvoiceDetail</class>
+        <class>model.Product</class>
+        <class>model.Employee</class>
         <properties>
             <property name="javax.persistence.jdbc.driver" value="com.mysql.jdbc.Driver"/>
             <property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/testhibernate"/>
             <property name="javax.persistence.jdbc.user" value="root"/>
             <property name="javax.persistence.jdbc.password" value=""/>
             <property name="hibernate.dialect" value="org.hibernate.dialect.MySQL8Dialect"/>
-            <property name="hibernate.hbm2ddl.auto" value="create-drop"/>
+            <property name="hibernate.hbm2ddl.auto" value="create"/>
             <property name="hibernate.show_sql" value="true"/>
+            <property name="hibernate.format_sql" value="true"/>
+        </properties>
+
+    </persistence-unit>
+
+    <persistence-unit name="NetCF_MSSQL" transaction-type="RESOURCE_LOCAL">
+        <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
+        <class>model.Session</class>
+        <class>model.Account</class>
+        <class>model.Computer</class>
+        <class>model.ComputerUsage</class>
+        <class>model.Invoice</class>
+        <class>model.InvoiceDetail</class>
+        <class>model.Product</class>
+        <class>model.Employee</class>
+        <properties>
+            <property name="javax.persistence.jdbc.driver" value="com.microsoft.sqlserver.jdbc.SQLServerDriver"/>
+            <property name="javax.persistence.jdbc.url"
+                      value="jdbc:sqlserver://HUUHOANG;databaseName=NetCF;trustServerCertificate=true;encrypt=true;"/>
+            <property name="javax.persistence.jdbc.user" value="root"/>
+            <property name="javax.persistence.jdbc.password" value="13092003"/>
+            <property name="hibernate.dialect" value="org.hibernate.dialect.SQLServer2016Dialect"/>
+            <property name="hibernate.hbm2ddl.auto" value="create"/>
+            <property name="hibernate.show_sql" value="true"/>
+            <property name="hibernate.format_sql" value="true"/>
+
+
         </properties>
 
     </persistence-unit>

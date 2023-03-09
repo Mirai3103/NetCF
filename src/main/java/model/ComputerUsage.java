@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 import java.util.Date;
 
 @Entity
-@Table(name = "computerUsage")
+@Table(name = "ComputerUsage")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -20,10 +20,16 @@ public class ComputerUsage {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private int id;
-    @Column(name = "usedBy", nullable = true)
-    private int usedBy;
+    @Column(name = "usedByAccountId", nullable = true)
+    private int usedByAccountId;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "usedBy", insertable = false, updatable = false)
+    private Account usedBy;
     @Column(name = "computerID", nullable = false)
     private int computerID;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "computerID", insertable = false, updatable = false)
+    private Computer computer;
     @Column(name = "isEmployeeUsing", nullable = false)
     private boolean isEmployeeUsing;
     @Column(name = "createdAt", nullable = false)

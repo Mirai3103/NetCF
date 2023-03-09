@@ -7,9 +7,10 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.Date;
+import java.util.List;
 
 @Entity
-@Table(name = "employee")
+@Table(name = "Employee")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -26,6 +27,10 @@ public class Employee {
     @Column(name = "accountID", nullable = false)
 
     private int accountID;
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "accountID", insertable = false, updatable = false)
+    private Account account;
+
 
     @Column(name = "otherInformation", nullable = true)
     private String otherInformation;
@@ -35,4 +40,6 @@ public class Employee {
     private Date createdAt = new Date();
     @Column(name = "deletedAt", nullable = true)
     private Date deletedAt;
+    @OneToMany(mappedBy = "createdByEmployee")
+    private List<Invoice> createdInvoices;
 }
