@@ -6,6 +6,9 @@
   <component name="ChangeListManager">
     <list default="true" id="685dcd50-168e-4022-b19b-3e06b788cecf" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Io/Socket.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Io/Socket.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Main.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -44,7 +47,7 @@
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "SHARE_PROJECT_CONFIGURATION_FILES": "true",
     "WebServerToolWindowFactoryState": "false",
-    "last_opened_file_path": "E:/HocKi2Nam2/NetCF/src/main/java/Io",
+    "last_opened_file_path": "E:/HocKi2Nam2/NetCF/src/main/resources/images",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
@@ -55,11 +58,11 @@
 }]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="E:\HocKi2Nam2\NetCF\src\main\resources\images" />
       <recent name="E:\HocKi2Nam2\NetCF\src\main\java\Io" />
       <recent name="E:\HocKi2Nam2\NetCF\src\main" />
       <recent name="E:\HocKi2Nam2\NetCF\src\main\java" />
       <recent name="E:\HocKi2Nam2\NetCF\src" />
-      <recent name="E:\HocKi2Nam2\NetCF" />
     </key>
     <key name="CopyClassDialog.RECENTS_KEY">
       <recent name="Io" />
@@ -120,6 +123,9 @@
       <workItem from="1678282435736" duration="620000" />
       <workItem from="1678285584689" duration="1006000" />
       <workItem from="1678290289076" duration="3143000" />
+      <workItem from="1678328383487" duration="16000" />
+      <workItem from="1678332695315" duration="510000" />
+      <workItem from="1678342181318" duration="1684000" />
     </task>
     <servers />
   </component>

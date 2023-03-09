@@ -63,7 +63,7 @@ public class Socket  implements Serializable {
         out = new java.io.ObjectOutputStream(socket.getOutputStream());
         in = new java.io.ObjectInputStream(socket.getInputStream());
         listenThread = new Thread(() -> {
-            while (socket.isConnected()) {
+            while (socket.isClosed()) {
                 try {
                     EventArg payload = (EventArg) in.readObject();
                     if (eventHandlers.containsKey(payload.getEventType())) {
