@@ -5,9 +5,17 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="685dcd50-168e-4022-b19b-3e06b788cecf" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/java/model/ComputerUsage.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/model/MachineUsage.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/model/Account.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/model/Account.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/model/Computer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/model/Computer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/model/ComputerUsage.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/model/ComputerUsage.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/model/Employee.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/model/Employee.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/model/Invoice.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/model/Invoice.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/model/InvoiceDetail.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/model/InvoiceDetail.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/model/Product.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/model/Product.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/model/Session.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/model/Session.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/META-INF/persistence.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/META-INF/persistence.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -52,7 +60,7 @@
     "node.js.selected.package.eslint": "(autodetect)",
     "node.js.selected.package.tslint": "(autodetect)",
     "nodejs_package_manager_path": "npm",
-    "settings.editor.selected.configurable": "terminal",
+    "settings.editor.selected.configurable": "reference.settingsdialog.IDE.editor.colors.Console Font",
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
@@ -127,11 +135,26 @@
       <workItem from="1678332695315" duration="510000" />
       <workItem from="1678342181318" duration="1744000" />
       <workItem from="1678354277106" duration="88000" />
-      <workItem from="1678369858148" duration="2297000" />
+      <workItem from="1678369858148" duration="5989000" />
     </task>
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="XSLT-Support.FileAssociations.UIState">
+    <expand />
+    <select />
   </component>
 </project>

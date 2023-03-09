@@ -7,8 +7,10 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Entity
-@Table(name = "account")
+@Table(name = "Account")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -49,4 +51,13 @@ public class Account {
     private java.util.Date createdAt = new java.util.Date();
     @Column(name = "deletedAt",nullable = true)
     private java.util.Date deletedAt;
+
+    @OneToMany(mappedBy = "usedBy")
+    private List<ComputerUsage> usingHistory;
+    @OneToMany(mappedBy = "createdToAccount")
+    private List<Invoice> invoices;
+    @OneToOne(mappedBy = "usingByAccount")
+    private Session currentSession;
+@OneToOne(mappedBy = "account")
+    private Employee employee;
 }

@@ -45,8 +45,15 @@ public class Session {
 
     @Column(name = "usingBy", nullable = true)
     private int usingBy;
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "usingBy", insertable = false, updatable = false)
+    private Account usingByAccount;
 
     @Column(name = "computerID", nullable = false)
     private int computerID;
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "computerID", insertable = false, updatable = false)
+    private Computer usingComputer;
+
 
 }

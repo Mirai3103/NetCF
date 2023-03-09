@@ -7,9 +7,10 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.Date;
+import java.util.List;
 
 @Entity
-@Table(name = "invoice")
+@Table(name = "Invoice")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -46,10 +47,16 @@ public class Invoice {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private int id;
-    @Column(name = "createdTo",nullable = true)
-    private int createdTo;
+    @Column(name = "createdToAccountId",nullable = true)
+    private int createdToAccountId;
+    @ManyToOne (fetch = FetchType.LAZY)
+    @JoinColumn(name = "createdToAccountId",insertable = false,updatable = false)
+    private Account createdToAccount;
     @Column(name = "computerId",nullable = true)
     private int computerId;
+    @ManyToOne (fetch = FetchType.LAZY)
+    @JoinColumn(name = "computerId",insertable = false,updatable = false)
+    private Computer createdToComputer;
     @Column(name = "total",nullable = false)
 
     private int total;
@@ -62,6 +69,10 @@ public class Invoice {
     private boolean isPaid = false;
     @Column(name = "createdBy",nullable = false)
     private int createdBy;
+    @ManyToOne (fetch = FetchType.LAZY)
+    @JoinColumn(name = "createdBy",insertable = false,updatable = false)
+    private Employee createdByEmployee;
+
     @Enumerated(EnumType.STRING)
     @Column(name = "type",nullable = false)
     private InvoiceType type;
@@ -69,5 +80,8 @@ public class Invoice {
     private Date deletedAt;
     @Column(name = "note",nullable = true,columnDefinition = "TEXT")    
     private String note;
+
+    @OneToMany(mappedBy = "invoice",fetch = FetchType.LAZY)
+    private List<InvoiceDetail> invoiceDetails;
 
 }
