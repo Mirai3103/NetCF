@@ -30,6 +30,22 @@ public class Computer {
             };
         }
     }
+    public enum ComputerStatus {
+        MAINTAINING,
+        LOCKED,
+        OFF,
+        USING,
+;
+        @Override
+        public String toString() {
+            return switch (this) {
+                case MAINTAINING -> "Đang bảo trì";
+                case LOCKED -> "Đang khóa";
+                case OFF -> "Đang tắt";
+                case USING -> "Đang sử dụng";
+            };
+        }
+    }
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -42,6 +58,8 @@ public class Computer {
     private float price; // giá tiền trên 1 giờ
     @Column(name = "type")
     private ComputerType type;
+    @Column(name = "status")
+    private ComputerStatus status;
     @Column(name = "createdAt", nullable = false)
     @Temporal(TemporalType.TIMESTAMP)
 

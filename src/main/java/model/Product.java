@@ -16,11 +16,11 @@ import java.util.List;
 @AllArgsConstructor
 @Builder
 public class Product {
-    public enum ProductType {
-        DRINK,
-        FOOD,
-        CARD,
-        ;
+        public enum ProductType {
+            DRINK,
+            FOOD,
+            CARD,
+            ;
         @Override
         public String toString() {
             return switch (this) {
@@ -34,7 +34,7 @@ public class Product {
     @Id
     @GeneratedValue(strategy  = GenerationType.IDENTITY)
     @Column(name = "id")
-    private int id;
+    private Integer id;
 
     @Column(name = "name",length = 100,nullable = false)
     private String name;
@@ -45,7 +45,7 @@ public class Product {
 
     @Column(name = "type")
 
-    @Enumerated(EnumType.STRING)
+   
     private ProductType type;
 
     @Column(name = "stock",nullable = false)

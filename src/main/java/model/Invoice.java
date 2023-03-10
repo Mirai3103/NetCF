@@ -33,6 +33,7 @@ public class Invoice {
         WAITING_FOR_ACCEPT,
         ACCEPTED,
         REJECTED,
+        DONE
         ;
         @Override
         public String toString() {
@@ -40,6 +41,7 @@ public class Invoice {
                 case WAITING_FOR_ACCEPT -> "Chờ duyệt";
                 case ACCEPTED -> "Đã duyệt";
                 case REJECTED -> "Đã từ chối";
+                case DONE -> "Đã hoàn thành";
             };
         }
     }
@@ -48,21 +50,21 @@ public class Invoice {
     @Column(name = "id")
     private int id;
     @Column(name = "createdToAccountId",nullable = true)
-    private int createdToAccountId;
+    private Integer createdToAccountId = null   ;
     @ManyToOne (fetch = FetchType.LAZY)
     @JoinColumn(name = "createdToAccountId",insertable = false,updatable = false)
     private Account createdToAccount;
     @Column(name = "computerId",nullable = true)
-    private int computerId;
+    private Integer computerId = null;
     @ManyToOne (fetch = FetchType.LAZY)
     @JoinColumn(name = "computerId",insertable = false,updatable = false)
     private Computer createdToComputer;
     @Column(name = "total",nullable = false)
 
-    private int total;
+    private Double total = 0.0;
     @Column(name = "createdAt",nullable = false)
     private Date createdAt = new Date();
-    @Enumerated(EnumType.STRING)
+   
     @Column(name = "status",nullable = false)
     private Status status = Status.WAITING_FOR_ACCEPT;
     @Column(name = "isPaid",nullable = false)
@@ -73,7 +75,7 @@ public class Invoice {
     @JoinColumn(name = "createdBy",insertable = false,updatable = false)
     private Employee createdByEmployee;
 
-    @Enumerated(EnumType.STRING)
+   
     @Column(name = "type",nullable = false)
     private InvoiceType type;
     @Column(name = "deletedAt",nullable = true)

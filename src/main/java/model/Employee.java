@@ -18,15 +18,15 @@ import java.util.List;
 public class Employee {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
+    @Column(name = "id", updatable = false, nullable = false)
     private int id;
 
     @Column(name = "name", length = 100, nullable = false)
     private String name;
 
-    @Column(name = "accountID", nullable = false)
+    @Column(name = "accountID", nullable = true)
 
-    private int accountID;
+    private Integer accountID = null;
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "accountID", insertable = false, updatable = false)
     private Account account;

@@ -19,7 +19,7 @@ import java.util.Date;
 public class Session {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Integer id;
 
     @Column(name = "totalTime")
     private int totalTime;
@@ -44,13 +44,13 @@ public class Session {
     private int prepaidAmount = 0;
 
     @Column(name = "usingBy", nullable = true)
-    private int usingBy;
+    private Integer usingBy =null   ;
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "usingBy", insertable = false, updatable = false)
     private Account usingByAccount;
 
     @Column(name = "computerID", nullable = false)
-    private int computerID;
+    private Integer computerID = null;
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "computerID", insertable = false, updatable = false)
     private Computer usingComputer;
