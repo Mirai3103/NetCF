@@ -21,12 +21,12 @@ public class ComputerUsage {
     @Column(name = "id")
     private int id;
     @Column(name = "usedByAccountId", nullable = true)
-    private int usedByAccountId;
+    private Integer usedByAccountId = null;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "usedBy", insertable = false, updatable = false)
     private Account usedBy;
     @Column(name = "computerID", nullable = false)
-    private int computerID;
+    private Integer computerID;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "computerID", insertable = false, updatable = false)
     private Computer computer;

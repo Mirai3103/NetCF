@@ -5,8 +5,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="685dcd50-168e-4022-b19b-3e06b788cecf" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/DAO/JPA/Context.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/DAO/JPA/Context.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/model/Account.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/model/Account.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/model/Computer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/model/Computer.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/model/ComputerUsage.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/model/ComputerUsage.java" afterDir="false" />
@@ -54,33 +56,49 @@
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "SHARE_PROJECT_CONFIGURATION_FILES": "true",
     "WebServerToolWindowFactoryState": "false",
-    "last_opened_file_path": "E:/HocKi2Nam2/NetCF/src/main/resources/images",
+    "last_opened_file_path": "E:/HocKi2Nam2/NetCF/src/main/resources/migrations",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
     "node.js.selected.package.tslint": "(autodetect)",
     "nodejs_package_manager_path": "npm",
+    "project.structure.last.edited": "Modules",
+    "project.structure.proportion": "0.0",
+    "project.structure.side.proportion": "0.0",
     "settings.editor.selected.configurable": "reference.settingsdialog.IDE.editor.colors.Console Font",
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="E:\HocKi2Nam2\NetCF\src\main\resources\migrations" />
       <recent name="E:\HocKi2Nam2\NetCF\src\main\resources\images" />
       <recent name="E:\HocKi2Nam2\NetCF\src\main\java\Io" />
       <recent name="E:\HocKi2Nam2\NetCF\src\main" />
       <recent name="E:\HocKi2Nam2\NetCF\src\main\java" />
-      <recent name="E:\HocKi2Nam2\NetCF\src" />
     </key>
     <key name="CopyClassDialog.RECENTS_KEY">
       <recent name="Io" />
       <recent name="" />
     </key>
   </component>
-  <component name="RunManager" selected="Application.Main">
+  <component name="RunManager" selected="Application.Migrate.Main">
     <configuration name="Main" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="Main" />
       <module name="NetCF" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="Migrate.Main" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="Migrate.Main" />
+      <module name="NetCF" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="Migrate.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -112,6 +130,7 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Application.Migrate.Main" />
         <item itemvalue="Application.Main" />
         <item itemvalue="Maven.NetCF [clean]" />
       </list>
@@ -135,7 +154,8 @@
       <workItem from="1678332695315" duration="510000" />
       <workItem from="1678342181318" duration="1744000" />
       <workItem from="1678354277106" duration="88000" />
-      <workItem from="1678369858148" duration="5989000" />
+      <workItem from="1678369858148" duration="14122000" />
+      <workItem from="1678427165442" duration="9519000" />
     </task>
     <servers />
   </component>

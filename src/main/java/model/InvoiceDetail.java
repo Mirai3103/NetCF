@@ -18,17 +18,17 @@ public class InvoiceDetail {
     @Column(name = "id")
     private int id;
     @Column(name = "invoiceId", nullable = false)
-    private int invoiceId;
+    private Integer invoiceId = null;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "invoiceId", insertable = false, updatable = false)
     private Invoice invoice;
     @Column(name = "productId", nullable = false)
-    private int productId;
+    private Integer productId = null;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "productId", insertable = false, updatable = false)
     private Product product;
     @Column(name = "price", nullable = false)
-    private int price; //gia ban
+    private float price; //gia ban//gia nhap
     @Column(name = "quantity", nullable = false)
     private int quantity;
 }

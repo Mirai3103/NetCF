@@ -34,7 +34,7 @@ public class Account {
     }
     @Id
     @GeneratedValue(strategy  = GenerationType.IDENTITY)
-    @Column(name = "id")
+    @Column(name = "id", updatable = false, nullable = false)
     private int id;
 
     @Column(name = "username",length = 45,nullable = false,unique = true)
@@ -42,7 +42,7 @@ public class Account {
     @Column(name = "password",length = 45,nullable = false)
     private String password;
     @Column(name = "role")
-    @Enumerated(EnumType.STRING)
+   
     private Role role = Role.USER;
     @Column(name = "balance",nullable = false)
     private double balance = 0;

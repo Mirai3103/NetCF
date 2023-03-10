@@ -9,7 +9,7 @@ public  class Context {
     public static EntityManagerFactory getInstance() {
         return instance;
     }
-    private static final EntityManagerFactory  instance = Persistence.createEntityManagerFactory("NetCFMySQL");
+    private static final EntityManagerFactory  instance = Persistence.createEntityManagerFactory("NetCF_MSSQL");
 
     private Context() {
 
