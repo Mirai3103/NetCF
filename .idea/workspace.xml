@@ -7,10 +7,8 @@
     <list default="true" id="685dcd50-168e-4022-b19b-3e06b788cecf" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/GUI/Components/NavItem.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/GUI/Components/NavItem.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/GUI/Components/NavItem.jfd" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/GUI/Components/NavItem.jfdzzz" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/GUI/Components/SideBar.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/GUI/Components/SideBar.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/GUI/Server/ManUI.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/GUI/Server/ManUI.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/GUI/Server/ManUI.jfd" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/Utils/Constants.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Utils/Constants.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -173,7 +171,7 @@
       <workItem from="1678512991424" duration="1376000" />
       <workItem from="1678525479411" duration="10748000" />
       <workItem from="1678578618157" duration="195000" />
-      <workItem from="1678578828633" duration="1670000" />
+      <workItem from="1678578828633" duration="4194000" />
     </task>
     <servers />
   </component>

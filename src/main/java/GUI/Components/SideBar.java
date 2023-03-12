@@ -73,5 +73,6 @@ public class SideBar {
             });
             item.initChildEvent(this.contentPanel);
         });
+        items.get(0).getParent().doClick(); // click first item
     }
 }

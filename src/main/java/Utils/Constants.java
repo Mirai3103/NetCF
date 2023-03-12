@@ -1,6 +1,7 @@
 package Utils;
 
 import GUI.Components.SideBar;
+import GUI.Server.Home;
 import lombok.*;
 
 import javax.swing.*;
@@ -41,7 +42,7 @@ public final class Constants {
         tabs = new ArrayList<>();
         tabs= new ArrayList<>();
         tabs.add(
-               Tab.builder().title("Trang chủ").key("home").contentPanel(createPanelWithText("Trang chủ")).build()
+               Tab.builder().title("Trang chủ").key("home").contentPanel(new Home()).build()
         );
         tabs.add(
                Tab.builder().title("Quản lý").key("manage").children(new ArrayList<>(

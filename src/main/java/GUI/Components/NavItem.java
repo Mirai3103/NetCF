@@ -56,13 +56,6 @@ public class NavItem extends JButton {
     public NavItem() {
         initComponents();
     }
-
-    public NavItem(String text) {
-        initComponents();
-        setText(text);
-
-    }
-
     private void thisMouseEntered(MouseEvent e) {
         //#0BC5EA
         this.setBackground(new Color(11, 197, 234));

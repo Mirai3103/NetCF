@@ -38,12 +38,19 @@ public class ManUI extends JFrame {
     private void initComponents() {
         panel2 = new JPanel();
         panel3 = new JPanel();
+        var panel4 = new JPanel();
+        panel4.setLayout(new BorderLayout());
+        panel4.setBorder(new EmptyBorder(20, 20, 20, 20));
+        panel4.setBackground(new Color(0xedf2f7));
+
         var contentPane = getContentPane();
+        contentPane.setBackground(new Color(0xedf2f7));
         contentPane.setLayout(new BorderLayout());
 
         panel2.setBackground(new Color(0xedf2f7));
         panel2.setLayout(new BorderLayout());
-        contentPane.add(panel2, BorderLayout.CENTER);
+        contentPane.add(panel4, BorderLayout.CENTER);
+        panel4.add(panel2, BorderLayout.CENTER);
         panel3.setMinimumSize(new Dimension(300, 32));
         panel3.setMaximumSize(new Dimension(300, 32767));
         panel3.setPreferredSize(new Dimension(300, 32));
