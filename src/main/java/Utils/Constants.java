@@ -28,6 +28,8 @@ public final class Constants {
     private static JPanel createPanelWithText(String text) {
         JPanel panel = new JPanel();
         panel.setLayout(new BorderLayout());
+        panel.setBackground(Color.BLUE);
+
         JLabel label = new JLabel(text);
         label.setHorizontalAlignment(SwingConstants.CENTER);
         panel.add(label, BorderLayout.CENTER);

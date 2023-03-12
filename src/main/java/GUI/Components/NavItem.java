@@ -25,7 +25,15 @@ public class NavItem extends JButton {
     private JPanel contentPanel;
     @Setter
     @Getter
-    private ImageIcon icon;
+    private ImageIcon iconSelected;
+    @Getter
+    private ImageIcon defaultIcon;
+    public void setDefaultIcon(ImageIcon defaultIcon) {
+        this.defaultIcon = defaultIcon;
+        setIcon(defaultIcon);
+    }
+
+
     public void setSelected(boolean selected) {
         isSelected = selected;
         if (isSelected) {
@@ -38,17 +46,18 @@ public class NavItem extends JButton {
         // repaint();
         repaint();
     }
-    public void toggleSelected() {
-        setSelected(!isSelected);
-        // repaint();
-        repaint();
-    }
+
+
+
     public boolean isSelected() {
         return isSelected;
     }
+
     public NavItem() {
         initComponents();
-    }public NavItem(String text) {
+    }
+
+    public NavItem(String text) {
         initComponents();
         setText(text);
 
@@ -58,17 +67,20 @@ public class NavItem extends JButton {
         //#0BC5EA
         this.setBackground(new Color(11, 197, 234));
         this.setForeground(Color.WHITE);
+        if (iconSelected != null)
+            setIcon(iconSelected);
+        else
+            setIcon(defaultIcon);
     }
 
     private void thisMouseExited(MouseEvent e) {
         this.setBackground(Color.WHITE);
         this.setForeground(Color.BLACK);
+        setIcon(defaultIcon);
     }
 
     private void initComponents() {
-        // JFormDesigner - Component initialization - DO NOT MODIFY  //GEN-BEGIN:initComponents  @formatter:off
-        setText("sfsdsd");
-        //---- this ----
+        setIconTextGap(20);
         setBorder(new EmptyBorder(20, 20, 20, 20));
         setHorizontalAlignment(SwingConstants.LEFT);
         addMouseListener(new MouseAdapter() {
@@ -76,17 +88,14 @@ public class NavItem extends JButton {
             public void mouseEntered(MouseEvent e) {
                 thisMouseEntered(e);
             }
+
             @Override
             public void mouseExited(MouseEvent e) {
                 thisMouseExited(e);
             }
         });
-        this.setPreferredSize(new Dimension(300, 50));
-        this.setMinimumSize(new Dimension(300, 50));
-        this.setBorder(new EmptyBorder(20, 20, 20, 20));
-        // JFormDesigner - End of component initialization  //GEN-END:initComponents  @formatter:on
+        setMinimumSize(new Dimension(300, 50));
+        setPreferredSize(new Dimension(300, 50));
     }
 
-    // JFormDesigner - Variables declaration - DO NOT MODIFY  //GEN-BEGIN:variables  @formatter:off
-    // JFormDesigner - End of variables declaration  //GEN-END:variables  @formatter:on
 }

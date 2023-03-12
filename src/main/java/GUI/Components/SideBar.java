@@ -1,10 +1,13 @@
 package GUI.Components;
 
 import Utils.Constants;
+import Utils.Helper;
+import com.formdev.flatlaf.extras.FlatSVGIcon;
 import lombok.*;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,6 +18,7 @@ public class SideBar {
     private final List<NavItemElement>  items = new ArrayList<>();
     public SideBar(JPanel rootPanel, JPanel contentPanel) {
         this.rootPanel = rootPanel;
+        rootPanel.setLayout(new FlowLayout());
         this.contentPanel = contentPanel;
     }
     public void initComponent(List<Constants.Tab> tabs){
@@ -27,6 +31,11 @@ public class SideBar {
             var navItemElement = new NavItemElement(new ArrayList<>(), item);
             rootPanel.add(item);
             if (tab.getChildren() != null) {
+                FlatSVGIcon iconDown = new FlatSVGIcon(Helper.getResourceFile("/icons/chevron-down.svg"));
+                FlatSVGIcon iconUp = new FlatSVGIcon(Helper.getResourceFile("/icons/chevron-up.svg"));
+                FlatSVGIcon dotIcon = new FlatSVGIcon(Helper.getResourceFile("/icons/dot.svg"));
+                item.setIconSelected( iconUp);
+                item.setDefaultIcon(iconDown);
                 tab.getChildren().forEach(child -> {
                     NavItem childItem = new NavItem();
                     childItem.setBorder(new EmptyBorder(20, 50, 20, 20));
@@ -37,6 +46,7 @@ public class SideBar {
                     navItemElement.getChildren().add(childItem);
                     childItem.setVisible(false);
                     rootPanel.add(childItem);
+                    childItem.setDefaultIcon(dotIcon);
                 });
             }
             items.add(navItemElement);
@@ -45,6 +55,7 @@ public class SideBar {
     }
     public void initEvent(){
         items.forEach(item -> {
+            System.out.println(item.getParent().getMinimumSize().width);
             item.getParent().addActionListener(e -> {
                 items.forEach(NavItemElement::closeCollapse);
                 if (!item.getParent().isSelected()) {
