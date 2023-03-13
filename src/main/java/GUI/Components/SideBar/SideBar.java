@@ -1,9 +1,8 @@
-package GUI.Components;
+package GUI.Components.SideBar;
 
 import Utils.Constants;
 import Utils.Helper;
 import com.formdev.flatlaf.extras.FlatSVGIcon;
-import lombok.*;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;

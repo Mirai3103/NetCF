@@ -2,7 +2,7 @@
  * Created by JFormDesigner on Sat Mar 11 16:06:11 ICT 2023
  */
 
-package GUI.Components;
+package GUI.Components.SideBar;
 
 import lombok.Getter;
 import lombok.Setter;

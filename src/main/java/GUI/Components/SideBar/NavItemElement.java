@@ -1,4 +1,4 @@
-package GUI.Components;
+package GUI.Components.SideBar;
 
 import lombok.*;
 

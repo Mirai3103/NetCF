@@ -1,6 +1,5 @@
 package Utils;
 
-import GUI.Components.SideBar;
 import GUI.Server.Home;
 import lombok.*;
 

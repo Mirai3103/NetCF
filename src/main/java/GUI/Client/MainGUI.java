@@ -7,6 +7,7 @@ package GUI.Client;
 import javax.swing.border.*;
 
 import Utils.Helper;
+import com.formdev.flatlaf.ui.*;
 import com.formdev.flatlaf.ui.FlatDropShadowBorder;
 import model.Account;
 
@@ -19,26 +20,25 @@ import javax.swing.*;
  */
 public class MainGUI extends JFrame {
     private Account acc = Account.builder().id(1).username("Laffy").balance(12000).build();
+
     public MainGUI() {
         this.setUndecorated(true);
         initComponents();
-        this.setSize(300,600);
-        // frame location top:0, left: screen width - frame width
-        this.setLocation(Toolkit.getDefaultToolkit().getScreenSize().width - this.getWidth()+2, 0);
+        this.setSize(350, 750);
+        this.setLocation(Toolkit.getDefaultToolkit().getScreenSize().width - this.getWidth() + 2, 0);
         this.setVisible(true);
-        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // Already there
+        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         FlatDropShadowBorder shadow = new FlatDropShadowBorder();
-        panel2.setBorder(BorderFactory.createEmptyBorder(10,50,10,50));
-        //set margin for panel2
+        panel2.setBorder(BorderFactory.createEmptyBorder(10, 50, 10, 50));
         label7.setText(acc.getUsername());
-        label7.putClientProperty( "FlatLaf.styleClass", "h2" );
-         label8.setIcon(Helper.getIcon("/icons/supportbanner.png",280, 150));
-         AtomicInteger sec = new AtomicInteger();
+        label7.putClientProperty("FlatLaf.styleClass", "h2");
+        label8.setIcon(Helper.getIcon("/icons/supportbanner.png", 300, 180));
+        AtomicInteger sec = new AtomicInteger();
         Timer timer = new Timer(1000, e -> {
             sec.getAndIncrement();
-            if (textField2.getText().contains(":")){
+            if (textField2.getText().contains(":")) {
                 textField2.setText(Helper.toHHMM(sec.get(), false));
-            }else{
+            } else {
                 textField2.setText(Helper.toHHMM(sec.get(), true));
             }
         });
@@ -47,7 +47,6 @@ public class MainGUI extends JFrame {
     }
 
     private void initComponents() {
-        // JFormDesigner - Component initialization - DO NOT MODIFY  //GEN-BEGIN:initComponents  @formatter:off
         panel14 = new JPanel();
         label8 = new JLabel();
         panel1 = new JPanel();
@@ -85,6 +84,7 @@ public class MainGUI extends JFrame {
 
         //======== this ========
         setMinimumSize(new Dimension(14, 14));
+        setPreferredSize(new Dimension(14, 600));
         var contentPane = getContentPane();
         contentPane.setLayout(new BorderLayout());
 
@@ -107,6 +107,7 @@ public class MainGUI extends JFrame {
             //======== panel11 ========
             {
                 panel11.setBackground(new Color(0xedf2f7));
+                panel11.setBorder(new EmptyBorder(15, 0, 20, 0));
                 panel11.setLayout(new FlowLayout());
 
                 //======== panel2 ========
@@ -114,16 +115,16 @@ public class MainGUI extends JFrame {
                     panel2.setBackground(Color.white);
                     panel2.setBorder(new EmptyBorder(5, 5, 5, 5));
                     panel2.setLayout(new GridBagLayout());
-                    ((GridBagLayout)panel2.getLayout()).columnWidths = new int[] {0, 0, 0};
-                    ((GridBagLayout)panel2.getLayout()).rowHeights = new int[] {0, 0, 0, 0, 0, 0, 0};
-                    ((GridBagLayout)panel2.getLayout()).columnWeights = new double[] {1.0, 1.0, 1.0E-4};
-                    ((GridBagLayout)panel2.getLayout()).rowWeights = new double[] {1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0E-4};
+                    ((GridBagLayout) panel2.getLayout()).columnWidths = new int[]{0, 0, 0};
+                    ((GridBagLayout) panel2.getLayout()).rowHeights = new int[]{0, 0, 0, 0, 0, 0, 0};
+                    ((GridBagLayout) panel2.getLayout()).columnWeights = new double[]{1.0, 1.0, 1.0E-4};
+                    ((GridBagLayout) panel2.getLayout()).rowWeights = new double[]{1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0E-4};
 
                     //---- label1 ----
                     label1.setText("T\u1ed5ng th\u1eddi gian:");
                     panel2.add(label1, new GridBagConstraints(0, 0, 1, 1, 0.0, 0.0,
-                        GridBagConstraints.CENTER, GridBagConstraints.BOTH,
-                        new Insets(0, 0, 0, 0), 0, 0));
+                            GridBagConstraints.CENTER, GridBagConstraints.BOTH,
+                            new Insets(0, 0, 8, 16), 0, 0));
 
                     //======== panel3 ========
                     {
@@ -138,14 +139,14 @@ public class MainGUI extends JFrame {
                         panel3.add(textField1);
                     }
                     panel2.add(panel3, new GridBagConstraints(1, 0, 1, 1, 0.0, 0.0,
-                        GridBagConstraints.CENTER, GridBagConstraints.BOTH,
-                        new Insets(0, 0, 0, 0), 0, 0));
+                            GridBagConstraints.CENTER, GridBagConstraints.BOTH,
+                            new Insets(0, 0, 8, 0), 0, 0));
 
                     //---- label2 ----
                     label2.setText("Th\u1eddi gian s\u1eed d\u1ee5ng:");
                     panel2.add(label2, new GridBagConstraints(0, 1, 1, 1, 0.0, 0.0,
-                        GridBagConstraints.CENTER, GridBagConstraints.BOTH,
-                        new Insets(0, 0, 0, 0), 0, 0));
+                            GridBagConstraints.CENTER, GridBagConstraints.BOTH,
+                            new Insets(0, 0, 8, 16), 0, 0));
 
                     //======== panel4 ========
                     {
@@ -160,14 +161,14 @@ public class MainGUI extends JFrame {
                         panel4.add(textField2);
                     }
                     panel2.add(panel4, new GridBagConstraints(1, 1, 1, 1, 0.0, 0.0,
-                        GridBagConstraints.CENTER, GridBagConstraints.BOTH,
-                        new Insets(0, 0, 0, 0), 0, 0));
+                            GridBagConstraints.CENTER, GridBagConstraints.BOTH,
+                            new Insets(0, 0, 8, 0), 0, 0));
 
                     //---- label3 ----
                     label3.setText("Th\u1eddi gian c\u00f2n l\u1ea1i:");
                     panel2.add(label3, new GridBagConstraints(0, 2, 1, 1, 0.0, 0.0,
-                        GridBagConstraints.CENTER, GridBagConstraints.BOTH,
-                        new Insets(0, 0, 0, 0), 0, 0));
+                            GridBagConstraints.CENTER, GridBagConstraints.BOTH,
+                            new Insets(0, 0, 8, 16), 0, 0));
 
                     //======== panel5 ========
                     {
@@ -182,14 +183,14 @@ public class MainGUI extends JFrame {
                         panel5.add(textField3);
                     }
                     panel2.add(panel5, new GridBagConstraints(1, 2, 1, 1, 0.0, 0.0,
-                        GridBagConstraints.CENTER, GridBagConstraints.BOTH,
-                        new Insets(0, 0, 0, 0), 0, 0));
+                            GridBagConstraints.CENTER, GridBagConstraints.BOTH,
+                            new Insets(0, 0, 8, 0), 0, 0));
 
                     //---- label4 ----
                     label4.setText("T\u1ed5ng chi ph\u00ed:");
                     panel2.add(label4, new GridBagConstraints(0, 3, 1, 1, 0.0, 0.0,
-                        GridBagConstraints.CENTER, GridBagConstraints.BOTH,
-                        new Insets(0, 0, 0, 0), 0, 0));
+                            GridBagConstraints.CENTER, GridBagConstraints.BOTH,
+                            new Insets(0, 0, 8, 16), 0, 0));
 
                     //======== panel6 ========
                     {
@@ -204,14 +205,14 @@ public class MainGUI extends JFrame {
                         panel6.add(textField4);
                     }
                     panel2.add(panel6, new GridBagConstraints(1, 3, 1, 1, 0.0, 0.0,
-                        GridBagConstraints.CENTER, GridBagConstraints.BOTH,
-                        new Insets(0, 0, 0, 0), 0, 0));
+                            GridBagConstraints.CENTER, GridBagConstraints.BOTH,
+                            new Insets(0, 0, 8, 0), 0, 0));
 
                     //---- label5 ----
                     label5.setText("Chi ph\u00ed d\u1ecbch v\u1ee5:");
                     panel2.add(label5, new GridBagConstraints(0, 4, 1, 1, 0.0, 0.0,
-                        GridBagConstraints.CENTER, GridBagConstraints.BOTH,
-                        new Insets(0, 0, 0, 0), 0, 0));
+                            GridBagConstraints.CENTER, GridBagConstraints.BOTH,
+                            new Insets(0, 0, 8, 16), 0, 0));
 
                     //======== panel7 ========
                     {
@@ -226,14 +227,14 @@ public class MainGUI extends JFrame {
                         panel7.add(textField5);
                     }
                     panel2.add(panel7, new GridBagConstraints(1, 4, 1, 1, 0.0, 0.0,
-                        GridBagConstraints.CENTER, GridBagConstraints.BOTH,
-                        new Insets(0, 0, 0, 0), 0, 0));
+                            GridBagConstraints.CENTER, GridBagConstraints.BOTH,
+                            new Insets(0, 0, 8, 0), 0, 0));
 
                     //---- label6 ----
                     label6.setText("S\u1ed1 d\u01b0 t\u00e0i kho\u1ea3n:");
                     panel2.add(label6, new GridBagConstraints(0, 5, 1, 1, 0.0, 0.0,
-                        GridBagConstraints.CENTER, GridBagConstraints.BOTH,
-                        new Insets(0, 0, 0, 0), 0, 0));
+                            GridBagConstraints.CENTER, GridBagConstraints.BOTH,
+                            new Insets(0, 0, 0, 16), 0, 0));
 
                     //======== panel8 ========
                     {
@@ -248,8 +249,8 @@ public class MainGUI extends JFrame {
                         panel8.add(textField6);
                     }
                     panel2.add(panel8, new GridBagConstraints(1, 5, 1, 1, 0.0, 0.0,
-                        GridBagConstraints.CENTER, GridBagConstraints.BOTH,
-                        new Insets(0, 0, 0, 0), 0, 0));
+                            GridBagConstraints.CENTER, GridBagConstraints.BOTH,
+                            new Insets(0, 0, 0, 0), 0, 0));
                 }
                 panel11.add(panel2);
             }
@@ -292,10 +293,11 @@ public class MainGUI extends JFrame {
         //======== panel13 ========
         {
             panel13.setBackground(new Color(0xebf8ff));
+            panel13.setBorder(new EmptyBorder(0, 0, 15, 0));
             panel13.setLayout(new GridLayout(2, 3));
 
             //---- button1 ----
-            button1.setText("\ntext");
+            button1.setText("Tin nh\u1eafn");
             button1.setIcon(new ImageIcon(getClass().getResource("/icons/message.png")));
             button1.setVerticalTextPosition(SwingConstants.BOTTOM);
             button1.setBackground(new Color(0x00ffffff, true));
@@ -304,7 +306,7 @@ public class MainGUI extends JFrame {
             panel13.add(button1);
 
             //---- button2 ----
-            button2.setText("text");
+            button2.setText("\u0110\u0103ng xu\u1ea5t");
             button2.setHorizontalTextPosition(SwingConstants.CENTER);
             button2.setVerticalTextPosition(SwingConstants.BOTTOM);
             button2.setIcon(new ImageIcon(getClass().getResource("/icons/logout.png")));
@@ -312,7 +314,7 @@ public class MainGUI extends JFrame {
             panel13.add(button2);
 
             //---- button3 ----
-            button3.setText("text");
+            button3.setText("M\u1eadt kh\u1ea9u");
             button3.setHorizontalTextPosition(SwingConstants.CENTER);
             button3.setVerticalTextPosition(SwingConstants.BOTTOM);
             button3.setIcon(new ImageIcon(getClass().getResource("/icons/key.png")));
@@ -320,7 +322,7 @@ public class MainGUI extends JFrame {
             panel13.add(button3);
 
             //---- button4 ----
-            button4.setText("text");
+            button4.setText("\u0102n, u\u1ed1ng");
             button4.setHorizontalTextPosition(SwingConstants.CENTER);
             button4.setVerticalTextPosition(SwingConstants.BOTTOM);
             button4.setIcon(new ImageIcon(getClass().getResource("/icons/food.png")));
@@ -328,7 +330,7 @@ public class MainGUI extends JFrame {
             panel13.add(button4);
 
             //---- button5 ----
-            button5.setText("text");
+            button5.setText("Kho\u00e1 m\u00e1y");
             button5.setHorizontalTextPosition(SwingConstants.CENTER);
             button5.setVerticalTextPosition(SwingConstants.BOTTOM);
             button5.setIcon(new ImageIcon(getClass().getResource("/icons/lock.png")));
@@ -336,7 +338,7 @@ public class MainGUI extends JFrame {
             panel13.add(button5);
 
             //---- button6 ----
-            button6.setText("text");
+            button6.setText("Ti\u1ec7n \u00edch");
             button6.setHorizontalTextPosition(SwingConstants.CENTER);
             button6.setVerticalTextPosition(SwingConstants.BOTTOM);
             button6.setIcon(new ImageIcon(getClass().getResource("/icons/unity.png")));
@@ -384,6 +386,7 @@ public class MainGUI extends JFrame {
     private JButton button4;
     private JButton button5;
     private JButton button6;
+
     // JFormDesigner - End of variables declaration  //GEN-END:variables  @formatter:on
     public static void main(String[] args) {
         Helper.initUI();

@@ -4,16 +4,11 @@
 
 package GUI.Server;
 
-import GUI.Components.NavItem;
-import GUI.Components.NavItemElement;
-import GUI.Components.SideBar;
+import GUI.Components.SideBar.SideBar;
 import Utils.Constants;
 import Utils.Helper;
-import lombok.*;
 
 import java.awt.*;
-import java.util.ArrayList;
-import java.util.List;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 
