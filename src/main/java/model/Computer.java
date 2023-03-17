@@ -9,8 +9,7 @@ import lombok.NoArgsConstructor;
 import java.util.Date;
 import java.util.List;
 
-@Entity
-@Table(name = "Computer")
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -30,12 +29,14 @@ public class Computer {
             };
         }
     }
+
     public enum ComputerStatus {
         MAINTAINING,
         LOCKED,
         OFF,
         USING,
-;
+        ;
+
         @Override
         public String toString() {
             return switch (this) {
@@ -47,30 +48,19 @@ public class Computer {
         }
     }
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
+
     private int id;
-    @Column(name = "name", length = 100, nullable = false)
+
 
     private String name;
-    @Column(name = "price", nullable = false)
     private float price; // giá tiền trên 1 giờ
-    @Column(name = "type")
     private ComputerType type;
-    @Column(name = "status")
     private ComputerStatus status;
-    @Column(name = "createdAt", nullable = false)
-    @Temporal(TemporalType.TIMESTAMP)
 
     private Date createdAt = new Date();
-    @Column(name = "deletedAt", nullable = true)
     private Date deletedAt;
 
-    @OneToMany(mappedBy = "computer")
     private List<ComputerUsage> computerUsages;
-    @OneToMany(mappedBy = "createdToComputer")
     private List<Invoice> invoices;
-    @OneToOne(mappedBy = "usingComputer")
     private Session currentSession;
 }

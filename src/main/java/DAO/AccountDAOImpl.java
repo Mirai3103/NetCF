@@ -5,6 +5,7 @@ import model.Account;
 import org.hibernate.cfg.NotYetImplementedException;
 
 import java.util.Collection;
+import java.util.List;
 
 public class AccountDAOImpl implements IAccountDAO {
 
@@ -32,6 +33,7 @@ public class AccountDAOImpl implements IAccountDAO {
 
     @Override
     public Collection<Account> findAll() {
-        throw new NotYetImplementedException();
+        return List.of(
+        );
     }
 }

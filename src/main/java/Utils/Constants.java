@@ -1,6 +1,6 @@
 package Utils;
 
-import GUI.Server.Home;
+import GUI.Server.AccountGUI;
 import lombok.*;
 
 import javax.swing.*;
@@ -41,12 +41,12 @@ public final class Constants {
         tabs = new ArrayList<>();
         tabs= new ArrayList<>();
         tabs.add(
-               Tab.builder().title("Trang chủ").key("home").contentPanel(new Home()).build()
+               Tab.builder().title("Trang chủ").key("home").contentPanel(createPanelWithText("Trang chu")).build()
         );
         tabs.add(
                Tab.builder().title("Quản lý").key("manage").children(new ArrayList<>(
                         List.of(
-                               Tab.builder().title("Quản lý nhân viên").key("manage-employee").contentPanel(createPanelWithText("Quản lý nhân viên")).build(),
+                               Tab.builder().title("Quản lý tài khoản").key("manage-account").contentPanel(new AccountGUI()).build(),
                                Tab.builder().title("Quản lý khách hàng").key("manage-customer").contentPanel(createPanelWithText("Quản lý khách hàng")).build(),
                                Tab.builder().title("Quản lý sản phẩm").key("manage-product").contentPanel(createPanelWithText("Quản lý sản phẩm")).build(),
                                Tab.builder().title("Quản lý đơn hàng").key("manage-order").contentPanel(createPanelWithText("Quản lý đơn hàng")).build(),

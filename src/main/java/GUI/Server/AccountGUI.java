@@ -10,8 +10,8 @@ import javax.swing.*;
 /**
  * @author Laffy
  */
-public class Home extends JPanel {
-    public Home() {
+public class AccountGUI extends JPanel {
+    public AccountGUI() {
         initComponents();
         label1.putClientProperty("FlatLaf.style", "font: $h1.font" );
     }
@@ -32,7 +32,7 @@ public class Home extends JPanel {
             panel1.setLayout(new BorderLayout());
 
             //---- label1 ----
-            label1.setText("Qu\u1ea3n l\u00fd m\u00e1y");
+            label1.setText("Qu\u1ea3n l\u00fd t\u00e0i kho\u1ea3n");
             panel1.add(label1, BorderLayout.WEST);
 
             //---- button1 ----

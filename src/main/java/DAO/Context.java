@@ -1,4 +1,4 @@
-package DAO.JDBC;
+package DAO;
 
 public class Context {
     private static Context instance;

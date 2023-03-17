@@ -1,6 +1,5 @@
 package Utils;
 
-import Migrate.Main;
 import com.formdev.flatlaf.themes.FlatMacLightLaf;
 
 import javax.swing.*;
