@@ -40,6 +40,7 @@ public class ManUI extends JFrame {
 
         var contentPane = getContentPane();
         contentPane.setBackground(new Color(0xedf2f7));
+
         contentPane.setLayout(new BorderLayout());
 
         panel2.setBackground(new Color(0xedf2f7));

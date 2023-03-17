@@ -1,11 +1,17 @@
 package service;
 
+import DAO.AccountDAOImpl;
+import DAO.Interface.IAccountDAO;
 import model.Account;
 import service.Interface.IAccountService;
 
+import java.text.ParseException;
 import java.util.List;
 
 public class AccountServiceImpl implements IAccountService{
+    private IAccountDAO accountDAO = new AccountDAOImpl();
+    public AccountServiceImpl() {
+    }
     @Override
     public void create(Account account) {
 
@@ -37,8 +43,8 @@ public class AccountServiceImpl implements IAccountService{
     }
 
     @Override
-    public List<Account> getAllAccounts() {
-        return null;
+    public List<Account> getAllAccounts() throws ParseException {
+        return this.accountDAO.findAll();
     }
 
     @Override

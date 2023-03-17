@@ -6,6 +6,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.io.File;
 import java.net.URL;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Objects;
 
 public class Helper {
@@ -14,6 +16,10 @@ public class Helper {
         URL url = loader.getResource(folder);
         String path = url.getPath();
         return new File(path).listFiles();
+    }
+    private static final SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+    public static String getDateString(Date date){
+        return dateFormat.format(date);
     }
     public static File getResourceFile (String path) {
         var  a=  Helper.class.getResource(path).getPath();
