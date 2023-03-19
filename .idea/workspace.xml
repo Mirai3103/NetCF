@@ -6,16 +6,8 @@
   <component name="ChangeListManager">
     <list default="true" id="685dcd50-168e-4022-b19b-3e06b788cecf" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/DAO/AccountDAOImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/DAO/AccountDAOImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/DAO/Context.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/DAO/Context.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/DAO/Interface/IDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/DAO/Interface/IDAO.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/GUI/Server/AccountGUI.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/GUI/Server/AccountGUI.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/GUI/Server/AccountGUI.jfd" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/GUI/Server/AccountGUI.jfd" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/GUI/Server/ManUI.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/GUI/Server/ManUI.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Utils/Constants.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Utils/Constants.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Utils/Helper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Utils/Helper.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/service/AccountServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/service/AccountServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/service/Interface/IAccountService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/service/Interface/IAccountService.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -191,7 +183,10 @@
       <workItem from="1678703564827" duration="1196000" />
       <workItem from="1678922216419" duration="6000" />
       <workItem from="1679041090723" duration="2378000" />
-      <workItem from="1679043491956" duration="6742000" />
+      <workItem from="1679043491956" duration="6983000" />
+      <workItem from="1679119276406" duration="3917000" />
+      <workItem from="1679228994459" duration="3040000" />
+      <workItem from="1679232063743" duration="1404000" />
     </task>
     <servers />
   </component>

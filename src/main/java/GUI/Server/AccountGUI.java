@@ -4,7 +4,9 @@
 
 package GUI.Server;
 
+import Utils.Fonts;
 import Utils.Helper;
+import com.formdev.flatlaf.extras.FlatSVGIcon;
 import com.formdev.flatlaf.ui.*;
 import model.Account;
 import service.AccountServiceImpl;
@@ -14,6 +16,7 @@ import java.awt.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.text.ParseException;
+import java.util.HashMap;
 import java.util.List;
 import javax.swing.*;
 import javax.swing.border.*;
@@ -26,12 +29,13 @@ public class AccountGUI extends JPanel {
     private IAccountService accountService = new AccountServiceImpl();
     private List<Account> accounts;
     private List<Account> filteredAccounts;
+
     public AccountGUI() {
         initComponents();
         label1.putClientProperty("FlatLaf.style", "font: $h0.font" );
         try {
             accounts = accountService.getAllAccounts();
-            filteredAccounts = accounts.stream().map(account -> account).toList();
+            filteredAccounts = accounts.stream().toList();
             reDesign();
 
         } catch (ParseException e) {
@@ -52,8 +56,45 @@ public class AccountGUI extends JPanel {
                 renderTableData();
             }
         });
+
     }
     private void reDesign() throws ParseException {
+        setSize(1300,800);
+        setMinimumSize(new Dimension(1300, 800));
+        JPopupMenu popupMenu2 = new JPopupMenu();
+        JMenuItem menuItem1 = new JMenuItem();
+        JMenuItem menuItem2 = new JMenuItem();
+
+        menuItem1.setText("Sửa");
+        menuItem1.setIcon(Helper.getIcon("/icons/create-outline.png",28,28));
+        menuItem1.setFont(Fonts.getFont(Font.BOLD, 18));
+        //gap
+        menuItem1.setIconTextGap(20);
+        popupMenu2.add(menuItem1);
+        popupMenu2.addSeparator();
+        menuItem2.setText("Xóa");
+        menuItem2.setIcon(Helper.getIcon("/icons/trash-outline.png",28,28));
+        menuItem2.setFont(Fonts.getFont(Font.BOLD, 18));
+        menuItem2.setForeground(Color.red);
+
+        popupMenu2.setBackground(Color.white);
+        menuItem2.setIconTextGap(20);
+        menuItem2.addActionListener(e->{
+            int row = table1.getSelectedRow();
+            if (row == -1) {
+                JOptionPane.showMessageDialog(null, "Vui lòng chọn tài khoản cần xóa");
+                return;
+            }
+            int id = (int) table1.getValueAt(row, 0);
+            int confirm = JOptionPane.showConfirmDialog(null, "Bạn có chắc chắn muốn xóa tài khoản này không?");
+            if (confirm == JOptionPane.YES_OPTION) {
+                System.out.println("Xóa tài khoản có id: " + id);
+            }
+        });
+
+        popupMenu2.add(menuItem2);
+
+
         DefaultTableModel model = new DefaultTableModel();
         String[] columnNames = {"ID", "Tên tài khoản", "Số dư", "Vai trò", "Trạng thái","Ngày tạo" };
         model.setColumnIdentifiers(columnNames);
@@ -63,6 +104,10 @@ public class AccountGUI extends JPanel {
         table1.setShowHorizontalLines(true);
         renderTableData();
         label4.putClientProperty("FlatLaf.style", "font: $h1.font" );
+        table1.setComponentPopupMenu(popupMenu2);
+        var columnModel = table1.getColumnModel();
+        columnModel.getColumn(0).setMaxWidth(60);
+
 
     table1.setAutoCreateRowSorter(true);
     }
@@ -83,6 +128,10 @@ public class AccountGUI extends JPanel {
         label3 = new JLabel();
         searchTextField = new JTextField();
         label4 = new JLabel();
+        panel10 = new JPanel();
+        label5 = new JLabel();
+        comboBox1 = new JComboBox<>();
+        panel2 = new JPanel();
         scrollPane1 = new JScrollPane();
         table1 = new JTable();
 
@@ -143,14 +192,44 @@ public class AccountGUI extends JPanel {
                 label4.setText("Danh s\u00e1ch t\u00e0i kho\u1ea3n:");
                 label4.setBackground(Color.white);
                 panel4.add(label4, BorderLayout.NORTH);
-            }
-            panel3.add(panel4, BorderLayout.NORTH);
 
-            //======== scrollPane1 ========
-            {
-                scrollPane1.setViewportView(table1);
+                //======== panel10 ========
+                {
+                    panel10.setPreferredSize(new Dimension(230, 100));
+                    panel10.setBackground(Color.white);
+                    panel10.setBorder(new EmptyBorder(0, 20, 0, 0));
+                    panel10.setMinimumSize(new Dimension(233, 42));
+                    panel10.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 10));
+
+                    //---- label5 ----
+                    label5.setText("L\u1ecdc theo t\u00ecnh tr\u1ea1ng:");
+                    panel10.add(label5);
+
+                    //---- comboBox1 ----
+                    comboBox1.setPreferredSize(new Dimension(200, 30));
+                    comboBox1.setModel(new DefaultComboBoxModel<>(new String[] {
+                        "\u0110ang ho\u1ea1t \u0111\u1ed9ng",
+                        "Offline"
+                    }));
+                    panel10.add(comboBox1);
+                }
+                panel4.add(panel10, BorderLayout.WEST);
             }
-            panel3.add(scrollPane1, BorderLayout.CENTER);
+            panel3.add(panel4, BorderLayout.PAGE_START);
+
+            //======== panel2 ========
+            {
+                panel2.setBorder(new EmptyBorder(0, 20, 20, 20));
+                panel2.setBackground(Color.white);
+                panel2.setLayout(new BorderLayout());
+
+                //======== scrollPane1 ========
+                {
+                    scrollPane1.setViewportView(table1);
+                }
+                panel2.add(scrollPane1, BorderLayout.CENTER);
+            }
+            panel3.add(panel2, BorderLayout.CENTER);
         }
         add(panel3, BorderLayout.CENTER);
         // JFormDesigner - End of component initialization  //GEN-END:initComponents  @formatter:on
@@ -166,6 +245,10 @@ public class AccountGUI extends JPanel {
     private JLabel label3;
     private JTextField searchTextField;
     private JLabel label4;
+    private JPanel panel10;
+    private JLabel label5;
+    private JComboBox<String> comboBox1;
+    private JPanel panel2;
     private JScrollPane scrollPane1;
     private JTable table1;
     // JFormDesigner - End of variables declaration  //GEN-END:variables  @formatter:on

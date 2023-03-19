@@ -44,7 +44,7 @@ new FormModel {
 					} ) {
 						name: "panel9"
 						"preferredSize": new java.awt.Dimension( 350, 10 )
-						"background": new java.awt.Color( 255, 255, 255, 255 )
+						"background": &Color0 new java.awt.Color( 255, 255, 255, 255 )
 						add( new FormComponent( "javax.swing.JLabel" ) {
 							name: "label3"
 							"text": "Tìm theo tên hoặc id:"
@@ -63,13 +63,45 @@ new FormModel {
 					}, new FormLayoutConstraints( class java.lang.String ) {
 						"value": "North"
 					} )
+					add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class java.awt.FlowLayout ) {
+						"alignment": 0
+						"vgap": 10
+					} ) {
+						name: "panel10"
+						"preferredSize": new java.awt.Dimension( 230, 100 )
+						"background": #Color0
+						"border": new javax.swing.border.EmptyBorder( 0, 20, 0, 0 )
+						"minimumSize": new java.awt.Dimension( 233, 42 )
+						add( new FormComponent( "javax.swing.JLabel" ) {
+							name: "label5"
+							"text": "Lọc theo tình trạng:"
+						} )
+						add( new FormComponent( "javax.swing.JComboBox" ) {
+							name: "comboBox1"
+							"preferredSize": new java.awt.Dimension( 200, 30 )
+							"model": new javax.swing.DefaultComboBoxModel {
+								selectedItem: "Đang hoạt động"
+								addElement( "Đang hoạt động" )
+								addElement( "Offline" )
+							}
+						} )
+					}, new FormLayoutConstraints( class java.lang.String ) {
+						"value": "West"
+					} )
 				}, new FormLayoutConstraints( class java.lang.String ) {
-					"value": "North"
+					"value": "First"
 				} )
-				add( new FormContainer( "javax.swing.JScrollPane", new FormLayoutManager( class javax.swing.JScrollPane ) ) {
-					name: "scrollPane1"
-					add( new FormComponent( "javax.swing.JTable" ) {
-						name: "table1"
+				add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class java.awt.BorderLayout ) ) {
+					name: "panel2"
+					"border": new javax.swing.border.EmptyBorder( 0, 20, 20, 20 )
+					"background": new java.awt.Color( 255, 255, 255, 255 )
+					add( new FormContainer( "javax.swing.JScrollPane", new FormLayoutManager( class javax.swing.JScrollPane ) ) {
+						name: "scrollPane1"
+						add( new FormComponent( "javax.swing.JTable" ) {
+							name: "table1"
+						} )
+					}, new FormLayoutConstraints( class java.lang.String ) {
+						"value": "Center"
 					} )
 				}, new FormLayoutConstraints( class java.lang.String ) {
 					"value": "Center"
@@ -79,7 +111,7 @@ new FormModel {
 			} )
 		}, new FormLayoutConstraints( null ) {
 			"location": new java.awt.Point( 0, 0 )
-			"size": new java.awt.Dimension( 720, 615 )
+			"size": new java.awt.Dimension( 980, 615 )
 		} )
 	}
 }
