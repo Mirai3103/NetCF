@@ -6,16 +6,13 @@ package GUI.Server;
 
 import Utils.Fonts;
 import Utils.Helper;
-import com.formdev.flatlaf.extras.FlatSVGIcon;
-import com.formdev.flatlaf.ui.*;
 import model.Account;
-import service.AccountServiceImpl;
+import service.AccountService;
 
 import java.awt.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.text.ParseException;
-import java.util.HashMap;
 import java.util.List;
 import javax.swing.*;
 import javax.swing.border.*;
@@ -25,7 +22,7 @@ import javax.swing.table.DefaultTableModel;
  * @author Laffy
  */
 public class AccountGUI extends JPanel {
-    private AccountServiceImpl accountService = new AccountServiceImpl();
+    private AccountService accountService = new AccountService();
     private List<Account> accounts;
     private List<Account> filteredAccounts;
 
