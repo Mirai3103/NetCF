@@ -2,7 +2,6 @@ package DAO;
 
 import DAO.Interface.IAccountDAO;
 import model.Account;
-import org.hibernate.cfg.NotYetImplementedException;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -11,30 +10,26 @@ import java.util.List;
 
 public class AccountDAOImpl implements IAccountDAO {
 
-    @Override
     public Account create(Account account) {
-        throw new NotYetImplementedException();
+        throw new RuntimeException();
+
     }
 
-    @Override
     public Account update(Account account) {
-        throw new NotYetImplementedException();
+        throw new RuntimeException();
 
     }
 
-    @Override
     public int delete(Integer integer) {
-        throw new NotYetImplementedException();
-
+        throw new RuntimeException();
     }
 
-    @Override
     public Account findById(Integer integer) {
-        throw new NotYetImplementedException();
+        throw new RuntimeException();
+
     }
     private static final SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSSSSS");
 
-    @Override
     public List<Account> findAll() throws ParseException {
         return List.of(
               Account.builder().id(1).username("ddecourcy9").password("L4ZmP8oaq5ke").role(Account.Role.USER).createdAt(formatter.parse("2022-04-28 17:02:45.000000")).deletedAt(null).balance(71000).build(),

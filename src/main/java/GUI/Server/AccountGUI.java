@@ -10,7 +10,6 @@ import com.formdev.flatlaf.extras.FlatSVGIcon;
 import com.formdev.flatlaf.ui.*;
 import model.Account;
 import service.AccountServiceImpl;
-import service.Interface.IAccountService;
 
 import java.awt.*;
 import java.awt.event.KeyAdapter;
@@ -26,7 +25,7 @@ import javax.swing.table.DefaultTableModel;
  * @author Laffy
  */
 public class AccountGUI extends JPanel {
-    private IAccountService accountService = new AccountServiceImpl();
+    private AccountServiceImpl accountService = new AccountServiceImpl();
     private List<Account> accounts;
     private List<Account> filteredAccounts;
 

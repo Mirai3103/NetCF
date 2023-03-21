@@ -1,13 +1,13 @@
 package DAO;
 
 import java.sql.*;
-import  javax.sql.DataSource;
+import java.util.List;
 
-public class Context {
-    private static Context instance;
+public class DbHelper {
+    private static DbHelper instance;
 
-    public static Context getInstance() throws SQLException {
-        instance = instance == null|| instance.connection.isClosed() ? new Context() : instance;
+    public static DbHelper getInstance() throws SQLException {
+        instance = instance == null|| instance.connection.isClosed() ? new DbHelper() : instance;
         return instance;
     }
 
@@ -17,7 +17,7 @@ public class Context {
     private final String PASSWORD = "13092003";
     private Connection connection = null;
 
-    public Context() throws SQLException {
+    public DbHelper() throws SQLException {
         String url = String
                 .format("jdbc:sqlserver://%s;databaseName=%s;trustServerCertificate=true;encrypt=true;", SERVER, DATABASE_NAME);
         connection = DriverManager.getConnection(url, USER_NAME, PASSWORD);
@@ -48,5 +48,15 @@ public class Context {
     public PreparedStatement prepareStatement(String query) throws SQLException{
         return connection.prepareStatement(query);
     }
-
+    public static <T> List<T> toList(ResultSet rs, Class<T> clazz) throws Exception {
+        while (rs.next()) {
+            T obj = clazz.getDeclaredConstructor().newInstance();
+            for (var field : clazz.getDeclaredFields()) {
+                field.setAccessible(true);
+                field.set(obj, rs.getObject(field.getName()));
+            }
+            return List.of(obj);
+        }
+        return null;
+    }
 }
