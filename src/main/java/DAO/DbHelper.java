@@ -1,6 +1,9 @@
 package DAO;
 
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.List;
 
 public class DbHelper {
@@ -48,15 +51,23 @@ public class DbHelper {
     public PreparedStatement prepareStatement(String query) throws SQLException{
         return connection.prepareStatement(query);
     }
-    public static <T> List<T> toList(ResultSet rs, Class<T> clazz) throws Exception {
-        while (rs.next()) {
-            T obj = clazz.getDeclaredConstructor().newInstance();
-            for (var field : clazz.getDeclaredFields()) {
-                field.setAccessible(true);
-                field.set(obj, rs.getObject(field.getName()));
+    public static <T extends Object>List<T> toList(ResultSet resultSet,Class<T> clazz) throws SQLException {
+        Field[] fields = clazz.getDeclaredFields();
+        List<T> list = new ArrayList<T>();
+        while (resultSet.next()){
+            try {
+                T t = clazz.getConstructor().newInstance();
+                for (Field field : fields) {
+                    String setMethodName = "set" + field.getName().substring(0, 1).toUpperCase() + field.getName().substring(1);
+                    Method setMethod = clazz.getMethod(setMethodName, field.getType());
+                    setMethod.invoke(t, resultSet.getObject(field.getName()));
+                }
+                list.add(t);
+            }catch (Exception exception){
+                exception.printStackTrace();
+                System.exit(0);
             }
-            return List.of(obj);
         }
-        return null;
+        return list;
     }
 }
