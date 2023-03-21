@@ -11,8 +11,9 @@ import java.util.*;
 public class TestDependencyInjection {
     public static void main(String[] args) throws ParseException {
         ServiceBuilder.getInstance()
+                .register(AccountService.class, AccountService.class)
                 .register(IAccountDAO.class, AccountDAOImpl.class)
-                .register(AccountService.class, AccountService.class).build();
+                .build();
         var accountService = ServiceBuilder.getInstance().getService(AccountService.class);
         accountService.getAllAccounts().forEach(System.out::println);
     }
@@ -27,45 +28,50 @@ class ServiceBuilder{
         }
         return instance;
     }
-    private Map<Class<?>, Class<?>> serviceMap = new HashMap<>();
-    private   Map<Class<?>, Object> serviceInstanceMap = new HashMap<>();
+    private Map<Class<?>, Class<?>> serviceImplMap  = new HashMap<>();
+    private   Map<Class<?>, Object> serviceInstanceCache = new HashMap<>();
     public <T> ServiceBuilder register(Class<T> service, Class<? extends T> impl){
-        serviceMap.put(service, impl);
+        if (serviceImplMap .containsKey(service))
+           return this;
+        serviceImplMap .put(service, impl);
         return this;
     }
     public void build(){
 
-        for (Class<?> iService: serviceMap.keySet()){
-            Class<?> impl = serviceMap.get(iService);
+        for (Class<?> iService: serviceImplMap .keySet()){
+            Class<?> impl = serviceImplMap .get(iService);
             try {
                 Constructor<?> constructor = impl.getConstructor();
                 Object instance = constructor.newInstance();
-                serviceInstanceMap.put(iService, instance);
+                serviceInstanceCache.put(iService, instance);
             } catch (Exception e) {
                throw new RuntimeException(e);
             }
         }
 
-        for (Class<?> iService: serviceInstanceMap.keySet()){
-            var impl = serviceInstanceMap.get(iService);
+        for (Class<?> iService: serviceInstanceCache.keySet()){
+            var impl = serviceInstanceCache.get(iService);
             Field[] fields = impl.getClass().getDeclaredFields();
             Arrays.stream(fields).forEach(f->{
-                if(serviceMap.containsKey(f.getType())){
+                if(serviceImplMap .containsKey(f.getType())){
                    String setterMethodName = "set" + f.getName().substring(0, 1).toUpperCase() + f.getName().substring(1);
                      try {
                           Method setterMethod = impl.getClass().getMethod(setterMethodName, f.getType());
-                            setterMethod.invoke(impl, serviceInstanceMap.get(f.getType()));
+                            setterMethod.invoke(impl, serviceInstanceCache.get(f.getType()));
                      } catch (Exception e) {
                           e.printStackTrace();
                      }
                 }else {
-                    throw new RuntimeException("Dependency not found");
+                    throw new RuntimeException("Dependency not found for " + f.getType().getName());
                 }
             });
         }
     }
     public <T> T getService(Class<T> service){
-        return (T) serviceInstanceMap.get(service);
+        if (!serviceInstanceCache.containsKey(service)) {
+            throw new RuntimeException("Service not found for " + service.getName());
+        }
+        return (T) serviceInstanceCache.get(service);
     }
 
 }

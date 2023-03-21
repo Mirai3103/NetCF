@@ -20,7 +20,7 @@ public class AccountService {
         this.accountDAO = new AccountDAOImpl();
     }
     public void create(Account account) {
-
+        this.accountDAO.create(account);
     }
 
     public void update(Account account) {
@@ -32,7 +32,7 @@ public class AccountService {
     }
 
     public Account findById(int integer) {
-        return null;
+        return this.accountDAO.findById(integer);
     }
 
     public void deposit(int integer, double amount) {
