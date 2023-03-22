@@ -4,16 +4,42 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="685dcd50-168e-4022-b19b-3e06b788cecf" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources.local.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources.xml" beforeDir="false" />
+    <list default="true" id="a9c6d4bb-687f-4de2-b6aa-40dc08b8c5da" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/.idea/dataSources.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/DAO/BaseDAO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources/aa90af67-40ff-4847-ba1b-172d1e7d29f6.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources/aa90af67-40ff-4847-ba1b-172d1e7d29f6/storage_v2/_src_/schema/information_schema.FNRwLQ.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources/aa90af67-40ff-4847-ba1b-172d1e7d29f6/storage_v2/_src_/schema/mysql.osA4Bg.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources/aa90af67-40ff-4847-ba1b-172d1e7d29f6/storage_v2/_src_/schema/performance_schema.kIw0nw.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources/aa90af67-40ff-4847-ba1b-172d1e7d29f6/storage_v2/_src_/schema/sys.zb4BAA.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources/df04a673-8a54-4bee-ac33-e5ba11d08674.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources/df04a673-8a54-4bee-ac33-e5ba11d08674/storage_v2/_src_/schema/information_schema.FNRwLQ.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources/df04a673-8a54-4bee-ac33-e5ba11d08674/storage_v2/_src_/schema/mysql.osA4Bg.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources/df04a673-8a54-4bee-ac33-e5ba11d08674/storage_v2/_src_/schema/performance_schema.kIw0nw.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources/df04a673-8a54-4bee-ac33-e5ba11d08674/storage_v2/_src_/schema/sys.zb4BAA.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/sqlDataSources.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/sqldialects.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/sqldialects.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/uiDesigner.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/DAO/AccountDAOImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/DAO/AccountDAOImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/DAO/DbHelper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/DAO/ConnectionFactory.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/DAO/Interface/IEmployeeDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/DAO/Interface/IEmployeeDAO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/DAO/ConnectionFactory.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/DAO/ConnectionFactory.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/DAO/Interface/IAccountDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/DAO/Interface/IAccountDAO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/DAO/Interface/IDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/DAO/Interface/IDAO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/GUI/Server/AccountGUI.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/GUI/Server/AccountGUI.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/model/Account.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/model/Account.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/model/Computer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/model/Computer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/model/ComputerUsage.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/model/ComputerUsage.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/model/Employee.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/model/Employee.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/model/Invoice.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/model/Invoice.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/model/InvoiceDetail.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/model/InvoiceDetail.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/model/Product.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/model/Product.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/model/Session.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/model/Session.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/service/AccountService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/service/AccountService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/TestDependencyInjection.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/TestDependencyInjection.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -23,32 +49,24 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
-        <option value="Interface" />
         <option value="Class" />
       </list>
     </option>
   </component>
   <component name="Git.Settings">
-    <option name="RECENT_BRANCH_BY_REPOSITORY">
-      <map>
-        <entry key="$PROJECT_DIR$" value="huuhoang" />
-      </map>
-    </option>
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
   </component>
   <component name="MavenImportPreferences">
-    <option name="importingSettings">
-      <MavenImportingSettings>
-        <option name="workspaceImportEnabled" value="true" />
-      </MavenImportingSettings>
+    <option name="generalSettings">
+      <MavenGeneralSettings>
+        <option name="useMavenConfig" value="true" />
+      </MavenGeneralSettings>
     </option>
   </component>
-  <component name="ProjectId" id="2Miq8uWMqQmf3YRY6kM8qMVj6U9" />
-  <component name="ProjectLevelVcsManager" settingsEditedManually="true">
-    <ConfirmationsSetting value="1" id="Add" />
-  </component>
+  <component name="ProjectId" id="2NLbZSdfrjXiDJmiTwTWORG6TAq" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
@@ -57,159 +75,50 @@
   &quot;keyToString&quot;: {
     &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
     &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
-    &quot;last_opened_file_path&quot;: &quot;E:/HocKi2Nam2/NetCF/src/main/resources/icons&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
     &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
     &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
     &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
-    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
-    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.keymap&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;editor.preferences.completion&quot;,
     &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
-  },
-  &quot;keyToStringList&quot;: {
-    &quot;DatabaseDriversLRU&quot;: [
-      &quot;mysql&quot;
-    ]
   }
 }</component>
-  <component name="RecentsManager">
-    <key name="CopyFile.RECENT_KEYS">
-      <recent name="E:\HocKi2Nam2\NetCF\src\main\resources\icons" />
-      <recent name="E:\HocKi2Nam2\NetCF\src\main\resources\migrations" />
-      <recent name="E:\HocKi2Nam2\NetCF\src\main\resources\images" />
-      <recent name="E:\HocKi2Nam2\NetCF\src\main\java\Io" />
-      <recent name="E:\HocKi2Nam2\NetCF\src\main" />
-    </key>
-    <key name="MoveFile.RECENT_KEYS">
-      <recent name="E:\HocKi2Nam2\NetCF\src\main\java\GUI\Components\SideBar" />
-    </key>
-    <key name="CopyClassDialog.RECENTS_KEY">
-      <recent name="Io" />
-      <recent name="" />
-    </key>
-  </component>
-  <component name="RunManager" selected="Application.TestDependencyInjection">
-    <configuration name="TestDependencyInjection" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="TestDependencyInjection" />
+  <component name="RunManager">
+    <configuration name="ManUI" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="GUI.Server.ManUI" />
       <module name="NetCF" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="TestAccountService.testCreateAccount" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="NetCF" />
-      <option name="PACKAGE_NAME" value="" />
-      <option name="MAIN_CLASS_NAME" value="TestAccountService" />
-      <option name="METHOD_NAME" value="testCreateAccount" />
-      <option name="TEST_OBJECT" value="method" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="TestAccountService.testGetAccountById" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="NetCF" />
-      <option name="PACKAGE_NAME" value="" />
-      <option name="MAIN_CLASS_NAME" value="TestAccountService" />
-      <option name="METHOD_NAME" value="testGetAccountById" />
-      <option name="TEST_OBJECT" value="method" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="TestAccountService.testGetAccountByIdNotFound" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="NetCF" />
-      <option name="PACKAGE_NAME" value="" />
-      <option name="MAIN_CLASS_NAME" value="TestAccountService" />
-      <option name="METHOD_NAME" value="testGetAccountByIdNotFound" />
-      <option name="TEST_OBJECT" value="method" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="TestAccountService.testGetAllAccounts" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="NetCF" />
-      <option name="PACKAGE_NAME" value="" />
-      <option name="MAIN_CLASS_NAME" value="TestAccountService" />
-      <option name="METHOD_NAME" value="testGetAllAccounts" />
-      <option name="TEST_OBJECT" value="method" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="GUI.Server.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="JUnit.TestAccountService.testGetAccountById" />
-        <item itemvalue="JUnit.TestAccountService.testGetAccountByIdNotFound" />
-        <item itemvalue="JUnit.TestAccountService.testCreateAccount" />
-        <item itemvalue="JUnit.TestAccountService.testGetAllAccounts" />
-        <item itemvalue="Application.TestDependencyInjection" />
+        <item itemvalue="Application.ManUI" />
       </list>
     </recent_temporary>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
-      <changelist id="685dcd50-168e-4022-b19b-3e06b788cecf" name="Changes" comment="" />
-      <created>1678260594917</created>
+      <changelist id="a9c6d4bb-687f-4de2-b6aa-40dc08b8c5da" name="Changes" comment="" />
+      <created>1679446368260</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
-      <updated>1678260594917</updated>
-      <workItem from="1678260596293" duration="2201000" />
-      <workItem from="1678277968076" duration="3582000" />
-      <workItem from="1678281698755" duration="219000" />
-      <workItem from="1678282435736" duration="620000" />
-      <workItem from="1678285584689" duration="1006000" />
-      <workItem from="1678290289076" duration="3143000" />
-      <workItem from="1678328383487" duration="16000" />
-      <workItem from="1678332695315" duration="510000" />
-      <workItem from="1678342181318" duration="1744000" />
-      <workItem from="1678354277106" duration="88000" />
-      <workItem from="1678369858148" duration="14122000" />
-      <workItem from="1678427165442" duration="12238000" />
-      <workItem from="1678442984612" duration="2249000" />
-      <workItem from="1678459935250" duration="1171000" />
-      <workItem from="1678461125517" duration="6899000" />
-      <workItem from="1678516672761" duration="3524000" />
-      <workItem from="1678512991424" duration="1376000" />
-      <workItem from="1678525479411" duration="10748000" />
-      <workItem from="1678578618157" duration="195000" />
-      <workItem from="1678578828633" duration="6917000" />
-      <workItem from="1678703564827" duration="1196000" />
-      <workItem from="1678922216419" duration="6000" />
-      <workItem from="1679041090723" duration="2378000" />
-      <workItem from="1679043491956" duration="6983000" />
-      <workItem from="1679119276406" duration="3917000" />
-      <workItem from="1679228994459" duration="3040000" />
-      <workItem from="1679232063743" duration="1801000" />
-      <workItem from="1679378698634" duration="2926000" />
-      <workItem from="1679383433311" duration="10520000" />
-      <workItem from="1679435099462" duration="3001000" />
+      <updated>1679446368260</updated>
+      <workItem from="1679446369493" duration="1081000" />
+      <workItem from="1679455966408" duration="3545000" />
     </task>
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
-  </component>
-  <component name="UnknownFeatures">
-    <option featureType="dependencySupport" implementationName="java:com.google.protobuf:protobuf-java" />
-    <option featureType="dependencySupport" implementationName="java:jakarta.persistence:jakarta.persistence-api" />
-    <option featureType="dependencySupport" implementationName="javascript:npm:vite" />
-  </component>
-  <component name="Vcs.Log.Tabs.Properties">
-    <option name="TAB_STATES">
-      <map>
-        <entry key="MAIN">
-          <value>
-            <State />
-          </value>
-        </entry>
-      </map>
-    </option>
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

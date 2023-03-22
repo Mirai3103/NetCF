@@ -1,5 +1,10 @@
 package DAO;
 
+import lombok.Getter;
+
+import javax.naming.Context;
+import javax.naming.InitialContext;
+import javax.naming.NamingException;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.sql.*;
@@ -14,18 +19,20 @@ public class ConnectionFactory {
         return instance;
     }
 
-    private final String SERVER = "HUUHOANG";
-    private final String DATABASE_NAME = "NetCF";
-    private final String USER_NAME = "root";
-    private final String PASSWORD = "13092003";
-    private Connection connection = null;
+    private static final String SERVER = "HUUHOANG";
+    private static final String DATABASE_NAME = "NetCF";
+    private static final String USER_NAME = "root";
+    private static final String PASSWORD = "13092003";
+    @Getter
+    private  Connection connection = null;
 
-    public ConnectionFactory() throws SQLException {
+
+    public ConnectionFactory() throws SQLException  {
         String url = String
                 .format("jdbc:sqlserver://%s;databaseName=%s;trustServerCertificate=true;encrypt=true;", SERVER, DATABASE_NAME);
         connection = DriverManager.getConnection(url, USER_NAME, PASSWORD);
     }
-    public static <T extends Object>List<T> toList(ResultSet resultSet,Class<T> clazz) throws SQLException {
+    public static <T>List<T> toList(ResultSet resultSet, Class<T> clazz) throws SQLException {
         Field[] fields = clazz.getDeclaredFields();
         List<T> list = new ArrayList<T>();
         while (resultSet.next()){
@@ -33,8 +40,15 @@ public class ConnectionFactory {
                 T t = clazz.getConstructor().newInstance();
                 for (Field field : fields) {
                     String setMethodName = "set" + field.getName().substring(0, 1).toUpperCase() + field.getName().substring(1);
-                    Method setMethod = clazz.getMethod(setMethodName, field.getType());
-                    setMethod.invoke(t, resultSet.getObject(field.getName()));
+
+                    Method setMethod = clazz.getMethod(setMethodName, field.getType().isEnum()?Integer.class:field.getType());
+                   //check if column exist
+
+                   try {
+                       var value = resultSet.getObject(field.getName());
+                       setMethod.invoke(t,value );
+                   }catch (Exception ignored) {
+                   }
                 }
                 list.add(t);
             }catch (Exception exception){
@@ -42,6 +56,7 @@ public class ConnectionFactory {
                 System.exit(0);
             }
         }
+        resultSet.close();
         return list;
     }
 }

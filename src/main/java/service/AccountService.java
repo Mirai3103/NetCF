@@ -43,18 +43,12 @@ public class AccountService {
 
     }
 
-    public List<Account> getAllAccounts() throws ParseException {
+    public List<Account> getAllAccounts() throws ParseException, SQLException {
         return this.accountDAO.findAll();
     }
 
     public void resetPassword(int integer, String newPassword) {
-        Statement statement = null;
-        try {
-           var data =  statement.executeQuery("");
-
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
+        return;
     }
 
     public Account login(String username, String password) {

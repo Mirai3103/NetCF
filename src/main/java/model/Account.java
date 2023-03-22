@@ -1,7 +1,6 @@
 package model;
 
 
-import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -47,4 +46,13 @@ public class Account {
     private List<Invoice> invoices;
     private Session currentSession;
     private Employee employee;
+
+    public void setRole(Integer role) {
+        this.role = switch (role) {
+            case 0 -> Role.ADMIN;
+            case 1 -> Role.MANAGER;
+            case 2 -> Role.EMPLOYEE;
+            default -> Role.USER;
+        };
+    }
 }

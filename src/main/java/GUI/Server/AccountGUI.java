@@ -12,6 +12,7 @@ import service.AccountService;
 import java.awt.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.sql.SQLException;
 import java.text.ParseException;
 import java.util.List;
 import javax.swing.*;
@@ -35,6 +36,8 @@ public class AccountGUI extends JPanel {
             reDesign();
 
         } catch (ParseException e) {
+            throw new RuntimeException(e);
+        } catch (SQLException e) {
             throw new RuntimeException(e);
         }
         initEvent();

@@ -1,0 +1,476 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<dataSource name="NetCF@localhost">
+  <database-model serializer="dbm" dbms="MSSQL" family-id="MSSQL" format-version="4.45">
+    <root id="1">
+      <ServerVersion>16.0.1000</ServerVersion>
+    </root>
+    <database id="2" parent="1" name="AdventureWorks"/>
+    <database id="3" parent="1" name="Net"/>
+    <database id="4" parent="1" name="NetCF">
+      <Current>1</Current>
+    </database>
+    <database id="5" parent="1" name="QLSV_Lenh"/>
+    <database id="6" parent="1" name="master"/>
+    <database id="7" parent="1" name="model"/>
+    <database id="8" parent="1" name="msdb"/>
+    <database id="9" parent="1" name="rawBookdata"/>
+    <database id="10" parent="1" name="tempdb"/>
+    <schema id="11" parent="4" name="INFORMATION_SCHEMA"/>
+    <schema id="12" parent="4" name="db_accessadmin"/>
+    <schema id="13" parent="4" name="db_backupoperator"/>
+    <schema id="14" parent="4" name="db_datareader"/>
+    <schema id="15" parent="4" name="db_datawriter"/>
+    <schema id="16" parent="4" name="db_ddladmin"/>
+    <schema id="17" parent="4" name="db_denydatareader"/>
+    <schema id="18" parent="4" name="db_denydatawriter"/>
+    <schema id="19" parent="4" name="db_owner"/>
+    <schema id="20" parent="4" name="db_securityadmin"/>
+    <schema id="21" parent="4" name="dbo">
+      <Current>1</Current>
+    </schema>
+    <schema id="22" parent="4" name="guest"/>
+    <schema id="23" parent="4" name="sys"/>
+    <table id="24" parent="21" name="Account"/>
+    <table id="25" parent="21" name="Computer"/>
+    <table id="26" parent="21" name="ComputerUsage"/>
+    <table id="27" parent="21" name="Employee"/>
+    <table id="28" parent="21" name="Invoice"/>
+    <table id="29" parent="21" name="InvoiceDetail"/>
+    <table id="30" parent="21" name="Product"/>
+    <table id="31" parent="21" name="Session"/>
+    <column id="32" parent="24" name="id">
+      <DasType>int identity(10)|4s</DasType>
+      <NotNull>1</NotNull>
+      <Position>1</Position>
+      <SequenceIdentity>null</SequenceIdentity>
+    </column>
+    <column id="33" parent="24" name="balance">
+      <DasType>float(53)|8s</DasType>
+      <NotNull>1</NotNull>
+      <Position>2</Position>
+    </column>
+    <column id="34" parent="24" name="createdAt">
+      <DasType>datetime2(27,7)|93s</DasType>
+      <NotNull>1</NotNull>
+      <Position>3</Position>
+    </column>
+    <column id="35" parent="24" name="deletedAt">
+      <DasType>datetime2(27,7)|93s</DasType>
+      <Position>4</Position>
+    </column>
+    <column id="36" parent="24" name="password">
+      <DasType>varchar(45)|12s</DasType>
+      <NotNull>1</NotNull>
+      <Position>5</Position>
+    </column>
+    <column id="37" parent="24" name="role">
+      <DasType>int|4s</DasType>
+      <Position>6</Position>
+    </column>
+    <column id="38" parent="24" name="username">
+      <DasType>varchar(45)|12s</DasType>
+      <NotNull>1</NotNull>
+      <Position>7</Position>
+    </column>
+    <index id="39" parent="24" name="PK__Account__3213E83F6D84C91D">
+      <ColNames>id</ColNames>
+      <NameSurrogate>1</NameSurrogate>
+      <Unique>1</Unique>
+    </index>
+    <index id="40" parent="24" name="UK_de34gsw4qt8auhffbna969ahp">
+      <ColNames>username</ColNames>
+      <Unique>1</Unique>
+    </index>
+    <key id="41" parent="24" name="PK__Account__3213E83F6D84C91D">
+      <NameSurrogate>1</NameSurrogate>
+      <Primary>1</Primary>
+      <UnderlyingIndexColNames>id</UnderlyingIndexColNames>
+    </key>
+    <key id="42" parent="24" name="UK_de34gsw4qt8auhffbna969ahp">
+      <UnderlyingIndexColNames>username</UnderlyingIndexColNames>
+    </key>
+    <column id="43" parent="25" name="id">
+      <DasType>int identity(10)|4s</DasType>
+      <NotNull>1</NotNull>
+      <Position>1</Position>
+      <SequenceIdentity>null</SequenceIdentity>
+    </column>
+    <column id="44" parent="25" name="createdAt">
+      <DasType>datetime2(27,7)|93s</DasType>
+      <NotNull>1</NotNull>
+      <Position>2</Position>
+    </column>
+    <column id="45" parent="25" name="deletedAt">
+      <DasType>datetime2(27,7)|93s</DasType>
+      <Position>3</Position>
+    </column>
+    <column id="46" parent="25" name="name">
+      <DasType>varchar(100)|12s</DasType>
+      <NotNull>1</NotNull>
+      <Position>4</Position>
+    </column>
+    <column id="47" parent="25" name="price">
+      <DasType>float(53)|8s</DasType>
+      <NotNull>1</NotNull>
+      <Position>5</Position>
+    </column>
+    <column id="48" parent="25" name="status">
+      <DasType>int|4s</DasType>
+      <Position>6</Position>
+    </column>
+    <column id="49" parent="25" name="type">
+      <DasType>int|4s</DasType>
+      <Position>7</Position>
+    </column>
+    <index id="50" parent="25" name="PK__Computer__3213E83F07838330">
+      <ColNames>id</ColNames>
+      <NameSurrogate>1</NameSurrogate>
+      <Unique>1</Unique>
+    </index>
+    <key id="51" parent="25" name="PK__Computer__3213E83F07838330">
+      <NameSurrogate>1</NameSurrogate>
+      <Primary>1</Primary>
+      <UnderlyingIndexColNames>id</UnderlyingIndexColNames>
+    </key>
+    <column id="52" parent="26" name="id">
+      <DasType>int identity(10)|4s</DasType>
+      <NotNull>1</NotNull>
+      <Position>1</Position>
+      <SequenceIdentity>null</SequenceIdentity>
+    </column>
+    <column id="53" parent="26" name="computerID">
+      <DasType>int|4s</DasType>
+      <NotNull>1</NotNull>
+      <Position>2</Position>
+    </column>
+    <column id="54" parent="26" name="createdAt">
+      <DasType>datetime2(27,7)|93s</DasType>
+      <NotNull>1</NotNull>
+      <Position>3</Position>
+    </column>
+    <column id="55" parent="26" name="endAt">
+      <DasType>datetime2(27,7)|93s</DasType>
+      <Position>4</Position>
+    </column>
+    <column id="56" parent="26" name="isEmployeeUsing">
+      <DasType>bit(1)|-7s</DasType>
+      <NotNull>1</NotNull>
+      <Position>5</Position>
+    </column>
+    <column id="57" parent="26" name="totalMoney">
+      <DasType>float(53)|8s</DasType>
+      <Position>6</Position>
+    </column>
+    <column id="58" parent="26" name="usedByAccountId">
+      <DasType>int|4s</DasType>
+      <Position>7</Position>
+    </column>
+    <column id="59" parent="26" name="usedBy">
+      <DasType>int|4s</DasType>
+      <Position>8</Position>
+    </column>
+    <foreign-key id="60" parent="26" name="FK1ukgw2h7yqj0uqhs4kln7b0tv">
+      <ColNames>computerID</ColNames>
+      <RefColNames>id</RefColNames>
+      <RefTableName>Computer</RefTableName>
+    </foreign-key>
+    <foreign-key id="61" parent="26" name="FKru3cjhi3eagngqfgdf3ap0w0f">
+      <ColNames>usedBy</ColNames>
+      <RefColNames>id</RefColNames>
+      <RefTableName>Account</RefTableName>
+    </foreign-key>
+    <index id="62" parent="26" name="PK__Computer__3213E83FC8E93F82">
+      <ColNames>id</ColNames>
+      <NameSurrogate>1</NameSurrogate>
+      <Unique>1</Unique>
+    </index>
+    <key id="63" parent="26" name="PK__Computer__3213E83FC8E93F82">
+      <NameSurrogate>1</NameSurrogate>
+      <Primary>1</Primary>
+      <UnderlyingIndexColNames>id</UnderlyingIndexColNames>
+    </key>
+    <column id="64" parent="27" name="id">
+      <DasType>int identity(10)|4s</DasType>
+      <NotNull>1</NotNull>
+      <Position>1</Position>
+      <SequenceIdentity>null</SequenceIdentity>
+    </column>
+    <column id="65" parent="27" name="accountID">
+      <DasType>int|4s</DasType>
+      <Position>2</Position>
+    </column>
+    <column id="66" parent="27" name="createdAt">
+      <DasType>datetime2(27,7)|93s</DasType>
+      <NotNull>1</NotNull>
+      <Position>3</Position>
+    </column>
+    <column id="67" parent="27" name="deletedAt">
+      <DasType>datetime2(27,7)|93s</DasType>
+      <Position>4</Position>
+    </column>
+    <column id="68" parent="27" name="name">
+      <DasType>varchar(100)|12s</DasType>
+      <NotNull>1</NotNull>
+      <Position>5</Position>
+    </column>
+    <column id="69" parent="27" name="otherInformation">
+      <DasType>varchar(255)|12s</DasType>
+      <Position>6</Position>
+    </column>
+    <foreign-key id="70" parent="27" name="FK94h4kungplj8clo62i971c85o">
+      <ColNames>accountID</ColNames>
+      <RefColNames>id</RefColNames>
+      <RefTableName>Account</RefTableName>
+    </foreign-key>
+    <index id="71" parent="27" name="PK__Employee__3213E83F302F774D">
+      <ColNames>id</ColNames>
+      <NameSurrogate>1</NameSurrogate>
+      <Unique>1</Unique>
+    </index>
+    <key id="72" parent="27" name="PK__Employee__3213E83F302F774D">
+      <NameSurrogate>1</NameSurrogate>
+      <Primary>1</Primary>
+      <UnderlyingIndexColNames>id</UnderlyingIndexColNames>
+    </key>
+    <column id="73" parent="28" name="id">
+      <DasType>int identity(10)|4s</DasType>
+      <NotNull>1</NotNull>
+      <Position>1</Position>
+      <SequenceIdentity>null</SequenceIdentity>
+    </column>
+    <column id="74" parent="28" name="computerId">
+      <DasType>int|4s</DasType>
+      <Position>2</Position>
+    </column>
+    <column id="75" parent="28" name="createdAt">
+      <DasType>datetime2(27,7)|93s</DasType>
+      <NotNull>1</NotNull>
+      <Position>3</Position>
+    </column>
+    <column id="76" parent="28" name="createdBy">
+      <DasType>int|4s</DasType>
+      <NotNull>1</NotNull>
+      <Position>4</Position>
+    </column>
+    <column id="77" parent="28" name="createdToAccountId">
+      <DasType>int|4s</DasType>
+      <Position>5</Position>
+    </column>
+    <column id="78" parent="28" name="deletedAt">
+      <DasType>datetime2(27,7)|93s</DasType>
+      <Position>6</Position>
+    </column>
+    <column id="79" parent="28" name="isPaid">
+      <DasType>bit(1)|-7s</DasType>
+      <NotNull>1</NotNull>
+      <Position>7</Position>
+    </column>
+    <column id="80" parent="28" name="note">
+      <DasType>text(max)|-1s</DasType>
+      <Position>8</Position>
+    </column>
+    <column id="81" parent="28" name="status">
+      <DasType>int|4s</DasType>
+      <NotNull>1</NotNull>
+      <Position>9</Position>
+    </column>
+    <column id="82" parent="28" name="total">
+      <DasType>float(53)|8s</DasType>
+      <NotNull>1</NotNull>
+      <Position>10</Position>
+    </column>
+    <column id="83" parent="28" name="type">
+      <DasType>int|4s</DasType>
+      <NotNull>1</NotNull>
+      <Position>11</Position>
+    </column>
+    <foreign-key id="84" parent="28" name="FKmhlwjt2ll4e2gnxrx2i3yfljd">
+      <ColNames>computerId</ColNames>
+      <RefColNames>id</RefColNames>
+      <RefTableName>Computer</RefTableName>
+    </foreign-key>
+    <foreign-key id="85" parent="28" name="FK6hqjk9ej9r883fy7sgep9efn7">
+      <ColNames>createdBy</ColNames>
+      <RefColNames>id</RefColNames>
+      <RefTableName>Employee</RefTableName>
+    </foreign-key>
+    <foreign-key id="86" parent="28" name="FK937sc7o18kooa1fhxm57wld1w">
+      <ColNames>createdToAccountId</ColNames>
+      <RefColNames>id</RefColNames>
+      <RefTableName>Account</RefTableName>
+    </foreign-key>
+    <index id="87" parent="28" name="PK__Invoice__3213E83F58DFCC58">
+      <ColNames>id</ColNames>
+      <NameSurrogate>1</NameSurrogate>
+      <Unique>1</Unique>
+    </index>
+    <key id="88" parent="28" name="PK__Invoice__3213E83F58DFCC58">
+      <NameSurrogate>1</NameSurrogate>
+      <Primary>1</Primary>
+      <UnderlyingIndexColNames>id</UnderlyingIndexColNames>
+    </key>
+    <column id="89" parent="29" name="id">
+      <DasType>int identity(10)|4s</DasType>
+      <NotNull>1</NotNull>
+      <Position>1</Position>
+      <SequenceIdentity>null</SequenceIdentity>
+    </column>
+    <column id="90" parent="29" name="invoiceId">
+      <DasType>int|4s</DasType>
+      <NotNull>1</NotNull>
+      <Position>2</Position>
+    </column>
+    <column id="91" parent="29" name="price">
+      <DasType>float(53)|8s</DasType>
+      <NotNull>1</NotNull>
+      <Position>3</Position>
+    </column>
+    <column id="92" parent="29" name="productId">
+      <DasType>int|4s</DasType>
+      <NotNull>1</NotNull>
+      <Position>4</Position>
+    </column>
+    <column id="93" parent="29" name="quantity">
+      <DasType>int|4s</DasType>
+      <NotNull>1</NotNull>
+      <Position>5</Position>
+    </column>
+    <foreign-key id="94" parent="29" name="FKb5m8jjhsq5jxvhdbwty3d05sq">
+      <ColNames>invoiceId</ColNames>
+      <RefColNames>id</RefColNames>
+      <RefTableName>Invoice</RefTableName>
+    </foreign-key>
+    <foreign-key id="95" parent="29" name="FK2pri5nh9cre1wwfky1gd4egw6">
+      <ColNames>productId</ColNames>
+      <RefColNames>id</RefColNames>
+      <RefTableName>Product</RefTableName>
+    </foreign-key>
+    <index id="96" parent="29" name="PK__InvoiceD__3213E83F020CA3A4">
+      <ColNames>id</ColNames>
+      <NameSurrogate>1</NameSurrogate>
+      <Unique>1</Unique>
+    </index>
+    <key id="97" parent="29" name="PK__InvoiceD__3213E83F020CA3A4">
+      <NameSurrogate>1</NameSurrogate>
+      <Primary>1</Primary>
+      <UnderlyingIndexColNames>id</UnderlyingIndexColNames>
+    </key>
+    <column id="98" parent="30" name="id">
+      <DasType>int identity(10)|4s</DasType>
+      <NotNull>1</NotNull>
+      <Position>1</Position>
+      <SequenceIdentity>null</SequenceIdentity>
+    </column>
+    <column id="99" parent="30" name="createdAt">
+      <DasType>datetime2(27,7)|93s</DasType>
+      <NotNull>1</NotNull>
+      <Position>2</Position>
+    </column>
+    <column id="100" parent="30" name="deletedAt">
+      <DasType>datetime2(27,7)|93s</DasType>
+      <Position>3</Position>
+    </column>
+    <column id="101" parent="30" name="description">
+      <DasType>text(max)|-1s</DasType>
+      <NotNull>1</NotNull>
+      <Position>4</Position>
+    </column>
+    <column id="102" parent="30" name="image">
+      <DasType>varchar(255)|12s</DasType>
+      <NotNull>1</NotNull>
+      <Position>5</Position>
+    </column>
+    <column id="103" parent="30" name="name">
+      <DasType>varchar(100)|12s</DasType>
+      <NotNull>1</NotNull>
+      <Position>6</Position>
+    </column>
+    <column id="104" parent="30" name="price">
+      <DasType>float(53)|8s</DasType>
+      <NotNull>1</NotNull>
+      <Position>7</Position>
+    </column>
+    <column id="105" parent="30" name="stock">
+      <DasType>int|4s</DasType>
+      <NotNull>1</NotNull>
+      <Position>8</Position>
+    </column>
+    <column id="106" parent="30" name="type">
+      <DasType>int|4s</DasType>
+      <Position>9</Position>
+    </column>
+    <index id="107" parent="30" name="PK__Product__3213E83F4D1FA368">
+      <ColNames>id</ColNames>
+      <NameSurrogate>1</NameSurrogate>
+      <Unique>1</Unique>
+    </index>
+    <key id="108" parent="30" name="PK__Product__3213E83F4D1FA368">
+      <NameSurrogate>1</NameSurrogate>
+      <Primary>1</Primary>
+      <UnderlyingIndexColNames>id</UnderlyingIndexColNames>
+    </key>
+    <column id="109" parent="31" name="id">
+      <DasType>int identity(10)|4s</DasType>
+      <NotNull>1</NotNull>
+      <Position>1</Position>
+      <SequenceIdentity>null</SequenceIdentity>
+    </column>
+    <column id="110" parent="31" name="computerID">
+      <DasType>int|4s</DasType>
+      <NotNull>1</NotNull>
+      <Position>2</Position>
+    </column>
+    <column id="111" parent="31" name="prepaidAmount">
+      <DasType>int|4s</DasType>
+      <Position>3</Position>
+    </column>
+    <column id="112" parent="31" name="serviceCost">
+      <DasType>int|4s</DasType>
+      <NotNull>1</NotNull>
+      <Position>4</Position>
+    </column>
+    <column id="113" parent="31" name="startTime">
+      <DasType>datetime2(27,7)|93s</DasType>
+      <NotNull>1</NotNull>
+      <Position>5</Position>
+    </column>
+    <column id="114" parent="31" name="totalTime">
+      <DasType>int|4s</DasType>
+      <Position>6</Position>
+    </column>
+    <column id="115" parent="31" name="usedCost">
+      <DasType>int|4s</DasType>
+      <NotNull>1</NotNull>
+      <Position>7</Position>
+    </column>
+    <column id="116" parent="31" name="usedTime">
+      <DasType>int|4s</DasType>
+      <NotNull>1</NotNull>
+      <Position>8</Position>
+    </column>
+    <column id="117" parent="31" name="usingBy">
+      <DasType>int|4s</DasType>
+      <Position>9</Position>
+    </column>
+    <foreign-key id="118" parent="31" name="FKgy250fk87rpr8iwyiwbq3b5oi">
+      <ColNames>computerID</ColNames>
+      <RefColNames>id</RefColNames>
+      <RefTableName>Computer</RefTableName>
+    </foreign-key>
+    <foreign-key id="119" parent="31" name="FKa5yuno1td1sbamjqf31ccqbde">
+      <ColNames>usingBy</ColNames>
+      <RefColNames>id</RefColNames>
+      <RefTableName>Account</RefTableName>
+    </foreign-key>
+    <index id="120" parent="31" name="PK__Session__3213E83FFAE34045">
+      <ColNames>id</ColNames>
+      <NameSurrogate>1</NameSurrogate>
+      <Unique>1</Unique>
+    </index>
+    <key id="121" parent="31" name="PK__Session__3213E83FFAE34045">
+      <NameSurrogate>1</NameSurrogate>
+      <Primary>1</Primary>
+      <UnderlyingIndexColNames>id</UnderlyingIndexColNames>
+    </key>
+  </database-model>
+</dataSource>
