@@ -2,8 +2,10 @@
  * Created by JFormDesigner on Sun Mar 12 09:19:53 ICT 2023
  */
 
-package GUI.Server;
+package GUI.Server.Account;
 
+import GUI.Client.MainGUI;
+import GUI.Server.MainUI;
 import Utils.Fonts;
 import Utils.Helper;
 import model.Account;
@@ -20,7 +22,7 @@ import javax.swing.border.*;
 import javax.swing.table.DefaultTableModel;
 
 /**
- * @author Laffy
+ * @author HuuHoang
  */
 public class AccountGUI extends JPanel {
     private AccountService accountService = new AccountService();
@@ -54,6 +56,15 @@ public class AccountGUI extends JPanel {
                 ).toList();
                 renderTableData();
             }
+        });
+        button1.addActionListener(e->{
+            MainUI.getInstance().setBlur(true);
+
+            AccountDetailGUI accountDetailGUI = new AccountDetailGUI(GUI.Server.MainUI.getInstance());
+            accountDetailGUI.setVisible(true);
+            MainUI.getInstance().setBlur(false);
+
+
         });
 
     }

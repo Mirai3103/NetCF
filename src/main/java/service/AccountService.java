@@ -19,7 +19,7 @@ public class AccountService {
     public AccountService() {
         this.accountDAO = new AccountDAOImpl();
     }
-    public void create(Account account) {
+    public void create(Account account) throws SQLException {
         this.accountDAO.create(account);
     }
 
@@ -31,7 +31,7 @@ public class AccountService {
 
     }
 
-    public Account findById(int integer) {
+    public Account findById(int integer) throws SQLException {
         return this.accountDAO.findById(integer);
     }
 

@@ -5,6 +5,8 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import service.AccountService;
+
+import java.sql.SQLException;
 import java.text.ParseException;
 import java.util.Collection;
 import static org.junit.jupiter.api.Assertions.*;
@@ -39,13 +41,13 @@ public class TestAccountService {
     }
     @Test
     @DisplayName("Test get account by id not found")
-    public void testGetAccountByIdNotFound(){
+    public void testGetAccountByIdNotFound() throws SQLException {
             Account account = accountService.findById(100000);
             assertNull(account);
     }
     @Test
     @DisplayName("Test create account")
-    public void testCreateAccount() throws ParseException {
+    public void testCreateAccount() throws ParseException, SQLException {
         int count = accountService.getAllAccounts().size();
         Account account = new Account();
         account.setId(40);

@@ -4,11 +4,15 @@
 
 package GUI.Server;
 
+import GUI.Blur;
 import GUI.Components.SideBar.SideBar;
 import Utils.Constants;
 import Utils.Helper;
+import model.Employee;
 
 import java.awt.*;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 
@@ -17,17 +21,41 @@ import javax.swing.border.EmptyBorder;
  */
 
 
-public class ManUI extends JFrame {
-
+public class MainUI extends JFrame {
+    public static Employee currentUser;
+    public static MainUI instance;
+    private Blur blur = null;
+    public void setBlur(boolean b) {
+        if (blur == null) {
+            blur = new Blur(this);
+        }
+        blur.setVisible(b);
+    }
+    public static MainUI getInstance() {
+        if (instance == null) {
+            instance = new MainUI();
+        }
+        return instance;
+    }
     private SideBar sideBar;
 
-    public ManUI() {
-
+    private MainUI() {
         initComponents();
-
         sideBar = new SideBar(panel3, panel2);
         sideBar.initComponent(Constants.getTabs());
         setExtendedState(JFrame.MAXIMIZED_BOTH);
+        setVisible(true);
+        initEvent();
+    }
+
+    private void initEvent() {
+        addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                super.windowClosing(e);
+                System.exit(0);
+            }
+        });
     }
 
     private void initComponents() {
@@ -62,6 +90,6 @@ public class ManUI extends JFrame {
     public static void main(String[] args) {
 
         Helper.initUI();
-        new ManUI().setVisible(true);
+        MainUI.getInstance();
     }
 }

@@ -5,11 +5,12 @@ import service.AccountService;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.sql.SQLException;
 import java.text.ParseException;
 import java.util.*;
 
 public class TestDependencyInjection {
-    public static void main(String[] args) throws ParseException {
+    public static void main(String[] args) throws ParseException, SQLException {
         ServiceBuilder.getInstance()
                 .register(AccountService.class, AccountService.class)
                 .register(IAccountDAO.class, AccountDAOImpl.class)
