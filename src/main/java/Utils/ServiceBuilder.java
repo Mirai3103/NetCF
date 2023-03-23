@@ -26,6 +26,8 @@ public class ServiceBuilder{
         return this;
     }
     public void build(){
+        //clear cache
+        serviceInstanceCache.clear();
 
         for (Class<?> iService: serviceImplMap .keySet()){
             Class<?> impl = serviceImplMap .get(iService);
@@ -58,7 +60,7 @@ public class ServiceBuilder{
     }
     public <T> T getService(Class<T> service){
         if (!serviceInstanceCache.containsKey(service)) {
-            throw new RuntimeException("Service not found for " + service.getName());
+            throw new RuntimeException("Ko thấy class " + service.getName());
         }
         return (T) serviceInstanceCache.get(service);
     }
