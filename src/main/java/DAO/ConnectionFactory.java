@@ -19,10 +19,10 @@ public class ConnectionFactory {
         return instance;
     }
 
-    private static final String SERVER = "HUUHOANG";
+    private static final String SERVER = "localhost";
     private static final String DATABASE_NAME = "NetCF";
-    private static final String USER_NAME = "root";
-    private static final String PASSWORD = "13092003";
+    private static final String USER_NAME = "sa";
+    private static final String PASSWORD = "123";
     @Getter
     private  Connection connection = null;
 
