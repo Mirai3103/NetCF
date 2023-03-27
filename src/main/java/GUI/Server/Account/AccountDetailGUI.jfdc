@@ -16,20 +16,43 @@ new FormModel {
 					"font": new java.awt.Font( "Nunito Medium", 1, 20 )
 				} )
 			} )
-			add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class java.awt.FlowLayout ) {
-				"alignment": 0
+			add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class java.awt.GridLayout ) {
+				"columns": 2
+				"hgap": 5
+				"vgap": 5
 			} ) {
-				name: "panel2"
-				"border": &EmptyBorder0 new javax.swing.border.EmptyBorder( 2, 10, 0, 10 )
-				add( new FormComponent( "javax.swing.JLabel" ) {
-					name: "label2"
-					"text": "Tên đăng nhập:"
-					"font": &Font0 new java.awt.Font( "Nunito Medium", 0, 14 )
+				name: "panel7"
+				add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class java.awt.FlowLayout ) {
+					"alignment": 0
+				} ) {
+					name: "panel2"
+					"border": &EmptyBorder0 new javax.swing.border.EmptyBorder( 2, 10, 0, 10 )
+					add( new FormComponent( "javax.swing.JLabel" ) {
+						name: "label2"
+						"text": "Số tài khoản:"
+						"font": &Font0 new java.awt.Font( "Nunito Medium", 0, 14 )
+					} )
+					add( new FormComponent( "javax.swing.JTextField" ) {
+						name: "textField1"
+						"preferredSize": new java.awt.Dimension( 160, 30 )
+						"font": &Font1 new java.awt.Font( "Nunito", 0, 14 )
+					} )
 				} )
-				add( new FormComponent( "javax.swing.JTextField" ) {
-					name: "textField1"
-					"preferredSize": &Dimension0 new java.awt.Dimension( 370, 30 )
-					"font": &Font1 new java.awt.Font( "Nunito", 0, 14 )
+				add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class java.awt.FlowLayout ) {
+					"alignment": 0
+				} ) {
+					name: "panel8"
+					"border": #EmptyBorder0
+					add( new FormComponent( "javax.swing.JLabel" ) {
+						name: "label6"
+						"text": "Chức vụ:"
+						"font": #Font0
+					} )
+					add( new FormComponent( "javax.swing.JComboBox" ) {
+						name: "roleComboBox"
+						"preferredSize": new java.awt.Dimension( 156, 30 )
+						"font": new java.awt.Font( "Nunito", 0, 14 )
+					} )
 				} )
 			} )
 			add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class java.awt.FlowLayout ) {
@@ -44,7 +67,7 @@ new FormModel {
 				} )
 				add( new FormComponent( "javax.swing.JTextField" ) {
 					name: "textField2"
-					"preferredSize": #Dimension0
+					"preferredSize": &Dimension0 new java.awt.Dimension( 370, 30 )
 					"font": #Font1
 				} )
 			} )
@@ -55,7 +78,7 @@ new FormModel {
 				"border": #EmptyBorder0
 				add( new FormComponent( "javax.swing.JLabel" ) {
 					name: "label4"
-					"text": "Tên đăng nhập:"
+					"text": "Mật khẩu: "
 					"font": #Font0
 				} )
 				add( new FormComponent( "javax.swing.JTextField" ) {
@@ -71,7 +94,7 @@ new FormModel {
 				"border": #EmptyBorder0
 				add( new FormComponent( "javax.swing.JLabel" ) {
 					name: "label5"
-					"text": "Tên đăng nhập:"
+					"text": "Số dư:"
 					"font": #Font0
 				} )
 				add( new FormComponent( "javax.swing.JTextField" ) {

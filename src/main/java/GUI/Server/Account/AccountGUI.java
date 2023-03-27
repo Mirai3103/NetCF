@@ -4,7 +4,6 @@
 
 package GUI.Server.Account;
 
-import GUI.Client.MainGUI;
 import GUI.Server.MainUI;
 import Utils.Fonts;
 import Utils.Helper;
@@ -16,6 +15,7 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.sql.SQLException;
 import java.text.ParseException;
+import java.util.ArrayList;
 import java.util.List;
 import javax.swing.*;
 import javax.swing.border.*;
@@ -31,7 +31,7 @@ public class AccountGUI extends JPanel {
 
     public AccountGUI() {
         initComponents();
-        label1.putClientProperty("FlatLaf.style", "font: $h0.font" );
+        label1.putClientProperty("FlatLaf.style", "font: $h0.font");
         try {
             accounts = accountService.getAllAccounts();
             filteredAccounts = accounts.stream().toList();
@@ -44,52 +44,108 @@ public class AccountGUI extends JPanel {
         }
         initEvent();
     }
+
     private void initEvent() {
         searchTextField.addKeyListener(new KeyAdapter() {
             @Override
             public void keyReleased(KeyEvent e) {
                 String keyword = searchTextField.getText();
                 System.out.println(keyword);
-                if (keyword.trim().equals("") ) filteredAccounts = accounts.stream().map(account -> account).toList();
-                filteredAccounts = accounts.stream().filter(account -> account.getUsername().contains(keyword)
-                        || (account.getId()+"").contains(keyword)
-                ).toList();
+                if (keyword.trim().equals("")) filteredAccounts = accounts.stream().map(account -> account).toList();
+                filteredAccounts = accounts.stream().filter(account -> account.getUsername().contains(keyword) || (account.getId() + "").contains(keyword)).toList();
                 renderTableData();
             }
         });
-        button1.addActionListener(e->{
+        button1.addActionListener(e -> {
             MainUI.getInstance().setBlur(true);
 
             AccountDetailGUI accountDetailGUI = new AccountDetailGUI(GUI.Server.MainUI.getInstance());
             accountDetailGUI.setVisible(true);
             MainUI.getInstance().setBlur(false);
+            try {
+                accountService.create(accountDetailGUI.getAccount());
+                reloadTableData();
+            } catch (SQLException ex) {
+                throw new RuntimeException(ex);
+            }
+
 
 
         });
 
     }
+
     private void reDesign() throws ParseException {
-        setSize(1300,800);
+        setSize(1300, 800);
         setMinimumSize(new Dimension(1300, 800));
         JPopupMenu popupMenu2 = new JPopupMenu();
         JMenuItem menuItem1 = new JMenuItem();
         JMenuItem menuItem2 = new JMenuItem();
+        JMenuItem menuItem3 = new JMenuItem("Đổi mật khẩu");
+        JMenuItem menuItem4 = new JMenuItem("Nạp tiền");
+        menuItem1.addActionListener(e -> {
+            int row = table1.getSelectedRow();
+            if (row == -1) {
+                JOptionPane.showMessageDialog(null, "Vui lòng chọn tài khoản cần sửa");
+                return;
+            }
 
+            int id = (int) table1.getValueAt(row, 0);
+            Account account = accounts.stream().filter(account1 -> account1.getId() == id).findFirst().get();
+            MainUI.getInstance().setBlur(true);
+            AccountDetailGUI accountDetailGUI = new AccountDetailGUI(GUI.Server.MainUI.getInstance(), account);
+            accountDetailGUI.setVisible(true);
+            MainUI.getInstance().setBlur(false);
+            try {
+                accountService.update(accountDetailGUI.getAccount());
+                reloadTableData();
+            } catch (SQLException ex) {
+                throw new RuntimeException(ex);
+            }
+            JOptionPane.showMessageDialog(this, "Cập nhật thành công");
+
+        });
+        menuItem4.addActionListener(e -> {
+            int row = table1.getSelectedRow();
+            if (row == -1) {
+                JOptionPane.showMessageDialog(null, "Vui lòng chọn tài khoản cần nạp tiền");
+                return;
+            }
+            ;
+            int id = (int) table1.getValueAt(row, 0);
+            Account account = accounts.stream().filter(account1 -> account1.getId() == id).findFirst().get();
+            var amountStr = JOptionPane.showInputDialog("Nhập số tiền muốn nạp");
+            if (amountStr == null) return;
+
+            if (!Helper.isNumber(amountStr)) {
+                JOptionPane.showMessageDialog(this, "Số tiền không hợp lệ");
+                return;
+            }
+            int amount = Integer.parseInt(amountStr);
+            try {
+                accountService.deposit(account.getId(), amount);
+                reloadTableData();
+            } catch (SQLException ex) {
+                throw new RuntimeException(ex);
+            }
+            JOptionPane.showMessageDialog(this, "Nạp thành công " + amount + "đ vào tài khoản " + account.getUsername());
+
+        });
         menuItem1.setText("Sửa");
-        menuItem1.setIcon(Helper.getIcon("/icons/create-outline.png",28,28));
+        menuItem1.setIcon(Helper.getIcon("/icons/create-outline.png", 28, 28));
         menuItem1.setFont(Fonts.getFont(Font.BOLD, 18));
         //gap
         menuItem1.setIconTextGap(20);
         popupMenu2.add(menuItem1);
         popupMenu2.addSeparator();
         menuItem2.setText("Xóa");
-        menuItem2.setIcon(Helper.getIcon("/icons/trash-outline.png",28,28));
+        menuItem2.setIcon(Helper.getIcon("/icons/trash-outline.png", 28, 28));
         menuItem2.setFont(Fonts.getFont(Font.BOLD, 18));
         menuItem2.setForeground(Color.red);
 
         popupMenu2.setBackground(Color.white);
         menuItem2.setIconTextGap(20);
-        menuItem2.addActionListener(e->{
+        menuItem2.addActionListener(e -> {
             int row = table1.getSelectedRow();
             if (row == -1) {
                 JOptionPane.showMessageDialog(null, "Vui lòng chọn tài khoản cần xóa");
@@ -98,35 +154,79 @@ public class AccountGUI extends JPanel {
             int id = (int) table1.getValueAt(row, 0);
             int confirm = JOptionPane.showConfirmDialog(null, "Bạn có chắc chắn muốn xóa tài khoản này không?");
             if (confirm == JOptionPane.YES_OPTION) {
+                try {
+                    accountService.delete(id);
+                } catch (SQLException ex) {
+                    throw new RuntimeException(ex);
+                }
                 System.out.println("Xóa tài khoản có id: " + id);
+                reloadTableData();
+            }
+        });
+        menuItem3.addActionListener(e -> {
+            int row = table1.getSelectedRow();
+            if (row == -1) {
+                JOptionPane.showMessageDialog(null, "Vui lòng chọn tài khoản cần đổi mật khẩu");
+                return;
+            }
+            int id = (int) table1.getValueAt(row, 0);
+            Account account = accounts.stream().filter(account1 -> account1.getId() == id).findFirst().get();
+            var newPassword = JOptionPane.showInputDialog("Nhập mật khẩu mới");
+            if (newPassword == null) return;
+            if (newPassword.trim().equals("")) {
+                JOptionPane.showMessageDialog(this, "Mật khẩu không hợp lệ");
+                return;
+            }
+            try {
+                accountService.resetPassword(account.getId(), newPassword);
+            } catch (SQLException ex) {
+                throw new RuntimeException(ex);
             }
         });
 
         popupMenu2.add(menuItem2);
+        popupMenu2.addSeparator();
+        menuItem3.setFont(Fonts.getFont(Font.BOLD, 18));
+        menuItem3.setIconTextGap(20);
+        popupMenu2.add(menuItem3);
+        menuItem4.setFont(Fonts.getFont(Font.BOLD, 18));
+        menuItem4.setIconTextGap(20);
+        popupMenu2.addSeparator();
+        popupMenu2.add(menuItem4);
 
 
         DefaultTableModel model = new DefaultTableModel();
-        String[] columnNames = {"ID", "Tên tài khoản", "Số dư", "Vai trò", "Trạng thái","Ngày tạo" };
+        String[] columnNames = {"ID", "Tên tài khoản", "Số dư", "Vai trò", "Trạng thái", "Ngày tạo"};
         model.setColumnIdentifiers(columnNames);
         table1.setModel(model);
         table1.setDefaultEditor(Object.class, null);
-        table1.setShowVerticalLines(true);
+//        table1.setShowVerticalLines(true);
         table1.setShowHorizontalLines(true);
         renderTableData();
-        label4.putClientProperty("FlatLaf.style", "font: $h1.font" );
+        label4.putClientProperty("FlatLaf.style", "font: $h1.font");
         table1.setComponentPopupMenu(popupMenu2);
         var columnModel = table1.getColumnModel();
         columnModel.getColumn(0).setMaxWidth(60);
 
 
-    table1.setAutoCreateRowSorter(true);
+        table1.setAutoCreateRowSorter(true);
     }
-    private void renderTableData(){
+    private void reloadTableData() {
+        try {
+            accounts = accountService.getAllAccounts();
+            filteredAccounts = new ArrayList<>(accounts);
+        } catch (SQLException ex) {
+            throw new RuntimeException(ex);
+        }
+        renderTableData();
+    }
+    private void renderTableData() {
         DefaultTableModel model = (DefaultTableModel) table1.getModel();
         // clear table
         model.setRowCount(0);
-        filteredAccounts.stream().map(account -> new Object[] {account.getId(), account.getUsername(), account.getBalance(), account.getRole(), "Hoạt động", Helper.getDateString(account.getCreatedAt())}).forEach(model::addRow);
+        filteredAccounts.stream().map(account -> new Object[]{account.getId(), account.getUsername(), account.getBalance(), account.getRole(), "Hoạt động", Helper.getDateString(account.getCreatedAt())}).forEach(model::addRow);
     }
+
     private void initComponents() {
         // JFormDesigner - Component initialization - DO NOT MODIFY  //GEN-BEGIN:initComponents  @formatter:off
         panel1 = new JPanel();
@@ -217,10 +317,7 @@ public class AccountGUI extends JPanel {
 
                     //---- comboBox1 ----
                     comboBox1.setPreferredSize(new Dimension(200, 30));
-                    comboBox1.setModel(new DefaultComboBoxModel<>(new String[] {
-                        "\u0110ang ho\u1ea1t \u0111\u1ed9ng",
-                        "Offline"
-                    }));
+                    comboBox1.setModel(new DefaultComboBoxModel<>(new String[]{"\u0110ang ho\u1ea1t \u0111\u1ed9ng", "Offline"}));
                     panel10.add(comboBox1);
                 }
                 panel4.add(panel10, BorderLayout.WEST);

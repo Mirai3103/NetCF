@@ -23,39 +23,60 @@ public class AccountService {
         this.accountDAO.create(account);
     }
 
-    public void update(Account account) {
-
+    public void update(Account account) throws SQLException {
+        this.accountDAO.update(account);
     }
 
-    public void delete(int integer) {
-
+    public void delete(int integer) throws SQLException {
+        this.accountDAO.delete(integer);
     }
 
     public Account findById(int integer) throws SQLException {
         return this.accountDAO.findById(integer);
     }
 
-    public void deposit(int integer, double amount) {
 
+
+    public void withdraw(int integer, double amount) throws SQLException {
+         var account = this.findById(integer);
+            account.setBalance(account.getBalance() - amount);
+            if (account.getBalance() < 0) {
+                throw new RuntimeException("Not enough money");
+            }
+            this.update(account);
     }
 
-    public void withdraw(int integer, double amount) {
-
-    }
-
-    public List<Account> getAllAccounts() throws ParseException, SQLException {
+    public List<Account> getAllAccounts() throws  SQLException {
         return this.accountDAO.findAll();
     }
 
-    public void resetPassword(int integer, String newPassword) {
-        return;
+    public void resetPassword(int integer, String newPassword) throws SQLException {
+        var account = this.findById(integer);
+        account.setPassword(newPassword);
+        this.update(account);
     }
 
-    public Account login(String username, String password) {
+    public Account login(String username, String password) throws SQLException {
+        var account = this.accountDAO.findByUsername(username);
+        if (account == null) {
+            return  null;
+        }
+        if (account.getPassword().equals(password)) {
+            return account;
+        }
         return null;
     }
 
-    public Account findByUsername(String username) {
-        return null;
+    public Account findByUsername(String username) throws SQLException {
+      return this.accountDAO.findByUsername(username);
+
     }
+
+    public void deposit(int id, int amount) throws SQLException {
+        var account = this.findById(id);
+        account.setBalance(account.getBalance() + amount);
+        this.update(account);
+    }
+
+
 }

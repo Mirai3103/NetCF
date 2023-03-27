@@ -8,6 +8,8 @@ import javax.swing.border.*;
 
 import GUI.Blur;
 import GUI.Server.MainUI;
+import Utils.Helper;
+import lombok.Getter;
 import model.Account;
 
 import java.awt.*;
@@ -19,23 +21,57 @@ import javax.swing.*;
  * @author HuuHoang
  */
 public class AccountDetailGUI extends JDialog {
+    @Getter
     private Account account;
     private Mode mode;
    public enum Mode {
          EDIT, READ_ONLY,CREATE
     }
+
     public AccountDetailGUI(Window owner, Account account, Mode mode) {
+       this.account = account;
+         this.mode = mode;
         initComponents();
         reDesign();
         initEvent();
         setModal(true);
         setModalityType(ModalityType.APPLICATION_MODAL);
     }
-
+    private boolean getAccountFromInput(){
+       if (textField2.getText().trim().equals("")) {
+           JOptionPane.showMessageDialog(this, "Tên đăng nhập không được để trống");
+           return false;
+         }
+       if (textField3.getText().trim().equals("")) {
+           JOptionPane.showMessageDialog(this, "Mật khẩu không được để trống");
+           return false;
+       }
+       if (!Helper.isNumber(textField4.getText().trim())) {
+           JOptionPane.showMessageDialog(this, "Số dư không hợp lệ");
+           return false;
+         }
+        this.account.setUsername(textField2.getText());
+        this.account.setPassword(textField3.getText());
+        this.account.setRole(((Account.Role) roleComboBox.getSelectedItem()).ordinal());
+        this.account.setBalance(Double.parseDouble(textField4.getText()));
+        System.out.println(this.account);
+        return true;
+    }
+    private int status = JOptionPane.CANCEL_OPTION;
     private void initEvent() {
+
        cancel.addActionListener(e->{
+            this.status = JOptionPane.CANCEL_OPTION;
+
            dispose();
        });
+       ok.addActionListener(e->{
+              this.status = JOptionPane.OK_OPTION;
+           if ((mode == Mode.CREATE || mode == Mode.EDIT )&&this.getAccountFromInput()) {
+               dispose();
+           }
+       });
+
     }
 
     public AccountDetailGUI(Window owner) {
@@ -45,6 +81,46 @@ public class AccountDetailGUI extends JDialog {
         this(owner,account, Mode.EDIT);
     }
     private void reDesign() {
+       Account.Role[] roleItems = new Account.Role[]{
+               Account.Role.ADMIN,
+               Account.Role.MANAGER,
+               Account.Role.EMPLOYEE,
+               Account.Role.USER
+       };
+         roleComboBox.setModel(new DefaultComboBoxModel<>(roleItems));
+         textField1.setEditable(false);
+        switch (mode) {
+            case CREATE ->{
+                label1.setText("Tạo tài khoản");
+                cancel.setText("Hủy");
+                ok.setText("Tạo");
+            }
+            case EDIT -> {
+                label1.setText("Chỉnh sửa tài khoản");
+                cancel.setText("Hủy");
+                ok.setText("Lưu");
+                textField1.setText(account.getId()+"");
+                textField2.setText(account.getUsername());
+                textField3.setText(account.getPassword());
+                textField4.setText(account.getBalance()+"");
+                roleComboBox.setSelectedItem(roleItems[account.getRole().ordinal()]);
+
+            }
+            case READ_ONLY -> {
+                label1.setText("Thông tin tài khoản");
+                cancel.setText("Đóng");
+                ok.setText("Ok");
+                textField2.setEditable(false);
+                textField3.setEditable(false);
+                textField4.setEditable(false);
+                roleComboBox.setEnabled(false);
+
+
+            }
+        }
+        roleComboBox.addItemListener(e->{
+            System.out.println(e.getItem());
+        });
     }
 
 
@@ -54,15 +130,19 @@ public class AccountDetailGUI extends JDialog {
         // JFormDesigner - Component initialization - DO NOT MODIFY  //GEN-BEGIN:initComponents  @formatter:off
         panel1 = new JPanel();
         label1 = new JLabel();
+        panel7 = new JPanel();
         panel2 = new JPanel();
         label2 = new JLabel();
         textField1 = new JTextField();
+        panel8 = new JPanel();
+        label6 = new JLabel();
+        roleComboBox = new JComboBox();
         panel3 = new JPanel();
         label3 = new JLabel();
         textField2 = new JTextField();
         panel4 = new JPanel();
         label4 = new JLabel();
-        textField3 = new JTextField();
+        textField3 = new JPasswordField();
         panel5 = new JPanel();
         label5 = new JLabel();
         textField4 = new JTextField();
@@ -86,22 +166,45 @@ public class AccountDetailGUI extends JDialog {
         }
         contentPane.add(panel1);
 
-        //======== panel2 ========
+        //======== panel7 ========
         {
-            panel2.setBorder(new EmptyBorder(2, 10, 0, 10));
-            panel2.setLayout(new FlowLayout(FlowLayout.LEFT));
+            panel7.setLayout(new GridLayout(1, 2, 5, 5));
 
-            //---- label2 ----
-            label2.setText("T\u00ean \u0111\u0103ng nh\u1eadp:");
-            label2.setFont(new Font("Nunito Medium", Font.PLAIN, 14));
-            panel2.add(label2);
+            //======== panel2 ========
+            {
+                panel2.setBorder(new EmptyBorder(2, 10, 0, 10));
+                panel2.setLayout(new FlowLayout(FlowLayout.LEFT));
 
-            //---- textField1 ----
-            textField1.setPreferredSize(new Dimension(370, 30));
-            textField1.setFont(new Font("Nunito", Font.PLAIN, 14));
-            panel2.add(textField1);
+                //---- label2 ----
+                label2.setText("S\u1ed1 t\u00e0i kho\u1ea3n:");
+                label2.setFont(new Font("Nunito Medium", Font.PLAIN, 14));
+                panel2.add(label2);
+
+                //---- textField1 ----
+                textField1.setPreferredSize(new Dimension(160, 30));
+                textField1.setFont(new Font("Nunito", Font.PLAIN, 14));
+                panel2.add(textField1);
+            }
+            panel7.add(panel2);
+
+            //======== panel8 ========
+            {
+                panel8.setBorder(new EmptyBorder(2, 10, 0, 10));
+                panel8.setLayout(new FlowLayout(FlowLayout.LEFT));
+
+                //---- label6 ----
+                label6.setText("Ch\u1ee9c v\u1ee5:");
+                label6.setFont(new Font("Nunito Medium", Font.PLAIN, 14));
+                panel8.add(label6);
+
+                //---- roleComboBox ----
+                roleComboBox.setPreferredSize(new Dimension(156, 30));
+                roleComboBox.setFont(new Font("Nunito", Font.PLAIN, 14));
+                panel8.add(roleComboBox);
+            }
+            panel7.add(panel8);
         }
-        contentPane.add(panel2);
+        contentPane.add(panel7);
 
         //======== panel3 ========
         {
@@ -126,7 +229,7 @@ public class AccountDetailGUI extends JDialog {
             panel4.setLayout(new FlowLayout(FlowLayout.LEFT));
 
             //---- label4 ----
-            label4.setText("T\u00ean \u0111\u0103ng nh\u1eadp:");
+            label4.setText("M\u1eadt kh\u1ea9u: ");
             label4.setFont(new Font("Nunito Medium", Font.PLAIN, 14));
             panel4.add(label4);
 
@@ -143,7 +246,7 @@ public class AccountDetailGUI extends JDialog {
             panel5.setLayout(new FlowLayout(FlowLayout.LEFT));
 
             //---- label5 ----
-            label5.setText("T\u00ean \u0111\u0103ng nh\u1eadp:");
+            label5.setText("S\u1ed1 d\u01b0:");
             label5.setFont(new Font("Nunito Medium", Font.PLAIN, 14));
             panel5.add(label5);
 
@@ -186,9 +289,13 @@ public class AccountDetailGUI extends JDialog {
     // JFormDesigner - Variables declaration - DO NOT MODIFY  //GEN-BEGIN:variables  @formatter:off
     private JPanel panel1;
     private JLabel label1;
+    private JPanel panel7;
     private JPanel panel2;
     private JLabel label2;
     private JTextField textField1;
+    private JPanel panel8;
+    private JLabel label6;
+    private JComboBox roleComboBox;
     private JPanel panel3;
     private JLabel label3;
     private JTextField textField2;

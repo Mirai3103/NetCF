@@ -5,9 +5,23 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="a9c6d4bb-687f-4de2-b6aa-40dc08b8c5da" name="Changes" comment="fix">
-      <change afterPath="$PROJECT_DIR$/src/main/java/GUI/Server/Main.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/DAO/ComputerDAOImpl.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/DAO/ComputerUsageImpl.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/DAO/SessionDAOImpl.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/GUI/Components/ImagePanel.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Utils/ServiceBuilder.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Utils/ServiceBuilder.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/DAO/AccountDAOImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/DAO/AccountDAOImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/DAO/BaseDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/DAO/BaseDAO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/DAO/Interface/IDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/DAO/Interface/IDAO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/GUI/Server/Account/AccountDetailGUI.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/GUI/Server/Account/AccountDetailGUI.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/GUI/Server/Account/AccountDetailGUI.jfd" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/GUI/Server/Account/AccountDetailGUI.jfdc" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/GUI/Server/Account/AccountGUI.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/GUI/Server/Account/AccountGUI.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/GUI/Server/LoginGUI.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/GUI/Server/LoginGUI.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/GUI/Server/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/GUI/Server/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/GUI/Server/MainUI.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/GUI/Server/MainUI.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Utils/Helper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Utils/Helper.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/service/AccountService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/service/AccountService.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -24,11 +38,11 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
-  <component name="GitHubPullRequestSearchHistory"><![CDATA[{
-  "lastFilter": {
-    "state": "OPEN"
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;
   }
-}]]></component>
+}</component>
   <component name="GithubPullRequestsUISettings">
     <option name="selectedUrlAndAccountId">
       <UrlAndAccount>
@@ -55,36 +69,62 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "ASKED_ADD_EXTERNAL_FILES": "true",
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "WebServerToolWindowFactoryState": "false",
-    "last_opened_file_path": "E:/HocKi2Nam2/JavaKi2Nam2",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "settings.editor.selected.configurable": "editor.preferences.completion",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;ASKED_ADD_EXTERNAL_FILES&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;last_opened_file_path&quot;: &quot;E:/HocKi2Nam2/JavaKi2Nam2&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;editor.preferences.completion&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
       <recent name="E:\HocKi2Nam2\DoAnNetCF\src\main\java\GUI\Components" />
       <recent name="E:\HocKi2Nam2\DoAnNetCF\src\main\java\GUI\Server\Account" />
     </key>
   </component>
-  <component name="RunManager" selected="Application.MainUI">
+  <component name="RunManager" selected="Application.Main">
     <configuration name="Blur" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="GUI.Components.Blur" />
       <module name="NetCF" />
       <extension name="coverage">
         <pattern>
           <option name="PATTERN" value="GUI.Components.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="Main" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="GUI.Server.Main" />
+      <module name="NetCF" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="GUI.Server.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="MainGUI" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="GUI.Client.MainGUI" />
+      <module name="NetCF" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="GUI.Client.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
@@ -106,12 +146,16 @@
       </method>
     </configuration>
     <list>
+      <item itemvalue="Application.Main" />
+      <item itemvalue="Application.MainGUI" />
       <item itemvalue="Application.Blur" />
       <item itemvalue="Application.MainUI" />
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="Application.Main" />
         <item itemvalue="Application.MainUI" />
+        <item itemvalue="Application.MainGUI" />
         <item itemvalue="Application.Blur" />
       </list>
     </recent_temporary>
@@ -127,7 +171,11 @@
       <workItem from="1679446369493" duration="1081000" />
       <workItem from="1679455966408" duration="3629000" />
       <workItem from="1679464739723" duration="9227000" />
-      <workItem from="1679551292117" duration="3420000" />
+      <workItem from="1679551292117" duration="3526000" />
+      <workItem from="1679560991821" duration="13000" />
+      <workItem from="1679562319700" duration="1099000" />
+      <workItem from="1679620466387" duration="4529000" />
+      <workItem from="1679922241114" duration="3619000" />
     </task>
     <task id="LOCAL-00001" summary="fix">
       <created>1679553845606</created>
@@ -142,10 +190,32 @@
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
   </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
   <component name="VcsManagerConfiguration">
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
     <MESSAGE value="fix" />
     <option name="LAST_COMMIT_MESSAGE" value="fix" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/GUI/Server/Account/AccountDetailGUI.java</url>
+          <line>129</line>
+          <option name="timeStamp" value="1" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

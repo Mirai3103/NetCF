@@ -1,6 +1,6 @@
 package GUI.Server;
 
-import GUI.Components.SideBar.ImagePanel;
+import GUI.Components.ImagePanel;
 import Utils.Helper;
 import model.Account;
 import service.AccountService;

@@ -40,37 +40,36 @@ public class AccountDAOImpl extends BaseDAO implements IAccountDAO {
     }
 
     public Account update(Account account) throws SQLException {
-        var preparedStatement = this.prepareStatement("UPDATE account a SET " +
-                "a.username = ?," +
-                " a.password = ?," +
-                " a.balance = ?," +
-                " a.role = ?," +
-                " a.createdAt = ?," +
-                " a.deletedAt = ? " +
-                "WHERE a.id = ?");
+        var preparedStatement = this.prepareStatement("UPDATE account  SET " +
+                " username = ?, " +
+                " password = ?, " +
+                " balance = ?, " +
+                " role = ?, " +
+                " createdAt = ? " +
+                " WHERE id = ?");
         preparedStatement.setString(1, account.getUsername());
         preparedStatement.setString(2, account.getPassword());
         preparedStatement.setDouble(3, account.getBalance());
         // get int from enum
         preparedStatement.setInt(4, account.getRole().ordinal());
         preparedStatement.setDate(5, new java.sql.Date(account.getCreatedAt().getTime()));
-        preparedStatement.setDate(6, account.getDeletedAt() != null ? new java.sql.Date(account.getDeletedAt().getTime()) : null);
-        preparedStatement.setInt(7, account.getId());
+        preparedStatement.setInt(6, account.getId());
         var result = preparedStatement.executeUpdate();
         preparedStatement.close();
         return result > 0 ? this.findById(account.getId()) : null;
     }
 
     public boolean delete(Integer integer) throws SQLException {
-        var preparedStatement = this.prepareStatement("DELETE FROM account a WHERE a.id = ?");
-        preparedStatement.setInt(1, integer);
+        var preparedStatement = this.prepareStatement("Update account a SET a.deletedAt = ? WHERE a.id = ?");
+        preparedStatement.setDate(1, new java.sql.Date(new java.util.Date().getTime()));
+        preparedStatement.setInt(2, integer);
         var result = preparedStatement.executeUpdate();
         preparedStatement.close();
         return result > 0;
     }
 
     public Account findById(Integer id) throws SQLException {
-        var preparedStatement = this.prepareStatement("SELECT * FROM account a WHERE a.id = ?");
+        var preparedStatement = this.prepareStatement("SELECT * FROM account a WHERE a.id = ? and a.deletedAt is null");
         preparedStatement.setInt(1, id);
         var resultSet = preparedStatement.executeQuery();
         var accounts = ConnectionFactory.toList(resultSet, Account.class);
@@ -82,7 +81,7 @@ public class AccountDAOImpl extends BaseDAO implements IAccountDAO {
     public List<Account> findAll() throws SQLException {
 
         var statement = this.createStatement();
-        var resultSet = statement.executeQuery("SELECT * FROM account a");
+        var resultSet = statement.executeQuery("SELECT * FROM account a WHERE a.deletedAt is null");
         var accounts = ConnectionFactory.toList(resultSet, Account.class);
         statement.close();
         return accounts;
@@ -92,8 +91,9 @@ public class AccountDAOImpl extends BaseDAO implements IAccountDAO {
     @Override
     public Account findByUsername(String username) throws SQLException {
 
-        var statement = this.createStatement();
-        var resultSet = statement.executeQuery("SELECT * FROM account a WHERE a.username = '" + username + "'");
+        var statement = this.prepareStatement("SELECT * FROM account a WHERE a.username = ? and a.deletedAt is null");
+        statement.setString(1, username);
+        var resultSet = statement.executeQuery();
         var accounts = ConnectionFactory.toList(resultSet, Account.class);
         return accounts.size() > 0 ? accounts.get(0) : null;
     }

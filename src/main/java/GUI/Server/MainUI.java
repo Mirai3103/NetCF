@@ -87,9 +87,5 @@ public class MainUI extends JFrame {
     private JPanel panel2;
     private JPanel panel3;
 
-    public static void main(String[] args) {
-
-        Helper.initUI();
-        MainUI.getInstance();
-    }
+  
 }
