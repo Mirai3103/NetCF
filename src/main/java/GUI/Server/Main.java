@@ -11,6 +11,7 @@ import DAO.SessionDAOImpl;
 import Utils.Helper;
 import Utils.ServiceBuilder;
 import service.AccountService;
+import service.ComputerService;
 
 public class Main {
     public static void main(String[] args) {
@@ -20,6 +21,7 @@ public class Main {
                 .register(IComputerDAO.class, ComputerDAOImpl.class)
                 .register(IComputerUsageDAO.class, ComputerUsageImpl.class)
                 .register(AccountService.class, AccountService.class)
+                .register(ComputerService.class, ComputerService.class)
                 .build();
         // run server below
         MainUI.getInstance();

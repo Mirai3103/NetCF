@@ -42,7 +42,6 @@ public class ConnectionFactory {
                     String setMethodName = "set" + field.getName().substring(0, 1).toUpperCase() + field.getName().substring(1);
 
                     Method setMethod = clazz.getMethod(setMethodName, field.getType().isEnum()?Integer.class:field.getType());
-                   //check if column exist
 
                    try {
                        var value = resultSet.getObject(field.getName());
