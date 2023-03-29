@@ -5,7 +5,14 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="a9c6d4bb-687f-4de2-b6aa-40dc08b8c5da" name="Changes" comment="fix">
+      <change afterPath="$PROJECT_DIR$/src/main/java/GUI/Client/LoginGUI.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/Payload/LoginPayload.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/Utils/AutoData.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/images/banner.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/GUI/Client/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/GUI/Client/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Io/Server.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Io/Server.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -16,6 +23,7 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="Class" />
+        <option value="AnnotationType" />
       </list>
     </option>
   </component>
@@ -78,14 +86,30 @@
       <recent name="E:\HocKi2Nam2\DoAnNetCF\src\main\java\GUI\Components" />
       <recent name="E:\HocKi2Nam2\DoAnNetCF\src\main\java\GUI\Server\Account" />
     </key>
+    <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="GUI.Client" />
+    </key>
   </component>
-  <component name="RunManager" selected="Application.Main">
+  <component name="RunManager" selected="Application.LoginGUI">
     <configuration name="Blur" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="GUI.Components.Blur" />
       <module name="NetCF" />
       <extension name="coverage">
         <pattern>
           <option name="PATTERN" value="GUI.Components.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="LoginGUI" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="GUI.Client.LoginGUI" />
+      <module name="NetCF" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="GUI.Client.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
@@ -133,6 +157,7 @@
       </method>
     </configuration>
     <list>
+      <item itemvalue="Application.LoginGUI" />
       <item itemvalue="Application.Main" />
       <item itemvalue="Application.MainGUI" />
       <item itemvalue="Application.Blur" />
@@ -140,6 +165,7 @@
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="Application.LoginGUI" />
         <item itemvalue="Application.Main" />
         <item itemvalue="Application.MainUI" />
         <item itemvalue="Application.MainGUI" />
@@ -165,6 +191,8 @@
       <workItem from="1679922241114" duration="4149000" />
       <workItem from="1680016317755" duration="4045000" />
       <workItem from="1680059146210" duration="1157000" />
+      <workItem from="1680069703223" duration="1526000" />
+      <workItem from="1680100521468" duration="2525000" />
     </task>
     <task id="LOCAL-00001" summary="fix">
       <created>1679553845606</created>

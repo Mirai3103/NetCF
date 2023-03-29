@@ -1,4 +1,6 @@
 package Io;
+import lombok.Getter;
+
 import java.io.IOException;
 import java.io.Serializable;
 import java.net.InetAddress;
@@ -9,6 +11,7 @@ import java.util.List;
 import java.util.Map;
 
 public class Server extends  ServerSocket{
+    @Getter
     private final LinkedList<Io.Socket> clients = new LinkedList<>();
     private final Map<String, LinkedList<Callback>> eventHandlers = new java.util.HashMap<>();
     private  final  LinkedList<Callback> onConnection = new LinkedList<>();
