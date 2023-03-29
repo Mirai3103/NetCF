@@ -4,6 +4,7 @@ import lombok.*;
 
 import java.io.IOException;
 import java.io.Serializable;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -22,10 +23,12 @@ public class Socket  implements Serializable {
     private java.io.ObjectOutputStream out;
     private  java.net.Socket socket;
     private Thread listenThread;
+    private  int machineId;
 
     public Socket(java.net.Socket socket) throws IOException {
         this.socket = socket;
         listen();
+
     }
 
     public void disconnect() throws IOException {
@@ -35,6 +38,7 @@ public class Socket  implements Serializable {
     public Socket(String host, int port) throws IOException {
         this(new java.net.Socket(host, port));
     }
+
 
     public void on(String eventType, Callback callback) {
         if (!eventHandlers.containsKey(eventType)) {
@@ -78,7 +82,11 @@ public class Socket  implements Serializable {
                     e.printStackTrace();
                 }
             }
-            System.out.println("Disconnected");
+           if (eventHandlers.containsKey("onDisconnection")) {
+               for (Callback callback : eventHandlers.get("onDisconnection")) {
+                   callback.invoke(null);
+               }
+           }
         });
         listenThread.start();
 

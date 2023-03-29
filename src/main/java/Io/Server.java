@@ -5,12 +5,14 @@ import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.SocketImpl;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 
 public class Server extends  ServerSocket{
     private final LinkedList<Io.Socket> clients = new LinkedList<>();
     private final Map<String, LinkedList<Callback>> eventHandlers = new java.util.HashMap<>();
-
+    private  final  LinkedList<Callback> onConnection = new LinkedList<>();
+    private final  LinkedList<Callback> onDisconnection = new LinkedList<>();
 
     protected Server(SocketImpl impl) {
         super(impl);
@@ -22,11 +24,30 @@ public class Server extends  ServerSocket{
     public Server(int port) throws IOException {
         super(port);
     }
+    private static Server instance;
+    public static Server initInstance(int port) throws IOException {
+        instance = new Server(port);
+        return instance;
+    }
+    public static Server getInstance(){
+        if (instance == null){
+            throw new RuntimeException("Server is not initialized");
+        }
+        return instance;
+    }
 
     public Server(int port, int backlog) throws IOException {
         super(port, backlog);
     }
     public void on(String eventType, Callback callback) {
+        if (eventType.equals("onConnection")){
+            onConnection.add(callback);
+            return;
+        }
+        if (eventType.equals("onDisconnection")){
+            onDisconnection.add(callback);
+            return;
+        }
         if (!eventHandlers.containsKey(eventType)) {
             eventHandlers.put(eventType, new LinkedList<Callback>());
 
@@ -46,18 +67,22 @@ public class Server extends  ServerSocket{
                 try {
                     Io.Socket client = new Io.Socket(accept());
                     clients.add(client);
-                    //invoke onConnect
+                    client.on("identify", (arg) -> {
+                        client.setMachineId((int) arg);
+                        client.removeAllListeners("identify");
+                    });
 
-                    if (eventHandlers.containsKey("onConnection")) {
-                        for (Callback callback : eventHandlers.get("onConnection")) {
-                            callback.invoke(client);
-                        }
+
+                        for (Callback callback : onConnection) {
+                        callback.invoke(client);
                     }
                     for (String eventType : eventHandlers.keySet()) {
-                        if (eventType.equals("onConnection")) continue;
                         for (Callback callback : eventHandlers.get(eventType)) {
                             client.on(eventType, callback);
                         }
+                    }
+                    for (Callback callback : onDisconnection) {
+                        client.on("onDisconnection", callback);
                     }
                 } catch (IOException e) {
                     e.printStackTrace();

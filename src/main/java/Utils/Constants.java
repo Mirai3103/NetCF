@@ -58,5 +58,8 @@ public final class Constants {
                 )).build()
         );
         return tabs;
+
     }
+    public static final int SOCKET_PORT = 1234;
+
 }
