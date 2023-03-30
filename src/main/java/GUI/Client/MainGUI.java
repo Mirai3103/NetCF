@@ -25,10 +25,11 @@ public class MainGUI extends JFrame {
             Main.session = (Session) data;
             System.out.println(data);
         });
-        Main.socket.on("logout", (c, data) -> {
+        Main.socket.on("timeOut", (c, data) -> {
             Main.session = null;
             this.dispose();
-            new LoginGUI();
+           var loginUI= new LoginGUI();
+            JOptionPane.showMessageDialog(loginUI, "Hết giờ rồi", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
         });
         this.setUndecorated(true);
         initComponents();

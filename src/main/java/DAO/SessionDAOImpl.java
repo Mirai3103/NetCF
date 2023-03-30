@@ -70,4 +70,17 @@ public class SessionDAOImpl extends BaseDAO implements ISessionDAO {
         var resultSet = preparedStatement.executeQuery();
         return ConnectionFactory.toList(resultSet, Session.class);
     }
+
+    @Override
+    public Session findByComputerId(int computerId) throws SQLException {
+        var preparedStatement = this.prepareStatement("SELECT * FROM session where computerID = ?");
+        preparedStatement.setInt(1,computerId);
+        var resultSet = preparedStatement.executeQuery();
+        var resultList= ConnectionFactory.toList(resultSet, Session.class);
+        if (resultList.size() > 0) {
+            return resultList.get(0);
+        }
+        return null;
+
+    }
 }

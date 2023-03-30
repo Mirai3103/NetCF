@@ -5,12 +5,22 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="a9c6d4bb-687f-4de2-b6aa-40dc08b8c5da" name="Changes" comment="fix">
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_3_23_2023_1_42_PM_[Changes]/shelved.patch" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_3_23_2023_1_42_PM__Changes_.xml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/DAO/Interface/ISessionDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/DAO/Interface/ISessionDAO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/DAO/SessionDAOImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/DAO/SessionDAOImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/GUI/Client/LoginGUI.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/GUI/Client/LoginGUI.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/GUI/Client/MainGUI.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/GUI/Client/MainGUI.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/GUI/Server/Home/Home.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/GUI/Server/Home/Home.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Io/Server.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Io/Server.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/Io/Socket.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Io/Socket.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Io/SocketController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Io/SocketController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Utils/Timer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Utils/Interval.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/model/Computer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/model/Computer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/model/Employee.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/model/Employee.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/service/ComputerService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/service/ComputerService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/service/ComputerUsageService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/service/ComputerUsageService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/service/SessionService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/service/SessionService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/icons/computerLocking.png" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/icons/computerLocking.png" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -156,7 +166,9 @@
       <workItem from="1680100521468" duration="2826000" />
       <workItem from="1680145993768" duration="2543000" />
       <workItem from="1680157076941" duration="1238000" />
-      <workItem from="1680158333267" duration="5581000" />
+      <workItem from="1680158333267" duration="5897000" />
+      <workItem from="1680166338140" duration="2554000" />
+      <workItem from="1680182269024" duration="4961000" />
     </task>
     <task id="LOCAL-00001" summary="fix">
       <created>1679553845606</created>

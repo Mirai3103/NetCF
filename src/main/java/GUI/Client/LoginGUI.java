@@ -18,10 +18,9 @@ import java.awt.event.ActionListener;
 import java.net.URL;
 import java.util.Arrays;
 
-public class LoginGUI {
+public class LoginGUI extends JFrame {
     private AccountService accountService;
     public LoginGUI() {
-        JFrame jFrame = new JFrame();
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 
         // set vị trí cho khung đăng nhập
@@ -31,7 +30,7 @@ public class LoginGUI {
         int x = (screenSize.width - width) / 2;
         int y = (screenSize.height - height) / 2;
 
-        jFrame.setSize(screenSize.width, screenSize.height);
+        this.setSize(screenSize.width, screenSize.height);
 
         ImagePanel backgroundPanel = new ImagePanel();
         //get screen size
@@ -153,7 +152,7 @@ public class LoginGUI {
                 Main.session = session;
                 Main.socket.removeAllListeners("loginSuccess");
                 //toDo: chuyển sang màn hình chính
-                jFrame.dispose();
+                this.dispose();
                 var mainGUI = new MainGUI();
                 mainGUI.setVisible(true);
         });
@@ -164,11 +163,11 @@ public class LoginGUI {
 
         backgroundPanel.add(loginPanel);
         // end
-        jFrame.add(backgroundPanel);
+        this.add(backgroundPanel);
 //        jFrame.pack();
-        jFrame.setUndecorated(true);
-        jFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        jFrame.setVisible(true);
+        this.setUndecorated(true);
+        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        this.setVisible(true);
     }
 
     public static void main(String[] args) {

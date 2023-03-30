@@ -52,6 +52,7 @@ public class Socket  implements Serializable {
         }
     }
     public void removeAllListeners(String eventType) {
+        System.out.println("Removing all listeners for " + eventType);
         if (eventHandlers.containsKey(eventType)) {
             eventHandlers.get(eventType).clear();
         }

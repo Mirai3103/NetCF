@@ -26,6 +26,10 @@ public class Employee {
 
 
     private String otherInformation;
+    private int salaryPerHour =0;
+    private String phoneNumber;
+    private String address;
+
 
     private Date createdAt = new Date();
     private Date deletedAt;

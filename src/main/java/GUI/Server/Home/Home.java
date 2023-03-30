@@ -5,6 +5,8 @@
 package GUI.Server.Home;
 
 import javax.swing.border.*;
+
+import Io.Server;
 import Utils.Fonts;
 import Utils.Helper;
 import Utils.ServiceProvider;
@@ -22,12 +24,37 @@ import javax.swing.*;
 public class Home extends JPanel {
     private List<JButton> computerButtons;
     private List<Computer> computers;
-    private ComputerService computerService;
-    public Home() {
+    private final ComputerService computerService;
+    public Home()  {
         initComponents();
         computerService= ServiceProvider.getInstance().getService(ComputerService.class);
+
+        try {
+            computers = computerService.getAllComputers();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
         reDesign();
+        registerListener();
     }
+
+    private void registerListener() {
+        Server.getInstance().on("identify" , (__,___)->{
+            System.out.println("ok ne");
+                fetchComputers();
+        });
+        Server.getInstance().on("onDisconnection" , (__,___)->{
+            fetchComputers();
+        });
+        Server.getInstance().on("login" , (__,___)->{
+            fetchComputers();
+        });
+        Server.getInstance().on("updateSession" , (__,___)->{
+            fetchComputers();
+        });
+    }
+
     private JPanel headerPanel;
     private JLabel headerLabel;
     private void reDesign(){
@@ -40,11 +67,17 @@ public class Home extends JPanel {
     headerLabel.setBorder(new EmptyBorder(20, 0, 0, 0));
         headerLabel.setHorizontalAlignment(SwingConstants.LEFT);
         add(headerPanel, BorderLayout.NORTH);
-        var offlineImg = Helper.getIcon("/icons/computerOff.png", 100, 100);
-        var lockImg = Helper.getIcon("/icons/computerLocking.png", 100, 100);
-        var onlineImg = Helper.getIcon("/icons/computerUsing.png", 100, 100);
-        try {
-            computers=computerService.getAllComputers();
+
+        fetchComputers();
+
+    }
+
+    private void fetchComputers(){
+            computerPanel.removeAll();
+            var offlineImg = Helper.getIcon("/icons/computerOff.png", 100, 100);
+            var lockImg = Helper.getIcon("/icons/computerLocking.png", 100, 100);
+            var onlineImg = Helper.getIcon("/icons/computerUsing.png", 100, 100);
+            computers = computerService.updateListComputerStatus(computers);
             computers.forEach(computer -> {
                 JPopupMenu popupMenu = new JPopupMenu();
                 JMenuItem tatItem = new JMenuItem("Tắt máy");
@@ -77,9 +110,9 @@ public class Home extends JPanel {
                     popupMenu.show(button, button.getWidth() / 2, button.getHeight() / 2);
                 });
                 button.setText(computer.getName());
-                // random 0 1 2
-                int random = (int) (Math.random() * 100) % 3+1  ;
-                switch (Computer.ComputerStatus.values()[random]) {
+//                // random 0 1 2
+//                int random = (int) (Math.random() * 100) % 3+1  ;
+                switch (computer.getStatus()) {
                     case OFF -> {
                         button.setIcon(offlineImg);
                         tatItem.setEnabled(false);
@@ -110,10 +143,10 @@ public class Home extends JPanel {
 
                 computerPanel.add(button);
             });
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
 
+        // refresh
+        revalidate();
+        repaint();
     }
     private void initComponents() {
         // JFormDesigner - Component initialization - DO NOT MODIFY  //GEN-BEGIN:initComponents  @formatter:off

@@ -6,6 +6,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.io.Serial;
+import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
@@ -15,7 +17,9 @@ import java.util.List;
 @AllArgsConstructor
 @Builder
 
-public class Computer {
+public class Computer implements Serializable {
+    @Serial
+    private static final long serialVersionUID = 746559035L;
     public enum ComputerType {
         Vip,
         Normal,
