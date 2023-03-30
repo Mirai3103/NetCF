@@ -66,7 +66,6 @@ public class AccountService {
         }
         return null;
     }
-
     public Account findByUsername(String username) throws SQLException {
       return this.accountDAO.findByUsername(username);
 

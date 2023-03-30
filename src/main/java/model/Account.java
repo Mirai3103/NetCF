@@ -6,6 +6,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.io.Serial;
 import java.util.List;
 
 
@@ -13,7 +14,9 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class Account {
+public class Account implements java.io.Serializable {
+    @Serial
+    private static final long serialVersionUID = 67566435324L;
     public enum Role {
         ADMIN,
         MANAGER,

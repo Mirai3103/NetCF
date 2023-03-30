@@ -1,8 +1,9 @@
 package Io;
 
 import java.io.Serializable;
+import java.sql.SQLException;
 
 @FunctionalInterface
 public interface Callback {
-    void invoke(Serializable arg);
+    void invoke(Socket socket,Serializable arg) ;
 }

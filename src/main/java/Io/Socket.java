@@ -59,6 +59,7 @@ public class Socket  implements Serializable {
     public void emit(String eventType, Serializable arg){
         try {
             out.writeObject(EventArg.builder().eventType(eventType).arg(arg).build());
+            System.out.println("Sent");
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -67,24 +68,28 @@ public class Socket  implements Serializable {
         out = new java.io.ObjectOutputStream(socket.getOutputStream());
         in = new java.io.ObjectInputStream(socket.getInputStream());
         listenThread = new Thread(() -> {
-            while (socket.isClosed()) {
-                try {
-                    EventArg payload = (EventArg) in.readObject();
+            while (socket.isConnected()) {
+                    EventArg payload = null;
+                    try {
+                        payload  = (EventArg) in.readObject();
+                    } catch (IOException e) {
+                            break;
+                    } catch (ClassNotFoundException e) {
+                        continue;
+                    }
+                if (payload == null)
+                        continue;
                     if (eventHandlers.containsKey(payload.getEventType())) {
                         for (Callback callback : eventHandlers.get(payload.getEventType())) {
-                            callback.invoke(payload.getArg());
+                            callback.invoke(this,payload.getArg());
                         }
                     }
-                } catch (IOException | ClassNotFoundException e) {
-                    if (Objects.equals(e.getMessage(), "Socket closed"))
-                        break;
 
-                    e.printStackTrace();
-                }
             }
+            System.out.println(this.machineId + " disconnected");
            if (eventHandlers.containsKey("onDisconnection")) {
                for (Callback callback : eventHandlers.get("onDisconnection")) {
-                   callback.invoke(null);
+                   callback.invoke(this,null);
                }
            }
         });

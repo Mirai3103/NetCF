@@ -7,7 +7,7 @@ package GUI.Server.Home;
 import javax.swing.border.*;
 import Utils.Fonts;
 import Utils.Helper;
-import Utils.ServiceBuilder;
+import Utils.ServiceProvider;
 import model.Computer;
 import service.ComputerService;
 
@@ -25,7 +25,7 @@ public class Home extends JPanel {
     private ComputerService computerService;
     public Home() {
         initComponents();
-        computerService= ServiceBuilder.getInstance().getService(ComputerService.class);
+        computerService= ServiceProvider.getInstance().getService(ComputerService.class);
         reDesign();
     }
     private JPanel headerPanel;

@@ -40,7 +40,9 @@ public class ConnectionFactory {
                 T t = clazz.getConstructor().newInstance();
                 for (Field field : fields) {
                     String setMethodName = "set" + field.getName().substring(0, 1).toUpperCase() + field.getName().substring(1);
-
+                    if (field.getName().equals("serialVersionUID")) {
+                        continue;
+                    }
                     Method setMethod = clazz.getMethod(setMethodName, field.getType().isEnum()?Integer.class:field.getType());
 
                    try {

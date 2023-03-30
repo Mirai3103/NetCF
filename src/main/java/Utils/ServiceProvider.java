@@ -7,19 +7,19 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
-public class ServiceBuilder{
-    private static ServiceBuilder instance;
-    private ServiceBuilder(){
+public class ServiceProvider {
+    private static ServiceProvider instance;
+    private ServiceProvider(){
     }
-    public static ServiceBuilder getInstance(){
+    public static ServiceProvider getInstance(){
         if(instance == null){
-            instance = new ServiceBuilder();
+            instance = new ServiceProvider();
         }
         return instance;
     }
     private Map<Class<?>, Class<?>> serviceImplMap  = new HashMap<>();
     private   Map<Class<?>, Object> serviceInstanceCache = new HashMap<>();
-    public <T> ServiceBuilder register(Class<T> service, Class<? extends T> impl){
+    public <T> ServiceProvider register(Class<T> service, Class<? extends T> impl){
         if (serviceImplMap .containsKey(service))
             return this;
         serviceImplMap .put(service, impl);
@@ -52,8 +52,6 @@ public class ServiceBuilder{
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
-                }else {
-                    throw new RuntimeException("Không tìm thấy Lớp: " + f.getType().getName());
                 }
             });
         }

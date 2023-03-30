@@ -69,19 +69,21 @@ public class Server extends  ServerSocket{
             while (true) {
                 try {
                     Io.Socket client = new Io.Socket(accept());
+                    System.out.println("New client connected");
                     clients.add(client);
-                    client.on("identify", (arg) -> {
+                    client.on("identify", (t,arg) -> {
                         client.setMachineId((int) arg);
                         client.removeAllListeners("identify");
                     });
 
 
                         for (Callback callback : onConnection) {
-                        callback.invoke(client);
+                        callback.invoke(client,client);
                     }
                     for (String eventType : eventHandlers.keySet()) {
                         for (Callback callback : eventHandlers.get(eventType)) {
                             client.on(eventType, callback);
+                            System.out.println("Added listener " + eventType);
                         }
                     }
                     for (Callback callback : onDisconnection) {

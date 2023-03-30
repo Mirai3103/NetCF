@@ -10,6 +10,7 @@ import Utils.Helper;
 import com.formdev.flatlaf.ui.*;
 import com.formdev.flatlaf.ui.FlatDropShadowBorder;
 import model.Account;
+import model.Session;
 
 import java.awt.*;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -19,9 +20,11 @@ import javax.swing.*;
  * @author Laffy
  */
 public class MainGUI extends JFrame {
-    private Account acc = Account.builder().id(1).username("Laffy").balance(12000).build();
-
     public MainGUI() {
+        Main.socket.on("syncSession", (c, data) -> {
+            Main.session = (Session) data;
+            System.out.println(Main.session);
+        });
         this.setUndecorated(true);
         initComponents();
         this.setSize(350, 750);
@@ -30,7 +33,7 @@ public class MainGUI extends JFrame {
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         FlatDropShadowBorder shadow = new FlatDropShadowBorder();
         panel2.setBorder(BorderFactory.createEmptyBorder(10, 50, 10, 50));
-        label7.setText(acc.getUsername());
+        label7.setText(Main.session.getUsingByAccount() == null ? "USER" : Main.session.getUsingByAccount().getUsername());
         label7.putClientProperty("FlatLaf.styleClass", "h2");
         label8.setIcon(Helper.getIcon("/icons/supportbanner.png", 300, 180));
         AtomicInteger sec = new AtomicInteger();

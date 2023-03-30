@@ -7,6 +7,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.io.Serial;
 import java.util.Date;
 
 
@@ -15,23 +16,25 @@ import java.util.Date;
 @AllArgsConstructor
 @Builder
 
-public class Session {
+public class Session implements java.io.Serializable {
+    @Serial
+    private static final long serialVersionUID = 432430624324L;
 
     private Integer id;
 
-    private int totalTime;
+    private int totalTime=0; // seconds
 
-    private int usedTime = 0;
-
-
-    private int usedCost = 0;
+    private int usedTime = 0; // seconds
 
 
-    private int serviceCost = 0;
+    private int usedCost = 0; // VND
+
+
+    private int serviceCost = 0; // VND
 
     private Date startTime = new Date();
 
-    private int prepaidAmount = 0;
+    private int prepaidAmount = 0; // VND
     private Integer usingBy = null;
     private Account usingByAccount;
 

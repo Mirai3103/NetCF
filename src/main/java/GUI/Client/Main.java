@@ -2,6 +2,7 @@ package GUI.Client;
 
 import Io.Socket;
 import Utils.Constants;
+import Utils.Helper;
 import lombok.Getter;
 import lombok.Setter;
 import model.Session;
@@ -24,15 +25,23 @@ public class Main {
     public static Session session;
 
     public static void main(String[] args) {
-        socket.on("onConnection", (data) -> {
-            System.out.println("Connected to server");
-            socket.emit("identify", COMPUTER_ID);
-        });
-        socket.on("errorMessage", (data) -> {
+        socket.emit("identify", COMPUTER_ID);
+        socket.on("errorMessage", (c,data) -> {
             JOptionPane.showMessageDialog(null, data, "Lỗi", JOptionPane.ERROR_MESSAGE);
         });
-        socket.on("message", (data) -> {
+        socket.on("message", (c,data) -> {
             JOptionPane.showMessageDialog(null, data, "Thông báo", JOptionPane.INFORMATION_MESSAGE);
         });
+        Helper.initUI();
+        //shutdown hook
+        Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+            try {
+                socket.disconnect();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }));
+
+        new LoginGUI();
     }
 }

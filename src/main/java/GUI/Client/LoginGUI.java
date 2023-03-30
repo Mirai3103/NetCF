@@ -138,17 +138,24 @@ public class LoginGUI {
 //        button.setAlignmentX(Component.CENTER_ALIGNMENT);
         button.setHorizontalAlignment(SwingConstants.CENTER);
         button.addActionListener(e->{
+            System.out.println(  LoginPayload.builder()
+                    .username(txtUsername.getText())
+                    .password(new String(txtPassword.getPassword()))
+                    .build());
             Main.socket.emit("login",
                     LoginPayload.builder()
                     .username(txtUsername.getText())
                     .password(new String(txtPassword.getPassword()))
                     .build());
-            Main.socket.on("loginSuccess",arg -> {
+            Main.socket.on("loginSuccess",(__,arg) -> {
                 Session session = (Session) arg;
                 System.out.println(session);
                 Main.session = session;
                 Main.socket.removeAllListeners("loginSuccess");
                 //toDo: chuyển sang màn hình chính
+                jFrame.dispose();
+                var mainGUI = new MainGUI();
+                mainGUI.setVisible(true);
         });
         });
         buttonPanel.add(button);
@@ -164,22 +171,8 @@ public class LoginGUI {
         jFrame.setVisible(true);
     }
 
-    public static ImageIcon getImage(String path, int width, int height) {
-        try {
-            Image image = ImageIO.read(new URL(path));
-//            Image image = ImageIO.read(new File(path));
-            if (width == -1 || height == -1) {
-                return new ImageIcon(image);
-            }
-            Image image1 = image.getScaledInstance(width,height,0);
-            return new ImageIcon(image1);
-        }catch (Exception e){
-            return null;
-        }
-    }
-
     public static void main(String[] args) {
-        Helper.initUI();
+
         new LoginGUI();
     }
 }
