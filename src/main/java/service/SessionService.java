@@ -34,4 +34,12 @@ public class SessionService {
         session.setUsedTime(session.getUsedTime() + GAP);
         sessionDAO.update(session);
     }
+    public Session update(Session session) throws SQLException {
+        if (session.getTotalTime() > 0 && session.getUsedTime() >= session.getTotalTime()) {
+            // toDo: create computerUsage
+            sessionDAO.delete(session.getId());
+            throw new RuntimeException("Time out");
+        }
+      return   sessionDAO.update(session);
+    }
 }

@@ -21,9 +21,14 @@ import javax.swing.*;
  */
 public class MainGUI extends JFrame {
     public MainGUI() {
-        Main.socket.on("syncSession", (c, data) -> {
+        Main.socket.on("updateSession", (c, data) -> {
             Main.session = (Session) data;
-            System.out.println(Main.session);
+            System.out.println(data);
+        });
+        Main.socket.on("logout", (c, data) -> {
+            Main.session = null;
+            this.dispose();
+            new LoginGUI();
         });
         this.setUndecorated(true);
         initComponents();
@@ -36,13 +41,11 @@ public class MainGUI extends JFrame {
         label7.setText(Main.session.getUsingByAccount() == null ? "USER" : Main.session.getUsingByAccount().getUsername());
         label7.putClientProperty("FlatLaf.styleClass", "h2");
         label8.setIcon(Helper.getIcon("/icons/supportbanner.png", 300, 180));
-        AtomicInteger sec = new AtomicInteger();
         Timer timer = new Timer(1000, e -> {
-            sec.getAndIncrement();
             if (textField2.getText().contains(":")) {
-                textField2.setText(Helper.toHHMM(sec.get(), false));
+                textField2.setText(Helper.toHHMM(Main.session.getUsedTime(), false));
             } else {
-                textField2.setText(Helper.toHHMM(sec.get(), true));
+                textField2.setText(Helper.toHHMM(Main.session.getUsedTime(), true));
             }
         });
         timer.start();

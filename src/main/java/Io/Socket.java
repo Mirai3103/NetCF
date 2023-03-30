@@ -59,7 +59,7 @@ public class Socket  implements Serializable {
     public void emit(String eventType, Serializable arg){
         try {
             out.writeObject(EventArg.builder().eventType(eventType).arg(arg).build());
-            System.out.println("Sent");
+            System.out.println("Sent: " + arg+ " to " + this.machineId);
         } catch (IOException e) {
             e.printStackTrace();
         }

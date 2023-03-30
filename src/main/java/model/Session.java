@@ -20,6 +20,22 @@ public class Session implements java.io.Serializable {
     @Serial
     private static final long serialVersionUID = 432430624324L;
 
+    public Session(Session session){
+        this.id = session.id;
+        this.totalTime = session.totalTime;
+        this.usedTime = session.usedTime;
+        this.usedCost = session.usedCost;
+        this.serviceCost = session.serviceCost;
+        this.startTime = session.startTime;
+        this.prepaidAmount = session.prepaidAmount;
+        this.usingBy = session.usingBy;
+        this.usingByAccount = session.usingByAccount;
+        this.computerID = session.computerID;
+        this.usingComputer = session.usingComputer;
+        System.out.println(this);
+
+    }
+
     private Integer id;
 
     private int totalTime=0; // seconds
