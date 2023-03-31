@@ -43,7 +43,10 @@ public class ConnectionFactory {
                     if (field.getName().equals("serialVersionUID")) {
                         continue;
                     }
-                    Method setMethod = clazz.getMethod(setMethodName, field.getType().isEnum()?Integer.class:field.getType());
+                    var type =field.getType().isEnum()?Integer.class:field.getType();
+                    type = type == float.class  ? double.class : type;
+                    type = type == java.sql.Time.class ? java.sql.Date.class : type;
+                    Method setMethod = clazz.getMethod(setMethodName,type );
 
                    try {
                        var value = resultSet.getObject(field.getName());

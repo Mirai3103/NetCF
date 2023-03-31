@@ -51,7 +51,7 @@ public class Invoice {
     private Integer computerId = null;
     private Computer createdToComputer;
 
-    private Double total = 0.0;
+    private double total = 0.0f;
     private Date createdAt = new Date();
    
     private Status status = Status.WAITING_FOR_ACCEPT;

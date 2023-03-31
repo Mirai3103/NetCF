@@ -57,7 +57,7 @@ public class Computer implements Serializable {
 
 
     private String name;
-    private float price; // giá tiền trên 1 giờ
+    private double price; // giá tiền trên 1 giờ
     private ComputerType type;
     private ComputerStatus status = ComputerStatus.OFF;
     private Date createdAt = new Date();

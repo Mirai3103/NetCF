@@ -14,12 +14,12 @@ public class SessionDAOImpl extends BaseDAO implements ISessionDAO {
         var preparedStatement = this.prepareStatement("INSERT INTO session (computerID, usingBy, startTime, totalTime, usedTime, usedCost, serviceCost, prepaidAmount) VALUES (?, ?, ?, ?, ?, ?, ?, ?)", Statement.RETURN_GENERATED_KEYS);
         preparedStatement.setInt(1, session.getComputerID());
         preparedStatement.setInt(2, session.getUsingBy());
-        preparedStatement.setDate(3, new java.sql.Date(session.getStartTime().getTime()));
+        preparedStatement.setTime(3, new java.sql.Time(session.getStartTime().getTime()));
         preparedStatement.setInt(4, session.getTotalTime());
         preparedStatement.setInt(5, session.getUsedTime());
         preparedStatement.setInt(6, session.getUsedCost());
         preparedStatement.setInt(7, session.getServiceCost());
-        preparedStatement.setInt(8, session.getPrepaidAmount());
+        preparedStatement.setDouble(8, session.getPrepaidAmount());
         preparedStatement.executeUpdate();
         var resultSet = preparedStatement.getGeneratedKeys();
         if (resultSet.next()) {
@@ -34,12 +34,12 @@ public class SessionDAOImpl extends BaseDAO implements ISessionDAO {
        var preparedStatement = this.prepareStatement("UPDATE session SET computerID = ?, usingBy = ?, startTime = ?, totalTime = ?, usedTime = ?, usedCost = ?, serviceCost = ?, prepaidAmount = ? WHERE id = ?");
         preparedStatement.setInt(1, session.getComputerID());
         preparedStatement.setInt(2, session.getUsingBy());
-        preparedStatement.setDate(3, new java.sql.Date(session.getStartTime().getTime()));
+        preparedStatement.setTimestamp(3, new java.sql.Timestamp(session.getStartTime().getTime()));
         preparedStatement.setInt(4, session.getTotalTime());
         preparedStatement.setInt(5, session.getUsedTime());
         preparedStatement.setInt(6, session.getUsedCost());
         preparedStatement.setInt(7, session.getServiceCost());
-        preparedStatement.setInt(8, session.getPrepaidAmount());
+        preparedStatement.setDouble(8, session.getPrepaidAmount());
         preparedStatement.setInt(9, session.getId());
         preparedStatement.executeUpdate();
         return session;

@@ -30,17 +30,28 @@ public class SocketController {
 
             LoginPayload loginPayload = (LoginPayload) data;
             var account = accountService.login(loginPayload.getUsername(), loginPayload.getPassword());
-            System.out.println(data);
+
+            if (sessionService.checkIfSessionExist(client.getMachineId())){
+                server.emit("errorMessage", "Lỗi máy tính");
+                return;
+            }
             if (account != null) {
+                if (sessionService.checkIfSessionExist(account)) {
+                    server.emit("errorMessage", "Tài khoản của bạn đang được sử dụng ở máy khác");
+                    return;
+                }
+                if (account.getBalance() <= 100) {
+                    server.emit("errorMessage", "Tài khoản của bạn không đủ tiền");
+                    return;
+                }
                 var session=   sessionService.createSession(account, client.getMachineId());
+
                 server.emit("loginSuccess", session);
                 Interval.setInterval(
                         (cleanUp) -> {
                             try {
-                                session.setUsedTime(session.getUsedTime() +60);
                                 try {
-                                    client.emit("updateSession",  new Session(sessionService.update(session)));
-
+                                    client.emit("updateSession",  new Session(sessionService.increaseUsedTime(session)));
                                 }catch (RuntimeException e){
                                    if (e.getMessage().equals("Time out")){
                                        client.emit("timeOut",null);
@@ -53,7 +64,7 @@ public class SocketController {
                                 e.printStackTrace();
                             }
                         },
-                        60 * 1000
+                        10 * 1000
                 );
             } else {
                 server.emit("errorMessage", "Sai tên đăng nhập hoặc mật khẩu");

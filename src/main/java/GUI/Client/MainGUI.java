@@ -6,6 +6,7 @@ package GUI.Client;
 
 import javax.swing.border.*;
 
+import Utils.Fonts;
 import Utils.Helper;
 import com.formdev.flatlaf.ui.*;
 import com.formdev.flatlaf.ui.FlatDropShadowBorder;
@@ -23,14 +24,12 @@ public class MainGUI extends JFrame {
     public MainGUI() {
         Main.socket.on("updateSession", (c, data) -> {
             Main.session = (Session) data;
-            System.out.println(data);
+            var remainingMoney = Main.session.getPrepaidAmount();
+          var  remainingMoneyWithTwoDecimalPlaces = Math.round(remainingMoney * 100.0) / 100.0;
+            this.textField6.setText(remainingMoneyWithTwoDecimalPlaces+"");
+            this.textField3.setText(Helper.toHHMM(Main.session.getTotalTime() - Main.session.getUsedTime(), true));
         });
-        Main.socket.on("timeOut", (c, data) -> {
-            Main.session = null;
-            this.dispose();
-           var loginUI= new LoginGUI();
-            JOptionPane.showMessageDialog(loginUI, "Hết giờ rồi", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
-        });
+
         this.setUndecorated(true);
         initComponents();
         this.setSize(350, 750);
@@ -50,9 +49,37 @@ public class MainGUI extends JFrame {
             }
         });
         timer.start();
+        Main.socket.on("timeOut", (c, data) -> {
+            timer.stop();
+            Main.session = null;
+
+            this.dispose();
+            var loginUI= new LoginGUI();
+            JOptionPane.showMessageDialog(loginUI, "Hết giờ rồi", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
+            this.onCleanUp();
+        });
+        Main.socket.on("forceLock", (c, data) -> {
+            timer.stop();
+            Main.session = null;
+            this.dispose();
+            var loginUI= new LoginGUI();
+            JOptionPane.showMessageDialog(loginUI, "Máy đã khoá! ", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
+            this.onCleanUp();
+        });
+        this.textField1.setText(Helper.toHHMM(Main.session.getTotalTime(), true));
+        this.textField6.setText(Main.session.getPrepaidAmount()+"");
+
+        textField6.setFont(Fonts.getFont(Font.PLAIN, 13));
+        this.textField3.setText(Helper.toHHMM(Main.session.getTotalTime() - Main.session.getUsedTime(), true));
+
 
     }
+    public void onCleanUp() {
+        Main.socket.removeAllListeners("timeOut");
+        Main.socket.removeAllListeners("updateSession");
+        Main.socket.removeAllListeners("forceLock");
 
+    }
     private void initComponents() {
         panel14 = new JPanel();
         label8 = new JLabel();
@@ -250,7 +277,7 @@ public class MainGUI extends JFrame {
 
                         //---- textField6 ----
                         textField6.setMinimumSize(new Dimension(60, 22));
-                        textField6.setPreferredSize(new Dimension(70, 22));
+                        textField6.setPreferredSize(new Dimension(80, 22));
                         textField6.setFocusable(false);
                         textField6.setText("00:00");
                         panel8.add(textField6);

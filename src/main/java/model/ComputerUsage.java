@@ -25,5 +25,5 @@ public class ComputerUsage {
 
     private Date createdAt;
     private Date endAt;
-    private float totalMoney;
+    private double totalMoney;
 }

@@ -22,6 +22,6 @@ public class InvoiceDetail {
 
     private Product product;
 
-    private float price; //gia ban//gia nhap
+    private double price; //gia ban//gia nhap
     private int quantity;
 }

@@ -61,6 +61,9 @@ public class Helper {
         return new ImageIcon(Objects.requireNonNull(Helper.class.getResource(path)));
     }
     public static String toHHMM(int seconds, boolean withColon) {
+        if (seconds < 0) {
+            return "+ ∞";
+        }
         int hours = seconds / 3600;
         int minutes = (seconds % 3600) / 60;
             return String.format("%02d%s%02d", hours, withColon ? ":" : " ", minutes);

@@ -13,7 +13,7 @@ public class ComputerDAOImpl extends BaseDAO implements IComputerDAO{
     public Computer create(Computer computer) throws SQLException {
         var preparedStatement = this.prepareStatement("INSERT INTO computer (name, price, type, createdAt, deletedAt) VALUES (?, ?, ?, ?, ?)", Statement.RETURN_GENERATED_KEYS);
         preparedStatement.setString(1, computer.getName());
-        preparedStatement.setFloat(2, computer.getPrice());
+        preparedStatement.setDouble(2, computer.getPrice());
         preparedStatement.setInt(3, computer.getType().ordinal());
         preparedStatement.setDate(4, new java.sql.Date(computer.getCreatedAt().getTime()));
         preparedStatement.setDate(5, null);
@@ -29,7 +29,7 @@ public class ComputerDAOImpl extends BaseDAO implements IComputerDAO{
     public Computer update(Computer computer) throws SQLException {
          var preparedStatement = this.prepareStatement("UPDATE computer SET name = ?, price = ?, type = ?, createdAt = ?, deletedAt = ? WHERE id = ?");
         preparedStatement.setString(1, computer.getName());
-        preparedStatement.setFloat(2, computer.getPrice());
+        preparedStatement.setDouble(2, computer.getPrice());
         preparedStatement.setInt(3, computer.getType().ordinal());
         preparedStatement.setDate(4, new java.sql.Date(computer.getCreatedAt().getTime()));
         preparedStatement.setDate(5, null);

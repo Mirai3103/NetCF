@@ -15,9 +15,9 @@ public class ComputerUsageImpl extends BaseDAO implements IComputerUsageDAO {
         preparedStatement.setInt(1, computerUsage.getUsedByAccountId());
         preparedStatement.setInt(2, computerUsage.getComputerID());
         preparedStatement.setBoolean(3, computerUsage.isEmployeeUsing());
-        preparedStatement.setDate(4, new java.sql.Date(computerUsage.getCreatedAt().getTime()));
-        preparedStatement.setDate(5, new java.sql.Date(computerUsage.getEndAt().getTime()));
-        preparedStatement.setFloat(6, computerUsage.getTotalMoney());
+        preparedStatement.setTimestamp(4, new java.sql.Timestamp(computerUsage.getCreatedAt().getTime()));
+        preparedStatement.setTimestamp(5, new java.sql.Timestamp(computerUsage.getEndAt().getTime()));
+        preparedStatement.setDouble(6, computerUsage.getTotalMoney());
         preparedStatement.executeUpdate();
         var resultSet = preparedStatement.getGeneratedKeys();
         if (resultSet.next()) {
@@ -32,9 +32,9 @@ public class ComputerUsageImpl extends BaseDAO implements IComputerUsageDAO {
         preparedStatement.setInt(1, computerUsage.getUsedByAccountId());
         preparedStatement.setInt(2, computerUsage.getComputerID());
         preparedStatement.setBoolean(3, computerUsage.isEmployeeUsing());
-        preparedStatement.setDate(4, new java.sql.Date(computerUsage.getCreatedAt().getTime()));
-        preparedStatement.setDate(5, new java.sql.Date(computerUsage.getEndAt().getTime()));
-        preparedStatement.setFloat(6, computerUsage.getTotalMoney());
+        preparedStatement.setTime(4, new java.sql.Time(computerUsage.getCreatedAt().getTime()));
+        preparedStatement.setTime(5, new java.sql.Time(computerUsage.getEndAt().getTime()));
+        preparedStatement.setDouble(6, computerUsage.getTotalMoney());
         preparedStatement.setInt(7, computerUsage.getId());
         preparedStatement.executeUpdate();
         return computerUsage;

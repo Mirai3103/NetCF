@@ -50,7 +50,7 @@ public class Session implements java.io.Serializable {
 
     private Date startTime = new Date();
 
-    private int prepaidAmount = 0; // VND
+    private double prepaidAmount = 0; // VND
     private Integer usingBy = null;
     private Account usingByAccount;
 
