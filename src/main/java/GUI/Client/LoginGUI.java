@@ -1,6 +1,7 @@
 package GUI.Client;
 
 import GUI.Components.ImagePanel;
+import GUI.Components.Input;
 import GUI.Server.MainUI;
 import Payload.LoginPayload;
 import Utils.Fonts;
@@ -35,7 +36,7 @@ public class LoginGUI extends JFrame {
         ImagePanel backgroundPanel = new ImagePanel();
         //get screen size
         Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
-        backgroundPanel.setImage(Helper.getIcon("/images/banner.png").getImage());
+        backgroundPanel.setImage(Helper.getIcon("/images/gtaV.jpg").getImage());
 
 //       JPanel backgroundPanel = new JPanel();
 
@@ -92,7 +93,7 @@ public class LoginGUI extends JFrame {
         usernamePanel.setPreferredSize(new Dimension(width-10,35));
         usernamePanel.setBackground(bg);
 
-        JTextField txtUsername = new JTextField();
+        Input txtUsername = new Input("Username");
         txtUsername.setFont(Fonts.getFont(Font.PLAIN,15));
 //        txtUsername.setBorder(new EmptyBorder(0,5,0,0));
         txtUsername.setBackground(bg);
@@ -164,7 +165,6 @@ public class LoginGUI extends JFrame {
         backgroundPanel.add(loginPanel);
         // end
         this.add(backgroundPanel);
-//        jFrame.pack();
         this.setUndecorated(true);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setVisible(true);

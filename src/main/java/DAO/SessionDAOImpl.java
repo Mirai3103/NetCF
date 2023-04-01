@@ -83,4 +83,9 @@ public class SessionDAOImpl extends BaseDAO implements ISessionDAO {
         return null;
 
     }
+
+    @Override
+    public Session findByAccountId(int accountId) throws SQLException {
+        return null;
+    }
 }

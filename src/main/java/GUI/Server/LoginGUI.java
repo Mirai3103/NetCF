@@ -1,6 +1,8 @@
 package GUI.Server;
 
 import GUI.Components.ImagePanel;
+import GUI.Components.Input;
+import Utils.Fonts;
 import Utils.Helper;
 import model.Account;
 import service.AccountService;
@@ -30,9 +32,7 @@ public class LoginGUI {
         jFrame.setSize(screenSize.width, screenSize.height);
 
         ImagePanel backgroundPanel = new ImagePanel();
-        backgroundPanel.setImage(getImage("https://static0.gamerantimages.com/wordpress/wp-content/uploads/2022/06/Riot-Games-Xbox-Game-Pass.jpg",-1,-1).getImage());
-
-//       JPanel backgroundPanel = new JPanel();
+        backgroundPanel.setImage(getImage("D:\\WorkSpace\\NetCF\\src\\main\\resources\\images\\gtaV.jpg",-1,-1).getImage());
 
         var layout = new FlowLayout();
         layout.setAlignment(FlowLayout.CENTER);
@@ -88,14 +88,15 @@ public class LoginGUI {
         usernamePanel.setPreferredSize(new Dimension(width-10,35));
         usernamePanel.setBackground(new Color(255,255,255,255));
 
-        JTextField txtUsername = new JTextField();
-        txtUsername.setFont(new Font("Times New Roman", Font.PLAIN, 15));
+        Input txtUsername = new Input("Username");
+        txtUsername.setFont(Fonts.getFont(Font.BOLD,15));
         txtUsername.setBorder(new EmptyBorder(0,5,0,0));
         txtUsername.setBackground(new Color(255,255,255,255));
-        txtUsername.setPreferredSize(new Dimension(width-50,20));
+        txtUsername.setPreferredSize(new Dimension(width-50,18));
         usernamePanel.add(txtUsername);
         loginPanel.add(usernamePanel);
         // end
+
 
         // password
         // start
@@ -123,7 +124,6 @@ public class LoginGUI {
 
         // button
         // start
-
         JPanel buttonPanel = new JPanel();
         buttonPanel.setLayout(centerLayout);
         buttonPanel.setPreferredSize(new Dimension(width-10,70));
@@ -155,15 +155,15 @@ public class LoginGUI {
         // end
         jFrame.add(backgroundPanel);
 //        jFrame.pack();
-        jFrame.setUndecorated(true);
+        jFrame.setUndecorated(true); //
         jFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         jFrame.setVisible(true);
     }
 
     public static ImageIcon getImage(String path, int width, int height) {
         try {
-            Image image = ImageIO.read(new URL(path));
-//            Image image = ImageIO.read(new File(path));
+//            Image image = ImageIO.read(new URL(path));
+            Image image = ImageIO.read(new File(path));
             if (width == -1 || height == -1) {
                 return new ImageIcon(image);
             }

@@ -10,6 +10,6 @@ public interface IDAO<T, ID> {
     T update(T t) throws SQLException ;
     boolean delete(ID id) throws SQLException ;
     T findById(ID id)throws SQLException ;
-    List<T> findAll()throws SQLException ;
+    List<T> findAll()throws SQLException;
 }
 
