@@ -68,6 +68,15 @@ public class MainGUI extends JFrame {
             JOptionPane.showMessageDialog(loginUI, "Máy đã khoá! ", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
             this.onCleanUp();
         });
+        button2.addActionListener(e->{
+            Main.socket.emit("logout",null);
+            Main.socket.emit("statusChange",null);
+
+            this.dispose();
+            var loginUI= new LoginGUI();
+            loginUI.setVisible(true);
+            this.onCleanUp();
+        });
         this.textField1.setText(Helper.toHHMM(Main.session.getTotalTime(), true));
         this.textField6.setText(Main.session.getPrepaidAmount()+"");
 
@@ -348,6 +357,7 @@ public class MainGUI extends JFrame {
             button2.setIcon(new ImageIcon(getClass().getResource("/icons/logout.png")));
             button2.setBackground(new Color(0x00ffffff, true));
             panel13.add(button2);
+
 
             //---- button3 ----
             button3.setText("M\u1eadt kh\u1ea9u");

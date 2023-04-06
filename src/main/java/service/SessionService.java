@@ -2,6 +2,7 @@ package service;
 
 import DAO.Interface.ISessionDAO;
 import Io.Server;
+import Io.Socket;
 import Utils.Interval;
 import lombok.Setter;
 import model.Account;
@@ -80,10 +81,38 @@ public class SessionService {
                 throw new RuntimeException("Machine not found");
             }
             session.setUsingComputer(machine);
-            return sessionDAO.create(session);
+            var newSession =sessionDAO.create(session);
+            var client=  Server.getInstance().getClients().stream().filter(c->c.getMachineId()==machineId).findFirst().orElseThrow();
+            client.emit("openNewSession",newSession);
+          var intervalId=  startSession(newSession,client);
+          client.setIntervalId(intervalId);
+            return newSession;
         } catch (SQLException e) {
             return null;
         }
+    }
+    public int startSession(Session session, Socket client) {
+      return  Interval.setInterval(
+                (cleanUp) -> {
+
+                    try {
+                        try {
+                            client.emit("updateSession",  new Session(this.increaseUsedTime(session)));
+                        }catch (RuntimeException e){
+                            e.printStackTrace();
+                            if (e.getMessage().equals("Time out")){
+                                client.emit("timeOut",null);
+                                cleanUp.run();
+                                return;  // stop interval
+                            }
+                        }
+
+                    } catch (SQLException e) {
+                        e.printStackTrace();
+                    }
+                },
+                10 * 1000
+        );
     }
 
     public Session createSession(int prePaidAmount, int machineId) { // loại trả trước
@@ -110,33 +139,14 @@ public class SessionService {
             var newSession = sessionDAO.create(session);
            var client=  Server.getInstance().getClients().stream().filter(c->c.getMachineId()==machineId).findFirst().orElseThrow();
            client.emit("openNewSession",newSession);
-            Interval.setInterval(
-                    (cleanUp) -> {
-
-                        try {
-                            try {
-                                client.emit("updateSession",  new Session(this.increaseUsedTime(newSession)));
-                            }catch (RuntimeException e){
-                                e.printStackTrace();
-                                if (e.getMessage().equals("Time out")){
-                                    client.emit("timeOut",null);
-                                    cleanUp.run();
-                                    return;  // stop interval
-                                }
-                            }
-
-                        } catch (SQLException e) {
-                            e.printStackTrace();
-                        }
-                    },
-                    10 * 1000
-            );
+       client.setIntervalId( startSession(newSession,client));
 
             return newSession;
         } catch (SQLException e) {
             return null;
         }
     }
+
 
     public Session increaseUsedTime(Session session) throws SQLException {
         session.setUsedTime(session.getUsedTime() + GAP);
@@ -153,7 +163,16 @@ public class SessionService {
     public Session update(Session session) throws SQLException {
         return sessionDAO.update(session);
     }
-
+    public void closeSession(int machineId) throws SQLException {
+        var session = sessionDAO.findByComputerId(machineId);
+        if (session == null) {
+            throw new RuntimeException("Session not found");
+        }
+        var client = Server.getInstance().getClients().stream().filter(c -> c.getMachineId() == machineId).findFirst().orElseThrow();
+        Interval.clearInterval(client.getIntervalId());
+        handleTimeOut(session);
+        client.emit("timeOut",null);
+    }
     private void handleTimeOut(Session session) throws SQLException {
         // toDo: create computerUsage
         var computerUsage = ComputerUsage.builder()

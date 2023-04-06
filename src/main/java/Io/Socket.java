@@ -25,6 +25,8 @@ public class Socket  implements Serializable {
     private Thread listenThread;
     private  int machineId;
 
+    private Integer intervalId;
+
     public Socket(java.net.Socket socket) throws IOException {
         this.socket = socket;
         listen();
