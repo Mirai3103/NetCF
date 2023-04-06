@@ -22,7 +22,9 @@ import javax.swing.*;
  */
 public class MainGUI extends JFrame {
     public MainGUI() {
+        Main.socket.emit("statusChange",null);
         Main.socket.on("updateSession", (c, data) -> {
+            Main.socket.emit("statusChange",null);
             Main.session = (Session) data;
             var remainingMoney = Main.session.getPrepaidAmount();
           var  remainingMoneyWithTwoDecimalPlaces = Math.round(remainingMoney * 100.0) / 100.0;
@@ -38,7 +40,7 @@ public class MainGUI extends JFrame {
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         FlatDropShadowBorder shadow = new FlatDropShadowBorder();
         panel2.setBorder(BorderFactory.createEmptyBorder(10, 50, 10, 50));
-        label7.setText(Main.session.getUsingByAccount() == null ? "USER" : Main.session.getUsingByAccount().getUsername());
+        label7.setText(Main.session.getUsingByAccount() == null ? "KHÁCH VÃNG LAI" : Main.session.getUsingByAccount().getUsername());
         label7.putClientProperty("FlatLaf.styleClass", "h2");
         label8.setIcon(Helper.getIcon("/icons/supportbanner.png", 300, 180));
         Timer timer = new Timer(1000, e -> {

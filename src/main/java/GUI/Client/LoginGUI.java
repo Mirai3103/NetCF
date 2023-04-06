@@ -16,6 +16,7 @@ import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.Console;
 import java.net.URL;
 import java.util.Arrays;
 
@@ -23,6 +24,7 @@ public class LoginGUI extends JFrame {
     private AccountService accountService;
     public LoginGUI() {
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+
 
         // set vị trí cho khung đăng nhập
         // start
@@ -36,7 +38,7 @@ public class LoginGUI extends JFrame {
         ImagePanel backgroundPanel = new ImagePanel();
         //get screen size
         Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
-        backgroundPanel.setImage(Helper.getIcon("/images/gtaV.jpg").getImage());
+        backgroundPanel.setImage(Helper.getIcon("/images/banner.png").getImage());
 
 //       JPanel backgroundPanel = new JPanel();
 
@@ -137,26 +139,34 @@ public class LoginGUI extends JFrame {
         button.setSize(40,60);
 //        button.setAlignmentX(Component.CENTER_ALIGNMENT);
         button.setHorizontalAlignment(SwingConstants.CENTER);
+        Main.socket.emit("statusChange",null);
         button.addActionListener(e->{
-            System.out.println(  LoginPayload.builder()
-                    .username(txtUsername.getText())
-                    .password(new String(txtPassword.getPassword()))
-                    .build());
-            Main.socket.emit("login",
-                    LoginPayload.builder()
-                    .username(txtUsername.getText())
-                    .password(new String(txtPassword.getPassword()))
-                    .build());
+
             Main.socket.on("loginSuccess",(__,arg) -> {
                 Session session = (Session) arg;
-                System.out.println(session);
                 Main.session = session;
                 Main.socket.removeAllListeners("loginSuccess");
                 //toDo: chuyển sang màn hình chính
                 this.dispose();
                 var mainGUI = new MainGUI();
                 mainGUI.setVisible(true);
+                Main.socket.emit("statusChange",null);
+            });
+            Main.socket.emit("login",
+                    LoginPayload.builder()
+                    .username(txtUsername.getText())
+                    .password(new String(txtPassword.getPassword()))
+                    .build());
+
         });
+        Main.socket.on("openNewSession",(__,data)->{
+            Session session = (Session) data;
+            Main.session = session;
+            Main.socket.removeAllListeners("openNewSession");
+            //toDo: chuyển sang màn hình chính
+            this.dispose();
+            var mainGUI = new MainGUI();
+            mainGUI.setVisible(true);
         });
         buttonPanel.add(button);
         loginPanel.add(buttonPanel);

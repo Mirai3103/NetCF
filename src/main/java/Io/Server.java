@@ -48,7 +48,6 @@ public class Server extends ServerSocket {
     }
 
     public void on(String eventType, Callback callback) {
-        System.out.println("Registering event " + eventType + " for server");
         if (eventType.equals("onConnection")) {
             onConnection.add(callback);
             return;
@@ -76,7 +75,6 @@ public class Server extends ServerSocket {
             while (true) {
                 try {
                     Io.Socket client = new Io.Socket(accept());
-                    System.out.println("New client connected "+onConnection.size());
                     clients.add(client);
                     client.on("identify", (t, arg) -> {
                         client.setMachineId((int) arg);
@@ -90,7 +88,6 @@ public class Server extends ServerSocket {
                     for (String eventType : eventHandlers.keySet()) {
                         for (Callback callback : eventHandlers.get(eventType)) {
                             client.on(eventType, callback);
-                            System.out.println("Added listener " + eventType);
                         }
                     }
                     for (Callback callback : onDisconnection) {

@@ -50,7 +50,6 @@ public class AccountGUI extends JPanel {
             @Override
             public void keyReleased(KeyEvent e) {
                 String keyword = searchTextField.getText();
-                System.out.println(keyword);
                 if (keyword.trim().equals("")) filteredAccounts = accounts.stream().map(account -> account).toList();
                 filteredAccounts = accounts.stream().filter(account -> account.getUsername().contains(keyword) || (account.getId() + "").contains(keyword)).toList();
                 renderTableData();
@@ -159,7 +158,6 @@ public class AccountGUI extends JPanel {
                 } catch (SQLException ex) {
                     throw new RuntimeException(ex);
                 }
-                System.out.println("Xóa tài khoản có id: " + id);
                 reloadTableData();
             }
         });

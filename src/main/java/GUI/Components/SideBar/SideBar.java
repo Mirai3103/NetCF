@@ -54,7 +54,6 @@ public class SideBar {
     }
     public void initEvent(){
         items.forEach(item -> {
-            System.out.println(item.getParent().getMinimumSize().width);
             item.getParent().addActionListener(e -> {
                 items.forEach(NavItemElement::closeCollapse);
                 if (!item.getParent().isSelected()) {

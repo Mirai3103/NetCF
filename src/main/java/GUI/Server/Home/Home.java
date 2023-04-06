@@ -12,6 +12,7 @@ import Utils.Helper;
 import Utils.ServiceProvider;
 import model.Computer;
 import service.ComputerService;
+import service.SessionService;
 
 import java.awt.*;
 import java.sql.SQLException;
@@ -25,10 +26,11 @@ public class Home extends JPanel {
     private List<JButton> computerButtons;
     private List<Computer> computers;
     private final ComputerService computerService;
+    private  final SessionService sessionService;
     public Home()  {
         initComponents();
         computerService= ServiceProvider.getInstance().getService(ComputerService.class);
-
+        sessionService = ServiceProvider.getInstance().getService(SessionService.class);
         try {
             computers = computerService.getAllComputers();
         } catch (SQLException e) {
@@ -40,17 +42,10 @@ public class Home extends JPanel {
     }
 
     private void registerListener() {
-        Server.getInstance().on("identify" , (__,___)->{
-            System.out.println("ok ne");
+        Server.getInstance().on("statusChange" , (__,___)->{
                 fetchComputers();
         });
         Server.getInstance().on("onDisconnection" , (__,___)->{
-            fetchComputers();
-        });
-        Server.getInstance().on("login" , (__,___)->{
-            fetchComputers();
-        });
-        Server.getInstance().on("updateSession" , (__,___)->{
             fetchComputers();
         });
     }
@@ -101,7 +96,17 @@ public class Home extends JPanel {
                 popupMenu.add(xemThongTinNgDung);
                 popupMenu.addSeparator();
                 popupMenu.add(napTien);
-
+                moMayTraTruoc.addActionListener(e->{
+                    var result = JOptionPane.showInputDialog(this,"Nhập số tiền trả trước");
+                    try {
+                        int prePaid = Integer.parseInt(result);
+                        if (prePaid <=1000) throw  new RuntimeException();
+                        sessionService.createSession(prePaid,computer.getId());
+                    }catch (Exception ex){
+                        ex.printStackTrace();
+                        JOptionPane.showMessageDialog(this,"Số tiền không hợp lệ");
+                    }
+                });
 
                 JButton button=new JButton();
                 button.setComponentPopupMenu(popupMenu);

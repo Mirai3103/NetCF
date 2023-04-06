@@ -58,7 +58,8 @@ public class Helper {
         return new ImageIcon(newimg);
     }
     public static ImageIcon getIcon(String path) {
-        return new ImageIcon(Objects.requireNonNull(Helper.class.getResource(path)));
+        var a =Helper.class.getResource(path);
+        return new ImageIcon(Objects.requireNonNull(a));
     }
     public static String toHHMM(int seconds, boolean withColon) {
         if (seconds < 0) {

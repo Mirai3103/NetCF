@@ -54,7 +54,6 @@ public class AccountDetailGUI extends JDialog {
         this.account.setPassword(textField3.getText());
         this.account.setRole(((Account.Role) roleComboBox.getSelectedItem()).ordinal());
         this.account.setBalance(Double.parseDouble(textField4.getText()));
-        System.out.println(this.account);
         return true;
     }
     private int status = JOptionPane.CANCEL_OPTION;
@@ -119,7 +118,6 @@ public class AccountDetailGUI extends JDialog {
             }
         }
         roleComboBox.addItemListener(e->{
-            System.out.println(e.getItem());
         });
     }
 

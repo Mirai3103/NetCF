@@ -32,7 +32,6 @@ public class Session implements java.io.Serializable {
         this.usingByAccount = session.usingByAccount;
         this.computerID = session.computerID;
         this.usingComputer = session.usingComputer;
-        System.out.println(this);
 
     }
 

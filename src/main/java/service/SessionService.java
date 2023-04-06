@@ -1,6 +1,8 @@
 package service;
 
 import DAO.Interface.ISessionDAO;
+import Io.Server;
+import Utils.Interval;
 import lombok.Setter;
 import model.Account;
 import model.ComputerUsage;
@@ -19,14 +21,16 @@ public class SessionService {
     @Setter
     private ComputerService computerService;
 
-    public boolean checkIfSessionExist( Integer machineId) throws SQLException {
+    public boolean checkIfSessionExist(Integer machineId) throws SQLException {
         var session = sessionDAO.findByComputerId(machineId);
         return session != null;
     }
+
     public boolean checkIfSessionExist(Account account) throws SQLException {
         var session = sessionDAO.findByAccountId(account.getId());
         return session != null;
     }
+
     public Session createSession(Account account, Integer machineId) {
 
         var session = Session.builder()
@@ -47,10 +51,9 @@ public class SessionService {
             }
             var cost = machine.getPrice(); // per hour
             // totalTime in seconds
-            int totalTime = (int)((account.getBalance()*1.0f / cost) * 3600);
+            int totalTime = (int) ((account.getBalance() * 1.0f / cost) * 3600);
             session.setTotalTime(totalTime);
             session.setUsingComputer(machine);
-            System.out.println("Total time: " + totalTime+" "+account.getBalance()+" " + cost);
             return sessionDAO.create(session);
         } catch (SQLException e) {
             return null;
@@ -58,6 +61,7 @@ public class SessionService {
     }
 
     private static final int GAP = 60;//1 minute
+
     public Session createSession(int machineId) { // loại trả sau
         var session = Session.builder()
                 .serviceCost(0)
@@ -81,7 +85,8 @@ public class SessionService {
             return null;
         }
     }
-    public Session createSession(int prePaidAmount, int machineId){ // loại trả trước
+
+    public Session createSession(int prePaidAmount, int machineId) { // loại trả trước
         var session = Session.builder()
                 .serviceCost(0)
                 .usedCost(0)
@@ -99,11 +104,35 @@ public class SessionService {
             }
             var cost = machine.getPrice(); // per hour
             // totalTime in seconds
-            int totalTime = (int)((prePaidAmount*1.0f / cost) * 3600);
+            int totalTime = (int) ((prePaidAmount * 1.0f / cost) * 3600);
             session.setTotalTime(totalTime);
             session.setUsingComputer(machine);
-            System.out.println("Total time: " + totalTime+" "+prePaidAmount+" " + cost);
-            return sessionDAO.create(session);
+            var newSession = sessionDAO.create(session);
+           var client=  Server.getInstance().getClients().stream().filter(c->c.getMachineId()==machineId).findFirst().orElseThrow();
+           client.emit("openNewSession",newSession);
+            Interval.setInterval(
+                    (cleanUp) -> {
+
+                        try {
+                            try {
+                                client.emit("updateSession",  new Session(this.increaseUsedTime(newSession)));
+                            }catch (RuntimeException e){
+                                e.printStackTrace();
+                                if (e.getMessage().equals("Time out")){
+                                    client.emit("timeOut",null);
+                                    cleanUp.run();
+                                    return;  // stop interval
+                                }
+                            }
+
+                        } catch (SQLException e) {
+                            e.printStackTrace();
+                        }
+                    },
+                    10 * 1000
+            );
+
+            return newSession;
         } catch (SQLException e) {
             return null;
         }
@@ -118,12 +147,13 @@ public class SessionService {
             handleTimeOut(session);
             throw new RuntimeException("Time out");
         }
-       return this.update(session);
+        return this.update(session);
     }
 
     public Session update(Session session) throws SQLException {
         return sessionDAO.update(session);
     }
+
     private void handleTimeOut(Session session) throws SQLException {
         // toDo: create computerUsage
         var computerUsage = ComputerUsage.builder()
@@ -134,19 +164,17 @@ public class SessionService {
                 .usedByAccountId(session.getUsingBy())
                 .build();
 
-        if(!computerUsage.isEmployeeUsing()){
+        if (!computerUsage.isEmployeeUsing()) {
             var machine = computerService.getComputerById(session.getComputerID());
             if (machine == null) {
                 throw new RuntimeException("Machine not found");
             }
             var cost = machine.getPrice();
             var usedTime = session.getUsedTime(); // in seconds
-            double usedTimeInHour = usedTime*1.0 / 3600;
-            var price =Math.round(usedTimeInHour * cost);
-            System.out.println("Used time: " + usedTimeInHour + " " + cost + " " + price);
+            double usedTimeInHour = usedTime * 1.0 / 3600;
+            var price = Math.round(usedTimeInHour * cost);
             computerUsage.setTotalMoney(price);
         }
-        System.out.println(computerUsage);
         computerUsageService.create(computerUsage);
         if (session.getUsingByAccount() != null) {
             var account = session.getUsingByAccount();

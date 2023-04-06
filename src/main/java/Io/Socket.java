@@ -52,7 +52,6 @@ public class Socket  implements Serializable {
         }
     }
     public void removeAllListeners(String eventType) {
-        System.out.println("Removing all listeners for " + eventType);
         if (eventHandlers.containsKey(eventType)) {
             eventHandlers.get(eventType).clear();
         }
@@ -60,7 +59,6 @@ public class Socket  implements Serializable {
     public void emit(String eventType, Serializable arg){
         try {
             out.writeObject(EventArg.builder().eventType(eventType).arg(arg).build());
-            System.out.println("Sent: " + arg+ " to " + this.machineId);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -87,7 +85,6 @@ public class Socket  implements Serializable {
                     }
 
             }
-            System.out.println(this.machineId + " disconnected");
            if (eventHandlers.containsKey("onDisconnection")) {
                for (Callback callback : eventHandlers.get("onDisconnection")) {
                    callback.invoke(this,null);

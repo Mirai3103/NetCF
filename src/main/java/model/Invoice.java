@@ -63,7 +63,6 @@ public class Invoice {
     private InvoiceType type;
     private Date deletedAt;
     private String note;
-
     private List<InvoiceDetail> invoiceDetails;
 
 }
