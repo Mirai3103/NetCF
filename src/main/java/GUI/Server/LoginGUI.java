@@ -32,7 +32,7 @@ public class LoginGUI {
         jFrame.setSize(screenSize.width, screenSize.height);
 
         ImagePanel backgroundPanel = new ImagePanel();
-        backgroundPanel.setImage(getImage("D:\\WorkSpace\\NetCF\\src\\main\\resources\\images\\gtaV.jpg",-1,-1).getImage());
+        backgroundPanel.setImage(Helper.getIcon("/images/gtaV.jpg").getImage());
 
         var layout = new FlowLayout();
         layout.setAlignment(FlowLayout.CENTER);

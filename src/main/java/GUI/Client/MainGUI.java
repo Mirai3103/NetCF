@@ -6,29 +6,49 @@ package GUI.Client;
 
 import javax.swing.border.*;
 
+import GUI.Components.ChatGUI;
 import Utils.Fonts;
 import Utils.Helper;
-import com.formdev.flatlaf.ui.*;
 import com.formdev.flatlaf.ui.FlatDropShadowBorder;
-import model.Account;
+import model.Message;
 import model.Session;
 
 import java.awt.*;
-import java.util.concurrent.atomic.AtomicInteger;
+import java.util.ArrayList;
+import java.util.Date;
 import javax.swing.*;
 
 /**
  * @author Laffy
  */
 public class MainGUI extends JFrame {
+    public java.util.List<Message> messages = new ArrayList<>();
+    private final ChatGUI chatGUI;
+
     public MainGUI() {
-        Main.socket.emit("statusChange",null);
+        chatGUI = new ChatGUI(messages, Message.FROM.CLIENT);
+        chatGUI.setVisible(false);
+        chatGUI.setOnSendListener(content -> {
+            Main.socket.emit("message", content);
+            Message message = Message.builder().content(content).fromType(Message.FROM.CLIENT).createdAt(new Date()).build();
+
+            messages.add(message);
+        });
+        Main.socket.on("message", (c, data) -> {
+            Message message = Message.builder().content(data.toString()).fromType(Message.FROM.SERVER).createdAt(new Date()).build();
+            Helper.showSystemNoitification("Tin nhắn từ máy chủ" , (String) data, TrayIcon.MessageType.INFO);
+            messages.add(message);
+            chatGUI.reloadMessageHistory();
+        });
+
+
+        Main.socket.emit("statusChange", null);
         Main.socket.on("updateSession", (c, data) -> {
-            Main.socket.emit("statusChange",null);
+            Main.socket.emit("statusChange", null);
             Main.session = (Session) data;
             var remainingMoney = Main.session.getPrepaidAmount();
-          var  remainingMoneyWithTwoDecimalPlaces = Math.round(remainingMoney * 100.0) / 100.0;
-            this.textField6.setText(remainingMoneyWithTwoDecimalPlaces+"");
+            var remainingMoneyWithTwoDecimalPlaces = Math.round(remainingMoney * 100.0) / 100.0;
+            this.textField6.setText(remainingMoneyWithTwoDecimalPlaces + "");
             this.textField3.setText(Helper.toHHMM(Main.session.getTotalTime() - Main.session.getUsedTime(), true));
         });
 
@@ -56,7 +76,7 @@ public class MainGUI extends JFrame {
             Main.session = null;
 
             this.dispose();
-            var loginUI= new LoginGUI();
+            var loginUI = new LoginGUI();
             JOptionPane.showMessageDialog(loginUI, "Hết giờ rồi", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
             this.onCleanUp();
         });
@@ -64,33 +84,42 @@ public class MainGUI extends JFrame {
             timer.stop();
             Main.session = null;
             this.dispose();
-            var loginUI= new LoginGUI();
+            var loginUI = new LoginGUI();
             JOptionPane.showMessageDialog(loginUI, "Máy đã khoá! ", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
             this.onCleanUp();
         });
-        button2.addActionListener(e->{
-            Main.socket.emit("logout",null);
-            Main.socket.emit("statusChange",null);
+        button2.addActionListener(e -> {
+            Main.socket.emit("logout", null);
+            Main.socket.emit("statusChange", null);
 
             this.dispose();
-            var loginUI= new LoginGUI();
+            var loginUI = new LoginGUI();
             loginUI.setVisible(true);
             this.onCleanUp();
         });
         this.textField1.setText(Helper.toHHMM(Main.session.getTotalTime(), true));
-        this.textField6.setText(Main.session.getPrepaidAmount()+"");
+        this.textField6.setText(Main.session.getPrepaidAmount() + "");
 
         textField6.setFont(Fonts.getFont(Font.PLAIN, 13));
         this.textField3.setText(Helper.toHHMM(Main.session.getTotalTime() - Main.session.getUsedTime(), true));
 
-
+        initEvent();
     }
+    private void initEvent(){
+        button1.addActionListener(e -> {
+            chatGUI.setVisible(true);
+            chatGUI.setLocationRelativeTo(null);
+        });
+    }
+
     public void onCleanUp() {
         Main.socket.removeAllListeners("timeOut");
         Main.socket.removeAllListeners("updateSession");
         Main.socket.removeAllListeners("forceLock");
+        Main.socket.removeAllListeners("message");
 
     }
+
     private void initComponents() {
         panel14 = new JPanel();
         label8 = new JLabel();

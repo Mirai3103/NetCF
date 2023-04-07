@@ -78,5 +78,22 @@ public class Helper {
             return false;
         }
     }
+    public static void showSystemNoitification(String title,String message, TrayIcon.MessageType type){
+        if (SystemTray.isSupported()) {
+            SystemTray tray = SystemTray.getSystemTray();
+            Image image = Toolkit.getDefaultToolkit().createImage("icon.png");
+            TrayIcon trayIcon = new TrayIcon(image, "Tray Demo");
+            trayIcon.setImageAutoSize(true);
+            trayIcon.setToolTip("System tray icon demo");
+            try {
+                tray.add(trayIcon);
+            } catch (AWTException e) {
+                e.printStackTrace();
+            }
+            trayIcon.displayMessage(title, message, type);
+        } else {
+            System.err.println("Tray unavailable");
+        }
+    }
 
 }

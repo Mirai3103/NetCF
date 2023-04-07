@@ -81,27 +81,29 @@ public class SessionService {
                 throw new RuntimeException("Machine not found");
             }
             session.setUsingComputer(machine);
-            var newSession =sessionDAO.create(session);
-            var client=  Server.getInstance().getClients().stream().filter(c->c.getMachineId()==machineId).findFirst().orElseThrow();
-            client.emit("openNewSession",newSession);
-          var intervalId=  startSession(newSession,client);
-          client.setIntervalId(intervalId);
+            var newSession = sessionDAO.create(session);
+            var client = Server.getInstance().getClients().stream().filter(c -> c.getMachineId() == machineId).findFirst().orElseThrow();
+            client.emit("openNewSession", newSession);
+            var intervalId = startSession(newSession, client);
+            client.setIntervalId(intervalId);
             return newSession;
         } catch (SQLException e) {
             return null;
         }
     }
+
     public int startSession(Session session, Socket client) {
-      return  Interval.setInterval(
+
+        var intervalId = Interval.setInterval(
                 (cleanUp) -> {
 
                     try {
                         try {
-                            client.emit("updateSession",  new Session(this.increaseUsedTime(session)));
-                        }catch (RuntimeException e){
+                            client.emit("updateSession", new Session(this.increaseUsedTime(session)));
+                        } catch (RuntimeException e) {
                             e.printStackTrace();
-                            if (e.getMessage().equals("Time out")){
-                                client.emit("timeOut",null);
+                            if (e.getMessage().equals("Time out")) {
+                                client.emit("timeOut", null);
                                 cleanUp.run();
                                 return;  // stop interval
                             }
@@ -113,6 +115,8 @@ public class SessionService {
                 },
                 10 * 1000
         );
+        client.setIntervalId(intervalId);
+        return intervalId;
     }
 
     public Session createSession(int prePaidAmount, int machineId) { // loại trả trước
@@ -137,9 +141,9 @@ public class SessionService {
             session.setTotalTime(totalTime);
             session.setUsingComputer(machine);
             var newSession = sessionDAO.create(session);
-           var client=  Server.getInstance().getClients().stream().filter(c->c.getMachineId()==machineId).findFirst().orElseThrow();
-           client.emit("openNewSession",newSession);
-       client.setIntervalId( startSession(newSession,client));
+            var client = Server.getInstance().getClients().stream().filter(c -> c.getMachineId() == machineId).findFirst().orElseThrow();
+            client.emit("openNewSession", newSession);
+            client.setIntervalId(startSession(newSession, client));
 
             return newSession;
         } catch (SQLException e) {
@@ -152,17 +156,23 @@ public class SessionService {
         session.setUsedTime(session.getUsedTime() + GAP);
         var computerCost = session.getUsingComputer().getPrice();
         var gapCost = computerCost * GAP / 3600;
-        session.setPrepaidAmount(session.getPrepaidAmount() - gapCost);
-        if (session.getTotalTime() > 0 && session.getUsedTime() >= session.getTotalTime()) {
-            handleTimeOut(session);
-            throw new RuntimeException("Time out");
+        session.setUsedCost(session.getUsedCost() + gapCost);
+        if (session.getTotalTime() > 0) {
+
+            session.setPrepaidAmount(session.getPrepaidAmount() - gapCost);
+            if (session.getUsedTime() >= session.getTotalTime()) {
+                handleTimeOut(session);
+                throw new RuntimeException("Time out");
+            }
         }
+
         return this.update(session);
     }
 
     public Session update(Session session) throws SQLException {
         return sessionDAO.update(session);
     }
+
     public void closeSession(int machineId) throws SQLException {
         var session = sessionDAO.findByComputerId(machineId);
         if (session == null) {
@@ -171,10 +181,10 @@ public class SessionService {
         var client = Server.getInstance().getClients().stream().filter(c -> c.getMachineId() == machineId).findFirst().orElseThrow();
         Interval.clearInterval(client.getIntervalId());
         handleTimeOut(session);
-        client.emit("timeOut",null);
+        client.emit("timeOut", null);
     }
+
     private void handleTimeOut(Session session) throws SQLException {
-        // toDo: create computerUsage
         var computerUsage = ComputerUsage.builder()
                 .computerID(session.getComputerID())
                 .endAt(new java.util.Date(System.currentTimeMillis()))
@@ -204,5 +214,8 @@ public class SessionService {
         }
 
         sessionDAO.delete(session.getId());
+    }
+    public Session findByComputerId(int machineId) throws SQLException {
+        return sessionDAO.findByComputerId(machineId);
     }
 }

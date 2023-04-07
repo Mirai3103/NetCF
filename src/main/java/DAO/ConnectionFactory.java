@@ -44,6 +44,9 @@ public class ConnectionFactory {
                         continue;
                     }
                     var type =field.getType().isEnum()?Integer.class:field.getType();
+                    if (field.getType().isEnum()){
+                        var a =2;
+                    }
                     type = type == float.class  ? double.class : type;
                     type = type == java.sql.Time.class ? java.sql.Date.class : type;
                     Method setMethod = clazz.getMethod(setMethodName,type );
@@ -52,6 +55,9 @@ public class ConnectionFactory {
                        var value = resultSet.getObject(field.getName());
                        setMethod.invoke(t,value );
                    }catch (Exception ignored) {
+                       if (field.getType().isEnum()){
+                           ignored.printStackTrace();
+                       }
                    }
                 }
                 list.add(t);

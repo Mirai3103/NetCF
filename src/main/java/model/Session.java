@@ -42,7 +42,7 @@ public class Session implements java.io.Serializable {
     private int usedTime = 0; // seconds
 
 
-    private int usedCost = 0; // VND
+    private double usedCost = 0; // VND
 
 
     private int serviceCost = 0; // VND

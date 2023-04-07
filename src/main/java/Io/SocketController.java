@@ -1,29 +1,57 @@
 package Io;
 
 import Payload.LoginPayload;
+import Utils.Helper;
 import Utils.ServiceProvider;
 import Utils.Interval;
+import model.Message;
 import model.Session;
 import service.AccountService;
+import service.ComputerService;
+import service.MessageService;
 import service.SessionService;
 
+import javax.swing.*;
+import java.awt.*;
 import java.io.IOException;
 import java.io.Serializable;
 import java.sql.SQLException;
+import java.util.Date;
 
 public class SocketController {
     private final SessionService sessionService;
     private final AccountService accountService;
     private final Server server;
+    private final MessageService messageService ;
+    private final ComputerService computerService;
 
     public SocketController(Server server) {
         this.server = server;
         sessionService = ServiceProvider.getInstance().getService(SessionService.class);
         accountService = ServiceProvider.getInstance().getService(AccountService.class);
+        messageService = ServiceProvider.getInstance().getService(MessageService.class);
+        computerService = ServiceProvider.getInstance().getService(ComputerService.class);
     }
     public void startListen() throws IOException {
         server.listen();
         server.on("login", this::onLogin);
+        server.on("message", this::onMessage);
+    }
+
+    public void onMessage(Socket client, Serializable data) {
+        try {
+            var session = sessionService.findByComputerId(client.getMachineId());
+            var computer = computerService.getComputerById(client.getMachineId());
+            if (session == null) {
+                server.emit("errorMessage", "Lỗi máy tính");
+                return;
+            }
+            var message = Message.builder().id(null).content((String) data).fromType(Message.FROM.CLIENT).createdAt(new Date()).sessionId(session.getId()).build()  ;
+            messageService.create(message);
+            Helper.showSystemNoitification("Tin nhắn từ máy " + computer.getName(), (String) data, TrayIcon.MessageType.INFO);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
     public void onLogin(Socket client, Serializable data) {
         try {
@@ -47,25 +75,7 @@ public class SocketController {
                 var session=   sessionService.createSession(account, client.getMachineId());
 
                 server.emit("loginSuccess", session);
-                Interval.setInterval(
-                        (cleanUp) -> {
-                            try {
-                                try {
-                                    client.emit("updateSession",  new Session(sessionService.increaseUsedTime(session)));
-                                }catch (RuntimeException e){
-                                   if (e.getMessage().equals("Time out")){
-                                       client.emit("timeOut",null);
-                                       cleanUp.run();
-                                       return;  // stop interval
-                                   }
-                                }
-
-                            } catch (SQLException e) {
-                                e.printStackTrace();
-                            }
-                        },
-                        10 * 1000
-                );
+               client.setIntervalId( this.sessionService.startSession(session,client));
             } else {
                 server.emit("errorMessage", "Sai tên đăng nhập hoặc mật khẩu");
             }

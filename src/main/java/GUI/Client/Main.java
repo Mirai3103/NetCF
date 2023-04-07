@@ -29,7 +29,7 @@ public class Main {
         socket.on("errorMessage", (c,data) -> {
             JOptionPane.showMessageDialog(null, data, "Lỗi", JOptionPane.ERROR_MESSAGE);
         });
-        socket.on("message", (c,data) -> {
+        socket.on("infoMessage", (c,data) -> {
             JOptionPane.showMessageDialog(null, data, "Thông báo", JOptionPane.INFORMATION_MESSAGE);
         });
         Helper.initUI();

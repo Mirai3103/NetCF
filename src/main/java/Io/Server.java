@@ -24,6 +24,11 @@ public class Server extends ServerSocket {
 
     public Server() throws IOException {
     }
+    public void emitSelf(String eventType, Serializable data) {
+        for (var callback : eventHandlers.get(eventType)) {
+            callback.invoke(null, data);
+        }
+    }
 
     public Server(int port) throws IOException {
         super(port);

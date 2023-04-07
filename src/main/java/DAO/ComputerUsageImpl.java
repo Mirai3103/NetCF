@@ -12,7 +12,7 @@ public class ComputerUsageImpl extends BaseDAO implements IComputerUsageDAO {
     @Override
     public ComputerUsage create(ComputerUsage computerUsage) throws SQLException {
         var preparedStatement = this.prepareStatement("INSERT INTO ComputerUsage (usedByAccountId, computerID, isEmployeeUsing, createdAt, endAt, totalMoney) VALUES (?, ?, ?, ?, ?, ?)", Statement.RETURN_GENERATED_KEYS);
-        preparedStatement.setInt(1, computerUsage.getUsedByAccountId());
+        preparedStatement.setObject(1, computerUsage.getUsedByAccountId());
         preparedStatement.setInt(2, computerUsage.getComputerID());
         preparedStatement.setBoolean(3, computerUsage.isEmployeeUsing());
         preparedStatement.setTimestamp(4, new java.sql.Timestamp(computerUsage.getCreatedAt().getTime()));
@@ -29,7 +29,7 @@ public class ComputerUsageImpl extends BaseDAO implements IComputerUsageDAO {
     @Override
     public ComputerUsage update(ComputerUsage computerUsage) throws SQLException {
         var preparedStatement = this.prepareStatement("UPDATE ComputerUsage SET usedByAccountId = ?, computerID = ?, isEmployeeUsing = ?, createdAt = ?, endAt = ?, totalMoney = ? WHERE id = ?");
-        preparedStatement.setInt(1, computerUsage.getUsedByAccountId());
+        preparedStatement.setObject(1, computerUsage.getUsedByAccountId());
         preparedStatement.setInt(2, computerUsage.getComputerID());
         preparedStatement.setBoolean(3, computerUsage.isEmployeeUsing());
         preparedStatement.setTime(4, new java.sql.Time(computerUsage.getCreatedAt().getTime()));
