@@ -9,8 +9,11 @@ import model.Account;
 import model.ComputerUsage;
 import model.Session;
 
+import javax.swing.*;
 import java.sql.Date;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class SessionService {
     @Setter
@@ -217,5 +220,14 @@ public class SessionService {
     }
     public Session findByComputerId(int machineId) throws SQLException {
         return sessionDAO.findByComputerId(machineId);
+    }
+    public List<Session> findAll()  {
+        try {
+         return    sessionDAO.findAll();
+        }catch (
+                SQLException e) {
+            JOptionPane.showMessageDialog(null, "Error: " + e.getMessage());
+        }
+        return new ArrayList<>();
     }
 }

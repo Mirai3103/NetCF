@@ -28,9 +28,6 @@ public class Main {
         var socketServer=  Server.initInstance(Constants.SOCKET_PORT);
         SocketController socketController = new SocketController(socketServer);
         socketController.startListen();
-
-
-        // run server below
         MainUI.getInstance();
     }
 }

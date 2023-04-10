@@ -7,6 +7,7 @@ package GUI.Server.Account;
 import GUI.Server.MainUI;
 import Utils.Fonts;
 import Utils.Helper;
+import Utils.ServiceProvider;
 import model.Account;
 import service.AccountService;
 
@@ -25,11 +26,12 @@ import javax.swing.table.DefaultTableModel;
  * @author HuuHoang
  */
 public class AccountGUI extends JPanel {
-    private AccountService accountService = new AccountService();
+    private AccountService accountService ;
     private List<Account> accounts;
     private List<Account> filteredAccounts;
 
     public AccountGUI() {
+        accountService = ServiceProvider.getInstance().getService(AccountService.class);
         initComponents();
         label1.putClientProperty("FlatLaf.style", "font: $h0.font");
         try {
@@ -222,7 +224,7 @@ public class AccountGUI extends JPanel {
         DefaultTableModel model = (DefaultTableModel) table1.getModel();
         // clear table
         model.setRowCount(0);
-        filteredAccounts.stream().map(account -> new Object[]{account.getId(), account.getUsername(), account.getBalance(), account.getRole(), "Hoạt động", Helper.getDateString(account.getCreatedAt())}).forEach(model::addRow);
+        filteredAccounts.stream().map(account -> new Object[]{account.getId(), account.getUsername(), account.getBalance(), account.getRole(), account.getCurrentSession()==null?"Offline":"Dùng máy "+account.getCurrentSession().getComputerID(), Helper.getDateString(account.getCreatedAt())}).forEach(model::addRow);
     }
 
     private void initComponents() {

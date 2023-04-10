@@ -45,6 +45,7 @@ public class ServiceProvider {
             Field[] fields = impl.getClass().getDeclaredFields();
             Arrays.stream(fields).forEach(f->{
                 if(serviceImplMap .containsKey(f.getType())){
+
                     String setterMethodName = "set" + f.getName().substring(0, 1).toUpperCase() + f.getName().substring(1);
                     try {
                         Method setterMethod = impl.getClass().getMethod(setterMethodName, f.getType());

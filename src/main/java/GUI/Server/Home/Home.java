@@ -89,6 +89,7 @@ public class Home extends JPanel {
         computers.forEach(computer -> {
             JPopupMenu popupMenu = new JPopupMenu();
             JMenuItem tatItem = new JMenuItem("Tắt máy");
+            JMenuItem lockItem = new JMenuItem("Khoá máy");
             JMenuItem moMayTraTruoc = new JMenuItem("Mở máy trả trước");
             JMenuItem moMayTraSau = new JMenuItem("Mở máy trả sau");
             JMenuItem napTien = new JMenuItem("Nạp tiền");
@@ -123,7 +124,7 @@ public class Home extends JPanel {
             moMayTraSau.addActionListener(e -> {
                 this.sessionService.createSession(computer.getId());
             });
-            tatItem.addActionListener(e -> {
+            lockItem.addActionListener(e -> {
                 try {
                     this.sessionService.closeSession(computer.getId());
                     Server.getInstance().emitSelf("statusChange", null);
@@ -203,6 +204,7 @@ public class Home extends JPanel {
                     tatItem.setEnabled(false);
                     tinNhan.setEnabled(false);
                     napTien.setEnabled(false);
+                    lockItem.setEnabled(false);
                 }
                 case LOCKED -> {
                     button.setIcon(lockImg);
@@ -210,6 +212,8 @@ public class Home extends JPanel {
                     button.setForeground(new Color(0xff5656));
                     tinNhan.setEnabled(false);
                     napTien.setEnabled(false);
+                    lockItem.setEnabled(false);
+                    tatItem.setEnabled(true);
 
                 }
                 case USING -> {
@@ -220,6 +224,8 @@ public class Home extends JPanel {
                     moMayTraSau.setEnabled(false);
                     moMayTraTruoc.setEnabled(false);
                     tinNhan.setEnabled(true);
+                    lockItem.setEnabled(true);
+                    tatItem.setEnabled(false);
                 }
             }
             button.setFont(Fonts.getFont(Font.BOLD, 20));

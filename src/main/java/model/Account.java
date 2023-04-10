@@ -47,7 +47,7 @@ public class Account implements java.io.Serializable {
 
     private List<ComputerUsage> usingHistory;
     private List<Invoice> invoices;
-    private Session currentSession;
+    private Session currentSession = null;
     private Employee employee;
 
     public void setRole(Integer role) {

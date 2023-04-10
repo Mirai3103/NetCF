@@ -12,12 +12,13 @@ import java.util.List;
 
 public class AccountService {
     @Setter
+    private SessionService sessionService;
+    @Setter
     private IAccountDAO accountDAO;
 
 
-
     public AccountService() {
-        this.accountDAO = new AccountDAOImpl();
+
     }
     public void create(Account account) throws SQLException {
         this.accountDAO.create(account);
@@ -47,7 +48,16 @@ public class AccountService {
     }
 
     public List<Account> getAllAccounts() throws  SQLException {
-        return this.accountDAO.findAll();
+        System.out.println(accountDAO);
+        var accounts =this.accountDAO.findAll();
+        var sessions = this.sessionService.findAll();
+        sessions.forEach(s->{
+            var account = accounts.stream().filter(a->a.getId()==s.getUsingBy()).findFirst().orElse(null);
+            if (account!=null) {
+                account.setCurrentSession(s);
+            }
+        });
+        return accounts;
     }
 
     public void resetPassword(int integer, String newPassword) throws SQLException {
