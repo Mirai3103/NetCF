@@ -58,4 +58,5 @@ public class Account implements java.io.Serializable {
             default -> Role.USER;
         };
     }
+
 }

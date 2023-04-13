@@ -1,5 +1,9 @@
 package Utils;
 
+import DAO.*;
+import DAO.Interface.*;
+import service.*;
+
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
@@ -63,5 +67,19 @@ public class ServiceProvider {
         }
         return (T) serviceInstanceCache.get(service);
     }
-
+    public static void init(){
+        ServiceProvider.getInstance().register(IAccountDAO.class, AccountDAOImpl.class)
+                .register(IMessageDAO.class, MessageDAOImpl.class)
+                .register(ISessionDAO.class, SessionDAOImpl.class)
+                .register(IComputerDAO.class, ComputerDAOImpl.class)
+                .register(IInvoiceDAO.class, InvoiceDAOImpl.class)
+                .register(IComputerUsageDAO.class, ComputerUsageImpl.class)
+                .register(AccountService.class, AccountService.class)
+                .register(ComputerService.class, ComputerService.class)
+                .register(SessionService.class, SessionService.class)
+                .register(ComputerUsageService.class, ComputerUsageService.class)
+                .register(MessageService.class, MessageService.class)
+                .register(InvoiceService.class, InvoiceService.class)
+                .build();
+    }
 }

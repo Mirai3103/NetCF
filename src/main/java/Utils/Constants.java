@@ -3,7 +3,8 @@ package Utils;
 import GUI.Server.Account.AccountGUI;
 import GUI.Server.Computer.ComputerManageGUI;
 import GUI.Server.Home.Home;
-import GUI.Server.Invoice.InvoiceManagerGUI;
+import GUI.Server.Invoice.CreateInvoiceGUI;
+import GUI.Server.Invoice.InvoiceManageGUI;
 import lombok.*;
 
 import javax.swing.*;
@@ -54,13 +55,13 @@ public final class Constants {
                                Tab.builder().title("Quản lý khách hàng").key("manage-customer").contentPanel(createPanelWithText("Quản lý khách hàng")).build(),
                                Tab.builder().title("Quản lý sản phẩm").key("manage-product").contentPanel(createPanelWithText("Quản lý sản phẩm")).build(),
                                Tab.builder().title("Quản lý nhân viên").key("manage-report").contentPanel(createPanelWithText("Quản lý báo cáo")).build(),
-                                Tab.builder().title("Quản lý hoá đơn").key("manage-invoice").contentPanel(new InvoiceManagerGUI()).build(),
+                                Tab.builder().title("Quản lý hoá đơn").key("manage-invoice").contentPanel(new InvoiceManageGUI()).build(),
                                 Tab.builder().title("Quản lý máy").key("manage-computer").contentPanel(new ComputerManageGUI()).build()
                         )
                 )).build()
         );
-        tabs.add(Tab.builder().title("Thống kê").key("thongke").contentPanel(new InvoiceManagerGUI()).build());
-        tabs.add(Tab.builder().title("Cá nhân").key("canhan").contentPanel(new InvoiceManagerGUI()).build());
+        tabs.add(Tab.builder().title("Thống kê").key("thongke").contentPanel(new CreateInvoiceGUI()).build());
+        tabs.add(Tab.builder().title("Cá nhân").key("canhan").contentPanel(new CreateInvoiceGUI()).build());
         return tabs;
 
     }

@@ -30,8 +30,9 @@ public class Invoice {
     public enum Status {
         WAITING_FOR_ACCEPT,
         ACCEPTED,
+        DONE,
         REJECTED,
-        DONE
+
         ;
         @Override
         public String toString() {
@@ -64,5 +65,26 @@ public class Invoice {
     private Date deletedAt;
     private String note;
     private List<InvoiceDetail> invoiceDetails;
+    public String explainIsPaid(){
 
+        return this.isPaid?"Đã thanh toán":"Chưa thanh toán";
+    }
+    public void setStatus(Integer status) {
+        switch (status) {
+            case 1 -> this.status = Status.WAITING_FOR_ACCEPT;
+            case 2 -> this.status = Status.ACCEPTED;
+            case 4 -> this.status = Status.REJECTED;
+            case 3 -> this.status = Status.DONE;
+        }
+    }
+
+    public void setIsPaid(boolean paid) {
+        isPaid = paid;
+    }
+    public void setType(Integer type) {
+        switch (type) {
+            case 1 -> this.type = InvoiceType.IMPORT;
+            case 2 -> this.type = InvoiceType.EXPORT;
+        }
+    }
 }

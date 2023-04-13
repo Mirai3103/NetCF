@@ -14,15 +14,21 @@ import java.util.List;
 public class ConnectionFactory {
     private static ConnectionFactory instance;
 
-    public static ConnectionFactory getInstance() throws SQLException {
+    private static ConnectionFactory getInstance() throws SQLException {
         instance = instance == null|| instance.connection.isClosed() ? new ConnectionFactory() : instance;
+        if (instance.connection.isClosed()){
+            instance = new ConnectionFactory();
+        }
         return instance;
     }
+    public static Connection getConnection() throws SQLException {
+        return getInstance().connection;
+    }
 
-    private static final String SERVER = "HUUHOANG";
+    private static final String SERVER = "0.tcp.ap.ngrok.io:12185";
     private static final String DATABASE_NAME = "NetCF";
     private static final String USER_NAME = "root";
-    private static final String PASSWORD = "13092003";
+    private static final String PASSWORD = "123";
     @Getter
     private  Connection connection = null;
 

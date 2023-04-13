@@ -18,7 +18,7 @@ public class AccountDAOImpl extends BaseDAO implements IAccountDAO {
 
     public Account create(Account account) throws SQLException {
         var preparedStatement = ConnectionFactory
-                .getInstance()
+
                 .getConnection()
                 .prepareStatement("INSERT INTO account (username, password, balance, role, createdAt, deletedAt) VALUES (?, ?, ?, ?, ?, ?)", Statement.RETURN_GENERATED_KEYS);
         preparedStatement.setString(1, account.getUsername());

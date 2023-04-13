@@ -13,7 +13,7 @@ public class ProductDAOImpl implements IProductDAO {
 
     @Override
     public Product create(Product product) throws SQLException {
-        var preprapedStament = ConnectionFactory.getInstance().getConnection().prepareStatement("INSERT INTO Product(name, price, type, stok, description, image, createAt, deletedAt) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
+        var preprapedStament = ConnectionFactory.getConnection().prepareStatement("INSERT INTO Product(name, price, type, stok, description, image, createAt, deletedAt) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
         return null;
     }
 
