@@ -14,6 +14,7 @@ import java.util.Map;
 public class ServiceProvider {
     private static ServiceProvider instance;
     private ServiceProvider(){
+
     }
     public static ServiceProvider getInstance(){
         if(instance == null){
@@ -29,9 +30,14 @@ public class ServiceProvider {
         serviceImplMap .put(service, impl);
         return this;
     }
+    public <T> ServiceProvider register(Class<T> service, T instance){
+        if (serviceInstanceCache.containsKey(service))
+            return this;
+        serviceInstanceCache.put(service, instance);
+        return this;
+    }
     public void build(){
         //clear cache
-        serviceInstanceCache.clear();
 
         for (Class<?> iService: serviceImplMap .keySet()){
             Class<?> impl = serviceImplMap .get(iService);
@@ -68,7 +74,9 @@ public class ServiceProvider {
         return (T) serviceInstanceCache.get(service);
     }
     public static void init(){
-        ServiceProvider.getInstance().register(IAccountDAO.class, AccountDAOImpl.class)
+        ServiceProvider.getInstance()
+                .register(PoolConnection.class, new PoolConnection())
+                .register(IAccountDAO.class, AccountDAOImpl.class)
                 .register(IMessageDAO.class, MessageDAOImpl.class)
                 .register(IEmployeeDAO.class, EmployeeDAOImpl.class)
                 .register(ISessionDAO.class, SessionDAOImpl.class)

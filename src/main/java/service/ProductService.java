@@ -8,6 +8,5 @@ public class ProductService {
     @Setter
     private IProductDAO productDAO;
 
-//    public Product create() {
-//    }
+
 }
