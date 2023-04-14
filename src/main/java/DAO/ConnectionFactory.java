@@ -25,10 +25,10 @@ public class ConnectionFactory {
         return getInstance().connection;
     }
 
-    private static final String SERVER = "0.tcp.ap.ngrok.io:12185";
+    private static final String SERVER = "HUUHOANG";
     private static final String DATABASE_NAME = "NetCF";
     private static final String USER_NAME = "root";
-    private static final String PASSWORD = "123";
+    private static final String PASSWORD = "310303";
     @Getter
     private  Connection connection = null;
 

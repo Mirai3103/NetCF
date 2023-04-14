@@ -5,6 +5,7 @@ import GUI.Server.Computer.ComputerManageGUI;
 import GUI.Server.Home.Home;
 import GUI.Server.Invoice.CreateInvoiceGUI;
 import GUI.Server.Invoice.InvoiceManageGUI;
+import GUI.Server.Personal.PersonalSetting;
 import lombok.*;
 
 import javax.swing.*;
@@ -61,7 +62,7 @@ public final class Constants {
                 )).build()
         );
         tabs.add(Tab.builder().title("Thống kê").key("thongke").contentPanel(new CreateInvoiceGUI()).build());
-        tabs.add(Tab.builder().title("Cá nhân").key("canhan").contentPanel(new CreateInvoiceGUI()).build());
+        tabs.add(Tab.builder().title("Cá nhân").key("canhan").contentPanel(new PersonalSetting()).build());
         return tabs;
 
     }

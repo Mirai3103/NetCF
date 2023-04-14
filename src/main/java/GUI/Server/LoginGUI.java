@@ -1,11 +1,14 @@
 package GUI.Server;
 
+import GUI.Client.Main;
 import GUI.Components.ImagePanel;
 import GUI.Components.Input;
 import Utils.Fonts;
 import Utils.Helper;
+import Utils.ServiceProvider;
 import model.Account;
 import service.AccountService;
+import service.EmployeeService;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -15,10 +18,12 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.net.URL;
+import java.util.Arrays;
 
 public class LoginGUI {
     private AccountService accountService;
     public LoginGUI() {
+        accountService = ServiceProvider.getInstance().getService(AccountService.class);
         JFrame jFrame = new JFrame();
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 
@@ -136,14 +141,27 @@ public class LoginGUI {
             @Override
             public void actionPerformed(ActionEvent e) {
                 var username = txtUsername.getText();
-                var password = txtPassword.getPassword();
-//                var user = accountService.login(username,password.toString());
-                Account user = null;
+                var password = txtPassword.getText();
+                System.out.println(username+" "+ password);
+                var user = accountService.login(username,password);
+
                 if (user == null) {
                     var result = "Tài Khoản đăng nhập hoặc Mật Khẩu của bạn không đúng, vui lòng nhập lại";
                     JOptionPane.showMessageDialog(null,result,null,JOptionPane.INFORMATION_MESSAGE);
                 } else {
-                    MainUI.getInstance();
+                    if(user.getRole() == Account.Role.USER){
+                        JOptionPane.showMessageDialog(null,"Bạn không có quyền truy cập vào chức năng này",null,JOptionPane.WARNING_MESSAGE);
+                        return;
+                    }
+                     var emp=   ServiceProvider.getInstance().getService(EmployeeService.class).findEmployeeByAccountID(user.getId());
+                    if (emp ==null){
+                        JOptionPane.showMessageDialog(null,"Bạn không có quyền truy cập vào chức năng này",null,JOptionPane.WARNING_MESSAGE);
+                        return;
+                    }
+                    emp.setAccount(user);
+                    MainUI.setCurrentUser(emp);
+                    MainUI.getInstance().setVisible(true);
+                    jFrame.dispose();
                 }
             }
         });

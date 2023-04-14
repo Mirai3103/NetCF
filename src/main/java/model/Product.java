@@ -56,5 +56,7 @@ public class Product {
     private Date deletedAt;
 
     private List<InvoiceDetail> invoiceDetails;
-
+    public void setProductType(Integer productType) {
+        this.type = ProductType.values()[productType];
+    }
 }

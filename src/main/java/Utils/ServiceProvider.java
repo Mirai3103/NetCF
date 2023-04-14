@@ -70,6 +70,7 @@ public class ServiceProvider {
     public static void init(){
         ServiceProvider.getInstance().register(IAccountDAO.class, AccountDAOImpl.class)
                 .register(IMessageDAO.class, MessageDAOImpl.class)
+                .register(IEmployeeDAO.class, EmployeeDAOImpl.class)
                 .register(ISessionDAO.class, SessionDAOImpl.class)
                 .register(IComputerDAO.class, ComputerDAOImpl.class)
                 .register(IInvoiceDAO.class, InvoiceDAOImpl.class)
@@ -80,6 +81,7 @@ public class ServiceProvider {
                 .register(ComputerUsageService.class, ComputerUsageService.class)
                 .register(MessageService.class, MessageService.class)
                 .register(InvoiceService.class, InvoiceService.class)
+                .register(EmployeeService.class, EmployeeService.class)
                 .build();
     }
 }
