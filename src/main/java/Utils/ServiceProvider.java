@@ -76,6 +76,8 @@ public class ServiceProvider {
     public static void init(){
         ServiceProvider.getInstance()
                 .register(PoolConnection.class, new PoolConnection())
+                .register(IProductDAO.class, ProductDAOImpl.class)
+                .register(IInvoiceDetailDAO.class, InvoiceDetailDAOImpl.class)
                 .register(IAccountDAO.class, AccountDAOImpl.class)
                 .register(IMessageDAO.class, MessageDAOImpl.class)
                 .register(IEmployeeDAO.class, EmployeeDAOImpl.class)

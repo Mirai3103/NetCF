@@ -36,6 +36,18 @@ public class SocketController {
         server.listen();
         server.on("login", this::onLogin);
         server.on("message", this::onMessage);
+        server.on("changePassword", this::onChangePassword);
+    }
+
+    private void onChangePassword(Socket socket, Serializable serializable) {
+        try {
+            var session = sessionService.findByComputerId(socket.getMachineId());
+            var account = session.getUsingByAccount();
+            accountService.changePassword(account.getId(), serializable.toString());
+            server.emit("infoMessage", "Đổi mật khẩu thành công");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     public void onMessage(Socket client, Serializable data) {

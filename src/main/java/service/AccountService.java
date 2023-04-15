@@ -86,6 +86,17 @@ public class AccountService {
       return this.accountDAO.findByUsername(username);
 
     }
+    public void changePassword(int id, String newPassword)  {
+        Account account = null;
+        try {
+            account = this.findById(id);
+            account.setPassword(newPassword);
+            this.update(account);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+    }
 
     public void deposit(int id, int amount) throws SQLException {
         var account = this.findById(id);

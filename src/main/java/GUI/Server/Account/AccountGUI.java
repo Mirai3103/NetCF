@@ -82,6 +82,7 @@ public class AccountGUI extends JPanel {
     }
 
     private void reDesign() throws ParseException {
+        panel1.setBackground(this.getBackground());
         setSize(1300, 800);
         setMinimumSize(new Dimension(1300, 800));
         JPopupMenu popupMenu2 = new JPopupMenu();
