@@ -6,7 +6,12 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+
 //import java.lang.reflect.Field;
+
+import java.io.Serial;
+import java.io.Serializable;
+
 import java.util.Date;
 import java.util.List;
 
@@ -14,7 +19,9 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class Invoice {
+public class Invoice implements Serializable {
+    @Serial
+    private static final long serialVersionUID = 264603467L;
     public enum InvoiceType {
           IMPORT,
             EXPORT,

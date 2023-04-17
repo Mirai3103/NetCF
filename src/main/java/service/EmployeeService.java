@@ -7,20 +7,26 @@ import model.Employee;
 import java.sql.SQLException;
 import java.util.List;
 
+
 public class EmployeeService {
     @Setter
     private IEmployeeDAO employeeDAO;
     public Employee findEmployeeById(int id) {
+
         try {
             return  employeeDAO.findById(id);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
+
+        return null;
+
     }
     public Employee findEmployeeByAccountID(int id) {
         try {
             return employeeDAO.findByAccountID(id);
         } catch (SQLException e) {
+
             return null;
         }
     }
@@ -31,6 +37,9 @@ public class EmployeeService {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
+        return null;
     }
 
 }
+
+

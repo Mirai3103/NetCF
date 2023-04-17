@@ -66,18 +66,35 @@ public class AccountService {
         this.update(account);
     }
 
-    public Account login(String username, String password) throws SQLException {
-        var account = this.accountDAO.findByUsername(username);
-        if (account == null) {
-            return  null;
+    public Account login(String username, String password)  {
+        try {
+            var account = this.accountDAO.findByUsername(username);
+            if (account == null) {
+                return  null;
+            }
+            if (account.getPassword().equals(password)) {
+                return account;
+            }
+        }catch (SQLException e) {
+            e.printStackTrace();
+            return null;
         }
-        if (account.getPassword().equals(password)) {
-            return account;
-        }
+     
         return null;
     }
     public Account findByUsername(String username) throws SQLException {
       return this.accountDAO.findByUsername(username);
+
+    }
+    public void changePassword(int id, String newPassword)  {
+        Account account = null;
+        try {
+            account = this.findById(id);
+            account.setPassword(newPassword);
+            this.update(account);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
 
     }
 

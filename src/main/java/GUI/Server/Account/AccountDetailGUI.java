@@ -21,6 +21,7 @@ import javax.swing.*;
  * @author HuuHoang
  */
 public class AccountDetailGUI extends JDialog {
+
     @Getter
     private Account account;
     private Mode mode;
@@ -56,6 +57,7 @@ public class AccountDetailGUI extends JDialog {
         this.account.setBalance(Double.parseDouble(textField4.getText()));
         return true;
     }
+    @Getter
     private int status = JOptionPane.CANCEL_OPTION;
     private void initEvent() {
 

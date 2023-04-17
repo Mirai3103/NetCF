@@ -79,7 +79,7 @@ public class ComputerManageGUI extends javax.swing.JPanel {
         addBtn.setIcon(Helper.getIcon("/icons/iconThem.png",20,20));
         deleteBtn.setIcon(Helper.getIcon("/icons/trash.png",16,16));
         saveBtn.setIcon(Helper.getIcon("/icons/save.png",20,20));
-        clearBtn.setIcon(Helper.getIcon("/icons/icon.png",25,25));
+        clearBtn.setIcon(Helper.getIcon("/icons/clear.png",25,25));
         getData();
 
         // on selected row change

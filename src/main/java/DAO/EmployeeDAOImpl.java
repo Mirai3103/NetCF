@@ -20,6 +20,7 @@ public class EmployeeDAOImpl extends BaseDAO implements IEmployeeDAO{
     }
     @Override
     public Employee create(Employee employee) throws SQLException {
+
         try(var  preparedStatement=this.prepareStatement("INSERT INTO employee (name, accountID, accountID, phoneNumber, address, otherInformation, createdAt, deletedAt) VALUES (?, ?, ?, ?, ?, ?, ?, ?)", Statement.RETURN_GENERATED_KEYS)) {
             preparedStatement.setString(1,employee.getName());
             preparedStatement.setInt(2,employee.getAccountID());
@@ -38,7 +39,8 @@ public class EmployeeDAOImpl extends BaseDAO implements IEmployeeDAO{
         }catch (Exception e){
             e.printStackTrace();
         }
-return null;
+    return null;
+
     }
 
     @Override
@@ -84,4 +86,6 @@ return null;
         statement.close();
         return employees;
     }
+
 }
+

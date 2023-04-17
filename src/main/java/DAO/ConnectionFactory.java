@@ -26,11 +26,11 @@ public class ConnectionFactory {
         return getInstance().connection;
     }
 
-    private static final String SERVER = "0.tcp.ap.ngrok.io:12185";
+    private static final String SERVER = "localhost:1433";
     private static final String DATABASE_NAME = "NetCF";
     private static final String USER_NAME = "sa";
-    private static final String PASSWORD = "112244";
-    @Getter
+
+    private static final String PASSWORD = "Kaito1412";
     private  Connection connection = null;
 
 
@@ -52,9 +52,6 @@ public class ConnectionFactory {
                         continue;
                     }
                     var type =field.getType().isEnum()?Integer.class:field.getType();
-                    if (field.getType().isEnum()){
-                        var a =2;
-                    }
                     type = type == float.class  ? double.class : type;
                     type = type == java.sql.Time.class ? java.sql.Date.class : type;
                     Method setMethod = clazz.getMethod(setMethodName,type );

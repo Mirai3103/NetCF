@@ -27,7 +27,7 @@ import javax.swing.table.DefaultTableModel;
  * @author HuuHoang
  */
 public class AccountGUI extends JPanel {
-    private AccountService accountService ;
+    private AccountService accountService;
     private List<Account> accounts;
     private List<Account> filteredAccounts;
 
@@ -64,13 +64,18 @@ public class AccountGUI extends JPanel {
             AccountDetailGUI accountDetailGUI = new AccountDetailGUI(GUI.Server.MainUI.getInstance());
             accountDetailGUI.setVisible(true);
             MainUI.getInstance().setBlur(false);
+            accountDetailGUI.setModal(true);
+
             try {
-                accountService.create(accountDetailGUI.getAccount());
-                reloadTableData();
+                if (accountDetailGUI.getStatus() == JOptionPane.OK_OPTION) {
+                    accountService.create(accountDetailGUI.getAccount());
+                    JOptionPane.showMessageDialog(this, "Tạo tài khoản thành công");
+
+                    reloadTableData();
+                }
             } catch (SQLException ex) {
                 throw new RuntimeException(ex);
             }
-
 
 
         });
@@ -78,6 +83,7 @@ public class AccountGUI extends JPanel {
     }
 
     private void reDesign() throws ParseException {
+        panel1.setBackground(this.getBackground());
         setSize(1300, 800);
         setMinimumSize(new Dimension(1300, 800));
         JPopupMenu popupMenu2 = new JPopupMenu();
@@ -99,12 +105,14 @@ public class AccountGUI extends JPanel {
             accountDetailGUI.setVisible(true);
             MainUI.getInstance().setBlur(false);
             try {
-                accountService.update(accountDetailGUI.getAccount());
-                reloadTableData();
+                if (accountDetailGUI.getStatus() == JOptionPane.OK_OPTION) {
+                    accountService.update(accountDetailGUI.getAccount());
+                    reloadTableData();
+                    JOptionPane.showMessageDialog(this, "Cập nhật thành công");
+                }
             } catch (SQLException ex) {
                 throw new RuntimeException(ex);
             }
-            JOptionPane.showMessageDialog(this, "Cập nhật thành công");
 
         });
         menuItem4.addActionListener(e -> {
@@ -212,6 +220,7 @@ public class AccountGUI extends JPanel {
 
         table1.setAutoCreateRowSorter(true);
     }
+
     private void reloadTableData() {
         try {
             accounts = accountService.getAllAccounts();
@@ -221,11 +230,12 @@ public class AccountGUI extends JPanel {
         }
         renderTableData();
     }
+
     private void renderTableData() {
         DefaultTableModel model = (DefaultTableModel) table1.getModel();
         // clear table
         model.setRowCount(0);
-        filteredAccounts.stream().map(account -> new Object[]{account.getId(), account.getUsername(), account.getBalance(), account.getRole(), account.getCurrentSession()==null?"Offline":"Dùng máy "+account.getCurrentSession().getComputerID(), Helper.getDateString(account.getCreatedAt())}).forEach(model::addRow);
+        filteredAccounts.stream().map(account -> new Object[]{account.getId(), account.getUsername(), account.getBalance(), account.getRole(), account.getCurrentSession() == null ? "Offline" : "Dùng máy " + account.getCurrentSession().getComputerID(), Helper.getDateString(account.getCreatedAt())}).forEach(model::addRow);
     }
 
     private void initComponents() {

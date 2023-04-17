@@ -62,6 +62,7 @@ public class Home extends JPanel {
         });
     }
 
+
     private JPanel headerPanel;
     private JLabel headerLabel;
 

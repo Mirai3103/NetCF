@@ -14,10 +14,10 @@ import java.io.IOException;
 public class Main {
     public static void main(String[] args) throws IOException {
         Helper.initUI();
-  ServiceProvider.init();
+     ServiceProvider.init();
         var socketServer=  Server.initInstance(Constants.SOCKET_PORT);
         SocketController socketController = new SocketController(socketServer);
         socketController.startListen();
-        MainUI.getInstance();
+        new LoginGUI();
     }
 }
