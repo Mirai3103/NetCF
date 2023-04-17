@@ -20,11 +20,20 @@ import java.io.File;
 import java.net.URL;
 import java.util.Arrays;
 
-public class LoginGUI {
+public class LoginGUI extends JFrame {
     private AccountService accountService;
+    private ImagePanel backgroundPanel;
+    private JPanel loginPanel, pageStartPanel, buttonPanel, passwordPanel, usernamePanel;
+    private JLabel passwordLabel, usernameLabel, statusLabel, logoLoginLabel;
+    private Input txtUsername;
+    private JPasswordField txtPassword;
+
     public LoginGUI() {
+        initComponents();
+    }
+
+    private void initComponents() {
         accountService = ServiceProvider.getInstance().getService(AccountService.class);
-        JFrame jFrame = new JFrame();
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 
         // set vị trí cho khung đăng nhập
@@ -34,9 +43,9 @@ public class LoginGUI {
         int x = (screenSize.width - width) / 2;
         int y = (screenSize.height - height) / 2;
 
-        jFrame.setSize(screenSize.width, screenSize.height);
+        setSize(screenSize.width, screenSize.height);
 
-        ImagePanel backgroundPanel = new ImagePanel();
+        backgroundPanel = new ImagePanel();
         backgroundPanel.setImage(Helper.getIcon("/images/gtaV.jpg").getImage());
 
         var layout = new FlowLayout();
@@ -45,7 +54,7 @@ public class LoginGUI {
 
         int widthPageStartPanel = screenSize.width;
         int heightPageStartPanel = y;
-        JPanel pageStartPanel = new JPanel();
+        pageStartPanel = new JPanel();
         pageStartPanel.setBackground(new Color(0,0,0,0));
         pageStartPanel.setPreferredSize(new Dimension(widthPageStartPanel, heightPageStartPanel));
         backgroundPanel.add(pageStartPanel);
@@ -54,14 +63,14 @@ public class LoginGUI {
         // start
 
         var loginLayout = new FlowLayout(FlowLayout.LEFT);
-        JPanel loginPanel = new JPanel();
+        loginPanel = new JPanel();
         loginPanel.setPreferredSize(new Dimension(width,height));
         loginPanel.setLayout(loginLayout);
         loginPanel.setBackground(new Color(255,255,255,255));
 
         // Đăng Nhập
         // start
-        JLabel logoLoginLabel = new JLabel("Đăng Nhập");
+        logoLoginLabel = new JLabel("Đăng Nhập");
         logoLoginLabel.setHorizontalAlignment(SwingConstants.CENTER);
         logoLoginLabel.setFont(new Font("Times New Roman",Font.BOLD,30));
         logoLoginLabel.setPreferredSize(new Dimension(width-30,40));
@@ -69,7 +78,7 @@ public class LoginGUI {
         // end
 
         // Đăng nhập để truy cập vào chức năng của máy chủ
-        JLabel statusLabel = new JLabel("Đăng nhập để truy cập vào chức năng của máy chủ");
+        statusLabel = new JLabel("Đăng nhập để truy cập vào chức năng của máy chủ");
         statusLabel.setHorizontalAlignment(SwingConstants.CENTER);
         statusLabel.setFont(new Font("Times New Roman",Font.ITALIC,12));
         statusLabel.setPreferredSize(new Dimension(width-30,20));
@@ -77,7 +86,7 @@ public class LoginGUI {
 
         // username
         // start
-        JLabel usernameLabel = new JLabel("Username");
+        usernameLabel = new JLabel("Username");
         usernameLabel.setFont(new Font("Times New Roman",Font.BOLD,18));
         usernameLabel.setBorder(new EmptyBorder(20,25,5,5));
         usernameLabel.setPreferredSize(new Dimension(width-30,40));
@@ -88,12 +97,12 @@ public class LoginGUI {
         // start
         FlowLayout centerLayout = new FlowLayout();
         centerLayout.setAlignment(FlowLayout.CENTER);
-        JPanel usernamePanel = new JPanel();
+        usernamePanel = new JPanel();
         usernamePanel.setLayout(centerLayout);
         usernamePanel.setPreferredSize(new Dimension(width-10,35));
         usernamePanel.setBackground(new Color(255,255,255,255));
 
-        Input txtUsername = new Input("Username");
+        txtUsername = new Input("Username");
         txtUsername.setFont(Fonts.getFont(Font.BOLD,15));
         txtUsername.setBorder(new EmptyBorder(0,5,0,0));
         txtUsername.setBackground(new Color(255,255,255,255));
@@ -105,7 +114,7 @@ public class LoginGUI {
 
         // password
         // start
-        JLabel passwordLabel = new JLabel("Password");
+        passwordLabel = new JLabel("Password");
         passwordLabel.setFont(new Font("Times New Roman",Font.BOLD,18));
         passwordLabel.setBorder(new EmptyBorder(5,25,5,5));
         passwordLabel.setPreferredSize(new Dimension(width-30,20));
@@ -114,12 +123,12 @@ public class LoginGUI {
 
         // txtPassword
         // start
-        JPanel passwordPanel = new JPanel();
+        passwordPanel = new JPanel();
         passwordPanel.setLayout(centerLayout);
         passwordPanel.setPreferredSize(new Dimension(width-10,35));
         passwordPanel.setBackground(new Color(255,255,255,255));
 
-        JPasswordField txtPassword = new JPasswordField();
+        txtPassword = new JPasswordField();
         txtPassword.setBorder(new EmptyBorder(0,5,0,0));
         txtPassword.setPreferredSize(new Dimension(width-50,20));
         txtPassword.setBackground(new Color(255,255,255,255));
@@ -129,7 +138,7 @@ public class LoginGUI {
 
         // button
         // start
-        JPanel buttonPanel = new JPanel();
+        buttonPanel = new JPanel();
         buttonPanel.setLayout(centerLayout);
         buttonPanel.setPreferredSize(new Dimension(width-10,70));
         buttonPanel.setBackground(new Color(255,255,255,255));
@@ -140,29 +149,7 @@ public class LoginGUI {
         button.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                var username = txtUsername.getText();
-                var password = txtPassword.getText();
-                System.out.println(username+" "+ password);
-                var user = accountService.login(username,password);
-
-                if (user == null) {
-                    var result = "Tài Khoản đăng nhập hoặc Mật Khẩu của bạn không đúng, vui lòng nhập lại";
-                    JOptionPane.showMessageDialog(null,result,null,JOptionPane.INFORMATION_MESSAGE);
-                } else {
-                    if(user.getRole() == Account.Role.USER){
-                        JOptionPane.showMessageDialog(null,"Bạn không có quyền truy cập vào chức năng này",null,JOptionPane.WARNING_MESSAGE);
-                        return;
-                    }
-                     var emp=   ServiceProvider.getInstance().getService(EmployeeService.class).findEmployeeByAccountID(user.getId());
-                    if (emp ==null){
-                        JOptionPane.showMessageDialog(null,"Bạn không có quyền truy cập vào chức năng này",null,JOptionPane.WARNING_MESSAGE);
-                        return;
-                    }
-                    emp.setAccount(user);
-                    MainUI.setCurrentUser(emp);
-                    MainUI.getInstance().setVisible(true);
-                    jFrame.dispose();
-                }
+                btnLoginActionPerformed(e);
             }
         });
         buttonPanel.add(button);
@@ -171,12 +158,38 @@ public class LoginGUI {
 
         backgroundPanel.add(loginPanel);
         // end
-        jFrame.add(backgroundPanel);
+        add(backgroundPanel);
 //        jFrame.pack();
-        jFrame.setUndecorated(true); //
-        jFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        jFrame.setVisible(true);
+        setUndecorated(true); //
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setVisible(true);
     }
+
+    private void btnLoginActionPerformed(ActionEvent e) {        var username = txtUsername.getText();
+        var password = txtPassword.getText();
+        System.out.println(username + " " + password);
+        var user = accountService.login(username, password);
+        if (user == null) {
+            var result = "Tài Khoản đăng nhập hoặc Mật Khẩu của bạn không đúng, vui lòng nhập lại";
+            JOptionPane.showMessageDialog(null, result, null, JOptionPane.INFORMATION_MESSAGE);
+        } else {
+            if (user.getRole() == Account.Role.USER) {
+                JOptionPane.showMessageDialog(null, "Bạn không có quyền truy cập vào chức năng này", null, JOptionPane.WARNING_MESSAGE);
+                return;
+            }
+            var emp = ServiceProvider.getInstance().getService(EmployeeService.class).findEmployeeByAccountID(user.getId());
+            if (emp == null) {
+                JOptionPane.showMessageDialog(null, "Bạn không có quyền truy cập vào chức năng này", null, JOptionPane.WARNING_MESSAGE);
+                return;
+            }
+            emp.setAccount(user);
+            MainUI.setCurrentUser(emp);
+            MainUI.getInstance().setVisible(true);
+            dispose();
+        }
+    }
+
+
 
     public static ImageIcon getImage(String path, int width, int height) {
         try {
@@ -194,6 +207,7 @@ public class LoginGUI {
 
     public static void main(String[] args) {
         Helper.initUI();
+        ServiceProvider.init();
         new LoginGUI();
     }
 }

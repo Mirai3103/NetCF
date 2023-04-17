@@ -84,12 +84,15 @@ public class ServiceProvider {
                 .register(IInvoiceDAO.class, InvoiceDAOImpl.class)
                 .register(IComputerUsageDAO.class, ComputerUsageImpl.class)
                 .register(AccountService.class, AccountService.class)
+                .register(IAccountDAO.class, AccountDAOImpl.class)
                 .register(ComputerService.class, ComputerService.class)
                 .register(SessionService.class, SessionService.class)
                 .register(ComputerUsageService.class, ComputerUsageService.class)
                 .register(MessageService.class, MessageService.class)
                 .register(InvoiceService.class, InvoiceService.class)
                 .register(EmployeeService.class, EmployeeService.class)
+                .register(ProductService.class, ProductService.class)
+                .register(IProductDAO.class, ProductDAOImpl.class)
                 .build();
     }
 }
