@@ -20,21 +20,27 @@ public class EmployeeDAOImpl extends BaseDAO implements IEmployeeDAO{
     }
     @Override
     public Employee create(Employee employee) throws SQLException {
-        var preparedStatement=this.prepareStatement("INSERT INTO employee (name, accountID, accountID, phoneNumber, address, otherInformation, createdAt, deletedAt) VALUES (?, ?, ?, ?, ?, ?, ?, ?)", Statement.RETURN_GENERATED_KEYS);
-        preparedStatement.setString(1,employee.getName());
-        preparedStatement.setInt(2,employee.getAccountID());
-        preparedStatement.setInt(3,employee.getSalaryPerHour());
-        preparedStatement.setString(4, employee.getPhoneNumber());
-        preparedStatement.setString(5, employee.getAddress());
-        preparedStatement.setString(6,employee.getOtherInformation());
-        preparedStatement.setDate(7,new  java.sql.Date(employee.getCreatedAt().getTime()));
-        preparedStatement.setDate(8, null);
-        preparedStatement.executeUpdate();
-        var resultSet = preparedStatement.getGeneratedKeys();
-        if (resultSet.next()) {
-            employee.setId(resultSet.getInt(1));
+
+        try(var  preparedStatement=this.prepareStatement("INSERT INTO employee (name, accountID, accountID, phoneNumber, address, otherInformation, createdAt, deletedAt) VALUES (?, ?, ?, ?, ?, ?, ?, ?)", Statement.RETURN_GENERATED_KEYS)) {
+            preparedStatement.setString(1,employee.getName());
+            preparedStatement.setInt(2,employee.getAccountID());
+            preparedStatement.setInt(3,employee.getSalaryPerHour());
+            preparedStatement.setString(4, employee.getPhoneNumber());
+            preparedStatement.setString(5, employee.getAddress());
+            preparedStatement.setString(6,employee.getOtherInformation());
+            preparedStatement.setDate(7,new  java.sql.Date(employee.getCreatedAt().getTime()));
+            preparedStatement.setDate(8, null);
+            preparedStatement.executeUpdate();
+            var resultSet = preparedStatement.getGeneratedKeys();
+            if (resultSet.next()) {
+                employee.setId(resultSet.getInt(1));
+            }
+            return employee;
+        }catch (Exception e){
+            e.printStackTrace();
         }
-        return employee;
+    return null;
+
     }
 
     @Override
@@ -80,4 +86,6 @@ public class EmployeeDAOImpl extends BaseDAO implements IEmployeeDAO{
         statement.close();
         return employees;
     }
+
 }
+

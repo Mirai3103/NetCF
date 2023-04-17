@@ -15,6 +15,9 @@ import java.util.List;
 @NoArgsConstructor
 public class AccountDAOImpl extends BaseDAO implements IAccountDAO {
 
+    public static AccountDAOImpl getInstance(){
+        return new AccountDAOImpl();
+    }
 
     public Account create(Account account) throws SQLException {
         var preparedStatement = ConnectionFactory

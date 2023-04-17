@@ -15,6 +15,9 @@ import java.util.List;
 @AllArgsConstructor
 @Builder
 public class Account implements java.io.Serializable {
+    public static Account getInstance() {
+        return new Account();
+    }
     @Serial
     private static final long serialVersionUID = 67566435324L;
     public enum Role {

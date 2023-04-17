@@ -6,8 +6,12 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+
+//import java.lang.reflect.Field;
+
 import java.io.Serial;
 import java.io.Serializable;
+
 import java.util.Date;
 import java.util.List;
 
@@ -91,4 +95,5 @@ public class Invoice implements Serializable {
             case 2 -> this.type = InvoiceType.EXPORT;
         }
     }
+
 }
