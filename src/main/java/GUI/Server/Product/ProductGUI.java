@@ -158,7 +158,7 @@ public class ProductGUI extends JFrame {
         table.getColumn("Chi Tiết").setCellEditor(buttonEditor);
 
         table.getColumnModel().getColumn(0).setPreferredWidth(10);
-        
+
         var panel1 = new JScrollPane(table);
         panel1.setPreferredSize(new Dimension(800,500));
         panelBody.add(panel1,BorderLayout.CENTER);
