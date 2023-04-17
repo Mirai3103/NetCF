@@ -42,11 +42,12 @@ public class SocketController {
     private void onChangePassword(Socket socket, Serializable serializable) {
         try {
             var session = sessionService.findByComputerId(socket.getMachineId());
-            var account = session.getUsingByAccount();
+            var account = accountService.findById(session.getUsingBy());
             accountService.changePassword(account.getId(), serializable.toString());
             server.emit("infoMessage", "Đổi mật khẩu thành công");
         } catch (SQLException e) {
             e.printStackTrace();
+            server.emit("errorMessage", "Đổi mật khẩu thất bại");
         }
     }
 

@@ -23,7 +23,9 @@ public class InvoiceService {
     @Setter
     private IInvoiceDAO invoiceDAO;
     @Setter
-    IInvoiceDetailDAO invoiceDetailDAO;
+   private IInvoiceDetailDAO invoiceDetailDAO;
+    @Setter
+    private  ProductService productService;
 
     public List<Invoice> findAll()  {
         try {
@@ -80,12 +82,14 @@ public class InvoiceService {
     }
 
 
-    public Invoice findInvoiceById(Integer integer){
+    public Invoice findInvoiceById(Integer integer) {
         try {
             return invoiceDAO.findById(integer);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
+
+    }
     public Invoice order(CreateInvoiceInputDTO createInvoiceInputDTO) {
         var newInvoice = Invoice.builder()
                 .computerId(createInvoiceInputDTO.getComputerId())
@@ -102,10 +106,12 @@ public class InvoiceService {
         try {
             var invoice = invoiceDAO.create(newInvoice);
             createInvoiceInputDTO.getInvoiceDetailDTOList().forEach(invoiceDetailDTO -> {
+                var product = productService.findProductById(invoiceDetailDTO.getProductId());
                 var newInvoiceDetail = InvoiceDetail.builder()
                         .invoiceId(invoice.getId())
                         .productId(invoiceDetailDTO.getProductId())
                         .quantity(invoiceDetailDTO.getQuantity())
+                        .price(product.getPrice())
                         .build();
                 try {
                     invoiceDetailDAO.create(newInvoiceDetail);

@@ -19,5 +19,6 @@ public class CreateInvoiceInputDTO implements Serializable{
     private int computerId;
     private Integer accountId;
     private String note;
+    private boolean isUsingBalance;
     private List<InvoiceDetailInputDTO> invoiceDetailDTOList;
 }

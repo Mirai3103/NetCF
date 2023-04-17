@@ -110,6 +110,22 @@ public class MainGUI extends JFrame {
             chatGUI.setVisible(true);
             chatGUI.setLocationRelativeTo(null);
         });
+        button3.addActionListener(e -> {
+            System.out.println("Change password");
+            System.out.println(Main.session.getUsingByAccount());
+            if(Main.session.getUsingByAccount()==null){
+                JOptionPane.showMessageDialog(this, "Không thể đổi mật khẩu khi đang sử dụng dịch vụ với tư cách khách vãng lai", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
+                return;
+            }
+            var oldPassword = JOptionPane.showInputDialog(this, "Nhập mật khẩu cũ", "Đổi mật khẩu", JOptionPane.INFORMATION_MESSAGE);
+            if (!oldPassword.equals(Main.session.getUsingByAccount().getPassword())){
+                JOptionPane.showMessageDialog(this, "Mật khẩu cũ không đúng", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
+            return;
+            }
+            var newPassword = JOptionPane.showInputDialog(this, "Nhập mật khẩu mới", "Đổi mật khẩu", JOptionPane.INFORMATION_MESSAGE);
+            Main.socket.emit("changePassword", newPassword);
+
+        });
     }
 
     public void onCleanUp() {

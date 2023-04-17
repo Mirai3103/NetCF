@@ -26,5 +26,12 @@ public class ProductService {
             throw new RuntimeException(e);
         }
     }
+    public Product findProductById(int id){
+        try {
+         return   productDAO.findById(id);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
 }

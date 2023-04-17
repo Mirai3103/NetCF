@@ -19,7 +19,6 @@ public class EmployeeService {
             throw new RuntimeException(e);
         }
 
-        return null;
 
     }
     public Employee findEmployeeByAccountID(int id) {
@@ -37,7 +36,6 @@ public class EmployeeService {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-        return null;
     }
 
 }

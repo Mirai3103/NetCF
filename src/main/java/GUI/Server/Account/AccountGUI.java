@@ -37,7 +37,7 @@ public class AccountGUI extends JPanel {
         label1.putClientProperty("FlatLaf.style", "font: $h0.font");
         try {
             accounts = accountService.getAllAccounts();
-            filteredAccounts = accounts.stream().toList();
+            filteredAccounts = accounts.stream().filter(a->a.getRole().isLessThan(MainUI.getCurrentUser().getAccount().getRole())).toList();
             reDesign();
 
         } catch (ParseException e) {
@@ -53,8 +53,8 @@ public class AccountGUI extends JPanel {
             @Override
             public void keyReleased(KeyEvent e) {
                 String keyword = searchTextField.getText();
-                if (keyword.trim().equals("")) filteredAccounts = accounts.stream().map(account -> account).toList();
-                filteredAccounts = accounts.stream().filter(account -> account.getUsername().contains(keyword) || (account.getId() + "").contains(keyword)).toList();
+                if (keyword.trim().equals("")) filteredAccounts = accounts.stream().filter(a->a.getRole().isLessThan(MainUI.getCurrentUser().getAccount().getRole())).toList();
+                filteredAccounts = accounts.stream().filter(account -> account.getUsername().contains(keyword) || (account.getId() + "").contains(keyword)).filter(a->a.getRole().isLessThan(MainUI.getCurrentUser().getAccount().getRole())).toList();
                 renderTableData();
             }
         });

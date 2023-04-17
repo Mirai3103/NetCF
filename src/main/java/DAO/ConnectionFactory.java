@@ -9,6 +9,7 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class ConnectionFactory {
@@ -51,14 +52,25 @@ public class ConnectionFactory {
                     if (field.getName().equals("serialVersionUID")) {
                         continue;
                     }
-                    var type =field.getType().isEnum()?Integer.class:field.getType();
-                    type = type == float.class  ? double.class : type;
-                    type = type == java.sql.Time.class ? java.sql.Date.class : type;
-                    Method setMethod = clazz.getMethod(setMethodName,type );
+//                    var type =field.getType().isEnum()?Integer.class:field.getType();
+//                    type = type == float.class  ? double.class : type;
+//                    type = type == java.sql.Time.class ? java.sql.Date.class : type;
+//                    Method setMethod = clazz.getMethod(setMethodName,type );
 
                    try {
                        var value = resultSet.getObject(field.getName());
-                       setMethod.invoke(t,value );
+                       field.setAccessible(true);
+                       if(value == null){
+                           continue;
+                       }
+                       if (field.getType().isEnum()){
+                            int ordinal = (int) value;
+                            value = field.getType().getEnumConstants()[ordinal];
+                            field.set(t,value);
+                            continue;
+                       }
+                          field.set(t,value);
+//                       setMethod.invoke(t,value);
                    }catch (Exception ignored) {
                        if (field.getType().isEnum()){
                            ignored.printStackTrace();

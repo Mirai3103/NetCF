@@ -73,4 +73,16 @@ public class SideBar {
         });
         items.get(0).getParent().doClick(); // click first item
     }
+    public void navigateTo(String key){
+        items.forEach(item -> {
+            if (item.getParent().getKey().equals(key)) {
+                item.getParent().doClick();
+            }
+            item.getChildren().forEach(child -> {
+                if (child.getKey().equals(key)) {
+                    child.doClick();
+                }
+            });
+        });
+    }
 }
