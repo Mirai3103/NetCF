@@ -1,3 +1,4 @@
+
 package DTO;
 
 
@@ -59,4 +60,3 @@ public class Product {
     public void setProductType(Integer productType) {
         this.type = ProductType.values()[productType];
     }
-}
