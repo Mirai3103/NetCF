@@ -1,6 +1,7 @@
 package DAO;
 
 import DAO.Interface.IComputerDAO;
+import model.Account;
 import model.Computer;
 
 import java.sql.SQLException;
@@ -8,7 +9,9 @@ import java.sql.Statement;
 import java.util.List;
 
 public class ComputerDAOImpl extends BaseDAO implements IComputerDAO{
-
+    public  static ComputerDAOImpl getInstance(){
+        return new ComputerDAOImpl();
+    }
     @Override
     public Computer create(Computer computer) throws SQLException {
         var preparedStatement = this.prepareStatement("INSERT INTO computer (name, price, type, createdAt, deletedAt) VALUES (?, ?, ?, ?, ?)", Statement.RETURN_GENERATED_KEYS);
@@ -65,4 +68,5 @@ public class ComputerDAOImpl extends BaseDAO implements IComputerDAO{
         var resultSet = preparedStatement.executeQuery();
         return ConnectionFactory.toList(resultSet, Computer.class);
     }
+
 }

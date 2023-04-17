@@ -80,6 +80,10 @@ public class ServiceProvider {
                 .register(ComputerUsageService.class, ComputerUsageService.class)
                 .register(MessageService.class, MessageService.class)
                 .register(InvoiceService.class, InvoiceService.class)
+                .register(IEmployeeDAO.class,EmployeeDAOImpl.class)
+                .register(EmployeeService.class, EmployeeService.class)
+                .register(IProductDAO.class,ProductDAOImpl.class)
+                .register(ProductService.class,ProductService.class)
                 .build();
     }
 }

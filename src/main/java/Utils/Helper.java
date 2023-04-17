@@ -97,4 +97,25 @@ public class Helper {
         }
     }
 
+
+    //validate date like form "yyyy-mm-dd"
+    public static boolean ValidateDate(String strDate){
+        String regexDate = "^\\d{4}\\-(0[1-9]|1[012])\\-(0[1-9]|[12][0-9]|3[01])$";
+        if(strDate.matches(regexDate))
+            return true;
+        return false;
+    }
+
+
+    //compare date: if date1 occur affter date2 the return false.
+    public static boolean compareDate(String date1, String date2){
+        if(date1.compareTo(date2) > 0) {
+            return false;
+        }
+        return true;
+    }
+
+    //create operation for Invoice(delete, edit, showdetailInvoice)
+
+
 }

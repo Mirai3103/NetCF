@@ -1,14 +1,17 @@
 package DAO;
 
 import DAO.Interface.IProductDAO;
+import model.Invoice;
 import model.Product;
 
 import java.beans.Statement;
 import java.sql.SQLException;
 import java.text.ParseException;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
-public class ProductDAOImpl implements IProductDAO {
+public class ProductDAOImpl extends BaseDAO implements IProductDAO {
 
 
     @Override
@@ -34,6 +37,22 @@ public class ProductDAOImpl implements IProductDAO {
 
     @Override
     public List<Product> findAll() throws SQLException {
-        return null;
+        var statement = this.createStatement();
+        var resultSet = statement.executeQuery("SELECT * FROM product p.delectedAt is null");
+        var products = ConnectionFactory.toList(resultSet,Product.class);
+        statement.close();
+        return products;
     }
+
+    @Override
+    public List<Product> filterByTypeProduct(Product.ProductType type) throws SQLException {
+        String sqlSelectProductByType = """
+                SELECT * FROM product WHERE type = ? and deletedAt is null
+                """;
+        var statement = this.prepareStatement(sqlSelectProductByType);
+        statement.setInt(1,type.ordinal());
+        var rs = statement.executeQuery();
+        return ConnectionFactory.toList(rs,Product.class);
+    }
+
 }

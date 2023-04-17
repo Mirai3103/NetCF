@@ -6,6 +6,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+//import java.lang.reflect.Field;
 import java.util.Date;
 import java.util.List;
 
@@ -87,4 +88,5 @@ public class Invoice {
             case 2 -> this.type = InvoiceType.EXPORT;
         }
     }
+
 }
