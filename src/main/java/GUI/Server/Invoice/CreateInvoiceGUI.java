@@ -273,7 +273,6 @@ public class CreateInvoiceGUI extends JPanel{
     }
     public static  void main(String[] args){
         Helper.initUI();
-        ServiceProvider.init();
         CreateInvoiceGUI createInvoice = new CreateInvoiceGUI();
         createInvoice.initCompunent();
         JFrame jFrame = new JFrame();

@@ -18,7 +18,7 @@ public class TestOrderService {
     @BeforeAll
     public static void init(){
         ServiceProvider.init();
-      invoiceService = ServiceProvider.getInstance().getService(InvoiceService.class);
+         invoiceService = ServiceProvider.getInstance().getService(InvoiceService.class);
         var accountService = ServiceProvider.getInstance().getService(AccountService.class);
         var account =accountService.login("employee1", "employee1");
         var employee = ServiceProvider.getInstance().getService(EmployeeService.class).findEmployeeByAccountID(account.getId());

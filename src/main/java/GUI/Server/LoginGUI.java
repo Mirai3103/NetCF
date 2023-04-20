@@ -164,7 +164,6 @@ public class LoginGUI extends JFrame {
 
     private void btnLoginActionPerformed(ActionEvent e) {        var username = txtUsername.getText();
         var password = txtPassword.getText();
-        System.out.println(username + " " + password);
         var user = accountService.login(username, password);
         if (user == null) {
             var result = "Tài Khoản đăng nhập hoặc Mật Khẩu của bạn không đúng, vui lòng nhập lại";

@@ -111,8 +111,6 @@ public class MainGUI extends JFrame {
             chatGUI.setLocationRelativeTo(null);
         });
         button3.addActionListener(e -> {
-            System.out.println("Change password");
-            System.out.println(Main.session.getUsingByAccount());
             if(Main.session.getUsingByAccount()==null){
                 JOptionPane.showMessageDialog(this, "Không thể đổi mật khẩu khi đang sử dụng dịch vụ với tư cách khách vãng lai", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
                 return;

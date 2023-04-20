@@ -94,9 +94,9 @@ public class ServiceProvider {
                 .register(InvoiceService.class, InvoiceService.class)
                 .register(IEmployeeDAO.class,EmployeeDAOImpl.class)
                 .register(EmployeeService.class, EmployeeService.class)
+                .register(IProductDAO.class, ProductDAOImpl.class)
 
                 .register(ProductService.class, ProductService.class)
-                .register(IProductDAO.class, ProductDAOImpl.class)
                 .build();
     }
 }

@@ -10,10 +10,11 @@ import java.util.List;
 public class InvoiceDetailDAOImpl extends BaseDAO implements IInvoiceDetailDAO {
     @Override
     public InvoiceDetail create(InvoiceDetail invoiceDetail) throws SQLException {
-        var preparedStatement = this.prepareStatement("insert into InvoiceDetail (invoiceId, productId, quantity) values (?,?,?)", Statement.RETURN_GENERATED_KEYS);
+        var preparedStatement = this.prepareStatement("insert into InvoiceDetail (invoiceId, productId, quantity,price) values (?,?,?,?)", Statement.RETURN_GENERATED_KEYS);
         preparedStatement.setInt(1, invoiceDetail.getInvoiceId());
         preparedStatement.setInt(2, invoiceDetail.getProductId());
         preparedStatement.setInt(3, invoiceDetail.getQuantity());
+        preparedStatement.setDouble(4, invoiceDetail.getPrice());
         var result = preparedStatement.executeUpdate();
         if (result > 0) {
             var resultSet = preparedStatement.getGeneratedKeys();

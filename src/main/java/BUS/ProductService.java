@@ -14,7 +14,6 @@ public class ProductService {
     private IProductDAO productDAO;
 
     public ProductService() {
-        this.productDAO = ServiceProvider.getInstance().getService(IProductDAO.class);
     }
 
     public List<Product> findAllProduct(){

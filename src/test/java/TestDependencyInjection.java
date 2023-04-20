@@ -16,7 +16,6 @@ public class TestDependencyInjection {
                 .register(IAccountDAO.class, AccountDAOImpl.class)
                 .build();
         var accountService = ServiceBuilder.getInstance().getService(AccountService.class);
-        accountService.getAllAccounts().forEach(System.out::println);
     }
 }
 class ServiceBuilder{

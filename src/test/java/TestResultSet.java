@@ -42,7 +42,6 @@ public class TestResultSet {
             Statement statement = connection.createStatement();
             ResultSet resultSet = statement.executeQuery("select * from person");
             List<Person> list = toList(resultSet,Person.class);
-            list.forEach(System.out::println);
         }catch (Exception exception){
             exception.printStackTrace();
             System.exit(0);

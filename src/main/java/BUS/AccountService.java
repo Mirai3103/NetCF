@@ -45,7 +45,6 @@ public class AccountService {
     }
 
     public List<Account> getAllAccounts() throws  SQLException {
-        System.out.println(accountDAO);
         var accounts =this.accountDAO.findAll();
         var sessions = this.sessionService.findAll();
         sessions.forEach(s->{

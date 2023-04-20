@@ -60,7 +60,6 @@ public class Helper {
     }
     public static ImageIcon getIcon(String path) {
         var a =Helper.class.getResource(path);
-        System.out.println(path);
         return new ImageIcon(Objects.requireNonNull(a));
     }
     public static String toHHMM(int seconds, boolean withColon) {

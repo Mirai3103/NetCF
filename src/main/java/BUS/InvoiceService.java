@@ -107,6 +107,8 @@ public class InvoiceService {
                         .quantity(invoiceDetailDTO.getQuantity())
                         .price(product.getPrice())
                         .build();
+                System.out.println(newInvoiceDetail);
+
                 try {
                     invoiceDetailDAO.create(newInvoiceDetail);
                 } catch (SQLException e) {
