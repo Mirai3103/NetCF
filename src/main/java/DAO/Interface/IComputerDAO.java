@@ -1,9 +1,6 @@
 package DAO.Interface;
 
-import model.Account;
-import model.Computer;
-
-import java.sql.SQLException;
+import Entity.Computer;
 
 public interface IComputerDAO extends IDAO<Computer, Integer>{
 }

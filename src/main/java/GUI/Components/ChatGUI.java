@@ -4,16 +4,13 @@
 
 package GUI.Components;
 
-import Utils.Helper;
 import lombok.Getter;
 import lombok.Setter;
-import model.Message;
+import Entity.Message;
 
 import java.awt.*;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Timer;
 import javax.swing.*;
 import javax.swing.border.*;
 

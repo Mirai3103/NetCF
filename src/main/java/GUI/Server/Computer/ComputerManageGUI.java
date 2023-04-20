@@ -2,9 +2,7 @@ package GUI.Server.Computer;
 
 import Utils.Helper;
 import Utils.ServiceProvider;
-import com.formdev.flatlaf.extras.FlatSVGIcon;
-import lombok.Setter;
-import model.Computer;
+import Entity.Computer;
 import service.ComputerService;
 
 import java.awt.BorderLayout;

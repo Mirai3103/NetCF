@@ -2,14 +2,10 @@ package DAO;
 
 import DAO.Interface.IAccountDAO;
 import lombok.NoArgsConstructor;
-import model.Account;
+import Entity.Account;
 
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 @NoArgsConstructor

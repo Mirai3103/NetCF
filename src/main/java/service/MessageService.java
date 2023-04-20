@@ -2,7 +2,7 @@ package service;
 
 import DAO.Interface.IMessageDAO;
 import lombok.Setter;
-import model.Message;
+import Entity.Message;
 
 import java.sql.SQLException;
 import java.util.List;

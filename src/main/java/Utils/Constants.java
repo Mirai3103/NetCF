@@ -61,7 +61,14 @@ public final class Constants {
                         )
                 )).build()
         );
-        tabs.add(Tab.builder().title("Thống kê").key("thongke").contentPanel(new CreateInvoiceGUI()).build());
+        tabs.add(Tab.builder().title("Thống kê").key("thongke")
+                        .children(new ArrayList<>(
+                                List.of(
+                                        Tab.builder().title("Doanh thu từ máy").key("thongke-account").contentPanel(createPanelWithText("Thống kê doanh thu từ máy")).build(),
+                                        Tab.builder().title("Doanh thu từ máy").key("thongke-hoadon").contentPanel(createPanelWithText("Thống kê hoá đơn")).build()
+                                )
+                        ))
+                .build());
         tabs.add(Tab.builder().title("Cá nhân").key("canhan").contentPanel(new PersonalSetting()).build());
         return tabs;
 

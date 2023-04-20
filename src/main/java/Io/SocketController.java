@@ -3,15 +3,12 @@ package Io;
 import Payload.LoginPayload;
 import Utils.Helper;
 import Utils.ServiceProvider;
-import Utils.Interval;
-import model.Message;
-import model.Session;
+import Entity.Message;
 import service.AccountService;
 import service.ComputerService;
 import service.MessageService;
 import service.SessionService;
 
-import javax.swing.*;
 import java.awt.*;
 import java.io.IOException;
 import java.io.Serializable;

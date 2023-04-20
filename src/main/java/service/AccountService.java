@@ -1,13 +1,10 @@
 package service;
 
-import DAO.AccountDAOImpl;
 import DAO.Interface.IAccountDAO;
 import lombok.Setter;
-import model.Account;
+import Entity.Account;
 
 import java.sql.SQLException;
-import java.sql.Statement;
-import java.text.ParseException;
 import java.util.List;
 
 public class AccountService {

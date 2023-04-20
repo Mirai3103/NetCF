@@ -3,9 +3,7 @@ package GUI.Client;
 import Io.Socket;
 import Utils.Constants;
 import Utils.Helper;
-import lombok.Getter;
-import lombok.Setter;
-import model.Session;
+import Entity.Session;
 
 import javax.swing.*;
 import java.io.IOException;

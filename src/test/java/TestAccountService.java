@@ -1,6 +1,6 @@
 import DAO.AccountDAOImpl;
 import DAO.Interface.IAccountDAO;
-import model.Account;
+import Entity.Account;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

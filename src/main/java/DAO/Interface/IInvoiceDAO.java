@@ -1,7 +1,7 @@
 package DAO.Interface;
 
-import model.InforFilter;
-import model.Invoice;
+import Entity.InforFilter;
+import Entity.Invoice;
 
 import java.sql.SQLException;
 import java.util.List;

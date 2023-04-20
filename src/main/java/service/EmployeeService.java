@@ -2,7 +2,7 @@ package service;
 
 import DAO.Interface.IEmployeeDAO;
 import lombok.Setter;
-import model.Employee;
+import Entity.Employee;
 
 import java.sql.SQLException;
 import java.util.List;

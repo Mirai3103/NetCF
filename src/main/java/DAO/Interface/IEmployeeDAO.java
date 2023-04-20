@@ -1,6 +1,6 @@
  package DAO.Interface;
 
-import model.Employee;
+import Entity.Employee;
 
 import java.sql.SQLException;
 

@@ -1,7 +1,7 @@
 package DAO;
 
 import DAO.Interface.IInvoiceDetailDAO;
-import model.InvoiceDetail;
+import Entity.InvoiceDetail;
 
 import java.sql.SQLException;
 import java.sql.Statement;

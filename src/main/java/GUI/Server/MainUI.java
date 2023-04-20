@@ -11,7 +11,7 @@ import Utils.Fonts;
 import Utils.Helper;
 import lombok.Getter;
 import lombok.Setter;
-import model.Employee;
+import Entity.Employee;
 
 import java.awt.*;
 import java.awt.event.WindowAdapter;

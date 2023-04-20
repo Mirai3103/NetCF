@@ -2,7 +2,7 @@ package service;
 
 import DAO.Interface.IComputerUsageDAO;
 import lombok.Setter;
-import model.ComputerUsage;
+import Entity.ComputerUsage;
 
 import java.sql.SQLException;
 import java.util.Date;

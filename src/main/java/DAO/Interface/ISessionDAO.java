@@ -1,6 +1,6 @@
 package DAO.Interface;
 
-import model.Session;
+import Entity.Session;
 
 import java.sql.SQLException;
 

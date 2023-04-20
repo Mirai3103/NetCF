@@ -5,12 +5,11 @@ import Io.Server;
 import Io.Socket;
 import Utils.Interval;
 import lombok.Setter;
-import model.Account;
-import model.ComputerUsage;
-import model.Session;
+import Entity.Account;
+import Entity.ComputerUsage;
+import Entity.Session;
 
 import javax.swing.*;
-import java.sql.Date;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;

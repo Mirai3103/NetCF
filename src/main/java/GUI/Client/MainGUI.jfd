@@ -12,7 +12,7 @@ new FormModel {
 				"background": new java.awt.Color( 235, 248, 255, 255 )
 				add( new FormComponent( "javax.swing.JLabel" ) {
 					name: "label8"
-					"icon": sfield com.jformdesigner.model.FormObject NULL_VALUE
+					"icon": sfield com.jformdesigner.Entity.FormObject NULL_VALUE
 				} )
 			}, new FormLayoutConstraints( class java.lang.String ) {
 				"value": "South"
@@ -212,10 +212,10 @@ new FormModel {
 				add( new FormComponent( "javax.swing.JButton" ) {
 					name: "button1"
 					"text": "Tin nhắn"
-					"icon": new com.jformdesigner.model.SwingIcon( 0, "/icons/message.png" )
+					"icon": new com.jformdesigner.Entity.SwingIcon( 0, "/icons/message.png" )
 					"verticalTextPosition": 3
 					"background": new java.awt.Color( 255, 255, 255, 0 )
-					"selectedIcon": new com.jformdesigner.model.SwingIcon( 0, "/icons/message.png" )
+					"selectedIcon": new com.jformdesigner.Entity.SwingIcon( 0, "/icons/message.png" )
 					"horizontalTextPosition": 0
 				} )
 				add( new FormComponent( "javax.swing.JButton" ) {
@@ -223,7 +223,7 @@ new FormModel {
 					"text": "Đăng xuất"
 					"horizontalTextPosition": 0
 					"verticalTextPosition": 3
-					"icon": new com.jformdesigner.model.SwingIcon( 0, "/icons/logout.png" )
+					"icon": new com.jformdesigner.Entity.SwingIcon( 0, "/icons/logout.png" )
 					"background": &Color2 new java.awt.Color( 255, 255, 255, 0 )
 				} )
 				add( new FormComponent( "javax.swing.JButton" ) {
@@ -231,7 +231,7 @@ new FormModel {
 					"text": "Mật khẩu"
 					"horizontalTextPosition": 0
 					"verticalTextPosition": 3
-					"icon": new com.jformdesigner.model.SwingIcon( 0, "/icons/key.png" )
+					"icon": new com.jformdesigner.Entity.SwingIcon( 0, "/icons/key.png" )
 					"background": #Color2
 				} )
 				add( new FormComponent( "javax.swing.JButton" ) {
@@ -239,7 +239,7 @@ new FormModel {
 					"text": "Ăn, uống"
 					"horizontalTextPosition": 0
 					"verticalTextPosition": 3
-					"icon": new com.jformdesigner.model.SwingIcon( 0, "/icons/food.png" )
+					"icon": new com.jformdesigner.Entity.SwingIcon( 0, "/icons/food.png" )
 					"background": #Color2
 				} )
 				add( new FormComponent( "javax.swing.JButton" ) {
@@ -247,7 +247,7 @@ new FormModel {
 					"text": "Khoá máy"
 					"horizontalTextPosition": 0
 					"verticalTextPosition": 3
-					"icon": new com.jformdesigner.model.SwingIcon( 0, "/icons/lock.png" )
+					"icon": new com.jformdesigner.Entity.SwingIcon( 0, "/icons/lock.png" )
 					"background": #Color2
 				} )
 				add( new FormComponent( "javax.swing.JButton" ) {
@@ -255,7 +255,7 @@ new FormModel {
 					"text": "Tiện ích"
 					"horizontalTextPosition": 0
 					"verticalTextPosition": 3
-					"icon": new com.jformdesigner.model.SwingIcon( 0, "/icons/unity.png" )
+					"icon": new com.jformdesigner.Entity.SwingIcon( 0, "/icons/unity.png" )
 					"background": #Color2
 				} )
 			}, new FormLayoutConstraints( class java.lang.String ) {

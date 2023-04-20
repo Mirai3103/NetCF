@@ -1,19 +1,10 @@
 package DAO;
 
-import DAO.BaseDAO;
-import DAO.ConnectionFactory;
 import DAO.Interface.IInvoiceDAO;
-import GUI.Server.Invoice.InvoiceManageGUI;
-import Utils.ServiceProvider;
-import com.sun.source.tree.UsesTree;
-import model.Account;
-import model.Computer;
-import model.InforFilter;
-import model.Invoice;
-import service.AccountService;
+import Entity.InforFilter;
+import Entity.Invoice;
 
 import java.sql.*;
-import java.util.ArrayList;
 import java.util.List;
 
 public class InvoiceDAOImpl extends BaseDAO implements IInvoiceDAO {

@@ -4,12 +4,11 @@
 
 package GUI.Server.Account;
 
-import GUI.Server.Invoice.InvoiceManageGUI;
 import GUI.Server.MainUI;
 import Utils.Fonts;
 import Utils.Helper;
 import Utils.ServiceProvider;
-import model.Account;
+import Entity.Account;
 import service.AccountService;
 
 import java.awt.*;

@@ -1,6 +1,6 @@
 package DAO.Interface;
 
-import model.ComputerUsage;
+import Entity.ComputerUsage;
 
 public interface IComputerUsageDAO extends  IDAO<ComputerUsage, Integer> {
 }

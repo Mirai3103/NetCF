@@ -10,8 +10,8 @@ import GUI.Components.ChatGUI;
 import Utils.Fonts;
 import Utils.Helper;
 import com.formdev.flatlaf.ui.FlatDropShadowBorder;
-import model.Message;
-import model.Session;
+import Entity.Message;
+import Entity.Session;
 
 import java.awt.*;
 import java.util.ArrayList;

@@ -5,11 +5,10 @@ import DAO.Interface.ISessionDAO;
 import Io.Server;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import model.Computer;
+import Entity.Computer;
 
 import java.sql.SQLException;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @NoArgsConstructor
 public class ComputerService {

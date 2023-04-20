@@ -3,7 +3,7 @@ package service;
 import DAO.Interface.IProductDAO;
 import DAO.ProductDAOImpl;
 import lombok.Setter;
-import model.Product;
+import Entity.Product;
 
 import java.sql.SQLException;
 import java.util.List;

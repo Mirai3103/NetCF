@@ -1,14 +1,9 @@
 package DAO;
 
 import DAO.Interface.IProductDAO;
-import model.Invoice;
-import model.Product;
+import Entity.Product;
 
-import java.beans.Statement;
 import java.sql.SQLException;
-import java.text.ParseException;
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 public class ProductDAOImpl extends BaseDAO implements IProductDAO {

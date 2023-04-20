@@ -1,12 +1,11 @@
 package GUI.Server;
 
-import GUI.Client.Main;
 import GUI.Components.ImagePanel;
 import GUI.Components.Input;
 import Utils.Fonts;
 import Utils.Helper;
 import Utils.ServiceProvider;
-import model.Account;
+import Entity.Account;
 import service.AccountService;
 import service.EmployeeService;
 
@@ -17,8 +16,6 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
-import java.net.URL;
-import java.util.Arrays;
 
 public class LoginGUI {
     private AccountService accountService;

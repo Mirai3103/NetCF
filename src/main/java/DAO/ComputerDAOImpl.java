@@ -1,8 +1,7 @@
 package DAO;
 
 import DAO.Interface.IComputerDAO;
-import model.Account;
-import model.Computer;
+import Entity.Computer;
 
 import java.sql.SQLException;
 import java.sql.Statement;

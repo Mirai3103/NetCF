@@ -1,22 +1,16 @@
 package service;
 
 import DAO.Interface.IInvoiceDAO;
-import GUI.Server.Invoice.InvoiceManageGUI;
 import Utils.Helper;
-import lombok.Data;
 import DAO.Interface.IInvoiceDetailDAO;
 import DTO.CreateInvoiceInputDTO;
-import GUI.Server.Main;
 import GUI.Server.MainUI;
 import lombok.Setter;
-import model.InforFilter;
-import model.Invoice;
-import model.InvoiceDetail;
+import Entity.InforFilter;
+import Entity.Invoice;
+import Entity.InvoiceDetail;
 
 import java.sql.SQLException;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
 
 public class InvoiceService {
