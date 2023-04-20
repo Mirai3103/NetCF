@@ -189,7 +189,7 @@ public class ProductGUI extends JFrame {
         viewButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-
+                new ViewProductGUI((int)table.getValueAt(table.getSelectedRow(),0));
             }
         });
         deleteButton = new JButton("Delete");
