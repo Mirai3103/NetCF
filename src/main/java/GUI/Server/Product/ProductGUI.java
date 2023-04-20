@@ -12,23 +12,29 @@ import service.*;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import javax.swing.event.CellEditorListener;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellEditor;
 import javax.swing.table.TableColumn;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.sql.SQLException;
 import java.util.EventObject;
 import java.util.List;
 
 public class ProductGUI extends JFrame {
     private final ProductService productService;
-    private JPanel parentPanel, panelHeader, panelBody, panelBody1, panelBody2;
+    private JPanel parentPanel, panelHeader, panelBody, panelBody1, panelBody2, buttonPanel;
     private JLabel txtListProduct, logoLabel;
     private JComboBox comboBox;
     private Input findByName;
     private JTable table;
+
+    private JButton editButton, viewButton, deleteButton;
 
     public ProductGUI() {
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
@@ -113,8 +119,8 @@ public class ProductGUI extends JFrame {
         // start findByName
         findByName = new Input("Search Here...");
         findByName.setFont(Fonts.getFont(Font.PLAIN, 15));
-        findByName.setPreferredSize(new Dimension(400, 25));
-        panelBody2.add(findByName, BorderLayout.LINE_END);
+        findByName.setPreferredSize(new Dimension(200, 25));
+        panelBody2.add(findByName, BorderLayout.CENTER);
         // end findByName
 
 //        // start table
@@ -143,50 +149,89 @@ public class ProductGUI extends JFrame {
 
         dtm.setRowCount(0);
         table.setModel(dtm);
+        dtm.addColumn("ID");
+        dtm.addColumn("Tên Sản Phẩm");
+        dtm.addColumn("Giá Bán");
+        dtm.addColumn("Phân Loại");
+        dtm.addColumn("Mô Tả");
+        dtm.addColumn("Số Lượng");
         showTable(list, dtm);
-
-        // renderer cho các cột button
-        ButtonRenderer buttonRenderer = new ButtonRenderer();
-        table.getColumn("Xoá").setCellRenderer(buttonRenderer);
-        table.getColumn("Sửa").setCellRenderer(buttonRenderer);
-        table.getColumn("Chi Tiết").setCellRenderer(buttonRenderer);
-
-        // editor cho các cột button
-        ButtonEditor buttonEditor = new ButtonEditor(new JCheckBox());
-        table.getColumn("Xóa").setCellEditor(buttonEditor);
-        table.getColumn("Sửa").setCellEditor(buttonEditor);
-        table.getColumn("Chi Tiết").setCellEditor(buttonEditor);
-
-        table.getColumnModel().getColumn(0).setPreferredWidth(10);
+        table.getColumnModel().getColumn(0).setPreferredWidth(50);
+        table.getColumnModel().getColumn(1).setPreferredWidth(250);
+        table.getColumnModel().getColumn(2).setPreferredWidth(100);
+        table.getColumnModel().getColumn(3).setPreferredWidth(100);
+        table.getColumnModel().getColumn(4).setPreferredWidth(250);
+        table.getColumnModel().getColumn(5).setPreferredWidth(100);
 
         var panel1 = new JScrollPane(table);
         panel1.setPreferredSize(new Dimension(800,500));
         panelBody.add(panel1,BorderLayout.CENTER);
+
+        ListSelectionModel selectionModel = table.getSelectionModel();
+        selectionModel.addListSelectionListener(new ListSelectionListener() {
+            @Override
+            public void valueChanged(ListSelectionEvent e) {
+                if (!e.getValueIsAdjusting()) {
+                    int selectedRow = table.getSelectedRow();
+                }
+            }
+        });
+
+        buttonPanel = new JPanel();
+        editButton = new JButton("Edit");
+        editButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                new UpdateProductGUI((int)table.getValueAt(table.getSelectedRow(),0));
+            }
+        });
+        viewButton = new JButton("View");
+        viewButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+            }
+        });
+        deleteButton = new JButton("Delete");
+        deleteButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                int selectedRow = table.getSelectedRow();
+                if (selectedRow != -1) {
+                    DefaultTableModel model = (DefaultTableModel) table.getModel();
+                    model.removeRow(selectedRow);
+                }
+            }
+        });
+
+        buttonPanel.add(editButton);
+        buttonPanel.add(viewButton);
+        buttonPanel.add(deleteButton);
+        buttonPanel.setVisible(false);
+
+        table.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                int row = table.rowAtPoint(e.getPoint());
+                int column = table.columnAtPoint(e.getPoint());
+                if (row >= 0 && column >= 0) {
+                    buttonPanel.setVisible(true);
+                    var a = table.getSelectedRow();
+                    table.getValueAt(a,0);
+                }
+            }
+        });
+
+        panelBody.add(buttonPanel,BorderLayout.LINE_END);
     }
 
     
 
     public void showTable(List<Product> list, DefaultTableModel defaultTableModel) {
-        defaultTableModel.setColumnIdentifiers(
-                new Object[]{
-                        "ID", "Tên Sản Phẩm", "Phân Loại", "Giá Bán", "Mô Tả", "Số Lượng", "Chức Năng"
-                }
-        );
         for (Product p : list) {
-            JButton viewButton = new JButton();
-            viewButton.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-
-                }
-            });
-            JPanel btnPanel = new JPanel();
-            btnPanel.add(viewButton);
             defaultTableModel.addRow(new Object[]{
-                    p.getId(), p.getName(), p.getPrice() ,p.getType(), p.getDescription(), p.getStock(), btnPanel
+                    p.getId(), p.getName(), p.getPrice() ,p.getType(), p.getDescription(), p.getStock(),
             });
-            TableColumn column = table.getColumnModel().getColumn(6);
-            column.getCellRenderer();
         }
     }
 

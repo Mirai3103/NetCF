@@ -1,4 +1,5 @@
-package service;
+
+package BUS;
 
 import DAO.Interface.IProductDAO;
 import lombok.Setter;
@@ -27,6 +28,10 @@ public class ProductService {
         this.productDAO.delete(integer);
     }
 
+    public Product findById(int id) throws SQLException {
+        return this.productDAO.findById(id);
+    }
+
     public Product findByName(String name) throws SQLException {
         return this.productDAO.findByName(name);
     }
@@ -39,3 +44,4 @@ public class ProductService {
         return this.productDAO.filterByTypeProduct(type);
     }
 }
+
