@@ -45,9 +45,6 @@ public class SessionService {
             computer = computerService.getComputerById(machineId);
             session.setUsingComputer(computer);
             session.setUsingByAccount(account);
-
-
-
         var computerUsage = ComputerUsage.builder()
                 .computerID(machineId)
                 .endAt(new java.util.Date(System.currentTimeMillis()))
@@ -56,6 +53,31 @@ public class SessionService {
                 .usedByAccountId(session.getUsingBy())
                 .build();
 
+            tinhTien(session, computerUsage);
+            if (session.getUsingByAccount() != null) {
+            var newBalance = account.getBalance() - computerUsage.getTotalMoney();
+            newBalance = newBalance < 100 ? 0 : newBalance;
+            account.setBalance(newBalance);
+            accountService.update(account);
+        }
+
+        sessionDAO.delete(session.getId());
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+    public void shutDown(Integer computerId){
+        try {
+            var session = sessionDAO.findByComputerId(computerId);
+
+            if (session != null) {
+                logout(computerId);
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+    private void tinhTien(Session session, ComputerUsage computerUsage) throws SQLException {
         if (!computerUsage.isEmployeeUsing()) {
             var machine = computerService.getComputerById(session.getComputerID());
             if (machine == null) {
@@ -68,18 +90,8 @@ public class SessionService {
             computerUsage.setTotalMoney(price);
         }
         computerUsageService.create(computerUsage);
-        if (session.getUsingByAccount() != null) {
-            var newBalance = account.getBalance() - computerUsage.getTotalMoney();
-            newBalance = newBalance < 100 ? 0 : newBalance;
-            account.setBalance(newBalance);
-            accountService.update(account);
-        }
-
-        sessionDAO.delete(session.getId());
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
     }
+
     public Session createSession(Account account, Integer machineId) {
 
         var session = Session.builder()
@@ -241,18 +253,7 @@ public class SessionService {
                 .usedByAccountId(session.getUsingBy())
                 .build();
 
-        if (!computerUsage.isEmployeeUsing()) {
-            var machine = computerService.getComputerById(session.getComputerID());
-            if (machine == null) {
-                throw new RuntimeException("Machine not found");
-            }
-            var cost = machine.getPrice();
-            var usedTime = session.getUsedTime(); // in seconds
-            double usedTimeInHour = usedTime * 1.0 / 3600;
-            var price = Math.round(usedTimeInHour * cost);
-            computerUsage.setTotalMoney(price);
-        }
-        computerUsageService.create(computerUsage);
+        tinhTien(session, computerUsage);
         if (session.getUsingByAccount() != null) {
             var account = session.getUsingByAccount();
             var newBalance = account.getBalance() - computerUsage.getTotalMoney();

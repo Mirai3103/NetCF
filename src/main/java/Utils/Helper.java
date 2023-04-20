@@ -28,6 +28,9 @@ public class Helper {
     public static String getDateString(Date date){
         return dateFormat.format(date);
     }
+    public static String formatMoney(double money){
+        return String.format("%,.2fđ", money);
+    }
     public static File getResourceFile (String path) {
         var  a=  Helper.class.getResource(path).getPath();
        return   new File(a);

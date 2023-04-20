@@ -35,6 +35,7 @@ public class SocketController {
         server.on("message", this::onMessage);
         server.on("changePassword", this::onChangePassword);
         server.on("logout",this::onLogout);
+        server.on("shutdown",this::onShutDown);
     }
 
     private void onChangePassword(Socket socket, Serializable serializable) {
@@ -96,6 +97,11 @@ public class SocketController {
 
     private void onLogout(Socket socket, Serializable serializable) {
         this.sessionService.logout(socket.getMachineId());
+        server.emitSelf("statusChange",null);
+    }
+    private void onShutDown(Socket socket, Serializable serializable) {
+        Server.getInstance().removeClient(socket.getMachineId());
+        this.sessionService.shutDown(socket.getMachineId());
         server.emitSelf("statusChange",null);
     }
 }

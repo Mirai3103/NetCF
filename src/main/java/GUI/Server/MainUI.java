@@ -50,6 +50,8 @@ public class MainUI extends JFrame {
         sideBar.initComponent(Constants.getTabs());
         setExtendedState(JFrame.MAXIMIZED_BOTH);
         initEvent();
+        // disable minimize button
+
     }
     private JLabel userLabel;
     @Override

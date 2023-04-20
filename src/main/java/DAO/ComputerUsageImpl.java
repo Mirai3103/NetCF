@@ -2,6 +2,7 @@ package DAO;
 
 import DAO.Interface.IComputerUsageDAO;
 import DTO.ComputerUsage;
+import DTO.ComputerUsageFilter;
 
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -62,5 +63,10 @@ public class ComputerUsageImpl extends BaseDAO implements IComputerUsageDAO {
         var preparedStatement = this.prepareStatement("SELECT * FROM ComputerUsage");
         var resultSet = preparedStatement.executeQuery();
         return ConnectionFactory.toList(resultSet, ComputerUsage.class);
+    }
+
+    @Override
+    public List<ComputerUsage> findByFilter(ComputerUsageFilter filter) throws Exception {
+        return null;
     }
 }
