@@ -28,7 +28,6 @@ public class ConnectionFactory {
     }
 
     private static final String SERVER = "localhost:1433";
-    private static final String SERVER = "localhost:1434";
     private static final String DATABASE_NAME = "NetCF";
     private static final String USER_NAME = "sa";
 

@@ -2,6 +2,7 @@ package BUS;
 
 import DAO.Interface.IProductDAO;
 import DAO.ProductDAOImpl;
+import Utils.ServiceProvider;
 import lombok.Setter;
 import DTO.Product;
 
@@ -11,9 +12,14 @@ import java.util.List;
 public class ProductService {
     @Setter
     private IProductDAO productDAO;
+
+    public ProductService() {
+        this.productDAO = ServiceProvider.getInstance().getService(IProductDAO.class);
+    }
+
     public List<Product> findAllProduct(){
         try {
-            return new ProductDAOImpl().findAll();
+            return this.productDAO.findAll();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -21,7 +27,7 @@ public class ProductService {
 
     public  List<Product> findProductByType(Product.ProductType type) {
         try {
-            return new ProductDAOImpl().filterByTypeProduct(type);
+            return this.productDAO.filterByTypeProduct(type);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -33,5 +39,31 @@ public class ProductService {
             throw new RuntimeException(e);
         }
     }
+    public void create(Product product) throws SQLException {
+        this.productDAO.create(product);
+    }
 
+    public void update(Product product) throws SQLException {
+        this.productDAO.update(product);
+    }
+
+    public void delete(int integer) throws SQLException {
+        this.productDAO.delete(integer);
+    }
+
+    public Product findById(int id) throws SQLException {
+        return this.productDAO.findById(id);
+    }
+
+    public Product findByName(String name) throws SQLException {
+        return this.productDAO.findByName(name);
+    }
+
+    public List<Product> findAll() throws SQLException {
+        return this.productDAO.findAll();
+    }
+
+    public List<Product> filterByTypeProduct(Product.ProductType type) throws SQLException {
+        return this.productDAO.filterByTypeProduct(type);
+    }
 }

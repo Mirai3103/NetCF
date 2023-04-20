@@ -1,11 +1,11 @@
 package GUI.Server.Product;
 
+import BUS.ProductService;
+import DTO.Product;
 import GUI.Components.Input;
 import Utils.Fonts;
 import Utils.Helper;
 import Utils.ServiceProvider;
-import model.Product;
-import service.ProductService;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -100,9 +100,8 @@ public class UpdateProductGUI extends JFrame {
                 product.setStock(Integer.parseInt(txtNumberOfProduct.getText()));
                 try {
                     productService.update(product);
-                } catch (SQLException ex) eDialog(null,"Không Thể Cập Nhật Dữ Liệu","Lỗi",JOptionPane.ERROR_MESSAGE);
-                throw new RuntimeExcep{
-                    JOptionPane.showMessagtion(ex);
+                } catch (Exception ex) {
+                    JOptionPane.showMessageDialog(null,"Không Thể Cập Nhật Dữ Liệu","Lỗi",JOptionPane.ERROR_MESSAGE);
                 }
             }
         });

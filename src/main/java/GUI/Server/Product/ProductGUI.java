@@ -1,13 +1,14 @@
 package GUI.Server.Product;
 
+import BUS.ProductService;
 import DAO.*;
 import DAO.Interface.*;
+import DTO.Product;
 import GUI.Components.Input;
 import Utils.Fonts;
 import Utils.Helper;
 import Utils.ServiceProvider;
-import model.Product;
-import service.*;
+
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -26,7 +27,7 @@ import java.sql.SQLException;
 import java.util.EventObject;
 import java.util.List;
 
-public class ProductGUI extends JFrame {
+public class ProductGUI extends JPanel {
     private final ProductService productService;
     private JPanel parentPanel, panelHeader, panelBody, panelBody1, panelBody2, buttonPanel;
     private JLabel txtListProduct, logoLabel;
@@ -43,7 +44,6 @@ public class ProductGUI extends JFrame {
         this.setSize(new Dimension(screenSize.width,screenSize.height));
         initComponents();
         this.setVisible(true);
-        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
 
     private void initComponents() {

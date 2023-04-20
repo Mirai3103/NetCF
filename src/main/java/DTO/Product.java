@@ -15,11 +15,12 @@ import java.util.List;
 @Getter
 @Setter
 public class Product {
-        public enum ProductType {
-            DRINK,
-            FOOD,
-            CARD,
-            ;
+    public enum ProductType {
+        DRINK,
+        FOOD,
+        CARD,
+        ;
+
         @Override
         public String toString() {
             return switch (this) {
@@ -39,7 +40,6 @@ public class Product {
     private double price;
 
 
-   
     private ProductType type;
 
 
@@ -51,13 +51,13 @@ public class Product {
     private String image;
 
 
-
-
     private Date createdAt = new Date();
 
     private Date deletedAt;
 
     private List<InvoiceDetail> invoiceDetails;
+
     public void setType(Integer productType) {
         this.type = ProductType.values()[productType];
     }
+}
