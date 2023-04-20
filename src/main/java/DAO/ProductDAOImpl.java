@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import java.util.List;
 
 public class ProductDAOImpl extends BaseDAO implements IProductDAO {
+
     @Override
     public Product create(Product product) throws SQLException {
         var preprapedStament = ConnectionFactory.
@@ -78,9 +79,25 @@ public class ProductDAOImpl extends BaseDAO implements IProductDAO {
     @Override
     public List<Product> findAll() throws SQLException {
         var statement = this.createStatement();
-
-    
         var resultSet = statement.executeQuery("SELECT * FROM product p WHERE p.deletedAt is null");
+        var products = ConnectionFactory.toList(resultSet,Product.class);
+        statement.close();
+        return products;
+    }
+
+    @Override
+    public Product findByName(String name) throws SQLException {
+        var statement = this.prepareStatement("SELECT * FROM product p WHERE p.name ? and p.deleteAt is null");
+        statement.setString(1,name);
+        var resultSet = statement.executeQuery();
+        var products = ConnectionFactory.toList(resultSet, Product.class);
+        return products.size() > 0 ? products.get(0) : null;
+    }
+
+    @Override
+    public List<Product> filterByTypeProduct(Product.ProductType type) throws SQLException {
+        var statement = this.createStatement();
+        var resultSet = statement.executeQuery("SELECT * FROM product p WHERE p.type = ' " + type.toString() + " ' and p.deleted is null");
         var products = ConnectionFactory.toList(resultSet,Product.class);
         statement.close();
         return products;
