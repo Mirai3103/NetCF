@@ -1,3 +1,5 @@
+
+
 package DTO;
 
 
@@ -56,7 +58,6 @@ public class Product {
     private Date deletedAt;
 
     private List<InvoiceDetail> invoiceDetails;
-    public void setProductType(Integer productType) {
+    public void setType(Integer productType) {
         this.type = ProductType.values()[productType];
     }
-}

@@ -86,6 +86,7 @@ public class ServiceProvider {
                 .register(IInvoiceDAO.class, InvoiceDAOImpl.class)
                 .register(IComputerUsageDAO.class, ComputerUsageImpl.class)
                 .register(AccountService.class, AccountService.class)
+                .register(IAccountDAO.class, AccountDAOImpl.class)
                 .register(ComputerService.class, ComputerService.class)
                 .register(SessionService.class, SessionService.class)
                 .register(ComputerUsageService.class, ComputerUsageService.class)
@@ -93,9 +94,9 @@ public class ServiceProvider {
                 .register(InvoiceService.class, InvoiceService.class)
                 .register(IEmployeeDAO.class,EmployeeDAOImpl.class)
                 .register(EmployeeService.class, EmployeeService.class)
-                .register(IProductDAO.class,ProductDAOImpl.class)
-                .register(ProductService.class,ProductService.class)
 
+                .register(ProductService.class, ProductService.class)
+                .register(IProductDAO.class, ProductDAOImpl.class)
                 .build();
     }
 }
