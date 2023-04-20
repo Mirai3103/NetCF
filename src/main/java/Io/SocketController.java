@@ -3,11 +3,11 @@ package Io;
 import Payload.LoginPayload;
 import Utils.Helper;
 import Utils.ServiceProvider;
-import Entity.Message;
-import service.AccountService;
-import service.ComputerService;
-import service.MessageService;
-import service.SessionService;
+import DTO.Message;
+import BUS.AccountService;
+import BUS.ComputerService;
+import BUS.MessageService;
+import BUS.SessionService;
 
 import java.awt.*;
 import java.io.IOException;
@@ -34,6 +34,7 @@ public class SocketController {
         server.on("login", this::onLogin);
         server.on("message", this::onMessage);
         server.on("changePassword", this::onChangePassword);
+        server.on("logout",this::onLogout);
     }
 
     private void onChangePassword(Socket socket, Serializable serializable) {
@@ -65,10 +66,9 @@ public class SocketController {
     }
     public void onLogin(Socket client, Serializable data) {
         try {
-
             LoginPayload loginPayload = (LoginPayload) data;
             var account = accountService.login(loginPayload.getUsername(), loginPayload.getPassword());
-
+        
             if (sessionService.checkIfSessionExist(client.getMachineId())){
                 server.emit("errorMessage", "Lỗi máy tính");
                 return;
@@ -92,5 +92,10 @@ public class SocketController {
         }catch (SQLException e){
             e.printStackTrace();
         }
+    }
+
+    private void onLogout(Socket socket, Serializable serializable) {
+        this.sessionService.logout(socket.getMachineId());
+        server.emitSelf("statusChange",null);
     }
 }

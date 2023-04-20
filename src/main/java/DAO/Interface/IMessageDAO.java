@@ -1,6 +1,6 @@
 package DAO.Interface;
 
-import Entity.Message;
+import DTO.Message;
 
 import java.sql.SQLException;
 import java.util.List;

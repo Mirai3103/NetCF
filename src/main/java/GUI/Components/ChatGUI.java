@@ -6,7 +6,7 @@ package GUI.Components;
 
 import lombok.Getter;
 import lombok.Setter;
-import Entity.Message;
+import DTO.Message;
 
 import java.awt.*;
 import java.util.Date;

@@ -5,8 +5,8 @@ import GUI.Components.Input;
 import Payload.LoginPayload;
 import Utils.Fonts;
 import Utils.Helper;
-import Entity.Session;
-import service.AccountService;
+import DTO.Session;
+import BUS.AccountService;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;

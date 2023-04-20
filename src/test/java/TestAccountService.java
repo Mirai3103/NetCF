@@ -1,10 +1,10 @@
 import DAO.AccountDAOImpl;
 import DAO.Interface.IAccountDAO;
-import Entity.Account;
+import DTO.Account;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import service.AccountService;
+import BUS.AccountService;
 
 import java.sql.SQLException;
 import java.text.ParseException;

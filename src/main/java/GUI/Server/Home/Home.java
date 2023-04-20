@@ -12,11 +12,11 @@ import Io.Server;
 import Utils.Fonts;
 import Utils.Helper;
 import Utils.ServiceProvider;
-import Entity.Computer;
-import Entity.Message;
-import service.ComputerService;
-import service.MessageService;
-import service.SessionService;
+import DTO.Computer;
+import DTO.Message;
+import BUS.ComputerService;
+import BUS.MessageService;
+import BUS.SessionService;
 
 import java.awt.*;
 import java.awt.event.WindowAdapter;

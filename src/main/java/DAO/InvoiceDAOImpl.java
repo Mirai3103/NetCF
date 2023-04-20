@@ -1,8 +1,8 @@
 package DAO;
 
 import DAO.Interface.IInvoiceDAO;
-import Entity.InforFilter;
-import Entity.Invoice;
+import DTO.InforFilter;
+import DTO.Invoice;
 
 import java.sql.*;
 import java.util.List;

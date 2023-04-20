@@ -1,6 +1,6 @@
 package DAO.Interface;
 
-import Entity.InvoiceDetail;
+import DTO.InvoiceDetail;
 
 import java.util.List;
 

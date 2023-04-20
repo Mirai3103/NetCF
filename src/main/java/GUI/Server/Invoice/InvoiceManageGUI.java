@@ -2,8 +2,8 @@ package GUI.Server.Invoice;
 
 import Utils.ServiceProvider;
 import com.toedter.calendar.JDateChooser;
-import Entity.*;
-import service.*;
+import DTO.*;
+import BUS.*;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;

@@ -3,7 +3,7 @@ package GUI.Client;
 import Io.Socket;
 import Utils.Constants;
 import Utils.Helper;
-import Entity.Session;
+import DTO.Session;
 
 import javax.swing.*;
 import java.io.IOException;

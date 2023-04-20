@@ -1,7 +1,7 @@
 package DAO;
 
 import DAO.Interface.IComputerUsageDAO;
-import Entity.ComputerUsage;
+import DTO.ComputerUsage;
 
 import java.sql.SQLException;
 import java.sql.Statement;

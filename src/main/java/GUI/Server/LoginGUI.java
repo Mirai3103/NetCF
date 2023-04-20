@@ -5,9 +5,9 @@ import GUI.Components.Input;
 import Utils.Fonts;
 import Utils.Helper;
 import Utils.ServiceProvider;
-import Entity.Account;
-import service.AccountService;
-import service.EmployeeService;
+import DTO.Account;
+import BUS.AccountService;
+import BUS.EmployeeService;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;

@@ -2,8 +2,8 @@ package GUI.Server.Computer;
 
 import Utils.Helper;
 import Utils.ServiceProvider;
-import Entity.Computer;
-import service.ComputerService;
+import DTO.Computer;
+import BUS.ComputerService;
 
 import java.awt.BorderLayout;
 import java.awt.Color;

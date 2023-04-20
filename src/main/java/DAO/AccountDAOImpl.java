@@ -2,7 +2,7 @@ package DAO;
 
 import DAO.Interface.IAccountDAO;
 import lombok.NoArgsConstructor;
-import Entity.Account;
+import DTO.Account;
 
 import java.sql.SQLException;
 import java.sql.Statement;

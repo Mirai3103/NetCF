@@ -8,7 +8,7 @@ import javax.swing.border.*;
 
 import Utils.Helper;
 import lombok.Getter;
-import Entity.Account;
+import DTO.Account;
 
 import java.awt.*;
 import javax.swing.*;

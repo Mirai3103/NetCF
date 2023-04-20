@@ -1,7 +1,7 @@
 package DAO;
 
 import DAO.Interface.IEmployeeDAO;
-import Entity.Employee;
+import DTO.Employee;
 
 import java.sql.SQLException;
 import java.sql.Statement;

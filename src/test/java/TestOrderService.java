@@ -1,5 +1,3 @@
-import DAO.AccountDAOImpl;
-import DAO.Interface.IAccountDAO;
 import DTO.CreateInvoiceInputDTO;
 import DTO.InvoiceDetailInputDTO;
 import GUI.Server.MainUI;
@@ -7,13 +5,12 @@ import Utils.ServiceProvider;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import service.AccountService;
-import service.EmployeeService;
-import service.InvoiceService;
+import BUS.AccountService;
+import BUS.EmployeeService;
+import BUS.InvoiceService;
 
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 
 public class TestOrderService {

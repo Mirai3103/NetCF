@@ -8,8 +8,8 @@ import GUI.Server.MainUI;
 import Utils.Fonts;
 import Utils.Helper;
 import Utils.ServiceProvider;
-import Entity.Account;
-import service.AccountService;
+import DTO.Account;
+import BUS.AccountService;
 
 import java.awt.*;
 import java.awt.event.KeyAdapter;

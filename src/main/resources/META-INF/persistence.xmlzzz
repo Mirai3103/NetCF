@@ -6,14 +6,14 @@
 >
     <persistence-unit name="NetCFMySQL" transaction-type="RESOURCE_LOCAL">
         <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
-        <class>Entity.Session</class>
-        <class>Entity.Account</class>
-        <class>Entity.Computer</class>
-        <class>Entity.ComputerUsage</class>
-        <class>Entity.Invoice</class>
-        <class>Entity.InvoiceDetail</class>
-        <class>Entity.Product</class>
-        <class>Entity.Employee</class>
+        <class>DTO.Session</class>
+        <class>DTO.Account</class>
+        <class>DTO.Computer</class>
+        <class>DTO.ComputerUsage</class>
+        <class>DTO.Invoice</class>
+        <class>DTO.InvoiceDetail</class>
+        <class>DTO.Product</class>
+        <class>DTO.Employee</class>
         <properties>
             <property name="javax.persistence.jdbc.driver" value="com.mysql.jdbc.Driver"/>
             <property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/testhibernate"/>
@@ -29,14 +29,14 @@
 
     <persistence-unit name="NetCF_MSSQL" transaction-type="RESOURCE_LOCAL">
         <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
-        <class>Entity.Session</class>
-        <class>Entity.Account</class>
-        <class>Entity.Computer</class>
-        <class>Entity.ComputerUsage</class>
-        <class>Entity.Invoice</class>
-        <class>Entity.InvoiceDetail</class>
-        <class>Entity.Product</class>
-        <class>Entity.Employee</class>
+        <class>DTO.Session</class>
+        <class>DTO.Account</class>
+        <class>DTO.Computer</class>
+        <class>DTO.ComputerUsage</class>
+        <class>DTO.Invoice</class>
+        <class>DTO.InvoiceDetail</class>
+        <class>DTO.Product</class>
+        <class>DTO.Employee</class>
         <properties>
             <property name="javax.persistence.jdbc.driver" value="com.microsoft.sqlserver.jdbc.SQLServerDriver"/>
             <property name="javax.persistence.jdbc.url"

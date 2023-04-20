@@ -1,6 +1,6 @@
 package DAO.Interface;
 
-import Entity.Account;
+import DTO.Account;
 
 import java.sql.SQLException;
 
