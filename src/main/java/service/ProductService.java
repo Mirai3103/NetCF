@@ -27,6 +27,10 @@ public class ProductService {
         this.productDAO.delete(integer);
     }
 
+    public Product findById(int id) throws SQLException {
+        return this.productDAO.findById(id);
+    }
+
     public Product findByName(String name) throws SQLException {
         return this.productDAO.findByName(name);
     }

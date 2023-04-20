@@ -70,7 +70,7 @@ public class ProductDAOImpl extends BaseDAO implements IProductDAO {
 
     @Override
     public Product findById(Integer integer) throws SQLException {
-        var preparedStatement = this.prepareStatement("SELECT * FROM p WHERE p.id = ? and p.deletedAt is null");
+        var preparedStatement = this.prepareStatement("SELECT * FROM Product p WHERE p.id = ? and p.deletedAt is null");
         preparedStatement.setInt(1,integer);
         var resultSet = preparedStatement.executeQuery();
         var products = ConnectionFactory.toList(resultSet,Product.class);
