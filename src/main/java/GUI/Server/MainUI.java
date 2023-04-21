@@ -4,11 +4,13 @@
 
 package GUI.Server;
 
+import BUS.ComputerUsageService;
 import GUI.Blur;
 import GUI.Components.SideBar.SideBar;
 import Utils.Constants;
 import Utils.Fonts;
 import Utils.Helper;
+import Utils.ServiceProvider;
 import lombok.Getter;
 import lombok.Setter;
 import DTO.Employee;
@@ -16,6 +18,8 @@ import DTO.Employee;
 import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.sql.SQLException;
+import java.util.Date;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 
@@ -25,9 +29,17 @@ import javax.swing.border.EmptyBorder;
 
 
 public class MainUI extends JFrame {
-    @Setter
     @Getter
     private static Employee currentUser;
+    private ComputerUsageService computerUsageService ;
+
+    public static void setCurrentUser(Employee currentUser) {
+        MainUI.currentUser = currentUser;
+        loginTime = new Date();
+    }
+
+    @Getter
+    private static Date loginTime;
     public static MainUI instance;
     private Blur blur = null;
     public void setBlur(boolean b) {
@@ -45,6 +57,7 @@ public class MainUI extends JFrame {
     private SideBar sideBar;
 
     private MainUI() {
+        computerUsageService = ServiceProvider.getInstance().getService(ComputerUsageService.class);
         initComponents();
         sideBar = new SideBar(panel3, panel2);
         sideBar.initComponent(Constants.getTabs());
@@ -120,6 +133,17 @@ public class MainUI extends JFrame {
 
         logoutButton.addActionListener(e -> {
             setVisible(false);
+            try {
+                computerUsageService.createForEmployee(
+                        loginTime,
+                        new Date(),
+                        currentUser.getAccountID()
+                );
+            } catch (SQLException ex) {
+                throw new RuntimeException(ex);
+            }
+            currentUser = null;
+            loginTime = null;
             new LoginGUI();
         });
         panel3.add(userPanel, 0);

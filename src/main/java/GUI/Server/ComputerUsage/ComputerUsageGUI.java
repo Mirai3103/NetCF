@@ -4,13 +4,19 @@
  */
 package GUI.Server.ComputerUsage;
 
+import BUS.AccountService;
+import BUS.ComputerService;
 import BUS.ComputerUsageService;
+import DTO.Account;
+import DTO.Computer;
 import DTO.ComputerUsage;
+import DTO.ComputerUsageFilter;
 import Utils.Helper;
 import Utils.ServiceProvider;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
+import java.sql.SQLException;
 import java.util.List;
 
 /**
@@ -20,6 +26,7 @@ import java.util.List;
 public class ComputerUsageGUI extends javax.swing.JPanel {
     public static void main(String[] args) {
         Helper.initUI();
+        ServiceProvider.init();
         JFrame frame = new JFrame();
         frame.setContentPane(new ComputerUsageGUI());
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -32,14 +39,86 @@ public class ComputerUsageGUI extends javax.swing.JPanel {
      * Creates new form ComputerUsageGUI
      */
     private ComputerUsageService computerUsageService ;
+    private ComputerService computerService;
+    private AccountService accountService;
     private List<ComputerUsage> computerUsages;
     public ComputerUsageGUI() {
         this.computerUsageService = ServiceProvider.getInstance().getService(ComputerUsageService.class);
+        this.computerService = ServiceProvider.getInstance().getService(ComputerService.class);
+        this.accountService = ServiceProvider.getInstance().getService(AccountService.class);
         computerUsages = computerUsageService.getAll();
         initComponents();
+        try {
+            reDesign();
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
         renderData();
+        initEvent();
     }
 
+    private void initEvent() {
+        jButton2.addActionListener(e -> {
+            computerUsages = computerUsageService.getAll();
+            jXDatePicker1.setDate(null);
+            jXDatePicker2.setDate(null);
+            jComboBoxConsumer.setSelectedIndex(0);
+            jComboBoxFromComputer.setSelectedIndex(0);
+            jComboBox1.setSelectedIndex(0);
+            renderData();
+        });
+    }
+
+    private void reDesign() throws SQLException {
+        List< Computer > computers = computerService.getAllComputers();
+        List<DTO.Account> accounts = accountService.getAllAccounts();
+        jComboBoxConsumer.removeAllItems();
+        jComboBoxFromComputer.removeAllItems();
+        var accountModel =new DefaultComboBoxModel<>(new AccountComboItem[]{
+                new AccountComboItem(null),
+                new AccountComboItem(Account.builder().id(-1).username("Khách vãng lai").build()),
+        });
+        jComboBoxConsumer.setModel(accountModel);
+        var computerModel = new DefaultComboBoxModel<>(new ComputerComboItem[]{
+                new ComputerComboItem(null)
+        });
+        jComboBoxFromComputer.setModel(computerModel);
+        jComboBox1.removeAllItems();
+        jComboBox1.setModel(new DefaultComboBoxModel<SortItem>(
+                new SortItem[]{
+                        new SortItem("Tăng dần theo ngày"," createdAt asc"),
+                        new SortItem("Giảm dần theo ngày"," createdAt desc"),
+                        new SortItem("Tăng dần theo tiền"," totalMoney asc"),
+                        new SortItem("Giảm dần theo tiền"," totalMoney desc"),
+                }
+        ));
+        for (var account : accounts) {
+            accountModel.addElement(new AccountComboItem(account));
+        }
+        for (var computer : computers) {
+            computerModel.addElement(new ComputerComboItem(computer));
+        }
+    }
+    private static record AccountComboItem(DTO.Account account){
+        @Override
+        public String toString() {
+            if (account == null)
+                return "Tất cả";
+            return account.getId() ==-1?"Khách vãng lai":account.getUsername();
+        }
+    }
+    private static record ComputerComboItem(Computer computer){
+        @Override
+        public String toString() {
+            return computer == null?"Tất cả":computer.getName();
+        }
+    }
+    public static record SortItem(String name, String value){
+        @Override
+        public String toString() {
+            return name;
+        }
+    }
     public void renderData(){
         var model = (DefaultTableModel) jTable2.getModel();
         model.setRowCount(0);
@@ -81,10 +160,10 @@ public class ComputerUsageGUI extends javax.swing.JPanel {
         jComboBox1 = new javax.swing.JComboBox<>();
         jPanel8 = new javax.swing.JPanel();
         jLabel5 = new javax.swing.JLabel();
-        jComboBox2 = new javax.swing.JComboBox<>();
+        jComboBoxFromComputer = new javax.swing.JComboBox<>();
         jPanel9 = new javax.swing.JPanel();
         jLabel6 = new javax.swing.JLabel();
-        jComboBox3 = new javax.swing.JComboBox<>();
+        jComboBoxConsumer = new javax.swing.JComboBox<>();
         jPanel3 = new javax.swing.JPanel();
         jPanel4 = new javax.swing.JPanel();
         jButton2 = new javax.swing.JButton();
@@ -134,11 +213,10 @@ public class ComputerUsageGUI extends javax.swing.JPanel {
         jPanel7.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
 
         jLabel4.setFont(new java.awt.Font("Nunito", 0, 16)); // NOI18N
-        jLabel4.setText("Trong ca của nhân viên: ");
+        jLabel4.setText("Sắp xếp theo: ");
         jPanel7.add(jLabel4);
 
         jComboBox1.setFont(new java.awt.Font("Nunito", 0, 16)); // NOI18N
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
         jComboBox1.setOpaque(true);
         jComboBox1.setPreferredSize(new java.awt.Dimension(300, 35));
         jPanel7.add(jComboBox1);
@@ -153,11 +231,10 @@ public class ComputerUsageGUI extends javax.swing.JPanel {
         jLabel5.setText("Từ máy: ");
         jPanel8.add(jLabel5);
 
-        jComboBox2.setFont(new java.awt.Font("Nunito", 0, 16)); // NOI18N
-        jComboBox2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-        jComboBox2.setOpaque(true);
-        jComboBox2.setPreferredSize(new java.awt.Dimension(300, 35));
-        jPanel8.add(jComboBox2);
+        jComboBoxFromComputer.setFont(new java.awt.Font("Nunito", 0, 16)); // NOI18N
+        jComboBoxFromComputer.setOpaque(true);
+        jComboBoxFromComputer.setPreferredSize(new java.awt.Dimension(300, 35));
+        jPanel8.add(jComboBoxFromComputer);
 
         jPanel2.add(jPanel8);
 
@@ -168,11 +245,10 @@ public class ComputerUsageGUI extends javax.swing.JPanel {
         jLabel6.setText("Từ khách hàng:");
         jPanel9.add(jLabel6);
 
-        jComboBox3.setFont(new java.awt.Font("Nunito", 0, 16)); // NOI18N
-        jComboBox3.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-        jComboBox3.setOpaque(true);
-        jComboBox3.setPreferredSize(new java.awt.Dimension(300, 35));
-        jPanel9.add(jComboBox3);
+        jComboBoxConsumer.setFont(new java.awt.Font("Nunito", 0, 16)); // NOI18N
+        jComboBoxConsumer.setOpaque(true);
+        jComboBoxConsumer.setPreferredSize(new java.awt.Dimension(300, 35));
+        jPanel9.add(jComboBoxConsumer);
 
         jPanel2.add(jPanel9);
 
@@ -204,6 +280,11 @@ public class ComputerUsageGUI extends javax.swing.JPanel {
         jButton1.setFont(new java.awt.Font("Nunito", 0, 16)); // NOI18N
         jButton1.setText("Lọc");
         jButton1.setPreferredSize(new java.awt.Dimension(150, 34));
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
         jPanel4.add(jButton1);
 
         jPanel2.add(jPanel4);
@@ -264,13 +345,31 @@ public class ComputerUsageGUI extends javax.swing.JPanel {
         add(jPanel1, java.awt.BorderLayout.CENTER);
     }// </editor-fold>//GEN-END:initComponents
 
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // TODO add your handling code here:
+        var filter = ComputerUsageFilter.builder()
+                .computerID(jComboBoxFromComputer.getSelectedItem() == null || ((ComputerComboItem) jComboBoxFromComputer.getSelectedItem()).computer == null ? null : ((ComputerComboItem) jComboBoxFromComputer.getSelectedItem()).computer.getId())
+                .startFrom(jXDatePicker1.getDate())
+                .startTo(jXDatePicker2.getDate())
+                .usedByAccountId(jComboBoxConsumer.getSelectedItem() == null || ((AccountComboItem) jComboBoxConsumer.getSelectedItem()).account==null ? null : ((AccountComboItem) jComboBoxConsumer.getSelectedItem()).account.getId())
+                .sortBy(jComboBox1.getSelectedItem() == null ? " createdAt desc " : ((SortItem) jComboBox1.getSelectedItem()).value)
+                .build();
+        try {
+            computerUsages = computerUsageService.findByFilter(filter);
+            renderData();
+
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }//GEN-LAST:event_jButton1ActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
-    private javax.swing.JComboBox<String> jComboBox1;
-    private javax.swing.JComboBox<String> jComboBox2;
-    private javax.swing.JComboBox<String> jComboBox3;
+    private javax.swing.JComboBox<SortItem> jComboBox1;
+    private javax.swing.JComboBox<AccountComboItem> jComboBoxConsumer;
+    private javax.swing.JComboBox<ComputerComboItem> jComboBoxFromComputer;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;

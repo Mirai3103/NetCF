@@ -4,17 +4,87 @@
  */
 package GUI.Server.Personal;
 
+import BUS.ComputerUsageService;
+import BUS.EmployeeService;
+import DTO.ComputerUsage;
+import DTO.ComputerUsageFilter;
+import DTO.Employee;
+import GUI.Server.ComputerUsage.ComputerUsageGUI;
+import GUI.Server.MainUI;
+import Utils.Helper;
+import Utils.ServiceProvider;
+
+import javax.swing.*;
+
 /**
  *
  * @author Laffy
  */
 public class PersonalSetting extends javax.swing.JPanel {
+    private EmployeeService employeeService ;
+    private ComputerUsageService computerUsageService;
+
 
     /**
      * Creates new form PersonalSetting
      */
     public PersonalSetting() {
+        employeeService = ServiceProvider.getInstance().getService(EmployeeService.class);
+        computerUsageService = ServiceProvider.getInstance().getService(ComputerUsageService.class);
+
         initComponents();
+        reDesign();
+
+    }
+
+    private void reDesign() {
+        var employee = MainUI.getCurrentUser();
+        try {
+            var computerUsage = computerUsageService.findByFilter(
+                    ComputerUsageFilter.builder().isEmployeeUsing(true).usedByAccountId(employee.getAccount().getId()).build());
+            jTextFieldName.setText(employee.getName());
+            jTextFieldUsername.setText(employee.getAccount().getUsername());
+            jTextFieldSalary.setText(employee.getSalaryPerHour() + "");
+            jTextFieldAddress.setText(employee.getAddress());
+            jTextFieldPhoneNumber.setText(employee.getPhoneNumber());
+            jTextAreaOther.setText(employee.getOtherInformation());
+            var totalMoney = computerUsage.stream().mapToDouble(usage -> usage.getTotalMoney()).sum();
+            var totalHour =0.0;
+            for (var usage : computerUsage) {
+                var minuteDiff = (usage.getEndAt().getTime() - usage.getCreatedAt().getTime()) / 1000 / 60;
+                totalHour += minuteDiff*1.0 / 60;
+            }
+            var totalHourString = String.format("%.2f", totalHour);
+            var totalMoneyString = String.format("%.2fđ", totalMoney);
+            jTextFieldTotalTimeWork.setText(totalHourString);
+            jTextFieldTotalSalary.setText(totalMoneyString);
+            var currentMonth = java.time.LocalDate.now().getMonthValue();
+            var currentYear = java.time.LocalDate.now().getYear();
+            var currentMonthSalary = computerUsage.stream().filter(usage -> {
+                var createdAt = usage.getCreatedAt();
+                var month = createdAt.getMonth() + 1;
+                var year = createdAt.getYear() + 1900;
+                return month == currentMonth && year == currentYear;
+            }).mapToDouble(ComputerUsage::getTotalMoney).sum();
+            var currentMonthSalaryString = String.format("%.2fđ", currentMonthSalary);
+            var currentMonthTimeWork = computerUsage.stream().filter(usage -> {
+                var createdAt = usage.getCreatedAt();
+                var month = createdAt.getMonth() + 1;
+                var year = createdAt.getYear() + 1900;
+                return month == currentMonth && year == currentYear;
+            }).mapToDouble(usage -> {
+                var minuteDiff = (usage.getEndAt().getTime() - usage.getCreatedAt().getTime()) / 1000 / 60;
+                return minuteDiff*1.0 / 60;
+            }).sum();
+            var currentMonthTimeWorkString = String.format("%.2f", currentMonthTimeWork);
+            jTextFieldSalaryInMonth.setText(currentMonthSalaryString);
+            jTextFieldTimeInMonth.setText(currentMonthTimeWorkString);
+
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+
+
     }
 
     /**

@@ -36,6 +36,9 @@ public class Helper {
        return   new File(a);
 
     }
+    public static String toSqlDateString(Date date){
+        return new SimpleDateFormat("yyyy-MM-dd").format(date);
+    }
     public static void initUI() {
         try {
             FlatMacLightLaf.setup();

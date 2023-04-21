@@ -11,10 +11,9 @@ import java.util.Date;
 public class ComputerUsageFilter {
     private Integer computerID = null;
     private Integer usedByAccountId = null;
-    private String sortBy = "createdAt";
-    private String sortType = "desc";
+    private String sortBy = " createdAt desc ";
+
     private Date startFrom = null;
     private Date startTo = null;
-    private Integer totalMoneyFrom = null;
-    private Integer totalMoneyTo = null;
+    private Boolean isEmployeeUsing = false;
 }

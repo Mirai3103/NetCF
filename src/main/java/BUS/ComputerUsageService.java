@@ -40,6 +40,13 @@ public class ComputerUsageService {
 public List<ComputerUsage> getAll()  {
     try {
         var list = computerUsageDAO.findAll();
+
+        return includeDetail(list);
+    } catch (SQLException e) {
+        throw new RuntimeException(e);
+    }
+}
+    public List<ComputerUsage> includeDetail(List<ComputerUsage> list){
         list.forEach(computerUsage -> {
             if (computerUsage.getUsedByAccountId() != null) {
                 try {
@@ -48,19 +55,16 @@ public List<ComputerUsage> getAll()  {
                     throw new RuntimeException(e);
                 }
             }
-                try {
-                    computerUsage.setComputer(computerService.getComputerById(computerUsage.getComputerID()));
-                } catch (SQLException e) {
-                    throw new RuntimeException(e);
-                }
+            try {
+                computerUsage.setComputer(computerService.getComputerById(computerUsage.getComputerID()));
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
         });
         return list;
-    } catch (SQLException e) {
-        throw new RuntimeException(e);
     }
-}
     public List<ComputerUsage> findByFilter(DTO.ComputerUsageFilter filter) throws Exception {
-        return computerUsageDAO.findByFilter(filter);
+        return includeDetail(computerUsageDAO.findByFilter(filter));
     }
     public ComputerUsage update(ComputerUsage computerUsage) throws SQLException {
         return computerUsageDAO.update(computerUsage);
@@ -72,4 +76,5 @@ public List<ComputerUsage> getAll()  {
         return computerUsageDAO.findById(integer);
     }
 
+ 
 }

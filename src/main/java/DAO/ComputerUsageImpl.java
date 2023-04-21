@@ -3,6 +3,7 @@ package DAO;
 import DAO.Interface.IComputerUsageDAO;
 import DTO.ComputerUsage;
 import DTO.ComputerUsageFilter;
+import Utils.Helper;
 
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -60,13 +61,38 @@ public class ComputerUsageImpl extends BaseDAO implements IComputerUsageDAO {
 
     @Override
     public List<ComputerUsage> findAll() throws SQLException {
-        var preparedStatement = this.prepareStatement("SELECT * FROM ComputerUsage");
+        var preparedStatement = this.prepareStatement("SELECT * FROM ComputerUsage" +
+                "where isEmployeeUsing = 0" +
+                " order by createdAt desc");
         var resultSet = preparedStatement.executeQuery();
         return ConnectionFactory.toList(resultSet, ComputerUsage.class);
     }
 
     @Override
     public List<ComputerUsage> findByFilter(ComputerUsageFilter filter) throws Exception {
-        return null;
+        String sql = "SELECT * FROM ComputerUsage WHERE 1 = 1 ";
+        if (filter.getUsedByAccountId() != null) {
+            sql += " AND usedByAccountId = " + filter.getUsedByAccountId();
+        }
+        if (filter.getComputerID() != null) {
+            sql += " AND computerID = " + filter.getComputerID();
+        }
+        if (filter.getStartTo() != null) {
+            sql += " AND endAt <= '" + Helper.toSqlDateString(filter.getStartTo()) + "'";
+        }
+        if (filter.getStartFrom() != null) {
+            sql += " AND createdAt >= '" + Helper.toSqlDateString(filter.getStartFrom()) + "'";
+        }
+        if (filter.getIsEmployeeUsing()!=null){
+            sql += " AND isEmployeeUsing = " + (filter.getIsEmployeeUsing()?1:0);
+        }
+        if (filter.getSortBy() != null) {
+            sql += " ORDER BY " + filter.getSortBy();
+        }
+
+        try (var statement = this.createStatement()) {
+            var resultSet = statement.executeQuery(sql);
+            return ConnectionFactory.toList(resultSet, ComputerUsage.class);
+        }
     }
 }
