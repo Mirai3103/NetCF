@@ -166,7 +166,6 @@ public class ProductGUIClient extends JFrame {
         // end findByName
 
         panel = new JPanel();
-        panel.setBackground(Color.RED);
         panel.setPreferredSize(new Dimension(1000-40,670));
 
         list = new ArrayList<>();
