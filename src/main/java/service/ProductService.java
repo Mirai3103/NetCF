@@ -42,4 +42,8 @@ public class ProductService {
     public List<Product> filterByTypeProduct(Product.ProductType type) throws SQLException {
         return this.productDAO.filterByTypeProduct(type);
     }
+
+    public List<Product> findListByName(String name) throws SQLException {
+        return this.productDAO.findListByName(name);
+    }
 }

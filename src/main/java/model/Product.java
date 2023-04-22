@@ -14,8 +14,8 @@ import java.util.List;
 @Setter
 public class Product {
         public enum ProductType {
-            DRINK,
             FOOD,
+            DRINK,
             CARD,
             ;
         @Override

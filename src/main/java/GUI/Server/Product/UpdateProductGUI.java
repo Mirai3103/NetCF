@@ -21,7 +21,7 @@ public class UpdateProductGUI extends JFrame {
     private JButton returnButton, updateButton, chooseButton;
     private JLabel logo, productName , productPrice, productType, numberOfProduct, productDescription, productImage;
     private JTextField txtProductName, txtProductPrice, txtNumberOfProduct, txtProductDescription;
-    private Product product = Product.builder().image("/images/gtaV.jpg").id(0).name("").price(0).createdAt(new Date()).description("").stock(0).build();
+    private Product product;
     private ProductService productService;
     private JCheckBox placeBox;
     private JComboBox comboBox;

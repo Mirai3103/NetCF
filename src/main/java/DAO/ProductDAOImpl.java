@@ -97,9 +97,18 @@ public class ProductDAOImpl extends BaseDAO implements IProductDAO {
     }
 
     @Override
+    public List<Product> findListByName(String name) throws SQLException {
+        var statement = this.createStatement();
+        var resultSet = statement.executeQuery("SELECT * FROM Product p WHERE p.name = ' " + name + " ' and p.deletedAt is null");
+        var products = ConnectionFactory.toList(resultSet,Product.class);
+        statement.close();
+        return products;
+    }
+
+    @Override
     public List<Product> filterByTypeProduct(Product.ProductType type) throws SQLException {
         var statement = this.createStatement();
-        var resultSet = statement.executeQuery("SELECT * FROM product p WHERE p.type = ' " + type.toString() + " ' and p.deleted is null");
+        var resultSet = statement.executeQuery("SELECT * FROM Product p WHERE p.type = " + type.ordinal() + " and p.deletedAt is null");
         var products = ConnectionFactory.toList(resultSet,Product.class);
         statement.close();
         return products;

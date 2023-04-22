@@ -23,18 +23,22 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.EventObject;
 import java.util.List;
 
 public class ProductGUI extends JFrame {
-    private final ProductService productService;
+    private List<Product> list;
+    private ProductService productService;
     private JPanel parentPanel, panelHeader, panelBody, panelBody1, panelBody2, buttonPanel;
     private JLabel txtListProduct, logoLabel;
     private JComboBox comboBox;
     private Input findByName;
     private JTable table;
-
     private JButton editButton, viewButton, deleteButton;
+    private int flag=0;
+
+    private DefaultTableModel dtm;
 
     public ProductGUI() {
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
@@ -73,6 +77,12 @@ public class ProductGUI extends JFrame {
         // add button
         // start add button
         JButton addProductButton = new JButton("Tạo Sản Phẩm");
+        addProductButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                new CreateProductGUI();
+            }
+        });
         addProductButton.setIcon(Helper.getIcon("/icons/addIcon.png", 14, 14));
         addProductButton.setFont(Fonts.getFont(Font.BOLD, 14));
         addProductButton.setPreferredSize(new Dimension(150, 30));
@@ -112,32 +122,75 @@ public class ProductGUI extends JFrame {
         comboBox.setBorder(new EmptyBorder(0,5,0,0));
         comboBox.setFont(Fonts.getFont(Font.ITALIC, 15));
         comboBox.setPreferredSize(new Dimension(250, 25));
+        list = new ArrayList<>();
+        var localProductService = this.productService;
+        var dtm1 = this.dtm;
+        try {
+            list = localProductService.findAll();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        comboBox.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String selected = (String)comboBox.getSelectedItem();
+                if (selected.equals("Tất Cả")) {
+                    try {
+                        list = localProductService.findAll();
+                    } catch (SQLException ex) {
+                        throw new RuntimeException(ex);
+                    }
+                } else if (selected.equals("Thức Ăn")) {
+                    try {
+                        list = localProductService.filterByTypeProduct(Product.ProductType.FOOD);
+                    } catch (SQLException ex) {
+                        throw new RuntimeException(ex);
+                    }
+                } else if (selected.equals("Nước Uống")){
+                    try {
+                        list = localProductService.filterByTypeProduct(Product.ProductType.DRINK);
+                    } catch (SQLException ex) {
+                        throw new RuntimeException(ex);
+                    }
+                } else {
+                    try {
+                        list = localProductService.filterByTypeProduct(Product.ProductType.CARD);
+                    } catch (SQLException ex) {
+                        throw new RuntimeException(ex);
+                    }
+                }
+                showTable();
+            }
+        });
         panelBody2.add(comboBox, BorderLayout.LINE_START);
         // end typeProduct
 
         // findByName
         // start findByName
         findByName = new Input("Search Here...");
+        findByName.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                try {
+                    list = localProductService.findListByName(findByName.getText());
+                } catch (SQLException ex) {
+                    throw new RuntimeException(ex);
+                }
+            }
+        });
         findByName.setFont(Fonts.getFont(Font.PLAIN, 15));
         findByName.setPreferredSize(new Dimension(200, 25));
         panelBody2.add(findByName, BorderLayout.CENTER);
         // end findByName
 
-//        // start table
-//        ArrayList<Product>
-        List<Product> list = null;
-        try {
-            list = this.productService.findAll();
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
+        // start table
         table = new JTable();
         table.getTableHeader().setFont(Fonts.getFont(Font.BOLD, 15));
         table.getTableHeader().setPreferredSize(new Dimension(0, 30));
         table.setShowVerticalLines(false);
         table.setShowHorizontalLines(false);
         table.setPreferredSize(new Dimension(800,500));
-        DefaultTableModel dtm = new DefaultTableModel() {
+        dtm = new DefaultTableModel() {
             @Override
             public Class<?> getColumnClass(int columnIndex) {
                 if (columnIndex == 6) {
@@ -155,7 +208,7 @@ public class ProductGUI extends JFrame {
         dtm.addColumn("Phân Loại");
         dtm.addColumn("Mô Tả");
         dtm.addColumn("Số Lượng");
-        showTable(list, dtm);
+        showTable();
         table.getColumnModel().getColumn(0).setPreferredWidth(50);
         table.getColumnModel().getColumn(1).setPreferredWidth(250);
         table.getColumnModel().getColumn(2).setPreferredWidth(100);
@@ -225,14 +278,77 @@ public class ProductGUI extends JFrame {
         panelBody.add(buttonPanel,BorderLayout.LINE_END);
     }
 
-    
 
-    public void showTable(List<Product> list, DefaultTableModel defaultTableModel) {
+
+    public void showTable() {
+        this.list.forEach(System.out::println);
+        var model = (DefaultTableModel)this.table.getModel();
+        model.setRowCount(0);
         for (Product p : list) {
-            defaultTableModel.addRow(new Object[]{
+            model.addRow(new Object[]{
                     p.getId(), p.getName(), p.getPrice() ,p.getType(), p.getDescription(), p.getStock(),
             });
         }
+    }
+
+    private void updateTable() {
+        dtm.setRowCount(0);
+        String selectedItem = (String) comboBox.getSelectedItem();
+        ArrayList<Product> itemList = new ArrayList<>();
+
+        if (selectedItem.equals("Tất Cả")){
+            itemList.addAll(getAllItems());
+        } else if (selectedItem.equals("Thức Ăn")) {
+            itemList.addAll(getFoodItems());
+        } else if (selectedItem.equals("Nước Uống")) {
+            itemList.addAll(getDrinkItems());
+        } else {
+            itemList.addAll(getCardItems());
+        }
+
+        for (Product item : itemList) {
+            dtm.addRow(new Object[]{item});
+        }
+    }
+
+    private ArrayList<Product> getAllItems() {
+        ArrayList<Product> itemList = new ArrayList<>();
+        try {
+            itemList = (ArrayList<Product>) this.productService.findAll();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return itemList;
+    }
+
+    private ArrayList<Product> getFoodItems() {
+        ArrayList<Product> itemList = new ArrayList<>();
+        try {
+            itemList = (ArrayList<Product>) this.productService.filterByTypeProduct(Product.ProductType.FOOD);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return itemList;
+    }
+
+    private ArrayList<Product> getDrinkItems() {
+        ArrayList<Product> itemList = new ArrayList<>();
+        try {
+            itemList = (ArrayList<Product>) this.productService.filterByTypeProduct(Product.ProductType.DRINK);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return itemList;
+    }
+
+    private ArrayList<Product> getCardItems() {
+        ArrayList<Product> itemList = new ArrayList<>();
+        try {
+            itemList = (ArrayList<Product>) this.productService.filterByTypeProduct(Product.ProductType.CARD);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return itemList;
     }
 
     public static void main(String[] args) {
