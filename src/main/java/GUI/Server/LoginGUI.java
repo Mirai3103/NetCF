@@ -1,14 +1,13 @@
 package GUI.Server;
 
-import GUI.Client.Main;
 import GUI.Components.ImagePanel;
 import GUI.Components.Input;
 import Utils.Fonts;
 import Utils.Helper;
 import Utils.ServiceProvider;
-import model.Account;
-import service.AccountService;
-import service.EmployeeService;
+import DTO.Account;
+import BUS.AccountService;
+import BUS.EmployeeService;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -17,8 +16,6 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
-import java.net.URL;
-import java.util.Arrays;
 
 public class LoginGUI extends JFrame {
     private AccountService accountService;
@@ -167,7 +164,6 @@ public class LoginGUI extends JFrame {
 
     private void btnLoginActionPerformed(ActionEvent e) {        var username = txtUsername.getText();
         var password = txtPassword.getText();
-        System.out.println(username + " " + password);
         var user = accountService.login(username, password);
         if (user == null) {
             var result = "Tài Khoản đăng nhập hoặc Mật Khẩu của bạn không đúng, vui lòng nhập lại";
@@ -183,8 +179,8 @@ public class LoginGUI extends JFrame {
                 return;
             }
             emp.setAccount(user);
-            MainUI.setCurrentUser(emp);
-            MainUI.getInstance().setVisible(true);
+            MainUI.login(emp);
+            MainUI.getInstance(true).setVisible(true);
             dispose();
         }
     }

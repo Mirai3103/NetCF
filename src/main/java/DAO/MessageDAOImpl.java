@@ -1,7 +1,7 @@
 package DAO;
 
 import DAO.Interface.IMessageDAO;
-import model.Message;
+import DTO.Message;
 
 import java.sql.PreparedStatement;
 import java.sql.SQLException;

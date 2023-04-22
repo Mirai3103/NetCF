@@ -1,6 +1,6 @@
 import DAO.AccountDAOImpl;
 import DAO.Interface.IAccountDAO;
-import service.AccountService;
+import BUS.AccountService;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
@@ -16,7 +16,6 @@ public class TestDependencyInjection {
                 .register(IAccountDAO.class, AccountDAOImpl.class)
                 .build();
         var accountService = ServiceBuilder.getInstance().getService(AccountService.class);
-        accountService.getAllAccounts().forEach(System.out::println);
     }
 }
 class ServiceBuilder{

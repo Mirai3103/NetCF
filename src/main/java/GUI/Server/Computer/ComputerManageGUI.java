@@ -2,10 +2,8 @@ package GUI.Server.Computer;
 
 import Utils.Helper;
 import Utils.ServiceProvider;
-import com.formdev.flatlaf.extras.FlatSVGIcon;
-import lombok.Setter;
-import model.Computer;
-import service.ComputerService;
+import DTO.Computer;
+import BUS.ComputerService;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -158,11 +156,6 @@ public class ComputerManageGUI extends javax.swing.JPanel {
         jPanel12 = new javax.swing.JPanel();
         jLabel6 = new javax.swing.JLabel();
         jPanel13 = new javax.swing.JPanel();
-        jPanel14 = new javax.swing.JPanel();
-        jPanel16 = new javax.swing.JPanel();
-        jLabel9 = new javax.swing.JLabel();
-        jPanel17 = new javax.swing.JPanel();
-        searchPricetf = new javax.swing.JTextField();
         jPanel15 = new javax.swing.JPanel();
         jPanel21 = new javax.swing.JPanel();
         jLabel11 = new javax.swing.JLabel();
@@ -341,42 +334,9 @@ public class ComputerManageGUI extends javax.swing.JPanel {
 
         jPanel13.setBackground(new java.awt.Color(255, 255, 255));
         jPanel13.setBorder(javax.swing.BorderFactory.createEmptyBorder(50, 1, 1, 1));
-        jPanel13.setLayout(new java.awt.GridLayout(1, 2));
-
-        jPanel14.setBackground(new java.awt.Color(255, 255, 255));
-        jPanel14.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 100, 1, 1));
-        jPanel14.setLayout(new javax.swing.BoxLayout(jPanel14, javax.swing.BoxLayout.PAGE_AXIS));
-
-        jPanel16.setBackground(new java.awt.Color(255, 255, 255));
-        jPanel16.setAlignmentX(0.0F);
-        jPanel16.setLayout(new javax.swing.BoxLayout(jPanel16, javax.swing.BoxLayout.LINE_AXIS));
-
-        jLabel9.setBackground(new java.awt.Color(255, 255, 255));
-        jLabel9.setFont(new java.awt.Font("Nunito SemiBold", 0, 16)); // NOI18N
-        jLabel9.setText("Tìm theo giá máy: ");
-        jPanel16.add(jLabel9);
-
-        jPanel14.add(jPanel16);
-
-        jPanel17.setBackground(new java.awt.Color(255, 255, 255));
-        jPanel17.setAlignmentX(0.0F);
-        jPanel17.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
-
-        searchPricetf.setFont(new java.awt.Font("Nunito", 0, 16)); // NOI18N
-        searchPricetf.setMaximumSize(new java.awt.Dimension(300, 2147483647));
-        searchPricetf.setPreferredSize(new java.awt.Dimension(300, 30));
-        searchPricetf.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                searchPricetfActionPerformed(evt);
-            }
-        });
-        jPanel17.add(searchPricetf);
-
-        jPanel14.add(jPanel17);
-
-        jPanel13.add(jPanel14);
 
         jPanel15.setBackground(new java.awt.Color(255, 255, 255));
+        jPanel15.setPreferredSize(new java.awt.Dimension(500, 66));
         jPanel15.setLayout(new javax.swing.BoxLayout(jPanel15, javax.swing.BoxLayout.PAGE_AXIS));
 
         jPanel21.setBackground(new java.awt.Color(255, 255, 255));
@@ -395,7 +355,7 @@ public class ComputerManageGUI extends javax.swing.JPanel {
 
         searchnametf.setFont(new java.awt.Font("Nunito", 0, 16)); // NOI18N
         searchnametf.setMaximumSize(new java.awt.Dimension(300, 2147483647));
-        searchnametf.setPreferredSize(new java.awt.Dimension(300, 30));
+        searchnametf.setPreferredSize(new java.awt.Dimension(480, 30));
         jPanel22.add(searchnametf);
 
         jPanel15.add(jPanel22);
@@ -480,10 +440,6 @@ public class ComputerManageGUI extends javax.swing.JPanel {
         // TODO add your handling code here:
     }//GEN-LAST:event_saveBtnActionPerformed
 
-    private void searchPricetfActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchPricetfActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_searchPricetfActionPerformed
-
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton addBtn;
@@ -497,16 +453,12 @@ public class ComputerManageGUI extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
-    private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel10;
     private javax.swing.JPanel jPanel11;
     private javax.swing.JPanel jPanel12;
     private javax.swing.JPanel jPanel13;
-    private javax.swing.JPanel jPanel14;
     private javax.swing.JPanel jPanel15;
-    private javax.swing.JPanel jPanel16;
-    private javax.swing.JPanel jPanel17;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel21;
     private javax.swing.JPanel jPanel22;
@@ -522,7 +474,6 @@ public class ComputerManageGUI extends javax.swing.JPanel {
     private javax.swing.JTextField nameTf;
     private javax.swing.JTextField pricetf;
     private javax.swing.JButton saveBtn;
-    private javax.swing.JTextField searchPricetf;
     private javax.swing.JTextField searchnametf;
     private javax.swing.JComboBox<String> typecb;
     // End of variables declaration//GEN-END:variables

@@ -28,10 +28,16 @@ public class Helper {
     public static String getDateString(Date date){
         return dateFormat.format(date);
     }
+    public static String formatMoney(double money){
+        return String.format("%,.2fđ", money);
+    }
     public static File getResourceFile (String path) {
         var  a=  Helper.class.getResource(path).getPath();
        return   new File(a);
 
+    }
+    public static String toSqlDateString(Date date){
+        return new SimpleDateFormat("yyyy-MM-dd").format(date);
     }
     public static void initUI() {
         try {
@@ -60,7 +66,6 @@ public class Helper {
     }
     public static ImageIcon getIcon(String path) {
         var a =Helper.class.getResource(path);
-        System.out.println(path);
         return new ImageIcon(Objects.requireNonNull(a));
     }
     public static String toHHMM(int seconds, boolean withColon) {
@@ -97,5 +102,26 @@ public class Helper {
             System.err.println("Tray unavailable");
         }
     }
+
+
+    //validate date like form "yyyy-mm-dd"
+    public static boolean ValidateDate(String strDate){
+        String regexDate = "^\\d{4}\\-(0[1-9]|1[012])\\-(0[1-9]|[12][0-9]|3[01])$";
+        if(strDate.matches(regexDate))
+            return true;
+        return false;
+    }
+
+
+    //compare date: if date1 occur affter date2 the return false.
+    public static boolean compareDate(String date1, String date2){
+        if(date1.compareTo(date2) > 0) {
+            return false;
+        }
+        return true;
+    }
+
+    //create operation for Invoice(delete, edit, showdetailInvoice)
+
 
 }

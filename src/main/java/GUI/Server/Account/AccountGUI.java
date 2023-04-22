@@ -8,8 +8,8 @@ import GUI.Server.MainUI;
 import Utils.Fonts;
 import Utils.Helper;
 import Utils.ServiceProvider;
-import model.Account;
-import service.AccountService;
+import DTO.Account;
+import BUS.AccountService;
 
 import java.awt.*;
 import java.awt.event.KeyAdapter;
@@ -36,7 +36,7 @@ public class AccountGUI extends JPanel {
         label1.putClientProperty("FlatLaf.style", "font: $h0.font");
         try {
             accounts = accountService.getAllAccounts();
-            filteredAccounts = accounts.stream().toList();
+            filteredAccounts = accounts.stream().filter(a->a.getRole().isLessThan(MainUI.getCurrentUser().getAccount().getRole())).toList();
             reDesign();
 
         } catch (ParseException e) {
@@ -52,8 +52,8 @@ public class AccountGUI extends JPanel {
             @Override
             public void keyReleased(KeyEvent e) {
                 String keyword = searchTextField.getText();
-                if (keyword.trim().equals("")) filteredAccounts = accounts.stream().map(account -> account).toList();
-                filteredAccounts = accounts.stream().filter(account -> account.getUsername().contains(keyword) || (account.getId() + "").contains(keyword)).toList();
+                if (keyword.trim().equals("")) filteredAccounts = accounts.stream().filter(a->a.getRole().isLessThan(MainUI.getCurrentUser().getAccount().getRole())).toList();
+                filteredAccounts = accounts.stream().filter(account -> account.getUsername().contains(keyword) || (account.getId() + "").contains(keyword)).filter(a->a.getRole().isLessThan(MainUI.getCurrentUser().getAccount().getRole())).toList();
                 renderTableData();
             }
         });
@@ -82,6 +82,7 @@ public class AccountGUI extends JPanel {
     }
 
     private void reDesign() throws ParseException {
+        panel1.setBackground(this.getBackground());
         setSize(1300, 800);
         setMinimumSize(new Dimension(1300, 800));
         JPopupMenu popupMenu2 = new JPopupMenu();
@@ -368,4 +369,5 @@ public class AccountGUI extends JPanel {
     private JScrollPane scrollPane1;
     private JTable table1;
     // JFormDesigner - End of variables declaration  //GEN-END:variables  @formatter:on
+
 }

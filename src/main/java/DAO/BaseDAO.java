@@ -9,6 +9,7 @@ public abstract class BaseDAO {
     public Statement createStatement() throws SQLException {
         return ConnectionFactory.getConnection().createStatement();
     }
+
     public PreparedStatement prepareStatement(String sql) throws SQLException {
         return ConnectionFactory.getConnection().prepareStatement(sql);
     }

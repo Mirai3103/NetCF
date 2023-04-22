@@ -2,19 +2,18 @@ package DAO;
 
 import DAO.Interface.IAccountDAO;
 import lombok.NoArgsConstructor;
-import model.Account;
+import DTO.Account;
 
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 @NoArgsConstructor
 public class AccountDAOImpl extends BaseDAO implements IAccountDAO {
 
+    public static AccountDAOImpl getInstance(){
+        return new AccountDAOImpl();
+    }
 
     public Account create(Account account) throws SQLException {
         var preparedStatement = ConnectionFactory

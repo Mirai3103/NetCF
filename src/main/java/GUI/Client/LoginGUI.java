@@ -2,23 +2,15 @@ package GUI.Client;
 
 import GUI.Components.ImagePanel;
 import GUI.Components.Input;
-import GUI.Server.MainUI;
 import Payload.LoginPayload;
 import Utils.Fonts;
 import Utils.Helper;
-import model.Account;
-import model.Session;
-import service.AccountService;
+import DTO.Session;
+import BUS.AccountService;
 
-import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.io.Console;
-import java.net.URL;
-import java.util.Arrays;
 
 public class LoginGUI extends JFrame {
     private AccountService accountService;

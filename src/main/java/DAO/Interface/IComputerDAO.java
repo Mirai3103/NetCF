@@ -1,6 +1,6 @@
 package DAO.Interface;
 
-import model.Computer;
+import DTO.Computer;
 
 public interface IComputerDAO extends IDAO<Computer, Integer>{
 }

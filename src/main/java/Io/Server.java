@@ -24,6 +24,9 @@ public class Server extends ServerSocket {
 
     public Server() throws IOException {
     }
+    public void removeClient(int computerId){
+        clients.removeIf(c->c.getMachineId()==computerId);
+    }
     public void emitSelf(String eventType, Serializable data) {
         for (var callback : eventHandlers.get(eventType)) {
             callback.invoke(null, data);

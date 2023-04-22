@@ -6,18 +6,17 @@ package GUI.Server.Home;
 
 import javax.swing.border.*;
 
-import GUI.Client.MainGUI;
 import GUI.Components.ChatGUI;
 import Io.Callback;
 import Io.Server;
 import Utils.Fonts;
 import Utils.Helper;
 import Utils.ServiceProvider;
-import model.Computer;
-import model.Message;
-import service.ComputerService;
-import service.MessageService;
-import service.SessionService;
+import DTO.Computer;
+import DTO.Message;
+import BUS.ComputerService;
+import BUS.MessageService;
+import BUS.SessionService;
 
 import java.awt.*;
 import java.awt.event.WindowAdapter;
@@ -25,7 +24,6 @@ import java.awt.event.WindowEvent;
 import java.sql.SQLException;
 import java.util.Date;
 import java.util.List;
-import java.util.Timer;
 import javax.swing.*;
 
 /**

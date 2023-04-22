@@ -1,6 +1,12 @@
 package DAO.Interface;
 
-import model.Product;
+import DTO.Product;
+
+import java.sql.SQLException;
+import java.util.List;
+
+import java.sql.SQLException;
+import java.util.List;
 
 import java.sql.SQLException;
 import java.util.List;

@@ -33,6 +33,18 @@
             <artifactId>jcalendar</artifactId>
             <version>1.4</version>
         </dependency>
+        <!-- https://mvnrepository.com/artifact/org.swinglabs/swingx -->
+        <dependency>
+            <groupId>org.swinglabs</groupId>
+            <artifactId>swingx</artifactId>
+            <version>1.6.1</version>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/org.swinglabs.swingx/swingx-core -->
+        <dependency>
+            <groupId>org.swinglabs.swingx</groupId>
+            <artifactId>swingx-core</artifactId>
+            <version>1.6.5-1</version>
+        </dependency>
 
         <dependency>
             <groupId>com.formdev</groupId>
@@ -82,11 +94,6 @@
             <version>11.2.3.jre17</version>
         </dependency>
         <!-- https://mvnrepository.com/artifact/org.swinglabs/swingx -->
-        <dependency>
-            <groupId>org.swinglabs</groupId>
-            <artifactId>swingx</artifactId>
-            <version>1.6.1</version>
-        </dependency>
 
 
     </dependencies>

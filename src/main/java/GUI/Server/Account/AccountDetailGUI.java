@@ -6,15 +6,11 @@ package GUI.Server.Account;
 
 import javax.swing.border.*;
 
-import GUI.Blur;
-import GUI.Server.MainUI;
 import Utils.Helper;
 import lombok.Getter;
-import model.Account;
+import DTO.Account;
 
 import java.awt.*;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
 import javax.swing.*;
 
 /**

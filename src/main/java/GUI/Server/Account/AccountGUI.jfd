@@ -79,7 +79,7 @@ new FormModel {
 						add( new FormComponent( "javax.swing.JComboBox" ) {
 							name: "comboBox1"
 							"preferredSize": new java.awt.Dimension( 200, 30 )
-							"model": new javax.swing.DefaultComboBoxModel {
+							"DTO": new javax.swing.DefaultComboBoxModel {
 								selectedItem: "Đang hoạt động"
 								addElement( "Đang hoạt động" )
 								addElement( "Offline" )

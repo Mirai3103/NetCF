@@ -10,8 +10,8 @@ import GUI.Components.ChatGUI;
 import Utils.Fonts;
 import Utils.Helper;
 import com.formdev.flatlaf.ui.FlatDropShadowBorder;
-import model.Message;
-import model.Session;
+import DTO.Message;
+import DTO.Session;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -109,6 +109,20 @@ public class MainGUI extends JFrame {
         button1.addActionListener(e -> {
             chatGUI.setVisible(true);
             chatGUI.setLocationRelativeTo(null);
+        });
+        button3.addActionListener(e -> {
+            if(Main.session.getUsingByAccount()==null){
+                JOptionPane.showMessageDialog(this, "Không thể đổi mật khẩu khi đang sử dụng dịch vụ với tư cách khách vãng lai", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
+                return;
+            }
+            var oldPassword = JOptionPane.showInputDialog(this, "Nhập mật khẩu cũ", "Đổi mật khẩu", JOptionPane.INFORMATION_MESSAGE);
+            if (!oldPassword.equals(Main.session.getUsingByAccount().getPassword())){
+                JOptionPane.showMessageDialog(this, "Mật khẩu cũ không đúng", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
+            return;
+            }
+            var newPassword = JOptionPane.showInputDialog(this, "Nhập mật khẩu mới", "Đổi mật khẩu", JOptionPane.INFORMATION_MESSAGE);
+            Main.socket.emit("changePassword", newPassword);
+
         });
     }
 

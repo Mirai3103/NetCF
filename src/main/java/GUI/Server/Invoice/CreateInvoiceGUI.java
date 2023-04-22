@@ -2,53 +2,33 @@ package GUI.Server.Invoice;
 
 import Utils.Helper;
 import Utils.ServiceProvider;
-import com.toedter.calendar.IDateEditor;
 import com.toedter.calendar.JDateChooser;
-import com.toedter.calendar.JTextFieldDateEditor;
-import service.InvoiceService;
+import DTO.Account;
+import DTO.ComboboxItem;
+import DTO.Computer;
+import DTO.Employee;
+import BUS.AccountService;
+import BUS.ComputerService;
+import BUS.EmployeeService;
+import BUS.InvoiceService;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
-import java.awt.event.*;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 public class CreateInvoiceGUI extends JPanel{
     private JLabel titleCreateInvoice = new JLabel();
     private InvoiceService invoiceService;
+    private JComboBox computerID;
 
     public JLabel getTitleCreateInvoice() {
         return titleCreateInvoice;
     }
 
-    public void setTextTitel(JLabel jlabel, String title){
-        jlabel.setText(title);
-    }
-    public void focusEventJDatechooser(JDateChooser jDateChooser){
-        IDateEditor editor = jDateChooser.getDateEditor();
-        JComponent comp = editor.getUiComponent();
-        comp.addFocusListener(new FocusListener() {
-            @Override
-            public void focusGained(FocusEvent e) {
-                ((JTextFieldDateEditor)e.getSource()).selectAll();
-            }
-
-            @Override
-            public void focusLost(FocusEvent e) {
-                JTextField placehoder = (JTextField)jDateChooser.getDateEditor().getUiComponent();
-                if(placehoder.getText().equals("")){
-                    placehoder.setText("dd-mm-yyyy");
-                    placehoder.setForeground(new Color(142,142,142));
-                }
-                else if(placehoder.getText().equals("dd-mm-yyyy")){
-                    placehoder.setForeground(new Color(142,142,142));
-                }
-                else {
-                    placehoder.setForeground(new Color(28, 26, 26));
-                }
-
-            }
-        });
-    }
     public CreateInvoiceGUI(){
         this.invoiceService = ServiceProvider.getInstance().getService(InvoiceService.class);
         this.setLayout(new BorderLayout());
@@ -84,16 +64,12 @@ public class CreateInvoiceGUI extends JPanel{
         JLabel titleDateCreate = new JLabel("Ngày tạo");
         titleDateCreate.setFont(new Font("serif",Font.PLAIN,17));
         JDateChooser dateCreate = new JDateChooser();
-        dateCreate.setDateFormatString("dd-MM-yyyy");
+        dateCreate.setDateFormatString("yyyy-MM-dd");
         dateCreate.setFont(new Font("serif",Font.PLAIN,16));
-        JTextField placehoder = (JTextField)dateCreate.getDateEditor().getUiComponent();
-        placehoder.setText("dd-mm-yyyy");
-        placehoder.setForeground(new Color(142,142,142));
-        focusEventJDatechooser(dateCreate);
+        dateCreate.setDate(new Date());
         dateCreate.setPreferredSize(new Dimension(110,25));
         JPanel containDateCreate = new JPanel(new FlowLayout(FlowLayout.LEFT,47,0));
         containDateCreate.add(titleDateCreate);
-//        containDateCreate.add(new JLabel(""));
         containDateCreate.add(dateCreate);
 //
 //        JLabel titleTimeCreate = new JLabel("Giờ tạo");
@@ -110,6 +86,19 @@ public class CreateInvoiceGUI extends JPanel{
         JLabel titleEmployeeCreate = new JLabel("Nhan vien",employeesIcon,JLabel.LEFT);
         titleEmployeeCreate.setFont(new Font("serif",Font.PLAIN,17));
         JComboBox employeeCreate = new JComboBox();
+
+        EmployeeService employeeService = ServiceProvider.getInstance().getService(EmployeeService.class);
+        List<Employee> allEmployee;
+        allEmployee = employeeService.findAllEmployee();
+        ArrayList<ComboboxItem> listEmployeeComboboxItem = new ArrayList<ComboboxItem>();
+        listEmployeeComboboxItem.add(new ComboboxItem());
+        for(int i = 0; i < allEmployee.size();i++){
+            listEmployeeComboboxItem.add(new ComboboxItem());
+            listEmployeeComboboxItem.get(i).setId(allEmployee.get(i).getId());
+            listEmployeeComboboxItem.get(i).setValue(allEmployee.get(i).getName());
+            employeeCreate.addItem(listEmployeeComboboxItem.get(i).getValue());
+        }
+
         employeeCreate.setPreferredSize(new Dimension(110,25));
         JPanel containEmployeeCreate = new JPanel(new FlowLayout(FlowLayout.LEFT,15,0));
         containEmployeeCreate.add(titleEmployeeCreate);
@@ -122,7 +111,23 @@ public class CreateInvoiceGUI extends JPanel{
         computerIcon = new ImageIcon(imgComputerIcon);
         JLabel titleComputerID = new JLabel("May",computerIcon,JLabel.LEFT);
         titleComputerID.setFont(new Font("serif",Font.PLAIN,17));
-        JComboBox computerID = new JComboBox();
+
+        computerID = new JComboBox();
+        ComputerService computerService = ServiceProvider.getInstance().getService(ComputerService.class);
+        List<Computer> allComputer;
+        try {
+            allComputer = computerService.getAllComputers();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        ArrayList<ComboboxItem> listComputerComboboxItem;
+        listComputerComboboxItem = new ArrayList<>(allComputer.size());
+        for(int i = 0; i < allComputer.size();i++){
+            listComputerComboboxItem.add(new ComboboxItem());
+            listComputerComboboxItem.get(i).setId(allComputer.get(i).getId());
+            listComputerComboboxItem.get(i).setValue(allComputer.get(i).getName());
+            computerID.addItem(listComputerComboboxItem.get(i).getValue());
+        }
         computerID.setPreferredSize(new Dimension(110,25));
         JPanel containCoumputerID = new JPanel(new FlowLayout(FlowLayout.LEFT,53,0));
         containCoumputerID.add(titleComputerID);
@@ -131,6 +136,25 @@ public class CreateInvoiceGUI extends JPanel{
         JLabel titleAccountID = new JLabel("Tai khoan");
         titleAccountID.setFont(new Font("serif",Font.PLAIN,17));
         JComboBox accountID = new JComboBox();
+        AccountService accountService = ServiceProvider.getInstance().getService(AccountService.class);
+        List<Account> allAccount;
+        try {
+            allAccount = accountService.getAllAccounts();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        ArrayList<ComboboxItem> listAccountComboboxItem;
+        listAccountComboboxItem = new ArrayList<ComboboxItem>();
+        listAccountComboboxItem.add(new ComboboxItem());
+        listAccountComboboxItem.get(0).setId(0);
+        listAccountComboboxItem.get(0).setValue("Khach van lai");
+        accountID.addItem(listAccountComboboxItem.get(0).getValue());
+        for(int i = 0; i < allAccount.size();i++){
+            listAccountComboboxItem.add(new ComboboxItem());
+            listAccountComboboxItem.get(i+1).setId(allAccount.get(i).getId());
+            listAccountComboboxItem.get(i+1).setValue(allAccount.get(i).getUsername());
+            accountID.addItem(listAccountComboboxItem.get(i+1).getValue());
+        }
         accountID.setPreferredSize(new Dimension(110,25));
         JPanel containAccountID = new JPanel(new FlowLayout(FlowLayout.LEFT,40,0));
         containAccountID.add(titleAccountID);
@@ -249,7 +273,6 @@ public class CreateInvoiceGUI extends JPanel{
     }
     public static  void main(String[] args){
         Helper.initUI();
-        ServiceProvider.init();
         CreateInvoiceGUI createInvoice = new CreateInvoiceGUI();
         createInvoice.initCompunent();
         JFrame jFrame = new JFrame();

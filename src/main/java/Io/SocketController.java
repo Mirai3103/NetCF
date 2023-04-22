@@ -3,15 +3,12 @@ package Io;
 import Payload.LoginPayload;
 import Utils.Helper;
 import Utils.ServiceProvider;
-import Utils.Interval;
-import model.Message;
-import model.Session;
-import service.AccountService;
-import service.ComputerService;
-import service.MessageService;
-import service.SessionService;
+import DTO.Message;
+import BUS.AccountService;
+import BUS.ComputerService;
+import BUS.MessageService;
+import BUS.SessionService;
 
-import javax.swing.*;
 import java.awt.*;
 import java.io.IOException;
 import java.io.Serializable;
@@ -36,6 +33,21 @@ public class SocketController {
         server.listen();
         server.on("login", this::onLogin);
         server.on("message", this::onMessage);
+        server.on("changePassword", this::onChangePassword);
+        server.on("logout",this::onLogout);
+        server.on("shutdown",this::onShutDown);
+    }
+
+    private void onChangePassword(Socket socket, Serializable serializable) {
+        try {
+            var session = sessionService.findByComputerId(socket.getMachineId());
+            var account = accountService.findById(session.getUsingBy());
+            accountService.changePassword(account.getId(), serializable.toString());
+            server.emit("infoMessage", "Đổi mật khẩu thành công");
+        } catch (SQLException e) {
+            e.printStackTrace();
+            server.emit("errorMessage", "Đổi mật khẩu thất bại");
+        }
     }
 
     public void onMessage(Socket client, Serializable data) {
@@ -55,10 +67,9 @@ public class SocketController {
     }
     public void onLogin(Socket client, Serializable data) {
         try {
-
             LoginPayload loginPayload = (LoginPayload) data;
             var account = accountService.login(loginPayload.getUsername(), loginPayload.getPassword());
-
+        
             if (sessionService.checkIfSessionExist(client.getMachineId())){
                 server.emit("errorMessage", "Lỗi máy tính");
                 return;
@@ -82,5 +93,15 @@ public class SocketController {
         }catch (SQLException e){
             e.printStackTrace();
         }
+    }
+
+    private void onLogout(Socket socket, Serializable serializable) {
+        this.sessionService.logout(socket.getMachineId());
+        server.emitSelf("statusChange",null);
+    }
+    private void onShutDown(Socket socket, Serializable serializable) {
+        Server.getInstance().removeClient(socket.getMachineId());
+        this.sessionService.shutDown(socket.getMachineId());
+        server.emitSelf("statusChange",null);
     }
 }

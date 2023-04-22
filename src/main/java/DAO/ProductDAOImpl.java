@@ -1,11 +1,9 @@
 package DAO;
 
 import DAO.Interface.IProductDAO;
-import model.Product;
+import DTO.Product;
 
-import java.beans.Statement;
 import java.sql.SQLException;
-import java.text.ParseException;
 import java.util.List;
 
 public class ProductDAOImpl extends BaseDAO implements IProductDAO {
@@ -113,4 +111,9 @@ public class ProductDAOImpl extends BaseDAO implements IProductDAO {
         statement.close();
         return products;
     }
+
+
+
+
+
 }
