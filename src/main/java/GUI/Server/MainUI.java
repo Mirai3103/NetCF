@@ -30,10 +30,11 @@ import javax.swing.border.EmptyBorder;
 
 public class MainUI extends JFrame {
     @Getter
+    @Setter
     private static Employee currentUser;
     private ComputerUsageService computerUsageService ;
 
-    public static void setCurrentUser(Employee currentUser) {
+    public static void login(Employee currentUser) {
         MainUI.currentUser = currentUser;
         loginTime = new Date();
     }
@@ -47,6 +48,12 @@ public class MainUI extends JFrame {
             blur = new Blur(this);
         }
         blur.setVisible(b);
+    }
+    public static MainUI getInstance(boolean isNew) {
+        if (isNew) {
+            instance = new MainUI();
+        }
+        return instance;
     }
     public static MainUI getInstance() {
         if (instance == null) {

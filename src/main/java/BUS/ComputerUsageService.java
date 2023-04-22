@@ -56,7 +56,8 @@ public List<ComputerUsage> getAll()  {
                 }
             }
             try {
-                computerUsage.setComputer(computerService.getComputerById(computerUsage.getComputerID()));
+                var computer = computerUsage.getComputerID()==null?null:computerService.getComputerById(computerUsage.getComputerID());
+                computerUsage.setComputer(computer);
             } catch (SQLException e) {
                 throw new RuntimeException(e);
             }

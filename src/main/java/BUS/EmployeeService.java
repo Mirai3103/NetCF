@@ -37,6 +37,12 @@ public class EmployeeService {
             throw new RuntimeException(e);
         }
     }
+    public Employee createEmployee(Employee employee) throws SQLException {
+        return employeeDAO.create(employee);
+    }
+    public Employee updateEmployee(Employee employee) throws SQLException {
+        return employeeDAO.update(employee);
+    }
 
 }
 

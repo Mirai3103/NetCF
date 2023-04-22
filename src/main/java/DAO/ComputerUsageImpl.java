@@ -61,8 +61,8 @@ public class ComputerUsageImpl extends BaseDAO implements IComputerUsageDAO {
 
     @Override
     public List<ComputerUsage> findAll() throws SQLException {
-        var preparedStatement = this.prepareStatement("SELECT * FROM ComputerUsage" +
-                "where isEmployeeUsing = 0" +
+        var preparedStatement = this.prepareStatement("SELECT * FROM ComputerUsage " +
+                "where isEmployeeUsing = 0 " +
                 " order by createdAt desc");
         var resultSet = preparedStatement.executeQuery();
         return ConnectionFactory.toList(resultSet, ComputerUsage.class);

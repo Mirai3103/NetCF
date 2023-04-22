@@ -4,17 +4,20 @@
  */
 package GUI.Server.Personal;
 
+import BUS.AccountService;
 import BUS.ComputerUsageService;
 import BUS.EmployeeService;
 import DTO.ComputerUsage;
 import DTO.ComputerUsageFilter;
 import DTO.Employee;
 import GUI.Server.ComputerUsage.ComputerUsageGUI;
+import GUI.Server.Main;
 import GUI.Server.MainUI;
 import Utils.Helper;
 import Utils.ServiceProvider;
 
 import javax.swing.*;
+import java.sql.SQLException;
 
 /**
  *
@@ -23,6 +26,7 @@ import javax.swing.*;
 public class PersonalSetting extends javax.swing.JPanel {
     private EmployeeService employeeService ;
     private ComputerUsageService computerUsageService;
+    private AccountService accountService;
 
 
     /**
@@ -31,7 +35,7 @@ public class PersonalSetting extends javax.swing.JPanel {
     public PersonalSetting() {
         employeeService = ServiceProvider.getInstance().getService(EmployeeService.class);
         computerUsageService = ServiceProvider.getInstance().getService(ComputerUsageService.class);
-
+accountService = ServiceProvider.getInstance().getService(AccountService.class);
         initComponents();
         reDesign();
 
@@ -174,9 +178,10 @@ public class PersonalSetting extends javax.swing.JPanel {
         jLabel3.setText("Tên tài khoản:");
         jPanel6.add(jLabel3, java.awt.BorderLayout.NORTH);
 
+        jTextFieldUsername.setEditable(false);
         jTextFieldUsername.setFont(new java.awt.Font("Nunito", 0, 16)); // NOI18N
         jTextFieldUsername.setText("jTextField1");
-        jTextFieldUsername.setEnabled(false);
+        jTextFieldUsername.setFocusable(false);
         jTextFieldUsername.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jTextFieldUsernameActionPerformed(evt);
@@ -196,9 +201,10 @@ public class PersonalSetting extends javax.swing.JPanel {
         jLabel4.setText("Lương trên giờ:");
         jPanel7.add(jLabel4, java.awt.BorderLayout.NORTH);
 
+        jTextFieldSalary.setEditable(false);
         jTextFieldSalary.setFont(new java.awt.Font("Nunito", 0, 16)); // NOI18N
         jTextFieldSalary.setText("jTextField1");
-        jTextFieldSalary.setEnabled(false);
+        jTextFieldSalary.setFocusable(false);
         jTextFieldSalary.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jTextFieldSalaryActionPerformed(evt);
@@ -271,17 +277,32 @@ public class PersonalSetting extends javax.swing.JPanel {
         jButtonChangePass.setFont(new java.awt.Font("Nunito", 0, 16)); // NOI18N
         jButtonChangePass.setText("Đổi mật khẩu");
         jButtonChangePass.setPreferredSize(new java.awt.Dimension(168, 36));
+        jButtonChangePass.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonChangePassActionPerformed(evt);
+            }
+        });
         jPanel16.add(jButtonChangePass);
 
         jButtonReset.setFont(new java.awt.Font("Nunito", 0, 16)); // NOI18N
         jButtonReset.setText("Reset");
         jButtonReset.setPreferredSize(new java.awt.Dimension(100, 36));
+        jButtonReset.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonResetActionPerformed(evt);
+            }
+        });
         jPanel16.add(jButtonReset);
 
         jButtonSave.setBackground(new java.awt.Color(51, 153, 255));
         jButtonSave.setFont(new java.awt.Font("Nunito", 0, 16)); // NOI18N
         jButtonSave.setText("Lưu");
         jButtonSave.setPreferredSize(new java.awt.Dimension(100, 36));
+        jButtonSave.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonSaveActionPerformed(evt);
+            }
+        });
         jPanel16.add(jButtonSave);
 
         jPanel2.add(jPanel16);
@@ -301,9 +322,10 @@ public class PersonalSetting extends javax.swing.JPanel {
         jLabel8.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 20));
         jPanel11.add(jLabel8);
 
+        jTextFieldTotalTimeWork.setEditable(false);
         jTextFieldTotalTimeWork.setFont(new java.awt.Font("Nunito", 0, 16)); // NOI18N
         jTextFieldTotalTimeWork.setText("jTextField1");
-        jTextFieldTotalTimeWork.setEnabled(false);
+        jTextFieldTotalTimeWork.setFocusable(false);
         jPanel11.add(jTextFieldTotalTimeWork);
 
         jPanel3.add(jPanel11);
@@ -318,9 +340,10 @@ public class PersonalSetting extends javax.swing.JPanel {
         jLabel9.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 20));
         jPanel12.add(jLabel9);
 
+        jTextFieldTotalSalary.setEditable(false);
         jTextFieldTotalSalary.setFont(new java.awt.Font("Nunito", 0, 16)); // NOI18N
         jTextFieldTotalSalary.setText("jTextField1");
-        jTextFieldTotalSalary.setEnabled(false);
+        jTextFieldTotalSalary.setFocusable(false);
         jPanel12.add(jTextFieldTotalSalary);
 
         jPanel3.add(jPanel12);
@@ -335,9 +358,10 @@ public class PersonalSetting extends javax.swing.JPanel {
         jLabel10.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 20));
         jPanel13.add(jLabel10);
 
+        jTextFieldTimeInMonth.setEditable(false);
         jTextFieldTimeInMonth.setFont(new java.awt.Font("Nunito", 0, 16)); // NOI18N
         jTextFieldTimeInMonth.setText("jTextField1");
-        jTextFieldTimeInMonth.setEnabled(false);
+        jTextFieldTimeInMonth.setFocusable(false);
         jTextFieldTimeInMonth.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jTextFieldTimeInMonthActionPerformed(evt);
@@ -357,9 +381,10 @@ public class PersonalSetting extends javax.swing.JPanel {
         jLabel11.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 20));
         jPanel14.add(jLabel11);
 
+        jTextFieldSalaryInMonth.setEditable(false);
         jTextFieldSalaryInMonth.setFont(new java.awt.Font("Nunito", 0, 16)); // NOI18N
         jTextFieldSalaryInMonth.setText("jTextField1");
-        jTextFieldSalaryInMonth.setEnabled(false);
+        jTextFieldSalaryInMonth.setFocusable(false);
         jTextFieldSalaryInMonth.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jTextFieldSalaryInMonthActionPerformed(evt);
@@ -379,9 +404,10 @@ public class PersonalSetting extends javax.swing.JPanel {
         jLabel12.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 20));
         jPanel15.add(jLabel12);
 
+        jTextFieldInvoice.setEditable(false);
         jTextFieldInvoice.setFont(new java.awt.Font("Nunito", 0, 16)); // NOI18N
         jTextFieldInvoice.setText("jTextField1");
-        jTextFieldInvoice.setEnabled(false);
+        jTextFieldInvoice.setFocusable(false);
         jTextFieldInvoice.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jTextFieldInvoiceActionPerformed(evt);
@@ -425,6 +451,59 @@ public class PersonalSetting extends javax.swing.JPanel {
     private void jTextFieldInvoiceActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextFieldInvoiceActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jTextFieldInvoiceActionPerformed
+
+    private void jButtonChangePassActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonChangePassActionPerformed
+       var oldPass= JOptionPane.showInputDialog(this, "Nhập mật khẩu cũ", "Đổi mật khẩu", JOptionPane.INFORMATION_MESSAGE);
+       if(MainUI.getCurrentUser().getAccount().getPassword().equals(oldPass)){
+              var newPass= JOptionPane.showInputDialog(this, "Nhập mật khẩu mới", "Đổi mật khẩu", JOptionPane.INFORMATION_MESSAGE);
+                if(newPass.isBlank()){
+                    JOptionPane.showMessageDialog(this, "Mật khẩu không được để trống", "Đổi mật khẩu", JOptionPane.INFORMATION_MESSAGE);
+                    return;
+                }
+              MainUI.getCurrentUser().getAccount().setPassword(newPass);
+           try {
+               accountService.update( MainUI.getCurrentUser().getAccount());
+               JOptionPane.showMessageDialog(this, "Đổi mật khẩu thành công", "Đổi mật khẩu", JOptionPane.INFORMATION_MESSAGE);
+           } catch (SQLException e) {
+               throw new RuntimeException(e);
+           }
+       }else {
+              JOptionPane.showMessageDialog(this, "Mật khẩu cũ không đúng", "Đổi mật khẩu", JOptionPane.INFORMATION_MESSAGE);
+       }
+    }//GEN-LAST:event_jButtonChangePassActionPerformed
+
+    private void jButtonResetActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonResetActionPerformed
+        jTextFieldName.setText(MainUI.getCurrentUser().getName());
+        jTextFieldUsername.setText(MainUI.getCurrentUser().getAccount().getUsername());
+        jTextFieldPhoneNumber.setText(MainUI.getCurrentUser().getPhoneNumber());
+        jTextFieldAddress.setText(MainUI.getCurrentUser().getAddress());
+        jTextAreaOther.setText(MainUI.getCurrentUser().getOtherInformation());
+    }//GEN-LAST:event_jButtonResetActionPerformed
+
+    private void jButtonSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonSaveActionPerformed
+
+        if(jTextFieldName.getText().isEmpty()){
+            JOptionPane.showMessageDialog(this, "Vui lòng nhập tên", "Lỗi nhập", JOptionPane.ERROR_MESSAGE);
+        }
+        if(jTextFieldPhoneNumber.getText().isEmpty()){
+            JOptionPane.showMessageDialog(this, "Vui lòng nhập số điện thoại", "Lỗi nhập", JOptionPane.ERROR_MESSAGE);
+        }
+        if(jTextFieldAddress.getText().isEmpty()){
+            JOptionPane.showMessageDialog(this, "Vui lòng nhập địa chỉ", "Lỗi nhập", JOptionPane.ERROR_MESSAGE);
+        }
+        var newEm = new Employee(MainUI.getCurrentUser());
+        newEm.setName(jTextFieldName.getText());
+        newEm.setPhoneNumber(jTextFieldPhoneNumber.getText());
+        newEm.setAddress(jTextFieldAddress.getText());
+        newEm.setOtherInformation(jTextAreaOther.getText());
+        try {
+            employeeService.updateEmployee(newEm);
+            JOptionPane.showMessageDialog(this, "Cập nhật thành công", "Cập nhật", JOptionPane.INFORMATION_MESSAGE);
+            MainUI.setCurrentUser(newEm);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }//GEN-LAST:event_jButtonSaveActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

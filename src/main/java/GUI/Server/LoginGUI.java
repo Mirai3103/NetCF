@@ -179,8 +179,8 @@ public class LoginGUI extends JFrame {
                 return;
             }
             emp.setAccount(user);
-            MainUI.setCurrentUser(emp);
-            MainUI.getInstance().setVisible(true);
+            MainUI.login(emp);
+            MainUI.getInstance(true).setVisible(true);
             dispose();
         }
     }

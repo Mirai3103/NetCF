@@ -24,8 +24,8 @@ public class Product {
         @Override
         public String toString() {
             return switch (this) {
-                case DRINK -> "Đồ uống";
                 case FOOD -> "Đồ ăn";
+                case DRINK -> "Đồ uống";
                 case CARD -> "Thẻ";
             };
         }

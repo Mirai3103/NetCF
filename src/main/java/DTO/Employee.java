@@ -34,4 +34,19 @@ public class Employee {
     private Date createdAt = new Date();
     private Date deletedAt;
     private List<Invoice> createdInvoices;
+
+    public Employee(Employee other){
+         this.id = other.id;
+            this.name = other.name;
+            this.accountID = other.accountID;
+            this.account = other.account;
+            this.otherInformation = other.otherInformation;
+            this.salaryPerHour = other.salaryPerHour;
+            this.phoneNumber = other.phoneNumber;
+            this.address = other.address;
+            this.createdAt = other.createdAt;
+            this.deletedAt = other.deletedAt;
+            this.createdInvoices = other.createdInvoices;
+
+    }
 }
