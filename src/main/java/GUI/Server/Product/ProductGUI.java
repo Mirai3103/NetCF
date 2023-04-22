@@ -7,7 +7,6 @@ import Utils.Fonts;
 import Utils.Helper;
 import Utils.ServiceProvider;
 import model.Product;
-import service.*;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -29,7 +28,7 @@ import java.util.List;
 
 public class ProductGUI extends JFrame {
     private List<Product> list;
-    private ProductService productService;
+    private service.ProductService productService;
     private JPanel parentPanel, panelHeader, panelBody, panelBody1, panelBody2, buttonPanel;
     private JLabel txtListProduct, logoLabel;
     private JComboBox comboBox;
@@ -42,7 +41,7 @@ public class ProductGUI extends JFrame {
 
     public ProductGUI() {
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-        productService = ServiceProvider.getInstance().getService(ProductService.class);
+        productService = ServiceProvider.getInstance().getService(service.ProductService.class);
         this.setLayout(new BorderLayout());
         this.setSize(new Dimension(screenSize.width,screenSize.height));
         initComponents();
