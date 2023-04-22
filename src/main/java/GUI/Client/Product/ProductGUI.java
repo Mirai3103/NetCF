@@ -1,4 +1,4 @@
-package GUI.Client;
+package GUI.Client.Product;
 
 import GUI.Components.Input;
 import Utils.Fonts;
@@ -69,7 +69,7 @@ public class ProductGUI extends JFrame {
         addProductButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                
+
             }
         });
         addProductButton.setFont(Fonts.getFont(Font.BOLD, 14));
@@ -185,6 +185,6 @@ public class ProductGUI extends JFrame {
     public static void main(String[] args) {
         Helper.initUI();
         ServiceProvider.init();
-        new ProductGUIClient();
+        new ProductGUI();
     }
 }

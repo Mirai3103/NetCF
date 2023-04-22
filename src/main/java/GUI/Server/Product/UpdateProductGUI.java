@@ -1,11 +1,11 @@
 package GUI.Server.Product;
 
-import BUS.ProductService;
-import DTO.Product;
 import GUI.Components.Input;
 import Utils.Fonts;
 import Utils.Helper;
 import Utils.ServiceProvider;
+import DTO.Product;
+import BUS.ProductService;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -17,12 +17,14 @@ import java.sql.SQLException;
 import java.util.Date;
 
 public class UpdateProductGUI extends JFrame {
-    private JPanel parentPanel, panelHeader, panelBody, panel1, panel2, panel3, panelButtonReturn, panelLeftPN, panelRightPN;
-    private JButton returnButton, updateButton;
+    private JPanel parentPanel, panelHeader, panelBody, panel1, panel2, panel3, panelButtonReturn, panelLeftPN, panelRightPN, imageEnd, panelPDRight, panelPDLeft, panel2d, panelRighNOP, panelRigth2, panelLeftPB, panelLeft2, panel2b, panelRigthTCB, panelRight1,panelLeftPP, panelLeft1, panel2h;
+    private JButton returnButton, updateButton, chooseButton;
     private JLabel logo, productName , productPrice, productType, numberOfProduct, productDescription, productImage;
     private JTextField txtProductName, txtProductPrice, txtNumberOfProduct, txtProductDescription;
-    private Product product = Product.builder().image("/images/gtaV.jpg").id(0).name("").price(0).createdAt(new Date()).description("").stock(0).build();
+    private Product product;
     private ProductService productService;
+    private JCheckBox placeBox;
+    private JComboBox comboBox;
     public UpdateProductGUI(int productId) {
         productService = ServiceProvider.getInstance().getService(ProductService.class);
         try {
@@ -37,7 +39,7 @@ public class UpdateProductGUI extends JFrame {
             e.printStackTrace();
         }
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-        this.setSize(screenSize.width,screenSize.height);
+        this.setSize(1000,1000);
         this.setLayout(new BorderLayout());
         initComponents();
         this.setVisible(true);
@@ -100,8 +102,8 @@ public class UpdateProductGUI extends JFrame {
                 product.setStock(Integer.parseInt(txtNumberOfProduct.getText()));
                 try {
                     productService.update(product);
-                } catch (Exception ex) {
-                    JOptionPane.showMessageDialog(null,"Không Thể Cập Nhật Dữ Liệu","Lỗi",JOptionPane.ERROR_MESSAGE);
+                } catch (SQLException ex) {
+                    throw new RuntimeException(ex);
                 }
             }
         });
@@ -153,14 +155,14 @@ public class UpdateProductGUI extends JFrame {
         // end panel2
 
         // create panel2h
-        JPanel panel2h = new JPanel();
+        panel2h = new JPanel();
         panel2h.setLayout(new BorderLayout());
         panel2h.setPreferredSize(new Dimension(1000-45,55));
         panel2.add(panel2h,BorderLayout.PAGE_START);
         // end panel2h
 
         //
-        JPanel panelLeft1 = new JPanel();
+        panelLeft1 = new JPanel();
         panelLeft1.setLayout(new BorderLayout());
 //        panelLeft1.setPreferredSize(new Dimension(480,55));
         panel2h.add(panelLeft1,BorderLayout.CENTER);
@@ -170,7 +172,7 @@ public class UpdateProductGUI extends JFrame {
         productPrice.setBorder(new EmptyBorder(0,20,0,0));
         panelLeft1.add(productPrice,BorderLayout.PAGE_START);
 
-        JPanel panelLeftPP = new JPanel();
+        panelLeftPP = new JPanel();
         panelLeftPP.setPreferredSize(new Dimension(18,35));
         panelLeft1.add(panelLeftPP,BorderLayout.LINE_START);
 
@@ -183,7 +185,7 @@ public class UpdateProductGUI extends JFrame {
         panelLeft1.add(txtProductPrice,BorderLayout.CENTER);
         //
 
-        JPanel panelRight1 = new JPanel();
+        panelRight1 = new JPanel();
         panelRight1.setLayout(new BorderLayout());
         panelRight1.setPreferredSize(new Dimension(480,55));
         panel2h.add(panelRight1,BorderLayout.LINE_END);
@@ -193,40 +195,40 @@ public class UpdateProductGUI extends JFrame {
         panelRight1.add(productType,BorderLayout.PAGE_START);
 
         String combo[] = {"Chọn Loại Sản Phẩm","Nước Uống","Thức Ăn","Thẻ"};
-        JComboBox comboBox = new JComboBox(combo);
+        comboBox = new JComboBox(combo);
         comboBox.setFont(Fonts.getFont(Font.ITALIC,15));
         comboBox.setPreferredSize(new Dimension(480,18));
         panelRight1.add(comboBox,BorderLayout.CENTER);
 
-        JPanel panelRigthTCB = new JPanel();
+        panelRigthTCB = new JPanel();
         panelRigthTCB.setPreferredSize(new Dimension(18,18));
         panelRight1.add(panelRigthTCB,BorderLayout.LINE_END);
 
 
         //
-        JPanel panel2b = new JPanel();
+        panel2b = new JPanel();
         panel2b.setLayout(new BorderLayout());
         panel2b.setPreferredSize(new Dimension(1000-45,55));
         panel2.add(panel2b,BorderLayout.CENTER);
 
         //
-        JPanel panelLeft2 = new JPanel();
+        panelLeft2 = new JPanel();
         panelLeft2.setLayout(new BorderLayout());
         panelLeft2.setPreferredSize(new Dimension(480,55));
         panel2b.add(panelLeft2,BorderLayout.CENTER);
 
-        JPanel panelLeftPB = new JPanel();
+        panelLeftPB = new JPanel();
         panelLeftPB.setPreferredSize(new Dimension(18,35));
         panelLeft2.add(panelLeftPB);
 
         //
-        JCheckBox placeBox = new JCheckBox("Chế Biến Bên Ngoài");
+        placeBox = new JCheckBox("Chế Biến Bên Ngoài");
         placeBox.setFont(Fonts.getFont(Font.BOLD,18));
         placeBox.setBorder(new EmptyBorder(0,20,0,0));
         panelLeft2.add(placeBox,BorderLayout.CENTER);
 
         //
-        JPanel panelRigth2 = new JPanel();
+        panelRigth2 = new JPanel();
         panelRigth2.setLayout(new BorderLayout());
         panelRigth2.setPreferredSize(new Dimension(480,55));
         panel2b.add(panelRigth2,BorderLayout.LINE_END);
@@ -240,11 +242,11 @@ public class UpdateProductGUI extends JFrame {
         txtNumberOfProduct.setFont(Fonts.getFont(Font.PLAIN,15));
         panelRigth2.add(txtNumberOfProduct,BorderLayout.CENTER);
 
-        JPanel panelRighNOP = new JPanel();
+        panelRighNOP = new JPanel();
         panelRighNOP.setPreferredSize(new Dimension(18,40));
         panelRigth2.add(panelRighNOP,BorderLayout.LINE_END);
 
-        JPanel panel2d = new JPanel();
+        panel2d = new JPanel();
         panel2d.setLayout(new BorderLayout());
         panel2d.setPreferredSize(new Dimension(1000-45,55));
         panel2.add(panel2d,BorderLayout.PAGE_END);
@@ -254,7 +256,7 @@ public class UpdateProductGUI extends JFrame {
         productDescription.setBorder(new EmptyBorder(0,20,0,0));
         panel2d.add(productDescription,BorderLayout.PAGE_START);
 
-        JPanel panelPDLeft = new JPanel();
+        panelPDLeft = new JPanel();
         panelPDLeft.setPreferredSize(new Dimension(18,35));
         panel2d.add(panelPDLeft,BorderLayout.LINE_START);
 
@@ -264,11 +266,11 @@ public class UpdateProductGUI extends JFrame {
         txtProductDescription.setFont(Fonts.getFont(Font.PLAIN,15));
         panel2d.add(txtProductDescription,BorderLayout.CENTER);
 
-        JPanel panelPDRight = new JPanel();
+        panelPDRight = new JPanel();
         panelPDRight.setPreferredSize(new Dimension(18,35));
         panel2d.add(panelPDRight,BorderLayout.LINE_END);
 
-        JPanel panel3 = new JPanel();
+        panel3 = new JPanel();
         panel3.setLayout(new BorderLayout());
         panel3.setPreferredSize(new Dimension(600,515));
         panelBody.add(panel3,BorderLayout.PAGE_END);
@@ -290,11 +292,11 @@ public class UpdateProductGUI extends JFrame {
 //        imageRigth.setPreferredSize(new Dimension(550,60));
 //        panel3.add(imageRigth,BorderLayout.LINE_END);
 
-        JPanel imageEnd = new JPanel();
+        imageEnd = new JPanel();
         imageEnd.setPreferredSize(new Dimension(600,400));
         panel3.add(imageEnd,BorderLayout.PAGE_END);
 
-        JButton chooseButton = new JButton("Chọn Ảnh");
+        chooseButton = new JButton("Chọn Ảnh");
         chooseButton.setBorder(new EmptyBorder(50,50,50,50));
         chooseButton.setPreferredSize(new Dimension(60,60));
         chooseButton.addActionListener(new ActionListener() {
