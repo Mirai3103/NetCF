@@ -1,5 +1,6 @@
 package GUI.Server.Invoice;
 
+import Utils.Helper;
 import Utils.ServiceProvider;
 import com.toedter.calendar.JDateChooser;
 import DTO.*;
@@ -61,7 +62,7 @@ public class InvoiceManageGUI extends JPanel{
         //manager header START
 //        1-----Title Quan Ly hoa don-START---
         JLabel titleManagerInvoice = new JLabel("Quản lý hóa đơn");
-        titleManagerInvoice.setFont(new Font("serif",Font.BOLD,30));
+        titleManagerInvoice.setFont(new Font("nunito",Font.BOLD,30));
         titleManagerInvoice.setForeground(Color.WHITE);
         titleManagerInvoice.setBorder(BorderFactory.createCompoundBorder(
                 BorderFactory.createLineBorder(new Color(0,0,0,1)),
@@ -78,7 +79,7 @@ public class InvoiceManageGUI extends JPanel{
 //        2-------ACTION IN HEADER-START-----
 //        2.1------Hoa don nhap-Hoa don ban-START-----
         actionShowInvoiceExport = new JLabel("Hóa đơn bán");
-        actionShowInvoiceExport.setFont(new Font("serif",Font.BOLD,20));
+        actionShowInvoiceExport.setFont(new Font("nunito",Font.BOLD,20));
         actionShowInvoiceExport.setCursor(new Cursor(Cursor.HAND_CURSOR));
         actionShowInvoiceExport.setForeground(Color.WHITE);
         actionShowInvoiceExport.setBorder(BorderFactory.createCompoundBorder(
@@ -86,7 +87,7 @@ public class InvoiceManageGUI extends JPanel{
                 BorderFactory.createEmptyBorder(0,0,5,0)
         ));
         actionShowInvoiceImport = new JLabel("Hóa đơn nhập");
-        actionShowInvoiceImport.setFont(new Font("serif",Font.BOLD,20));
+        actionShowInvoiceImport.setFont(new Font("nunito",Font.BOLD,20));
         actionShowInvoiceImport.setCursor(new Cursor(Cursor.HAND_CURSOR));
         actionShowInvoiceImport.setForeground(Color.WHITE);
         JPanel containShowInvoiceAction = new JPanel(new FlowLayout(FlowLayout.LEFT));
@@ -99,9 +100,9 @@ public class InvoiceManageGUI extends JPanel{
 
 
 //        2.2-------Nut them hoa don moi-START
-        btnCreateInvoice = new JButton("+ tạo mới");
+        btnCreateInvoice = new JButton("+ Tạo mới");
         btnCreateInvoice.setBackground(new Color(238,238,238));
-        btnCreateInvoice.setFont(new Font("srief",Font.PLAIN,17));
+        btnCreateInvoice.setFont(new Font("nunito",Font.BOLD,20));
         btnCreateInvoice.setCursor(new Cursor(Cursor.HAND_CURSOR));
         btnCreateInvoice.setFocusPainted(false);//dung de bo border cua text ben trong button
         btnCreateInvoice.setBorder(BorderFactory.createCompoundBorder(
@@ -138,7 +139,7 @@ public class InvoiceManageGUI extends JPanel{
         Image imgFilter = iconFilter.getImage().getScaledInstance(30,30,Image.SCALE_SMOOTH);
         iconFilter = new ImageIcon(imgFilter);
         JLabel titleFilter = new JLabel("Lọc tìm kiếm",iconFilter,JLabel.CENTER);
-        titleFilter.setFont(new Font("serif",Font.BOLD,17));
+        titleFilter.setFont(new Font("nunito",Font.BOLD,17));
         JPanel containTitleFilter = new JPanel(new FlowLayout(FlowLayout.LEFT));
         containTitleFilter.setPreferredSize(new Dimension(245,50));
         containTitleFilter.add(titleFilter);
@@ -148,28 +149,29 @@ public class InvoiceManageGUI extends JPanel{
 //            b------Date limit of filter------
         JLabel limitDateFrom = new JLabel("Từ ngày");
         dateChooserFrom = new JDateChooser();
-        dateChooserFrom.setFont(new Font("serif",Font.PLAIN,16));
-        dateChooserFrom.setDateFormatString("yyyy-MM-dd");
+        dateChooserFrom.setFont(new Font("nunito",Font.PLAIN,16));
+        dateChooserFrom.setDateFormatString("dd-MM-yyyy");
         dateChooserFrom.setDate(new Date());
+        dateChooserFrom.setPreferredSize(new Dimension(115,30));
         JPanel containDateFrom = new JPanel(new GridLayout(2,1,0,0));
-        containDateFrom.setPreferredSize(new Dimension(112,50));
+        containDateFrom.setPreferredSize(new Dimension(140,50));
         containDateFrom.add(limitDateFrom);
         containDateFrom.add(dateChooserFrom);
 
 
         JLabel limitDateTo = new JLabel("Đến ngày");
         dateChooserTo = new JDateChooser();
-        dateChooserTo.setFont(new Font("serif",Font.PLAIN,16));
-        dateChooserTo.setDateFormatString("yyyy-MM-dd");
+        dateChooserTo.setFont(new Font("nunito",Font.PLAIN,16));
+        dateChooserTo.setDateFormatString("dd-MM-yyyy");
         dateChooserTo.setDate(new Date());;
 
         JPanel containDateTo = new JPanel(new GridLayout(2,1,0,0));
-        containDateTo.setPreferredSize(new Dimension(112,50));
+        containDateTo.setPreferredSize(new Dimension(140,50));
         containDateTo.add(limitDateTo);
         containDateTo.add(dateChooserTo);
 
         JPanel containLimitDate = new JPanel(new FlowLayout(FlowLayout.LEFT));
-        containLimitDate.setPreferredSize(new Dimension(245,60));
+        containLimitDate.setPreferredSize(new Dimension(300,60));
         containLimitDate.add(containDateFrom);
         containLimitDate.add(new JLabel(""));
         containLimitDate.add(containDateTo);
@@ -181,12 +183,12 @@ public class InvoiceManageGUI extends JPanel{
         Image imgMoney = totalIcon.getImage();
         imgMoney = imgMoney.getScaledInstance(20,20,Image.SCALE_SMOOTH);
         totalIcon = new ImageIcon(imgMoney);
-        JLabel titleLimitTotal = new JLabel("Khoảng total",totalIcon,JLabel.LEFT);
+        JLabel titleLimitTotal = new JLabel("Khoảng tiền từ",totalIcon,JLabel.LEFT);
         titleLimitTotal.setPreferredSize(new Dimension(150,30));
-        limitTotalFrom = new JTextField(11);
-        limitTotalFrom.setPreferredSize(new Dimension(0,25));
-        limitTotalTo = new JTextField(11);
-        limitTotalTo.setPreferredSize(new Dimension(0,25));
+        limitTotalFrom = new JTextField(5);
+        limitTotalFrom.setPreferredSize(new Dimension(0,33));
+        limitTotalTo = new JTextField(5);
+        limitTotalTo.setPreferredSize(new Dimension(0,33));
         JPanel containLimitTotal = new JPanel(new FlowLayout(FlowLayout.LEFT,4,0));
         containLimitTotal.setPreferredSize(new Dimension(245,60));
         containLimitTotal.add(titleLimitTotal);
@@ -214,7 +216,7 @@ public class InvoiceManageGUI extends JPanel{
             employeeToFilter.addItem(listEmployeeComboboxItem.get(i).getValue());
         }
 
-        employeeToFilter.setPreferredSize(new Dimension(120,25));
+        employeeToFilter.setPreferredSize(new Dimension(150,33));
         JPanel containEmployeeFilter = new JPanel(new FlowLayout());
         containEmployeeFilter.add(titleContainEmployeeFilter);
         containEmployeeFilter.add(new JLabel("    "));
@@ -246,7 +248,7 @@ public class InvoiceManageGUI extends JPanel{
            accountToFilter.addItem(listAccountComboboxItem.get(i+1).getValue());
         }
 
-        accountToFilter.setPreferredSize(new Dimension(120,25));
+        accountToFilter.setPreferredSize(new Dimension(150,33));
         JPanel containAccountFilter = new JPanel(new FlowLayout());
         containAccountFilter.add(titleContainAccountFilter);
         containAccountFilter.add(new JLabel(""));
@@ -264,7 +266,7 @@ public class InvoiceManageGUI extends JPanel{
                 BorderFactory.createEmptyBorder(0,0,0,24)
         ));
         computersToFilter = new JComboBox();
-        computersToFilter.setPreferredSize(new Dimension(120,25));
+        computersToFilter.setPreferredSize(new Dimension(120,33));
         List<Computer> allComputer;
         try {
             allComputer = computerService.getAllComputers();
@@ -346,7 +348,7 @@ public class InvoiceManageGUI extends JPanel{
         listInvoiceExport.setComponentPopupMenu(operationForInvoice(listInvoiceExport,listInvoiceModelExport));
         listInvoiceExport.setModel(listInvoiceModelExport);
         listInvoiceExport.getTableHeader().setPreferredSize(new Dimension(0,40));
-        listInvoiceExport.getTableHeader().setFont(new Font("serif",Font.BOLD,17));
+        listInvoiceExport.getTableHeader().setFont(new Font("nunito",Font.BOLD,17));
         listInvoiceExport.getColumnModel().getColumn(0).setPreferredWidth(10);
         listInvoiceExport.getColumnModel().getColumn(1).setPreferredWidth(100);
         listInvoiceExport.getColumnModel().getColumn(2).setPreferredWidth(100);
@@ -369,7 +371,7 @@ public class InvoiceManageGUI extends JPanel{
         listInvoiceImport.setComponentPopupMenu(operationForInvoice(listInvoiceImport,listInvoiceModelImport));
         listInvoiceImport.setModel(listInvoiceModelImport);
         listInvoiceImport.getTableHeader().setPreferredSize(new Dimension(0,40));
-        listInvoiceImport.getTableHeader().setFont(new Font("serif",Font.BOLD,17));
+        listInvoiceImport.getTableHeader().setFont(new Font("nunito",Font.BOLD,17));
         listInvoiceImport.setRowHeight(30);
 
 
@@ -377,7 +379,7 @@ public class InvoiceManageGUI extends JPanel{
         listInvoiceScrollPaneImport = new JScrollPane(listInvoiceImport);
 
         titleContainShowListInvoice = new JLabel("Danh sách hóa đơn bán",JLabel.CENTER);
-        titleContainShowListInvoice.setFont(new Font("serif",Font.BOLD,25));
+        titleContainShowListInvoice.setFont(new Font("nunito",Font.BOLD,25));
         titleContainShowListInvoice.setBorder(BorderFactory.createCompoundBorder(
                 BorderFactory.createLineBorder(new Color(0,0,0,1)),
                 BorderFactory.createEmptyBorder(10,0,0,0)
@@ -637,6 +639,7 @@ public class InvoiceManageGUI extends JPanel{
 
 
     public static void main(String[] args){
+        Helper.initUI();
         ServiceProvider.init();
         InvoiceManageGUI quanlyhoadon = new InvoiceManageGUI();
         JFrame frame = new JFrame();

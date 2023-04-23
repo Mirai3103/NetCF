@@ -42,6 +42,8 @@ public class Helper {
     public static void initUI() {
         try {
             FlatMacLightLaf.setup();
+            UIManager.getLookAndFeelDefaults()
+                    .put("defaultFont", new Font("nunito", Font.PLAIN, 14));
             UIManager.put("Button.font", Fonts.getFont(Font.PLAIN));
             UIManager.put("Label.font", Fonts.getFont(Font.PLAIN));
             UIManager.put("TextField.font", Fonts.getFont(Font.PLAIN));
