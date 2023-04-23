@@ -27,7 +27,7 @@ import java.util.ArrayList;
 import java.util.EventObject;
 import java.util.List;
 
-public class ProductGUI extends JFrame {
+public class ProductGUI extends JPanel {
     private List<Product> list;
     private ProductService productService;
     private JPanel parentPanel, panelHeader, panelBody, panelBody1, panelBody2, buttonPanel;
@@ -47,7 +47,6 @@ public class ProductGUI extends JFrame {
         this.setSize(new Dimension(screenSize.width,screenSize.height));
         initComponents();
         this.setVisible(true);
-        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
 
     private void initComponents() {
