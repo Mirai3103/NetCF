@@ -16,16 +16,16 @@ import java.io.File;
 import java.sql.SQLException;
 import java.util.Date;
 
-public class UpdateProductGUI extends JFrame {
+public class ViewProductGUI extends JFrame {
     private JPanel parentPanel, panelHeader, panelBody, panel1, panel2, panel3, panelButtonReturn, panelLeftPN, panelRightPN, imageEnd, panelPDRight, panelPDLeft, panel2d, panelRighNOP, panelRigth2, panelLeftPB, panelLeft2, panel2b, panelRigthTCB, panelRight1,panelLeftPP, panelLeft1, panel2h;
     private JButton returnButton, updateButton, chooseButton;
     private JLabel logo, productName , productPrice, productType, numberOfProduct, productDescription, productImage;
     private JTextField txtProductName, txtProductPrice, txtNumberOfProduct, txtProductDescription;
-    private Product product;
+    private Product product = Product.builder().image("/images/gtaV.jpg").id(0).name("").price(0).createdAt(new Date()).description("").stock(0).build();
     private ProductService productService;
     private JCheckBox placeBox;
     private JComboBox comboBox;
-    public UpdateProductGUI(int productId) {
+    public ViewProductGUI(int productId) {
         productService = ServiceProvider.getInstance().getService(ProductService.class);
         try {
             product = productService.findById(productId);
@@ -38,7 +38,7 @@ public class UpdateProductGUI extends JFrame {
             this.dispose();
             e.printStackTrace();
         }
-        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+        // Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         this.setSize(1000,1000);
         this.setLayout(new BorderLayout());
         initComponents();
@@ -79,6 +79,12 @@ public class UpdateProductGUI extends JFrame {
         returnButton.setIcon(Helper.getIcon("/icons/returnButton.jpg",25,25));
         returnButton.setBorder(new EmptyBorder(30,0,30,0));
         returnButton.setPreferredSize(new Dimension(50,30));
+        returnButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                new ProductGUI();
+            }
+        });
         panelHeader.add(returnButton,BorderLayout.LINE_START);
         // end return button
 
@@ -87,28 +93,6 @@ public class UpdateProductGUI extends JFrame {
         logo.setFont(Fonts.getFont(Font.BOLD,30));
         panelHeader.add(logo,BorderLayout.CENTER);
         // end logo
-
-        // create update button
-        updateButton = new JButton("Save");
-        updateButton.setPreferredSize(new Dimension(100,30));
-        updateButton.setFont(Fonts.getFont(Font.BOLD,15));
-        updateButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                product.setName(txtProductName.getText());
-                product.setImage(image.getText());
-                product.setPrice(Double.parseDouble(txtProductPrice.getText()));
-                product.setDescription(txtProductDescription.getText());
-                product.setStock(Integer.parseInt(txtNumberOfProduct.getText()));
-                try {
-                    productService.update(product);
-                } catch (SQLException ex) {
-                    throw new RuntimeException(ex);
-                }
-            }
-        });
-        panelHeader.add(updateButton,BorderLayout.LINE_END);
-        // end update button
 
         // create panel body
         panelBody = new JPanel();
@@ -194,7 +178,7 @@ public class UpdateProductGUI extends JFrame {
         productType.setFont(Fonts.getFont(Font.BOLD,18));
         panelRight1.add(productType,BorderLayout.PAGE_START);
 
-        String combo[] = {"Chọn Loại Sản Phẩm","Nước Uống","Thức Ăn","Thẻ"};
+        String combo[] = {product.getType().toString()};
         comboBox = new JComboBox(combo);
         comboBox.setFont(Fonts.getFont(Font.ITALIC,15));
         comboBox.setPreferredSize(new Dimension(480,18));
@@ -275,47 +259,14 @@ public class UpdateProductGUI extends JFrame {
         panel3.setPreferredSize(new Dimension(600,515));
         panelBody.add(panel3,BorderLayout.PAGE_END);
 
-//        JPanel panel3H = new JPanel();
-//        panel3H.setPreferredSize(new Dimension(1000-40,200));
-//        panel3.add(panel3H,BorderLayout.PAGE_START);
 
         productImage = new JLabel("Hình Ảnh Minh Họa");
         productImage.setFont(Fonts.getFont(Font.BOLD,18));
         productImage.setBorder(new EmptyBorder(0,20,0,0));
         panel3.add(productImage,BorderLayout.PAGE_START);
-//
-//        JPanel imageLeft = new JPanel();
-//        imageLeft.setPreferredSize(new Dimension(550,60));
-//        panel3.add(imageLeft,BorderLayout.LINE_START);
-//
-//        JPanel imageRigth = new JPanel();
-//        imageRigth.setPreferredSize(new Dimension(550,60));
-//        panel3.add(imageRigth,BorderLayout.LINE_END);
-
-        imageEnd = new JPanel();
-        imageEnd.setPreferredSize(new Dimension(600,400));
-        panel3.add(imageEnd,BorderLayout.PAGE_END);
-
-        chooseButton = new JButton("Chọn Ảnh");
-        chooseButton.setBorder(new EmptyBorder(50,50,50,50));
-        chooseButton.setPreferredSize(new Dimension(60,60));
-        chooseButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                JFileChooser chooser = new JFileChooser();
-                int result = chooser.showOpenDialog(UpdateProductGUI.this);
-                if (result == JFileChooser.APPROVE_OPTION) {
-                    File selectedFile = chooser.getSelectedFile();
-                    String path = selectedFile.getAbsolutePath();
-                    System.out.println(path);
-                }
-            }
-        });
-
-        panel3.add(chooseButton,BorderLayout.CENTER);
-
     }
 
     public static void main(String[] args) {
+
     }
 }

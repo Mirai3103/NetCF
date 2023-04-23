@@ -16,28 +16,17 @@ import java.io.File;
 import java.sql.SQLException;
 import java.util.Date;
 
-public class UpdateProductGUI extends JFrame {
+public class CreateProductGUI extends JFrame {
     private JPanel parentPanel, panelHeader, panelBody, panel1, panel2, panel3, panelButtonReturn, panelLeftPN, panelRightPN, imageEnd, panelPDRight, panelPDLeft, panel2d, panelRighNOP, panelRigth2, panelLeftPB, panelLeft2, panel2b, panelRigthTCB, panelRight1,panelLeftPP, panelLeft1, panel2h;
     private JButton returnButton, updateButton, chooseButton;
     private JLabel logo, productName , productPrice, productType, numberOfProduct, productDescription, productImage;
-    private JTextField txtProductName, txtProductPrice, txtNumberOfProduct, txtProductDescription;
-    private Product product;
+    private Input txtProductName, txtProductPrice, txtNumberOfProduct, txtProductDescription;
+    private Product product = Product.builder().image("/images/imageWhite.jpg").id(0).name("").price(0).createdAt(new Date()).description("").stock(0).build();
     private ProductService productService;
     private JCheckBox placeBox;
     private JComboBox comboBox;
-    public UpdateProductGUI(int productId) {
+    public CreateProductGUI() {
         productService = ServiceProvider.getInstance().getService(ProductService.class);
-        try {
-            product = productService.findById(productId);
-            if (product == null) {
-                JOptionPane.showMessageDialog(this,"Không tìm thấy sản phẩm","Lỗi",JOptionPane.ERROR_MESSAGE);
-                this.dispose();
-            }
-        } catch (SQLException e) {
-            JOptionPane.showMessageDialog(this,"Lỗi sản phẩm","Lỗi",JOptionPane.ERROR_MESSAGE);
-            this.dispose();
-            e.printStackTrace();
-        }
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         this.setSize(1000,1000);
         this.setLayout(new BorderLayout());
@@ -60,7 +49,7 @@ public class UpdateProductGUI extends JFrame {
         panelHeader.setPreferredSize(new Dimension(1000-30,60));
         panelHeader.setLayout(new BorderLayout(30,0));
         parentPanel.add(panelHeader,BorderLayout.PAGE_START);
-        // end panel header
+        // end panel headera
 
         JPanel panelLeft = new JPanel();
         panelLeft.setPreferredSize(new Dimension(200,300));
@@ -83,7 +72,7 @@ public class UpdateProductGUI extends JFrame {
         // end return button
 
         // create logo Chinh sua thong tin san pham
-        logo = new JLabel("Chỉnh Sửa Thông Tin Sản Phẩm");
+        logo = new JLabel("Thêm Sản Phẩm");
         logo.setFont(Fonts.getFont(Font.BOLD,30));
         panelHeader.add(logo,BorderLayout.CENTER);
         // end logo
@@ -95,15 +84,27 @@ public class UpdateProductGUI extends JFrame {
         updateButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                product.setName(txtProductName.getText());
-                product.setImage(image.getText());
-                product.setPrice(Double.parseDouble(txtProductPrice.getText()));
-                product.setDescription(txtProductDescription.getText());
-                product.setStock(Integer.parseInt(txtNumberOfProduct.getText()));
-                try {
-                    productService.update(product);
-                } catch (SQLException ex) {
-                    throw new RuntimeException(ex);
+                if (txtProductName.getText().equals("")) {
+                    JOptionPane.showMessageDialog(null,"Tên Sản Phẩm Bạn Không Được Để Trống","Lỗi",JOptionPane.ERROR_MESSAGE);
+                } else if (image.getText().equals("")) {
+                    JOptionPane.showMessageDialog(null,"Hình Ảnh Sản Phẩm Bạn Không Được Để Trống","Lỗi",JOptionPane.ERROR_MESSAGE);
+                } else if (txtProductPrice.getText().equals("")) {
+                    JOptionPane.showMessageDialog(null,"Giá Bán Sản Phẩm Bạn Không Được Để Trống","Lỗi",JOptionPane.ERROR_MESSAGE);
+                } else if (txtProductDescription.getText().equals("")) {
+                    JOptionPane.showMessageDialog(null,"Mô Tả Sản Phẩm Bạn Không Được Để Trống","Lỗi",JOptionPane.ERROR_MESSAGE);
+                } else if (txtNumberOfProduct.getText().equals("")) {
+                    JOptionPane.showMessageDialog(null,"Số Lượng Sản Phẩm Bạn Không Được Để Trống","Lỗi",JOptionPane.ERROR_MESSAGE);
+                } else {
+                    product.setName(txtProductName.getText());
+                    product.setImage(image.getText());
+                    product.setPrice(Double.parseDouble(txtProductPrice.getText()));
+                    product.setDescription(txtProductDescription.getText());
+                    product.setStock(Integer.parseInt(txtNumberOfProduct.getText()));
+                    try {
+                        productService.create(product);
+                    } catch (SQLException ex) {
+                        throw new RuntimeException(ex);
+                    }
                 }
             }
         });
@@ -135,8 +136,7 @@ public class UpdateProductGUI extends JFrame {
         panelLeftPN.setPreferredSize(new Dimension(18,35));
         panel1.add(panelLeftPN,BorderLayout.LINE_START);
         // create txtNameProduct
-        txtProductName = new JTextField();
-        txtProductName.setText(product.getName());
+        txtProductName = new Input("Tên Sản Phẩm");
         txtProductName.setFont(Fonts.getFont(Font.PLAIN,15));
         txtProductName.setPreferredSize(new Dimension(1000-40,18));
         panel1.add(txtProductName,BorderLayout.CENTER);
@@ -176,8 +176,7 @@ public class UpdateProductGUI extends JFrame {
         panelLeftPP.setPreferredSize(new Dimension(18,35));
         panelLeft1.add(panelLeftPP,BorderLayout.LINE_START);
 
-        txtProductPrice = new JTextField();
-        txtProductPrice.setText(product.getPrice()+"");
+        txtProductPrice = new Input("Giá Bán");
         txtProductPrice.setFont(Fonts.getFont(Font.PLAIN,15));
 //        txtProductPrice.setPreferredSize(new Dimension(470,18));
         txtProductPrice.setColumns(50);
@@ -237,7 +236,7 @@ public class UpdateProductGUI extends JFrame {
         numberOfProduct.setFont(Fonts.getFont(Font.BOLD,18));
         panelRigth2.add(numberOfProduct,BorderLayout.PAGE_START);
 
-        txtNumberOfProduct = new JTextField();
+        txtNumberOfProduct = new Input("Số lượng sản phẩm");
         txtNumberOfProduct.setText(product.getStock()+"");
         txtNumberOfProduct.setFont(Fonts.getFont(Font.PLAIN,15));
         panelRigth2.add(txtNumberOfProduct,BorderLayout.CENTER);
@@ -260,8 +259,7 @@ public class UpdateProductGUI extends JFrame {
         panelPDLeft.setPreferredSize(new Dimension(18,35));
         panel2d.add(panelPDLeft,BorderLayout.LINE_START);
 
-        txtProductDescription = new JTextField();
-        txtProductDescription.setText(product.getDescription());
+        txtProductDescription = new Input("Mô tả sản phẩm");
         txtProductDescription.setPreferredSize(new Dimension(1000-40,18));
         txtProductDescription.setFont(Fonts.getFont(Font.PLAIN,15));
         panel2d.add(txtProductDescription,BorderLayout.CENTER);
@@ -303,7 +301,7 @@ public class UpdateProductGUI extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 JFileChooser chooser = new JFileChooser();
-                int result = chooser.showOpenDialog(UpdateProductGUI.this);
+                int result = chooser.showOpenDialog(CreateProductGUI.this);
                 if (result == JFileChooser.APPROVE_OPTION) {
                     File selectedFile = chooser.getSelectedFile();
                     String path = selectedFile.getAbsolutePath();
@@ -314,8 +312,5 @@ public class UpdateProductGUI extends JFrame {
 
         panel3.add(chooseButton,BorderLayout.CENTER);
 
-    }
-
-    public static void main(String[] args) {
     }
 }
