@@ -61,6 +61,7 @@ public class MainUI extends JFrame {
         }
         return instance;
     }
+    @Getter
     private SideBar sideBar;
 
     private MainUI() {

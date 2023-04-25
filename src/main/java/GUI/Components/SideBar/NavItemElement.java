@@ -32,6 +32,7 @@ public class NavItemElement   {
             child.addActionListener(e -> {
                 contentPanel.removeAll();
                 contentPanel.add(child.getContentPanel());
+                child.getContentPanel().setVisible(true);
                 contentPanel.repaint();
                 contentPanel.revalidate();
                 children.forEach(c -> {

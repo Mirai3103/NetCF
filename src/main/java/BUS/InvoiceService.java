@@ -107,7 +107,6 @@ public class InvoiceService {
                         .quantity(invoiceDetailDTO.getQuantity())
                         .price(product.getPrice())
                         .build();
-                System.out.println(newInvoiceDetail);
 
                 try {
                     invoiceDetailDAO.create(newInvoiceDetail);
@@ -120,5 +119,12 @@ public class InvoiceService {
             throw new RuntimeException(e);
         }
 
+    }
+    public int countExportInvoiceSellByEmployeeId(int employeeId) {
+        try {
+            return invoiceDAO.findByEmployeeId(employeeId, Invoice.InvoiceType.EXPORT).size();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

@@ -280,7 +280,6 @@ public class ProductGUI extends JPanel {
 
 
     public void showTable() {
-        this.list.forEach(System.out::println);
         var model = (DefaultTableModel)this.table.getModel();
         model.setRowCount(0);
         for (Product p : list) {

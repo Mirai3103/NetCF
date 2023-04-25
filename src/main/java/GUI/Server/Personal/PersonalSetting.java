@@ -7,6 +7,7 @@ package GUI.Server.Personal;
 import BUS.AccountService;
 import BUS.ComputerUsageService;
 import BUS.EmployeeService;
+import BUS.InvoiceService;
 import DTO.ComputerUsage;
 import DTO.ComputerUsageFilter;
 import DTO.Employee;
@@ -27,6 +28,7 @@ public class PersonalSetting extends javax.swing.JPanel {
     private EmployeeService employeeService ;
     private ComputerUsageService computerUsageService;
     private AccountService accountService;
+    private InvoiceService invoiceService;
 
 
     /**
@@ -36,6 +38,7 @@ public class PersonalSetting extends javax.swing.JPanel {
         employeeService = ServiceProvider.getInstance().getService(EmployeeService.class);
         computerUsageService = ServiceProvider.getInstance().getService(ComputerUsageService.class);
 accountService = ServiceProvider.getInstance().getService(AccountService.class);
+        invoiceService = ServiceProvider.getInstance().getService(InvoiceService.class);
         initComponents();
         reDesign();
 
@@ -83,6 +86,7 @@ accountService = ServiceProvider.getInstance().getService(AccountService.class);
             var currentMonthTimeWorkString = String.format("%.2f", currentMonthTimeWork);
             jTextFieldSalaryInMonth.setText(currentMonthSalaryString);
             jTextFieldTimeInMonth.setText(currentMonthTimeWorkString);
+            jTextFieldInvoice.setText(invoiceService.countExportInvoiceSellByEmployeeId(employee.getId()) + "");
 
         } catch (Exception e) {
             throw new RuntimeException(e);
