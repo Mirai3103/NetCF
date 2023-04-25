@@ -162,7 +162,6 @@ public class Home extends JPanel {
                     });
 
                     Callback onMessage =(client, message) -> {
-                        System.out.println(message);
                         if (client.getMachineId() != computer.getId()) return;
                         Message clientMessage = Message.builder()
                                 .sessionId(session.getId())

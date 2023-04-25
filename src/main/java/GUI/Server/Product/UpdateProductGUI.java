@@ -307,7 +307,6 @@ public class UpdateProductGUI extends JFrame {
                 if (result == JFileChooser.APPROVE_OPTION) {
                     File selectedFile = chooser.getSelectedFile();
                     String path = selectedFile.getAbsolutePath();
-                    System.out.println(path);
                 }
             }
         });

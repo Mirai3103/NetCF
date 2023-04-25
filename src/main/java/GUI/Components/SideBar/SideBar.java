@@ -64,7 +64,6 @@ public class SideBar {
                     contentPanel.removeAll();
                     contentPanel.add(item.getParent().getContentPanel());
                     item.getParent().getContentPanel().setVisible(true);
-                    System.out.println(item.getParent().getKey());
                     contentPanel.repaint();
                     contentPanel.revalidate();
                     item.getParent().setSelected(true);

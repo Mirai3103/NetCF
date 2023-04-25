@@ -368,6 +368,7 @@ public class ComputerUsageGUI extends javax.swing.JPanel {
                 .computerID(jComboBoxFromComputer.getSelectedItem() == null || ((ComputerComboItem) jComboBoxFromComputer.getSelectedItem()).computer == null ? null : ((ComputerComboItem) jComboBoxFromComputer.getSelectedItem()).computer.getId())
                 .startFrom(jXDatePicker1.getDate())
                 .startTo(jXDatePicker2.getDate())
+                .isEmployeeUsing(false)
                 .usedByAccountId(jComboBoxConsumer.getSelectedItem() == null || ((AccountComboItem) jComboBoxConsumer.getSelectedItem()).account==null ? null : ((AccountComboItem) jComboBoxConsumer.getSelectedItem()).account.getId())
                 .sortBy(jComboBox1.getSelectedItem() == null ? " createdAt desc " : ((SortItem) jComboBox1.getSelectedItem()).value)
                 .build();
