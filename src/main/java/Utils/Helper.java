@@ -61,10 +61,31 @@ public class Helper {
         }
     }
     public static ImageIcon getIcon(String path,int width,int height) {
-        var icon = new ImageIcon(Objects.requireNonNull(Helper.class.getResource(path)));
+        var icon = new ImageIcon(getResource(path));
         Image img = icon.getImage();
         Image newimg = img.getScaledInstance(width, height,  java.awt.Image.SCALE_SMOOTH);
         return new ImageIcon(newimg);
+    }
+    public static URL getResource(String path){
+        if (!path.startsWith("/")
+                && !path.startsWith("\\")
+                && !path.startsWith("http")
+                && !path.startsWith("https")
+                && !path.startsWith("file")) {
+            path = "/" + path;
+        }
+        var url= Helper.class.getResource(path);
+        if (url == null) {
+            throw new RuntimeException("Resource not found: " + path);
+        }
+        return url;
+    }
+    public static Image getImage(String path,int width,int height) {
+            var icon = new ImageIcon(getResource(path));
+        Image img = icon.getImage();
+        if (width == 0 || height == 0)
+            return img;
+        return img.getScaledInstance(width, height,  java.awt.Image.SCALE_SMOOTH);
     }
     public static ImageIcon getIcon(String path) {
         var a =Helper.class.getResource(path);
