@@ -3,6 +3,8 @@ package DTO;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.Setter;
+
 import lombok.NoArgsConstructor;
 
 import java.io.Serial;
@@ -13,6 +15,7 @@ import java.util.List;
 @NoArgsConstructor
 @Builder
 @Getter
+@Setter
 public class CreateInvoiceInputDTO implements Serializable{
     @Serial
     private static final long serialVersionUID = 74634344216L;

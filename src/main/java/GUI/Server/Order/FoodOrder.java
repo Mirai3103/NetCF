@@ -10,6 +10,7 @@ import Utils.Helper;
 import Utils.ServiceProvider;
 import org.jdesktop.swingx.WrapLayout;
 
+import javax.swing.*;
 import java.sql.SQLException;
 import java.util.List;
 
@@ -31,11 +32,14 @@ public class FoodOrder extends javax.swing.JFrame {
         var wrapLayout = new WrapLayout();
         wrapLayout.setAlignment(java.awt.FlowLayout.LEFT);
         wrapLayout.setHgap(10);        wrapLayout.setVgap(20);
+        this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+
         try {
             var products =   productService.findAll();
             products.forEach(p->{
                 var productCard = new ProductCard(p.getImage(), p.getName(), (float) p.getPrice());
                 productCards.add(productCard);
+                productCard.setBounds(0, 0, 200, 200);
                 jPanelProduct.add(productCard);
             });
 
@@ -194,6 +198,11 @@ public class FoodOrder extends javax.swing.JFrame {
         jButton4.setText("Xem giỏ hàng");
         jButton4.setPreferredSize(new java.awt.Dimension(150, 35));
         jButton4.setRolloverEnabled(false);
+        jButton4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton4ActionPerformed(evt);
+            }
+        });
         jPanel4.add(jButton4);
 
         jPanel2.add(jPanel4);
@@ -223,6 +232,12 @@ public class FoodOrder extends javax.swing.JFrame {
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
    
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+        // TODO add your handling code here:
+        Cart a = new Cart(null);
+        a.setVisible(true);
+    }//GEN-LAST:event_jButton4ActionPerformed
 
     /**
      * @param args the command line arguments
