@@ -28,7 +28,12 @@ st/SystemFileSystem/Templates/Licenses/license-default.txt to change this licens
  */
 package GUI.Components;
 
+import DTO.Message;
 import Utils.Helper;
+import lombok.Getter;
+
+import javax.swing.*;
+import java.awt.*;
 
 /**
  *
@@ -36,20 +41,66 @@ import Utils.Helper;
  */
 public class ProductCard extends javax.swing.JPanel {
 
-    /**
-     * Creates new form ProductCard
-     * @param args
-     */
     public static void main(String[] args) {
         Helper.initUI();
         var frame = new javax.swing.JFrame();
-        frame.add(new ProductCard());
+        frame.add(new ProductCard("/images/Bánh_mì_thịt.jpg", "Bánh mì thịt", 10000));
         frame.pack();
         frame.setVisible(true);
 
     }
-    public ProductCard() {
+    private String imagePath;
+    @Getter
+    private String productName;
+    @Getter
+    private float price;
+    @Getter
+    private int quantity = 0;
+    @Getter
+
+    private boolean isAddedToCart = false;
+
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
+        this.update(this.getGraphics());
+    }
+
+    public void setAddedToCart(boolean addedToCart) {
+        isAddedToCart = addedToCart;
+        this.update(this.getGraphics());
+    }
+
+    public void setImagePath(String imagePath) {
+        this.imagePath = imagePath;
+        this.update(this.getGraphics());
+    }
+
+    public void setProductName(String productName) {
+        this.productName = productName;
+        this.update(this.getGraphics());
+    }
+
+    public void setPrice(float price) {
+        this.price = price;
+        this.update(this.getGraphics());
+    }
+
+    public ProductCard(String imagePath, String productName, float price) {
         initComponents();
+        this.imagePath = imagePath;
+        this.productName = productName;
+        this.price = price;
+      this.update(this.getGraphics());
+      this.jXImagePanel1.setImage(Helper.getImage(imagePath,200,200));
+    }
+
+    @Override
+    public void update(Graphics g) {
+        super.update(g);
+        this.jLabel1.setText(productName);
+        this.jLabel2.setText(Helper.formatMoney(price));
+        this.jTextFieldSoLuong.setText(String.valueOf(quantity));
+        this.jButton3.setEnabled(!isAddedToCart);
     }
 
     /**
@@ -68,11 +119,14 @@ public class ProductCard extends javax.swing.JPanel {
         jButton1 = new javax.swing.JButton();
         jTextFieldSoLuong = new javax.swing.JTextField();
         jButton2 = new javax.swing.JButton();
+        jButton3 = new javax.swing.JButton();
         jXImagePanel1 = new org.jdesktop.swingx.JXImagePanel();
 
-        setPreferredSize(new java.awt.Dimension(200, 300));
+        setBackground(new java.awt.Color(255, 255, 255));
+        setPreferredSize(new java.awt.Dimension(200, 350));
         setLayout(new java.awt.BorderLayout());
 
+        jPanel2.setBackground(new java.awt.Color(255, 255, 255));
         jPanel2.setMinimumSize(new java.awt.Dimension(200, 47));
 
         jLabel1.setFont(new java.awt.Font("Nunito SemiBold", 0, 16)); // NOI18N
@@ -115,6 +169,17 @@ public class ProductCard extends javax.swing.JPanel {
 
         jPanel2.add(jPanel1);
 
+        jButton3.setBackground(new java.awt.Color(51, 153, 255));
+        jButton3.setFont(new java.awt.Font("Nunito Black", 0, 14)); // NOI18N
+        jButton3.setForeground(new java.awt.Color(255, 255, 255));
+        jButton3.setText("Thêm vào giỏ");
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
+        jPanel2.add(jButton3);
+
         add(jPanel2, java.awt.BorderLayout.CENTER);
 
         jXImagePanel1.setImage(Helper.getImage("images\\Bánh_mì_thịt.jpg",200,200));
@@ -136,7 +201,7 @@ public class ProductCard extends javax.swing.JPanel {
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
        var newQuantity =Integer.parseInt(this.jTextFieldSoLuong.getText())+1;
-        this.jTextFieldSoLuong.setText(newQuantity+"");
+        this.setQuantity(newQuantity);
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
@@ -145,13 +210,24 @@ public class ProductCard extends javax.swing.JPanel {
             newQuantity =0;
         }
                 
-        this.jTextFieldSoLuong.setText(newQuantity+"");
+        this.setQuantity(newQuantity);
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        // TODO add your handling code here:
+        if(quantity<=0){
+            JOptionPane.showMessageDialog(this, "Số lượng phải lớn hơn 0");
+            return;
+        }
+        this.setAddedToCart(true);
+        JOptionPane.showMessageDialog(this, "Đã thêm vào giỏ hàng");
+    }//GEN-LAST:event_jButton3ActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
+    private javax.swing.JButton jButton3;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;

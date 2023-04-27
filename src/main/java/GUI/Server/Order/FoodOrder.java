@@ -4,6 +4,15 @@
  */
 package GUI.Server.Order;
 
+import BUS.ProductService;
+import GUI.Components.ProductCard;
+import Utils.Helper;
+import Utils.ServiceProvider;
+import org.jdesktop.swingx.WrapLayout;
+
+import java.sql.SQLException;
+import java.util.List;
+
 /**
  *
  * @author Laffy
@@ -13,8 +22,34 @@ public class FoodOrder extends javax.swing.JFrame {
     /**
      * Creates new form FoodOrder
      */
+    private ProductService productService;
+    private List<ProductCard> productCards = new java.util.ArrayList<>();
     public FoodOrder() {
+        productService = ServiceProvider.getInstance().getService(ProductService.class);
         initComponents();
+
+        var wrapLayout = new WrapLayout();
+        wrapLayout.setAlignment(java.awt.FlowLayout.LEFT);
+        wrapLayout.setHgap(10);        wrapLayout.setVgap(20);
+        try {
+            var products =   productService.findAll();
+            products.forEach(p->{
+                var productCard = new ProductCard(p.getImage(), p.getName(), (float) p.getPrice());
+                productCards.add(productCard);
+                jPanelProduct.add(productCard);
+            });
+
+
+            jPanelProduct.setLayout(wrapLayout);
+
+
+            jPanelProduct.revalidate();
+            jPanelProduct.repaint();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+        
     }
 
     /**
@@ -45,9 +80,9 @@ public class FoodOrder extends javax.swing.JFrame {
         jButton2 = new javax.swing.JButton();
         jButton1 = new javax.swing.JButton();
         jButton4 = new javax.swing.JButton();
-        jScrollPane3 = new javax.swing.JScrollPane();
-        jTable2 = new javax.swing.JTable();
         jPanel5 = new javax.swing.JPanel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jPanelProduct = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -131,7 +166,7 @@ public class FoodOrder extends javax.swing.JFrame {
         jPanel4.setPreferredSize(new java.awt.Dimension(1480, 40));
         jPanel4.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.RIGHT, 20, 5));
 
-        jButton2.setFont(new java.awt.Font("Nunito", 0, 16)); // NOI18N
+        jButton2.setFont(new java.awt.Font("Nunito SemiBold", 0, 16)); // NOI18N
         jButton2.setText("Clear");
         jButton2.setPreferredSize(new java.awt.Dimension(150, 34));
         jButton2.addActionListener(new java.awt.event.ActionListener() {
@@ -142,7 +177,7 @@ public class FoodOrder extends javax.swing.JFrame {
         jPanel4.add(jButton2);
 
         jButton1.setBackground(new java.awt.Color(66, 153, 225));
-        jButton1.setFont(new java.awt.Font("Nunito", 0, 16)); // NOI18N
+        jButton1.setFont(new java.awt.Font("Nunito SemiBold", 0, 16)); // NOI18N
         jButton1.setForeground(new java.awt.Color(255, 255, 255));
         jButton1.setText("Lọc");
         jButton1.setPreferredSize(new java.awt.Dimension(150, 34));
@@ -154,7 +189,8 @@ public class FoodOrder extends javax.swing.JFrame {
         jPanel4.add(jButton1);
 
         jButton4.setBackground(new java.awt.Color(66, 153, 225));
-        jButton4.setFont(new java.awt.Font("Nunito", 0, 16)); // NOI18N
+        jButton4.setFont(new java.awt.Font("Nunito SemiBold", 0, 16)); // NOI18N
+        jButton4.setForeground(new java.awt.Color(255, 255, 255));
         jButton4.setText("Xem giỏ hàng");
         jButton4.setPreferredSize(new java.awt.Dimension(150, 35));
         jButton4.setRolloverEnabled(false);
@@ -164,54 +200,16 @@ public class FoodOrder extends javax.swing.JFrame {
 
         jPanel1.add(jPanel2, java.awt.BorderLayout.NORTH);
 
-        jTable2.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null}
-            },
-            new String [] {
-                "Mã nhân viên", "Tên nhân viên", "Tên tài khoản", "Bắt đầu lúc", "Kết thúc lúc", "Tổng tiền"
-            }
-        ) {
-            Class[] types = new Class [] {
-                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
-            };
-            boolean[] canEdit = new boolean [] {
-                true, true, true, true, true, false
-            };
-
-            public Class getColumnClass(int columnIndex) {
-                return types [columnIndex];
-            }
-
-            public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit [columnIndex];
-            }
-        });
-        jScrollPane3.setViewportView(jTable2);
-
-        jPanel1.add(jScrollPane3, java.awt.BorderLayout.CENTER);
-
         jPanel5.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.RIGHT, 60, 5));
         jPanel1.add(jPanel5, java.awt.BorderLayout.PAGE_END);
+
+        jScrollPane1.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+        jScrollPane1.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+
+        jPanelProduct.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
+        jScrollPane1.setViewportView(jPanelProduct);
+
+        jPanel1.add(jScrollPane1, java.awt.BorderLayout.CENTER);
 
         getContentPane().add(jPanel1, java.awt.BorderLayout.CENTER);
 
@@ -230,6 +228,7 @@ public class FoodOrder extends javax.swing.JFrame {
      * @param args the command line arguments
      */
     public static void main(String args[]) {
+        ServiceProvider.init();
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
@@ -252,6 +251,7 @@ public class FoodOrder extends javax.swing.JFrame {
             java.util.logging.Logger.getLogger(FoodOrder.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
+        Helper.initUI();
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
@@ -281,8 +281,8 @@ public class FoodOrder extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel7;
     private javax.swing.JPanel jPanel8;
     private javax.swing.JPanel jPanel9;
-    private javax.swing.JScrollPane jScrollPane3;
-    private javax.swing.JTable jTable2;
+    private javax.swing.JPanel jPanelProduct;
+    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTextField jTextField1;
     // End of variables declaration//GEN-END:variables
 }
