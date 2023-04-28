@@ -36,8 +36,6 @@ public class ServiceProvider {
         return this;
     }
     public void build(){
-        //clear cache
-
         for (Class<?> iService: serviceImplMap .keySet()){
             Class<?> impl = serviceImplMap .get(iService);
             try {
@@ -93,7 +91,6 @@ public class ServiceProvider {
                 .register(IEmployeeDAO.class,EmployeeDAOImpl.class)
                 .register(EmployeeService.class, EmployeeService.class)
                 .register(IProductDAO.class, ProductDAOImpl.class)
-
                 .register(ProductService.class, ProductService.class)
                 .build();
     }

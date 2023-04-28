@@ -86,6 +86,7 @@ public class SocketController {
                 var session=   sessionService.createSession(account, client.getMachineId());
 
                 server.emit("loginSuccess", session);
+                Helper.showSystemNoitification("Máy "+client.getMachineId()+" đã đăng nhập!", "", TrayIcon.MessageType.INFO);
                client.setIntervalId( this.sessionService.startSession(session,client));
             } else {
                 server.emit("errorMessage", "Sai tên đăng nhập hoặc mật khẩu");
@@ -97,11 +98,14 @@ public class SocketController {
 
     private void onLogout(Socket socket, Serializable serializable) {
         this.sessionService.logout(socket.getMachineId());
+        Helper.showSystemNoitification("Máy "+socket.getMachineId()+" đã đăng xuất!", "", TrayIcon.MessageType.INFO);
         server.emitSelf("statusChange",null);
     }
     private void onShutDown(Socket socket, Serializable serializable) {
         Server.getInstance().removeClient(socket.getMachineId());
+        Helper.showSystemNoitification("Máy "+socket.getMachineId()+" đã ngắt kết nối!", "", TrayIcon.MessageType.INFO);
         this.sessionService.shutDown(socket.getMachineId());
+        System.out.println("ok");
         server.emitSelf("statusChange",null);
     }
 }

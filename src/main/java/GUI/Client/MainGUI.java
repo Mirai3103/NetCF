@@ -220,8 +220,8 @@ public class MainGUI extends JFrame {
                         panel3.setLayout(new FlowLayout(FlowLayout.RIGHT));
 
                         //---- textField1 ----
-                        textField1.setMinimumSize(new Dimension(60, 22));
-                        textField1.setPreferredSize(new Dimension(70, 22));
+                        textField1.setMinimumSize(new Dimension(60, 32));
+                        textField1.setPreferredSize(new Dimension(70, 31));
                         textField1.setFocusable(false);
                         textField1.setText("00:00");
                         panel3.add(textField1);
@@ -242,8 +242,8 @@ public class MainGUI extends JFrame {
                         panel4.setLayout(new FlowLayout(FlowLayout.RIGHT));
 
                         //---- textField2 ----
-                        textField2.setMinimumSize(new Dimension(60, 22));
-                        textField2.setPreferredSize(new Dimension(70, 22));
+                        textField2.setMinimumSize(new Dimension(60, 32));
+                        textField2.setPreferredSize(new Dimension(70, 31));
                         textField2.setFocusable(false);
                         textField2.setText("00:00");
                         panel4.add(textField2);
@@ -264,8 +264,8 @@ public class MainGUI extends JFrame {
                         panel5.setLayout(new FlowLayout(FlowLayout.RIGHT));
 
                         //---- textField3 ----
-                        textField3.setMinimumSize(new Dimension(60, 22));
-                        textField3.setPreferredSize(new Dimension(70, 22));
+                        textField3.setMinimumSize(new Dimension(60, 32));
+                        textField3.setPreferredSize(new Dimension(70, 31));
                         textField3.setFocusable(false);
                         textField3.setText("00:00");
                         panel5.add(textField3);
@@ -286,8 +286,8 @@ public class MainGUI extends JFrame {
                         panel6.setLayout(new FlowLayout(FlowLayout.RIGHT));
 
                         //---- textField4 ----
-                        textField4.setMinimumSize(new Dimension(60, 22));
-                        textField4.setPreferredSize(new Dimension(70, 22));
+                        textField4.setMinimumSize(new Dimension(60, 32));
+                        textField4.setPreferredSize(new Dimension(70, 31));
                         textField4.setFocusable(false);
                         textField4.setText("00:00");
                         panel6.add(textField4);
@@ -308,8 +308,8 @@ public class MainGUI extends JFrame {
                         panel7.setLayout(new FlowLayout(FlowLayout.RIGHT));
 
                         //---- textField5 ----
-                        textField5.setMinimumSize(new Dimension(60, 22));
-                        textField5.setPreferredSize(new Dimension(70, 22));
+                        textField5.setMinimumSize(new Dimension(60, 32));
+                        textField5.setPreferredSize(new Dimension(70, 31));
                         textField5.setFocusable(false);
                         textField5.setText("00:00");
                         panel7.add(textField5);
@@ -330,8 +330,8 @@ public class MainGUI extends JFrame {
                         panel8.setLayout(new FlowLayout(FlowLayout.RIGHT));
 
                         //---- textField6 ----
-                        textField6.setMinimumSize(new Dimension(60, 22));
-                        textField6.setPreferredSize(new Dimension(80, 22));
+                        textField6.setMinimumSize(new Dimension(60, 32));
+                        textField6.setPreferredSize(new Dimension(80, 32));
                         textField6.setFocusable(false);
                         textField6.setText("00:00");
                         panel8.add(textField6);

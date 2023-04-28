@@ -11,7 +11,7 @@ import java.awt.*;
 import java.io.IOException;
 
 public class Main {
-    private static final int COMPUTER_ID = 2;
+    private static final int COMPUTER_ID = 4;
     public static final Socket socket;
 
     static {

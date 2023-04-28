@@ -1,7 +1,10 @@
 package Io;
 
+import DTO.Message;
+import Utils.Helper;
 import lombok.Getter;
 
+import java.awt.*;
 import java.io.IOException;
 import java.io.Serializable;
 import java.net.InetAddress;
@@ -86,6 +89,7 @@ public class Server extends ServerSocket {
                     clients.add(client);
                     client.on("identify", (t, arg) -> {
                         client.setMachineId((int) arg);
+                        Helper.showSystemNoitification("Máy "+client.getMachineId()+" đã kết nối!", "", TrayIcon.MessageType.INFO);
 //                        client.removeAllListeners("identify");
                     });
 
