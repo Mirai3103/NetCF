@@ -7,6 +7,7 @@ package GUI.Client;
 import javax.swing.border.*;
 
 import GUI.Components.ChatGUI;
+import GUI.Server.Order.FoodOrder;
 import Utils.Fonts;
 import Utils.Helper;
 import com.formdev.flatlaf.ui.FlatDropShadowBorder;
@@ -123,6 +124,9 @@ public class MainGUI extends JFrame {
             var newPassword = JOptionPane.showInputDialog(this, "Nhập mật khẩu mới", "Đổi mật khẩu", JOptionPane.INFORMATION_MESSAGE);
             Main.socket.emit("changePassword", newPassword);
 
+        });
+        button4.addActionListener(e->{
+            new FoodOrder().setVisible(true);
         });
     }
 

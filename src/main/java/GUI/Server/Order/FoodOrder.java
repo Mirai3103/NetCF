@@ -6,6 +6,7 @@ package GUI.Server.Order;
 
 import BUS.ProductService;
 import DTO.InvoiceDetailInputDTO;
+import DTO.Product;
 import GUI.Components.ProductCard;
 import Utils.Helper;
 import Utils.ServiceProvider;
@@ -25,19 +26,15 @@ public class FoodOrder extends javax.swing.JFrame {
     /**
      * Creates new form FoodOrder
      */
-    private ProductService productService;
     private List<ProductCard> productCards = new java.util.ArrayList<>();
+    public static List<Product> products;
     public FoodOrder() {
-        productService = ServiceProvider.getInstance().getService(ProductService.class);
         initComponents();
 
         var wrapLayout = new WrapLayout();
         wrapLayout.setAlignment(java.awt.FlowLayout.LEFT);
         wrapLayout.setHgap(10);        wrapLayout.setVgap(20);
         this.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-
-        try {
-            var products =   productService.findAll();
             products.forEach(p->{
                 var productCard = new ProductCard(p.getImage(), p.getName(), (float) p.getPrice());
                 productCard.setProduct(p);
@@ -52,9 +49,7 @@ public class FoodOrder extends javax.swing.JFrame {
 
             jPanelProduct.revalidate();
             jPanelProduct.repaint();
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
+
 
         
     }

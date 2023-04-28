@@ -1,18 +1,16 @@
 package Io;
 
+import BUS.*;
 import Payload.LoginPayload;
 import Utils.Helper;
 import Utils.ServiceProvider;
 import DTO.Message;
-import BUS.AccountService;
-import BUS.ComputerService;
-import BUS.MessageService;
-import BUS.SessionService;
 
 import java.awt.*;
 import java.io.IOException;
 import java.io.Serializable;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Date;
 
 public class SocketController {
@@ -36,8 +34,13 @@ public class SocketController {
         server.on("changePassword", this::onChangePassword);
         server.on("logout",this::onLogout);
         server.on("shutdown",this::onShutDown);
-    }
+        server.on("order",this::onOrder);
 
+    }
+    private void onOrder(Socket socket, Serializable invoice) {
+        Helper.showSystemNoitification("Thông báo", "Có đơn hàng mới", TrayIcon.MessageType.INFO);
+        System.out.println(invoice );
+    }
     private void onChangePassword(Socket socket, Serializable serializable) {
         try {
             var session = sessionService.findByComputerId(socket.getMachineId());

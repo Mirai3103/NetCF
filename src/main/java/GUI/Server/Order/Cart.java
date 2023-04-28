@@ -6,6 +6,7 @@ package GUI.Server.Order;
 
 import DTO.CreateInvoiceInputDTO;
 import DTO.InvoiceDetailInputDTO;
+import GUI.Client.Main;
 import Utils.Helper;
 import lombok.Setter;
 
@@ -220,15 +221,14 @@ public class Cart extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
-        // TODO add your handling code here:
         var note = JOptionPane.showInputDialog(this, "Thêm ghi chú cho nhân viên (có thể trống):");
         this.invoice.setNote(note);
 //           toDo: đặt hàng
+        Main.socket.emit("order", this.invoice);
         JOptionPane.showMessageDialog(this, "Đặt hàng thành công!");
     }//GEN-LAST:event_jButton4ActionPerformed
 
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
-        // TODO add your handling code here: xoa lua chon
         int[] rows = jTable2.getSelectedRows();
         if (rows.length == 0) {
             JOptionPane.showMessageDialog(this, "Chọn sản phẩm cần xóa!");
