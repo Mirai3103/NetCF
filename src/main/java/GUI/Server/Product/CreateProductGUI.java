@@ -23,6 +23,7 @@ public class CreateProductGUI extends JFrame {
     private Input txtProductName, txtProductPrice, txtNumberOfProduct, txtProductDescription;
     private Product product = Product.builder().image("/images/imageWhite.jpg").id(0).name("").price(0).createdAt(new Date()).description("").stock(0).build();
     private ProductService productService;
+    private JLabel image;
     private JCheckBox placeBox;
     private JComboBox comboBox;
     public CreateProductGUI() {
@@ -30,9 +31,10 @@ public class CreateProductGUI extends JFrame {
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         this.setSize(1000,1000);
         this.setLayout(new BorderLayout());
+        this.setLocationRelativeTo(null);
         initComponents();
         this.setVisible(true);
-        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
     }
 
     private void initComponents() {
@@ -54,25 +56,15 @@ public class CreateProductGUI extends JFrame {
         JPanel panelLeft = new JPanel();
         panelLeft.setPreferredSize(new Dimension(200,300));
 
-        JLabel image = new JLabel();
+        image = new JLabel();
         image.setIcon(Helper.getIcon(product.getImage(),300,200));
         panelLeft.add(image);
 
         parentPanel.add(panelLeft,BorderLayout.LINE_START);
 
-        // create return button
-        panelButtonReturn = new JPanel();
-        panelHeader.add(panelButtonReturn,BorderLayout.LINE_START);
-
-        returnButton = new JButton();
-        returnButton.setIcon(Helper.getIcon("/icons/returnButton.jpg",25,25));
-        returnButton.setBorder(new EmptyBorder(30,0,30,0));
-        returnButton.setPreferredSize(new Dimension(50,30));
-        panelHeader.add(returnButton,BorderLayout.LINE_START);
-        // end return button
-
         // create logo Chinh sua thong tin san pham
         logo = new JLabel("Thêm Sản Phẩm");
+        logo.setHorizontalAlignment(SwingConstants.CENTER);
         logo.setFont(Fonts.getFont(Font.BOLD,30));
         panelHeader.add(logo,BorderLayout.CENTER);
         // end logo
@@ -93,7 +85,11 @@ public class CreateProductGUI extends JFrame {
                 } else if (txtProductDescription.getText().equals("")) {
                     JOptionPane.showMessageDialog(null,"Mô Tả Sản Phẩm Bạn Không Được Để Trống","Lỗi",JOptionPane.ERROR_MESSAGE);
                 } else if (txtNumberOfProduct.getText().equals("")) {
-                    JOptionPane.showMessageDialog(null,"Số Lượng Sản Phẩm Bạn Không Được Để Trống","Lỗi",JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(null, "Số Lượng Sản Phẩm Bạn Không Được Để Trống", "Lỗi", JOptionPane.ERROR_MESSAGE);
+                } else if (txtProductPrice.getText().equals("[a-zA-Z]+")||txtProductPrice.getText().equals(".*[!@#$%].*")){
+                    JOptionPane.showMessageDialog(null, "Giá Bán Của Sản Phẩm Không Chứa Các Ký Tự Chữ Cái Hoặc Ký Tự Đặt Biệt", "Lỗi", JOptionPane.ERROR_MESSAGE);
+                }  else if (txtNumberOfProduct.getText().equals("[a-zA-Z]+")||txtNumberOfProduct.getText().equals(".*[!@#$%].*")){
+                    JOptionPane.showMessageDialog(null, "Giá Bán Của Sản Phẩm Không Chứa Các Ký Tự Chữ Cái Hoặc Ký Tự Đặt Biệt", "Lỗi", JOptionPane.ERROR_MESSAGE);
                 } else {
                     product.setName(txtProductName.getText());
                     product.setImage(image.getText());
@@ -138,7 +134,7 @@ public class CreateProductGUI extends JFrame {
         // create txtNameProduct
         txtProductName = new Input("Tên Sản Phẩm");
         txtProductName.setFont(Fonts.getFont(Font.PLAIN,15));
-        txtProductName.setPreferredSize(new Dimension(1000-40,18));
+        txtProductName.setPreferredSize(new Dimension(1000-40,20));
         panel1.add(txtProductName,BorderLayout.CENTER);
         // end txtNameProduct
 
@@ -273,22 +269,10 @@ public class CreateProductGUI extends JFrame {
         panel3.setPreferredSize(new Dimension(600,515));
         panelBody.add(panel3,BorderLayout.PAGE_END);
 
-//        JPanel panel3H = new JPanel();
-//        panel3H.setPreferredSize(new Dimension(1000-40,200));
-//        panel3.add(panel3H,BorderLayout.PAGE_START);
-
         productImage = new JLabel("Hình Ảnh Minh Họa");
         productImage.setFont(Fonts.getFont(Font.BOLD,18));
         productImage.setBorder(new EmptyBorder(0,20,0,0));
         panel3.add(productImage,BorderLayout.PAGE_START);
-//
-//        JPanel imageLeft = new JPanel();
-//        imageLeft.setPreferredSize(new Dimension(550,60));
-//        panel3.add(imageLeft,BorderLayout.LINE_START);
-//
-//        JPanel imageRigth = new JPanel();
-//        imageRigth.setPreferredSize(new Dimension(550,60));
-//        panel3.add(imageRigth,BorderLayout.LINE_END);
 
         imageEnd = new JPanel();
         imageEnd.setPreferredSize(new Dimension(600,400));
@@ -305,11 +289,22 @@ public class CreateProductGUI extends JFrame {
                 if (result == JFileChooser.APPROVE_OPTION) {
                     File selectedFile = chooser.getSelectedFile();
                     String path = selectedFile.getAbsolutePath();
+                    path = path.replace("/","");
+                    System.out.println(path);
+                    image.setIcon(Helper.getImageIcon(path,200,300));
+                    String fileName = selectedFile.getName();
+                    String newPath = "/images/" + fileName;
+                    image.setText(newPath);
                 }
             }
         });
 
         panel3.add(chooseButton,BorderLayout.CENTER);
+    }
 
+    public static void main(String[] args) {
+        Helper.initUI();
+        ServiceProvider.init();
+        new CreateProductGUI();
     }
 }
