@@ -23,7 +23,6 @@ public class ProductGUI extends JFrame {
     private JLabel txtListProduct, logoLabel;
     private JComboBox comboBox;
     private Input findByName;
-    private JTable table;
     private JButton editButton, viewButton, deleteButton;
     private List<Product> list;
     private DefaultTableModel dtm;
@@ -97,58 +96,57 @@ public class ProductGUI extends JFrame {
         panelBody1.add(panelBody2, BorderLayout.LINE_END);
 
 
-//        // start typeProduct
-//        String typeProduct[] = {"Tất Cả", "Thức Ăn", "Nước Uống", "Thẻ"};
-//        comboBox = new JComboBox(typeProduct);
-//        comboBox.setBorder(new EmptyBorder(0, 5, 0, 0));
-//        comboBox.setFont(Fonts.getFont(Font.ITALIC, 15));
-//        comboBox.setPreferredSize(new Dimension(250, 25));
-//        list = new ArrayList<>();
-//        var localProductService = this.productService;
-//        try {
-//            list = localProductService.findAll();
-//        } catch (SQLException e) {
-//            throw new RuntimeException(e);
-//        }
-//        panel = new JPanel();
-//        comboBox.addActionListener(new ActionListener() {
-//            @Override
-//            public void actionPerformed(ActionEvent e) {
-//                String selected = (String) comboBox.getSelectedItem();
-//                if (selected.equals("Tất Cả")) {
-//                    try {
-//                        list = localProductService.findAll();
-//                    } catch (SQLException ex) {
-//                        throw new RuntimeException(ex);
-//                    }
-//                } else if (selected.equals("Thức Ăn")) {
-//                    try {
-//                        list = localProductService.filterByTypeProduct(Product.ProductType.FOOD);
-//                    } catch (SQLException ex) {
-//                        throw new RuntimeException(ex);
-//                    }
-//                } else if (selected.equals("Nước Uống")) {
-//                    try {
-//                        list = localProductService.filterByTypeProduct(Product.ProductType.DRINK);
-//                    } catch (SQLException ex) {
-//                        throw new RuntimeException(ex);
-//                    }
-//                } else {
-//                    try {
-//                        list = localProductService.filterByTypeProduct(Product.ProductType.CARD);
-//                    } catch (SQLException ex) {
-//                        throw new RuntimeException(ex);
-//                    }
-//                }
-//                showProduct(panel);
-//            }
-//        });
-//        panelBody2.add(comboBox, BorderLayout.LINE_START);
+        // start typeProduct
+        String typeProduct[] = {"Tất Cả", "Thức Ăn", "Nước Uống", "Thẻ"};
+        comboBox = new JComboBox(typeProduct);
+        comboBox.setBorder(new EmptyBorder(0, 5, 0, 0));
+        comboBox.setFont(Fonts.getFont(Font.ITALIC, 15));
+        comboBox.setPreferredSize(new Dimension(250, 25));
+        list = new ArrayList<>();
+        var localProductService = this.productService;
+        try {
+            list = localProductService.findAll();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        panel = new JPanel();
+        comboBox.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String selected = (String) comboBox.getSelectedItem();
+                if (selected.equals("Tất Cả")) {
+                    try {
+                        list = localProductService.findAll();
+                    } catch (SQLException ex) {
+                        throw new RuntimeException(ex);
+                    }
+                } else if (selected.equals("Thức Ăn")) {
+                    try {
+                        list = localProductService.filterByTypeProduct(Product.ProductType.FOOD);
+                    } catch (SQLException ex) {
+                        throw new RuntimeException(ex);
+                    }
+                } else if (selected.equals("Nước Uống")) {
+                    try {
+                        list = localProductService.filterByTypeProduct(Product.ProductType.DRINK);
+                    } catch (SQLException ex) {
+                        throw new RuntimeException(ex);
+                    }
+                } else {
+                    try {
+                        list = localProductService.filterByTypeProduct(Product.ProductType.CARD);
+                    } catch (SQLException ex) {
+                        throw new RuntimeException(ex);
+                    }
+                }
+                showProduct();
+            }
+        });
+        panelBody2.add(comboBox, BorderLayout.LINE_START);
         // end typeProduct
 
         // findByName
         // start findByName
-        var localProductService = this.productService;
         findByName = new Input("Search Here...");
         findByName.addActionListener(new ActionListener() {
             @Override
@@ -174,13 +172,12 @@ public class ProductGUI extends JFrame {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-        for (Product p : list) {
-            ProductFrame pf = new ProductFrame(p.getId(),p.getImage(),p.getName(),p.getPrice());
-            panel.add(pf);
-        }
         parentPanel.add(panel,BorderLayout.PAGE_END);
+
     }
 
+    public void showProduct() {
+    }
 
     public static void main(String[] args) {
         Helper.initUI();
