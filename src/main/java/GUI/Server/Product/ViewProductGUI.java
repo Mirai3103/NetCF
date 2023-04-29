@@ -17,7 +17,7 @@ import java.sql.SQLException;
 import java.util.Date;
 
 public class ViewProductGUI extends JFrame {
-    private JPanel parentPanel, panelHeader, panelBody, panel1, panel2, panel3, panelButtonReturn, panelLeftPN, panelRightPN, imageEnd, panelPDRight, panelPDLeft, panel2d, panelRighNOP, panelRigth2, panelLeftPB, panelLeft2, panel2b, panelRigthTCB, panelRight1,panelLeftPP, panelLeft1, panel2h;
+    private JPanel parentPanel, panelHeader, panelBody, panel1, panel2, panel3, panelLeftPN, panelRightPN, imageEnd, panelPDRight, panelPDLeft, panel2d, panelRighNOP, panelRigth2, panelLeftPB, panelLeft2, panel2b, panelRigthTCB, panelRight1,panelLeftPP, panelLeft1, panel2h;
     private JButton returnButton, updateButton, chooseButton;
     private JLabel logo, productName , productPrice, productType, numberOfProduct, productDescription, productImage;
     private JTextField txtProductName, txtProductPrice, txtNumberOfProduct, txtProductDescription;
@@ -41,9 +41,10 @@ public class ViewProductGUI extends JFrame {
         // Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         this.setSize(1000,1000);
         this.setLayout(new BorderLayout());
+        this.setLocationRelativeTo(null);
         initComponents();
         this.setVisible(true);
-        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
     }
 
     private void initComponents() {
@@ -71,25 +72,9 @@ public class ViewProductGUI extends JFrame {
 
         parentPanel.add(panelLeft,BorderLayout.LINE_START);
 
-        // create return button
-        panelButtonReturn = new JPanel();
-        panelHeader.add(panelButtonReturn,BorderLayout.LINE_START);
-
-        returnButton = new JButton();
-        returnButton.setIcon(Helper.getIcon("/icons/returnButton.jpg",25,25));
-        returnButton.setBorder(new EmptyBorder(30,0,30,0));
-        returnButton.setPreferredSize(new Dimension(50,30));
-        returnButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                new ProductGUI();
-            }
-        });
-        panelHeader.add(returnButton,BorderLayout.LINE_START);
-        // end return button
-
         // create logo Chinh sua thong tin san pham
-        logo = new JLabel("Chỉnh Sửa Thông Tin Sản Phẩm");
+        logo = new JLabel("Thông Tin Sản Phẩm");
+        logo.setHorizontalAlignment(SwingConstants.CENTER);
         logo.setFont(Fonts.getFont(Font.BOLD,30));
         panelHeader.add(logo,BorderLayout.CENTER);
         // end logo
@@ -121,8 +106,9 @@ public class ViewProductGUI extends JFrame {
         // create txtNameProduct
         txtProductName = new JTextField();
         txtProductName.setText(product.getName());
+        txtProductName.setEnabled(false);
         txtProductName.setFont(Fonts.getFont(Font.PLAIN,15));
-        txtProductName.setPreferredSize(new Dimension(1000-40,18));
+        txtProductName.setPreferredSize(new Dimension(1000-40,20));
         panel1.add(txtProductName,BorderLayout.CENTER);
         // end txtNameProduct
 
@@ -162,6 +148,7 @@ public class ViewProductGUI extends JFrame {
 
         txtProductPrice = new JTextField();
         txtProductPrice.setText(product.getPrice()+"");
+        txtProductPrice.setEnabled(false);
         txtProductPrice.setFont(Fonts.getFont(Font.PLAIN,15));
 //        txtProductPrice.setPreferredSize(new Dimension(470,18));
         txtProductPrice.setColumns(50);
@@ -223,6 +210,7 @@ public class ViewProductGUI extends JFrame {
 
         txtNumberOfProduct = new JTextField();
         txtNumberOfProduct.setText(product.getStock()+"");
+        txtNumberOfProduct.setEnabled(false);
         txtNumberOfProduct.setFont(Fonts.getFont(Font.PLAIN,15));
         panelRigth2.add(txtNumberOfProduct,BorderLayout.CENTER);
 
@@ -246,6 +234,7 @@ public class ViewProductGUI extends JFrame {
 
         txtProductDescription = new JTextField();
         txtProductDescription.setText(product.getDescription());
+        txtProductDescription.setEnabled(false);
         txtProductDescription.setPreferredSize(new Dimension(1000-40,18));
         txtProductDescription.setFont(Fonts.getFont(Font.PLAIN,15));
         panel2d.add(txtProductDescription,BorderLayout.CENTER);

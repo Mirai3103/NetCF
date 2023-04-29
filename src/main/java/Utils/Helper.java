@@ -2,9 +2,11 @@ package Utils;
 
 import com.formdev.flatlaf.themes.FlatMacLightLaf;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.io.File;
+import java.io.IOException;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.net.URL;
@@ -81,7 +83,7 @@ public class Helper {
         return url;
     }
     public static Image getImage(String path,int width,int height) {
-            var icon = new ImageIcon(getResource(path));
+        var icon = new ImageIcon(getResource(path));
         Image img = icon.getImage();
         if (width == 0 || height == 0)
             return img;
@@ -146,5 +148,25 @@ public class Helper {
 
     //create operation for Invoice(delete, edit, showdetailInvoice)
 
+    public static ImageIcon getImageIcon(String path, int width, int height) {
+        try {
+//            Image image = ImageIO.read(new URL(path));
+            Image image = ImageIO.read(new File(path));
+            if (width == -1 || height == -1) {
+                return new ImageIcon(image);
+            }
+            Image image1 = image.getScaledInstance(width,height,0);
+            return new ImageIcon(image1);
+        } catch (IOException e) {
+            return null;
+        }
+    }
 
+    public static boolean checkNumber(String text) {
+        if (text.equals(".*[!@#$%].*")||text.equals("[a-zA-Z]+")) {
+            JOptionPane.showMessageDialog(null,"Không Được Chứa Các Ký Tự Đặt Biệt Hoặc Chữ Cái.","Lỗi",JOptionPane.ERROR_MESSAGE);
+            return false;
+        }
+        return true;
+    }
 }
