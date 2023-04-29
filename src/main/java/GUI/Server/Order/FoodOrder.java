@@ -5,6 +5,8 @@
 package GUI.Server.Order;
 
 import BUS.ProductService;
+import DTO.InvoiceDetailInputDTO;
+import DTO.Product;
 import GUI.Components.ProductCard;
 import Utils.Helper;
 import Utils.ServiceProvider;
@@ -12,6 +14,7 @@ import org.jdesktop.swingx.WrapLayout;
 
 import javax.swing.*;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -23,21 +26,18 @@ public class FoodOrder extends javax.swing.JFrame {
     /**
      * Creates new form FoodOrder
      */
-    private ProductService productService;
     private List<ProductCard> productCards = new java.util.ArrayList<>();
+    public static List<Product> products;
     public FoodOrder() {
-        productService = ServiceProvider.getInstance().getService(ProductService.class);
         initComponents();
 
         var wrapLayout = new WrapLayout();
         wrapLayout.setAlignment(java.awt.FlowLayout.LEFT);
         wrapLayout.setHgap(10);        wrapLayout.setVgap(20);
-        this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-
-        try {
-            var products =   productService.findAll();
+        this.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
             products.forEach(p->{
                 var productCard = new ProductCard(p.getImage(), p.getName(), (float) p.getPrice());
+                productCard.setProduct(p);
                 productCards.add(productCard);
                 productCard.setBounds(0, 0, 200, 200);
                 jPanelProduct.add(productCard);
@@ -49,9 +49,7 @@ public class FoodOrder extends javax.swing.JFrame {
 
             jPanelProduct.revalidate();
             jPanelProduct.repaint();
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
+
 
         
     }
@@ -235,8 +233,36 @@ public class FoodOrder extends javax.swing.JFrame {
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
         // TODO add your handling code here:
-        Cart a = new Cart(null);
-        a.setVisible(true);
+        var list = new ArrayList<InvoiceDetailInputDTO>();
+        this.productCards.forEach((card) -> {
+            if (card.isAddedToCart()) {
+                list.add(InvoiceDetailInputDTO.builder().
+                        product(card.getProduct()).
+                        productId(card.getProduct().getId()).
+                        quantity(card.getQuantity()).
+                        build());
+            }
+        });
+        Cart cartView= new Cart(list);
+        cartView.setVisible(true);
+        cartView.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        cartView.setModal(true);
+        cartView.setLocationRelativeTo(this);
+        cartView.setOnClearAll(() -> {
+            this.productCards.forEach((card) -> {
+                card.setAddedToCart(false);
+            });
+        });
+        cartView.setOnDelete((productId) -> {
+            this.productCards.forEach((card) -> {
+                if (card.getProduct().getId().equals(productId)) {
+                    card.setAddedToCart(false);
+                    card.setQuantity(0);
+                    card.update(card.getGraphics());
+                }
+            });
+        });
+
     }//GEN-LAST:event_jButton4ActionPerformed
 
     /**

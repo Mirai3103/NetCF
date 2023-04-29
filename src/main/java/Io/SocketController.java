@@ -1,18 +1,16 @@
 package Io;
 
+import BUS.*;
 import Payload.LoginPayload;
 import Utils.Helper;
 import Utils.ServiceProvider;
 import DTO.Message;
-import BUS.AccountService;
-import BUS.ComputerService;
-import BUS.MessageService;
-import BUS.SessionService;
 
 import java.awt.*;
 import java.io.IOException;
 import java.io.Serializable;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Date;
 
 public class SocketController {
@@ -36,8 +34,13 @@ public class SocketController {
         server.on("changePassword", this::onChangePassword);
         server.on("logout",this::onLogout);
         server.on("shutdown",this::onShutDown);
-    }
+        server.on("order",this::onOrder);
 
+    }
+    private void onOrder(Socket socket, Serializable invoice) {
+        Helper.showSystemNoitification("Thông báo", "Có đơn hàng mới", TrayIcon.MessageType.INFO);
+        System.out.println(invoice );
+    }
     private void onChangePassword(Socket socket, Serializable serializable) {
         try {
             var session = sessionService.findByComputerId(socket.getMachineId());
@@ -86,6 +89,7 @@ public class SocketController {
                 var session=   sessionService.createSession(account, client.getMachineId());
 
                 server.emit("loginSuccess", session);
+                Helper.showSystemNoitification("Máy "+client.getMachineId()+" đã đăng nhập!", "", TrayIcon.MessageType.INFO);
                client.setIntervalId( this.sessionService.startSession(session,client));
             } else {
                 server.emit("errorMessage", "Sai tên đăng nhập hoặc mật khẩu");
@@ -97,11 +101,14 @@ public class SocketController {
 
     private void onLogout(Socket socket, Serializable serializable) {
         this.sessionService.logout(socket.getMachineId());
+        Helper.showSystemNoitification("Máy "+socket.getMachineId()+" đã đăng xuất!", "", TrayIcon.MessageType.INFO);
         server.emitSelf("statusChange",null);
     }
     private void onShutDown(Socket socket, Serializable serializable) {
         Server.getInstance().removeClient(socket.getMachineId());
+        Helper.showSystemNoitification("Máy "+socket.getMachineId()+" đã ngắt kết nối!", "", TrayIcon.MessageType.INFO);
         this.sessionService.shutDown(socket.getMachineId());
+        System.out.println("ok");
         server.emitSelf("statusChange",null);
     }
 }

@@ -20,12 +20,16 @@ public class NavItemElement   {
             child.setSelected(false);
         });
         parent.setSelected(false);
+        parent.revalidate();
+        parent.repaint();
     }
     public void openCollapse(){
         children.forEach(child -> {
             child.setVisible(true);
         });
         parent.setSelected(true);
+        parent.revalidate();
+        parent.repaint();
     }
     public void initChildEvent(JPanel contentPanel){
         children.forEach(child -> {

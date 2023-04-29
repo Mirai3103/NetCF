@@ -49,15 +49,9 @@ public class ConnectionFactory {
             try {
                 T t = clazz.getConstructor().newInstance();//tạo một đối tượng cụ thể của class truyền vào
                 for (Field field : fields) {//duyệt từng thuộc tính của class
-                    String setMethodName = "set" + field.getName().substring(0, 1).toUpperCase() + field.getName().substring(1);//tên của phương thức set"Thuộc Tính"
                     if (field.getName().equals("serialVersionUID")) {
                         continue;
                     }
-//                    var type =field.getType().isEnum()?Integer.class:field.getType();
-//                    type = type == float.class  ? double.class : type;
-//                    type = type == java.sql.Time.class ? java.sql.Date.class : type;
-//                    Method setMethod = clazz.getMethod(setMethodName,type );
-
                    try {
                        var value = resultSet.getObject(field.getName());
                        field.setAccessible(true);
@@ -71,7 +65,6 @@ public class ConnectionFactory {
                             continue;
                        }
                           field.set(t,value);
-//                       setMethod.invoke(t,value);
                    }catch (Exception ignored) {
                        if (field.getType().isEnum()){
                            ignored.printStackTrace();

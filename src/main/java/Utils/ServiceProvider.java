@@ -36,8 +36,6 @@ public class ServiceProvider {
         return this;
     }
     public void build(){
-        //clear cache
-
         for (Class<?> iService: serviceImplMap .keySet()){
             Class<?> impl = serviceImplMap .get(iService);
             try {
@@ -54,12 +52,10 @@ public class ServiceProvider {
             Field[] fields = impl.getClass().getDeclaredFields();
             Arrays.stream(fields).forEach(f->{
                 if(serviceImplMap .containsKey(f.getType())){
-//                    String setterMethodName = "set" + f.getName().substring(0, 1).toUpperCase() + f.getName().substring(1);
                     try {
                         f.setAccessible(true);
                         f.set(impl, serviceInstanceCache.get(f.getType()));
-//                        Method setterMethod = impl.getClass().getMethod(setterMethodName, f.getType());
-//                        setterMethod.invoke(impl, serviceInstanceCache.get(f.getType()));
+
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -95,7 +91,6 @@ public class ServiceProvider {
                 .register(IEmployeeDAO.class,EmployeeDAOImpl.class)
                 .register(EmployeeService.class, EmployeeService.class)
                 .register(IProductDAO.class, ProductDAOImpl.class)
-
                 .register(ProductService.class, ProductService.class)
                 .build();
     }

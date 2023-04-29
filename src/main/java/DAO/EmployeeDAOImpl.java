@@ -45,7 +45,7 @@ public class EmployeeDAOImpl extends BaseDAO implements IEmployeeDAO{
 
     @Override
     public Employee update(Employee employee) throws SQLException {
-        var preparedStatement=this.prepareStatement("UPDATE employee SET name = ?, accountID = ?, accountID = ?, phoneNumber = ?, address = ?, otherInformation = ?, createdAt = ?, deletedAt = ? WHERE id = ?");
+        var preparedStatement=this.prepareStatement("UPDATE employee SET name = ?, accountID = ?, salaryPerHour = ?, phoneNumber = ?, address = ?, otherInformation = ?, createdAt = ?, deletedAt = ? WHERE id = ?");
         preparedStatement.setString(1,employee.getName());
         preparedStatement.setInt(2,employee.getAccountID());
         preparedStatement.setInt(3,employee.getSalaryPerHour());

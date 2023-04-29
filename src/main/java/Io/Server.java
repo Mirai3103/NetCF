@@ -1,12 +1,20 @@
 package Io;
 
+import BUS.ProductService;
+import DTO.Message;
+import DTO.Product;
+import Utils.Helper;
+import Utils.ServiceProvider;
 import lombok.Getter;
 
+import java.awt.*;
 import java.io.IOException;
 import java.io.Serializable;
 import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.SocketImpl;
+import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -86,7 +94,14 @@ public class Server extends ServerSocket {
                     clients.add(client);
                     client.on("identify", (t, arg) -> {
                         client.setMachineId((int) arg);
-//                        client.removeAllListeners("identify");
+                        Helper.showSystemNoitification("Máy "+client.getMachineId()+" đã kết nối!", "", TrayIcon.MessageType.INFO);
+                        ArrayList<Product> listProduct = null;
+                        try {
+                            listProduct = new ArrayList<>(ServiceProvider.getInstance().getService(ProductService.class).findAll());
+                        } catch (SQLException e) {
+                            throw new RuntimeException(e);
+                        }
+                        client.emit("listProduct", listProduct);
                     });
 
 

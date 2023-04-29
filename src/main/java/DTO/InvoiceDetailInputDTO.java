@@ -17,4 +17,5 @@ public class InvoiceDetailInputDTO implements Serializable {
     private static final long serialVersionUID = 70089216L;
     private int productId;
     private int quantity;
+    private Product product;
 }

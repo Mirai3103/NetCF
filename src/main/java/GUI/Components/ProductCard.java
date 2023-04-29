@@ -29,8 +29,10 @@ st/SystemFileSystem/Templates/Licenses/license-default.txt to change this licens
 package GUI.Components;
 
 import DTO.Message;
+import DTO.Product;
 import Utils.Helper;
 import lombok.Getter;
+import lombok.Setter;
 
 import javax.swing.*;
 import java.awt.*;
@@ -42,6 +44,9 @@ import java.awt.event.ActionListener;
  * @author Laffy
  */
 public class ProductCard extends javax.swing.JPanel {
+    @Getter
+    @Setter
+    private Product product;
 
     public static void main(String[] args) {
         Helper.initUI();
