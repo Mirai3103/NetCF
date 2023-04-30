@@ -19,6 +19,7 @@ public class SocketController {
     private final Server server;
     private final MessageService messageService ;
     private final ComputerService computerService;
+    private final  InvoiceService invoiceService;
 
     public SocketController(Server server) {
         this.server = server;
@@ -26,6 +27,7 @@ public class SocketController {
         accountService = ServiceProvider.getInstance().getService(AccountService.class);
         messageService = ServiceProvider.getInstance().getService(MessageService.class);
         computerService = ServiceProvider.getInstance().getService(ComputerService.class);
+        invoiceService = ServiceProvider.getInstance().getService(InvoiceService.class);
     }
     public void startListen() throws IOException {
         server.listen();
@@ -39,6 +41,7 @@ public class SocketController {
     }
     private void onOrder(Socket socket, Serializable invoice) {
         Helper.showSystemNoitification("Thông báo", "Có đơn hàng mới", TrayIcon.MessageType.INFO);
+        invoiceService.order((DTO.CreateInvoiceInputDTO) invoice);
         System.out.println(invoice .toString());
     }
     private void onChangePassword(Socket socket, Serializable serializable) {

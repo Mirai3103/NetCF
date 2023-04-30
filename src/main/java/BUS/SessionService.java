@@ -4,6 +4,7 @@ import DAO.Interface.ISessionDAO;
 import DTO.Computer;
 import Io.Server;
 import Io.Socket;
+import Utils.Helper;
 import Utils.Interval;
 import lombok.Setter;
 import DTO.Account;
@@ -11,6 +12,7 @@ import DTO.ComputerUsage;
 import DTO.Session;
 
 import javax.swing.*;
+import java.awt.*;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -164,7 +166,9 @@ public class SessionService {
                             e.printStackTrace();
                             if (e.getMessage().equals("Time out")) {
                                 client.emit("timeOut", null);
+                                Helper.showSystemNoitification("Hết giờ", "Máy "+session.getComputerID()+" hết thời gian! ", TrayIcon.MessageType.INFO);
                                 cleanUp.run();
+
                                 return;  // stop interval
                             }
                         }

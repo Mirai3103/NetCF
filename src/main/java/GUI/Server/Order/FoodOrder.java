@@ -261,8 +261,7 @@ public class FoodOrder extends javax.swing.JFrame {
         });
         cartView.setVisible(true);
         cartView.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        cartView.setLocationRelativeTo(this);
-        cartView.setModal(true);
+        cartView.setLocationRelativeTo(null);
 
 
     }//GEN-LAST:event_jButton4ActionPerformed

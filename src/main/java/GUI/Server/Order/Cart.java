@@ -230,7 +230,7 @@ public class Cart extends javax.swing.JDialog {
         }
         Main.socket.emit("order", this.invoice);
         JOptionPane.showMessageDialog(this, "Đặt hàng thành công!, vui lòng chờ nhân viên xác nhận!");
-        this.setModal(false);
+      this.setVisible(false);
         this.dispose();
 
     }//GEN-LAST:event_jButton4ActionPerformed
