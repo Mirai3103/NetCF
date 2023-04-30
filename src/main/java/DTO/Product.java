@@ -5,6 +5,7 @@ package DTO;
 
 import lombok.*;
 
+import java.io.Serial;
 import java.util.Date;
 import java.util.List;
 
@@ -14,7 +15,10 @@ import java.util.List;
 @Builder
 @Getter
 @Setter
-public class Product {
+public class Product implements java.io.Serializable {
+    @Serial
+    private static final long serialVersionUID =214560262412L;
+
     public enum ProductType {
         DRINK,
         FOOD,

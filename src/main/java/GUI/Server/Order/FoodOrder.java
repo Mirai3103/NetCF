@@ -243,11 +243,8 @@ public class FoodOrder extends javax.swing.JFrame {
                         build());
             }
         });
-        Cart cartView= new Cart(list);
-        cartView.setVisible(true);
-        cartView.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        cartView.setModal(true);
-        cartView.setLocationRelativeTo(this);
+        Cart cartView = new Cart(list);
+
         cartView.setOnClearAll(() -> {
             this.productCards.forEach((card) -> {
                 card.setAddedToCart(false);
@@ -262,6 +259,11 @@ public class FoodOrder extends javax.swing.JFrame {
                 }
             });
         });
+        cartView.setVisible(true);
+        cartView.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        cartView.setLocationRelativeTo(this);
+        cartView.setModal(true);
+
 
     }//GEN-LAST:event_jButton4ActionPerformed
 

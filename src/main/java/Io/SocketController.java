@@ -39,7 +39,7 @@ public class SocketController {
     }
     private void onOrder(Socket socket, Serializable invoice) {
         Helper.showSystemNoitification("Thông báo", "Có đơn hàng mới", TrayIcon.MessageType.INFO);
-        System.out.println(invoice );
+        System.out.println(invoice .toString());
     }
     private void onChangePassword(Socket socket, Serializable serializable) {
         try {
