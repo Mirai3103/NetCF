@@ -37,6 +37,14 @@ public class ComputerService {
     public Computer getComputerById(int id) throws SQLException {
         return computerDAO.findById(id);
     }
-
+    public void updateComputer(Computer computer) throws SQLException {
+        computerDAO.update(computer);
+    }
+    public void deleteComputer(int id) throws SQLException {
+        computerDAO.delete(id);
+    }
+    public void addComputer(Computer computer) throws SQLException {
+        computerDAO.create(computer);
+    }
 
 }

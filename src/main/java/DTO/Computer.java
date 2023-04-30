@@ -61,7 +61,7 @@ public class Computer implements Serializable {
     private ComputerType type;
     private ComputerStatus status = ComputerStatus.OFF;
     private Date createdAt = new Date();
-    private Date deletedAt;
+    private Date deletedAt = null;
 
     private List<ComputerUsage> computerUsages;
     private List<Invoice> invoices;
@@ -71,5 +71,11 @@ public class Computer implements Serializable {
     }
     public void setType(Integer type) {
         this.type = ComputerType.values()[type];
+    }
+    public void setType(String type) {
+        switch (type) {
+            case "Máy VIP" -> this.type = ComputerType.Vip;
+            case "Máy thường" -> this.type = ComputerType.Normal;
+        }
     }
 }
