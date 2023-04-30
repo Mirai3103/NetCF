@@ -20,8 +20,8 @@ public class Product implements java.io.Serializable {
     private static final long serialVersionUID =214560262412L;
 
     public enum ProductType {
-        DRINK,
         FOOD,
+        DRINK,
         CARD,
         ;
 
