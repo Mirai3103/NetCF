@@ -49,6 +49,8 @@ public class InvoiceManageGUI extends JPanel{
         initManagerInvoice();
         event();
         List<Invoice> invoices = invoiceService.findAllByType(Invoice.InvoiceType.EXPORT);
+        double tongTien = invoices.stream().mapToDouble(Invoice::getTotal).sum();
+        // labelTonTien.setText("Tổng tiền: "+ Helper.getDecimalFormat().format(tongTien)+" VND");
         showInvoice(Invoice.InvoiceType.EXPORT,invoices,listInvoiceModelExport);
     }
 

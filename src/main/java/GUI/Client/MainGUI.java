@@ -86,8 +86,10 @@ public class MainGUI extends JFrame {
             Main.session = null;
             this.dispose();
             var loginUI = new LoginGUI();
+            Main.socket.emit("shutdown",null);
             JOptionPane.showMessageDialog(loginUI, "Máy đã khoá! ", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
             this.onCleanUp();
+            System.exit(0);
         });
         button2.addActionListener(e -> {
             Main.socket.emit("logout", null);
@@ -135,7 +137,6 @@ public class MainGUI extends JFrame {
         Main.socket.removeAllListeners("updateSession");
         Main.socket.removeAllListeners("forceLock");
         Main.socket.removeAllListeners("message");
-
     }
 
     private void initComponents() {

@@ -229,14 +229,18 @@ public class Home extends JPanel {
                     moMayTraTruoc.setEnabled(false);
                     tinNhan.setEnabled(true);
                     lockItem.setEnabled(true);
-                    tatItem.setEnabled(false);
+                    tatItem.setEnabled(true);
                 }
             }
             button.setFont(Fonts.getFont(Font.BOLD, 20));
             button.setVerticalTextPosition(SwingConstants.BOTTOM);
             button.setBackground(new Color(0x00ffffff, true));
             button.setHorizontalTextPosition(SwingConstants.CENTER);
-
+            tatItem.addActionListener(e -> {
+                    Server.getInstance().getClients().stream().filter(c -> c.getMachineId() == computer.getId()).findFirst().ifPresent(c -> {
+                        c.emit("forceLock", null);
+                    });
+            });
             computerPanel.add(button);
         });
 

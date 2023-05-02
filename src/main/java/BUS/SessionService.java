@@ -44,7 +44,7 @@ public class SessionService {
         Computer computer = null;
         try {
             session = sessionDAO.findByComputerId(machineId);
-            account = accountService.findById(session.getUsingBy());
+            account =session.getUsingBy()!=null? accountService.findById(session.getUsingBy()):null;
             computer = computerService.getComputerById(machineId);
             session.setUsingComputer(computer);
             session.setUsingByAccount(account);
