@@ -1,8 +1,10 @@
 package DAO;
 
 import DAO.Interface.IInvoiceDetailDAO;
+import DTO.Invoice;
 import DTO.InvoiceDetail;
 
+import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.List;
@@ -31,8 +33,18 @@ public class InvoiceDetailDAOImpl extends BaseDAO implements IInvoiceDetailDAO {
         return null;
     }
 
+
     @Override
-    public boolean delete(Integer integer) throws SQLException {
+    public boolean delete(Integer invoiceId) throws SQLException {
+        String sql = """
+                DELETE From InvoiceDetail where invoiceId = ?
+                """;
+        var stt = this.prepareStatement(sql);
+        stt.setInt(1,invoiceId);
+        var result = stt.executeUpdate();
+        if(result!=0){
+            return true;
+        }
         return false;
     }
 
@@ -46,6 +58,7 @@ public class InvoiceDetailDAOImpl extends BaseDAO implements IInvoiceDetailDAO {
         return list.size() > 0 ? list.get(0) : null;
     }
 
+
     @Override
     public List<InvoiceDetail> findAll() throws SQLException {
         return null;
@@ -53,6 +66,19 @@ public class InvoiceDetailDAOImpl extends BaseDAO implements IInvoiceDetailDAO {
 
     @Override
     public List<InvoiceDetail> findAllByInvoiceId(Integer invoiceId) {
-        return null;
+        String sqlFindByInvoiceId = """
+                select * 
+                from InvoiceDetail 
+                where invoiceId = ?
+                """;
+        PreparedStatement stt = null;
+        try {
+            stt = this.prepareStatement(sqlFindByInvoiceId);
+            stt.setInt(1,invoiceId);
+            var result = stt.executeQuery();
+            return ConnectionFactory.toList(result,InvoiceDetail.class);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

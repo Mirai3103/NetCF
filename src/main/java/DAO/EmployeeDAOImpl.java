@@ -2,6 +2,7 @@ package DAO;
 
 import DAO.Interface.IEmployeeDAO;
 import DTO.Employee;
+import DTO.Invoice;
 
 import java.sql.SQLException;
 import java.sql.Statement;

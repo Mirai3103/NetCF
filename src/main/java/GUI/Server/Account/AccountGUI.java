@@ -370,4 +370,5 @@ public class AccountGUI extends JPanel {
     private JTable table1;
     // JFormDesigner - End of variables declaration  //GEN-END:variables  @formatter:on
 
+
 }

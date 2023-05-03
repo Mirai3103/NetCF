@@ -1,6 +1,7 @@
 package BUS;
 
 import DAO.Interface.IInvoiceDAO;
+import DAO.InvoiceDAOImpl;
 import Utils.Helper;
 import DAO.Interface.IInvoiceDetailDAO;
 import DTO.CreateInvoiceInputDTO;
@@ -11,6 +12,7 @@ import DTO.Invoice;
 import DTO.InvoiceDetail;
 
 import java.sql.SQLException;
+import java.util.Date;
 import java.util.List;
 
 public class InvoiceService {
@@ -44,13 +46,17 @@ public class InvoiceService {
             return  false;
         }
 //        trong khung tìm kiếm có hai ngày,"từ ngày" và "đến ngày", nếu "đến ngày" mà nhỏ hơn "từ ngày" thì trả về false
-        if(Helper.compareDate(inforFilter.getDateFrom(),inforFilter.getDateTo()) == false){
+        if(Helper.compareDate(inforFilter.getDateFrom(),inforFilter.getDateTo()) == false) {
             return false;
         }
-        //nếu tổng tiền nhập vào mà khôgn phải số thì sẽ trả về false
-        if(Helper.isNumber(inforFilter.getTotalFrom()) == false || Helper.isNumber(inforFilter.getTotalTo()) ==false){
-            return false;
-        }
+        if(!inforFilter.getTotalFrom().equals(""))
+            if(Helper.isNumber(inforFilter.getTotalFrom()) == false )
+                return false;
+
+        if(!inforFilter.getTotalTo().equals(""))
+            if(Helper.isNumber(inforFilter.getTotalTo()) == false )
+                return false;
+        if(!inforFilter.getTotalFrom().equals("") && !inforFilter.getTotalTo().equals(""))
         if(Double.parseDouble(inforFilter.getTotalTo()) < Double.parseDouble(inforFilter.getTotalFrom())){
             return false;
         }
@@ -119,6 +125,36 @@ public class InvoiceService {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
+    }
 
+
+    public Invoice createInvoice(Invoice invoice){
+        try {
+            return new InvoiceDAOImpl().create(invoice);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+
+    public Invoice updateInvoice(Invoice invoice){
+        try {
+            return invoiceDAO.update(invoice);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+
+    public static void main(String[] args){
+        InvoiceService invoiceService = new InvoiceService();
+        Invoice invoice = new Invoice(0,1,null,1,null,10000.0,new Date(), Invoice.Status.ACCEPTED,true,1,null, Invoice.InvoiceType.EXPORT,null,null,null);
+        Invoice signal = invoiceService.createInvoice(invoice);
+        if(signal == null){
+            System.out.print("Khong thanh cong");
+        }
+        else {
+            System.out.print("Them thanh cong");
+        }
     }
 }

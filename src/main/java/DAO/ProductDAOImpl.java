@@ -1,6 +1,7 @@
 package DAO;
 
 import DAO.Interface.IProductDAO;
+import DTO.Invoice;
 import DTO.Product;
 
 import java.sql.SQLException;
@@ -87,7 +88,7 @@ public class ProductDAOImpl extends BaseDAO implements IProductDAO {
 
     @Override
     public Product findByName(String name) throws SQLException {
-        var statement = this.prepareStatement("SELECT * FROM product p WHERE p.name ? and p.deleteAt is null");
+        var statement = this.prepareStatement("SELECT * FROM product p WHERE p.name = ? and p.deletedAt is null");
         statement.setString(1,name);
         var resultSet = statement.executeQuery();
         var products = ConnectionFactory.toList(resultSet, Product.class);

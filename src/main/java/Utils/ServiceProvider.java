@@ -76,14 +76,12 @@ public class ServiceProvider {
     public static void init(){
         ServiceProvider.getInstance()
                 .register(PoolConnection.class, new PoolConnection())
-                .register(IProductDAO.class, ProductDAOImpl.class)
                 .register(IInvoiceDetailDAO.class, InvoiceDetailDAOImpl.class)
                 .register(IAccountDAO.class, AccountDAOImpl.class)
                 .register(IMessageDAO.class, MessageDAOImpl.class)
-                .register(IEmployeeDAO.class, EmployeeDAOImpl.class)
+                .register(IEmployeeDAO.class,EmployeeDAOImpl.class)
                 .register(ISessionDAO.class, SessionDAOImpl.class)
                 .register(IComputerDAO.class, ComputerDAOImpl.class)
-                .register(IInvoiceDAO.class, InvoiceDAOImpl.class)
                 .register(IComputerUsageDAO.class, ComputerUsageImpl.class)
                 .register(AccountService.class, AccountService.class)
                 .register(IAccountDAO.class, AccountDAOImpl.class)
@@ -91,11 +89,12 @@ public class ServiceProvider {
                 .register(SessionService.class, SessionService.class)
                 .register(ComputerUsageService.class, ComputerUsageService.class)
                 .register(MessageService.class, MessageService.class)
+                .register(IInvoiceDAO.class,InvoiceDAOImpl.class)
                 .register(InvoiceService.class, InvoiceService.class)
-                .register(IEmployeeDAO.class,EmployeeDAOImpl.class)
+                .register(IInvoiceDetailDAO.class,InvoiceDetailDAOImpl.class)
+                .register(InvoiceDetailService.class,InvoiceDetailService.class)
                 .register(EmployeeService.class, EmployeeService.class)
                 .register(IProductDAO.class, ProductDAOImpl.class)
-
                 .register(ProductService.class, ProductService.class)
                 .build();
     }
