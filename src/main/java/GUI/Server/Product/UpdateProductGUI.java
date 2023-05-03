@@ -17,7 +17,7 @@ import java.sql.SQLException;
 import java.util.Date;
 
 public class UpdateProductGUI extends JFrame {
-    private JPanel parentPanel, panelHeader, panelBody, panel1, panel2, panel3, panelButtonReturn, panelLeftPN, panelRightPN, imageEnd, panelPDRight, panelPDLeft, panel2d, panelRighNOP, panelRigth2, panelLeftPB, panelLeft2, panel2b, panelRigthTCB, panelRight1, panelLeftPP, panelLeft1, panel2h;
+    private JPanel parentPanel, panelHeader, panelBody, panel1, panel2, panel3, panelLeftPN, panelRightPN, imageEnd, panelPDRight, panelPDLeft, panel2d, panelRighNOP, panelRigth2, panelLeftPB, panelLeft2, panel2b, panelRigthTCB, panelRight1, panelLeftPP, panelLeft1, panel2h;
     private JButton returnButton, updateButton, chooseButton;
     private JLabel logo, productName, productPrice, productType, numberOfProduct, productDescription, productImage;
     private JTextField txtProductName, txtProductPrice, txtNumberOfProduct, txtProductDescription;
@@ -39,6 +39,7 @@ public class UpdateProductGUI extends JFrame {
             this.dispose();
             e.printStackTrace();
         }
+        product.setId(productId);
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         this.setSize(1000, 1000);
         this.setLayout(new BorderLayout());
@@ -176,7 +177,6 @@ public class UpdateProductGUI extends JFrame {
         //
         panelLeft1 = new JPanel();
         panelLeft1.setLayout(new BorderLayout());
-//        panelLeft1.setPreferredSize(new Dimension(480,55));
         panel2h.add(panelLeft1, BorderLayout.CENTER);
 
         productPrice = new JLabel("Giá Bán");
@@ -191,7 +191,6 @@ public class UpdateProductGUI extends JFrame {
         txtProductPrice = new JTextField();
         txtProductPrice.setText(product.getPrice() + "");
         txtProductPrice.setFont(Fonts.getFont(Font.PLAIN, 15));
-//        txtProductPrice.setPreferredSize(new Dimension(470,18));
         txtProductPrice.setColumns(50);
         txtProductPrice.setBackground(bg);
         panelLeft1.add(txtProductPrice, BorderLayout.CENTER);
@@ -210,6 +209,21 @@ public class UpdateProductGUI extends JFrame {
         comboBox = new JComboBox(combo);
         comboBox.setFont(Fonts.getFont(Font.ITALIC, 15));
         comboBox.setPreferredSize(new Dimension(480, 18));
+        comboBox.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String selected = (String)comboBox.getSelectedItem();
+                if (selected.equals("Nước Uống")) {
+                    product.setType(1);
+                }
+                if (selected.equals("Thức Ăn")) {
+                    product.setType(0);
+                }
+                if (selected.equals("Thẻ")) {
+                    product.setType(2);
+                }
+            }
+        });
         panelRight1.add(comboBox, BorderLayout.CENTER);
 
         panelRigthTCB = new JPanel();
@@ -287,22 +301,11 @@ public class UpdateProductGUI extends JFrame {
         panel3.setPreferredSize(new Dimension(600, 515));
         panelBody.add(panel3, BorderLayout.PAGE_END);
 
-//        JPanel panel3H = new JPanel();
-//        panel3H.setPreferredSize(new Dimension(1000-40,200));
-//        panel3.add(panel3H,BorderLayout.PAGE_START);
-
         productImage = new JLabel("Hình Ảnh Minh Họa");
         productImage.setFont(Fonts.getFont(Font.BOLD, 18));
         productImage.setBorder(new EmptyBorder(0, 20, 0, 0));
         panel3.add(productImage, BorderLayout.PAGE_START);
-//
-//        JPanel imageLeft = new JPanel();
-//        imageLeft.setPreferredSize(new Dimension(550,60));
-//        panel3.add(imageLeft,BorderLayout.LINE_START);
-//
-//        JPanel imageRigth = new JPanel();
-//        imageRigth.setPreferredSize(new Dimension(550,60));
-//        panel3.add(imageRigth,BorderLayout.LINE_END);
+
 
         imageEnd = new JPanel();
         imageEnd.setPreferredSize(new Dimension(600, 400));

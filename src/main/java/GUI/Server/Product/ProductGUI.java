@@ -36,7 +36,6 @@ public class ProductGUI extends JPanel {
     private Input findByName;
     private JTable table;
     private JButton editButton, viewButton, deleteButton;
-    private int flag=0;
 
     private DefaultTableModel dtm;
 
@@ -103,7 +102,7 @@ public class ProductGUI extends JPanel {
         // txt Danh sách sản phẩm
         // start logoListProduct
         txtListProduct = new JLabel("Danh Sách Sản Phẩm");
-        txtListProduct.setFont(Fonts.getFont(Font.BOLD, 18));
+        txtListProduct.setFont(Fonts.getFont(Font.BOLD, 15));
         txtListProduct.setBorder(new EmptyBorder(0, 25, 0, 0));
         txtListProduct.setPreferredSize(new Dimension(500 - 35, 20));
         panelBody1.add(txtListProduct, BorderLayout.CENTER);
@@ -190,7 +189,7 @@ public class ProductGUI extends JPanel {
         table.getTableHeader().setPreferredSize(new Dimension(0, 30));
         table.setShowVerticalLines(false);
         table.setShowHorizontalLines(false);
-        table.setPreferredSize(new Dimension(800,500));
+        table.setPreferredScrollableViewportSize(new Dimension(750, 400));
         dtm = new DefaultTableModel() {
             @Override
             public Class<?> getColumnClass(int columnIndex) {
@@ -218,7 +217,7 @@ public class ProductGUI extends JPanel {
         table.getColumnModel().getColumn(5).setPreferredWidth(100);
 
         var panel1 = new JScrollPane(table);
-        panel1.setPreferredSize(new Dimension(800,500));
+        panel1.setPreferredSize(new Dimension(800,495));
         panelBody.add(panel1,BorderLayout.CENTER);
 
         ListSelectionModel selectionModel = table.getSelectionModel();
@@ -250,11 +249,15 @@ public class ProductGUI extends JPanel {
         deleteButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                int selectedRow = table.getSelectedRow();
-                if (selectedRow != -1) {
-                    DefaultTableModel model = (DefaultTableModel) table.getModel();
-                    model.removeRow(selectedRow);
+                DefaultTableModel model = (DefaultTableModel) table.getModel();
+                int indexRowSelected = table.getSelectedRow();
+                int idProduct = (int)table.getValueAt(indexRowSelected,0);
+                try {
+                    productService.delete(idProduct);
+                } catch (SQLException ex) {
+                    throw new RuntimeException(ex);
                 }
+                model.removeRow(indexRowSelected);
             }
         });
 

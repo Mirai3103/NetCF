@@ -20,32 +20,29 @@ public class EmployeeDAOImpl extends BaseDAO implements IEmployeeDAO{
     }
     @Override
     public Employee create(Employee employee) throws SQLException {
-
-        try(var  preparedStatement=this.prepareStatement("INSERT INTO employee (name, accountID, accountID, phoneNumber, address, otherInformation, createdAt, deletedAt) VALUES (?, ?, ?, ?, ?, ?, ?, ?)", Statement.RETURN_GENERATED_KEYS)) {
+        var  preparedStatement=this.prepareStatement("INSERT INTO employee (name, accountID, salaryPerHour, phoneNumber, address, otherInformation, createdAt, deletedAt) VALUES (?, ?, ?, ?, ?, ?, ?, ?)", Statement.RETURN_GENERATED_KEYS);
             preparedStatement.setString(1,employee.getName());
             preparedStatement.setInt(2,employee.getAccountID());
             preparedStatement.setInt(3,employee.getSalaryPerHour());
             preparedStatement.setString(4, employee.getPhoneNumber());
             preparedStatement.setString(5, employee.getAddress());
             preparedStatement.setString(6,employee.getOtherInformation());
-            preparedStatement.setDate(7,new  java.sql.Date(employee.getCreatedAt().getTime()));
+            preparedStatement.setDate(7,new  java.sql.Date(new java.util.Date().getTime()));
             preparedStatement.setDate(8, null);
-            preparedStatement.executeUpdate();
+        var result=preparedStatement.executeUpdate();
+        if(result>0){
             var resultSet = preparedStatement.getGeneratedKeys();
             if (resultSet.next()) {
-                employee.setId(resultSet.getInt(1));
+                var newid=resultSet.getInt(1);
+                return this.findById(newid);
             }
-            return employee;
-        }catch (Exception e){
-            e.printStackTrace();
         }
-    return null;
-
+        return null;
     }
 
     @Override
     public Employee update(Employee employee) throws SQLException {
-        var preparedStatement=this.prepareStatement("UPDATE employee SET name = ?, accountID = ?, salaryPerHour = ?, phoneNumber = ?, address = ?, otherInformation = ?, createdAt = ?, deletedAt = ? WHERE id = ?");
+        var preparedStatement=this.prepareStatement("UPDATE employee SET name = ?, accountID = ?, salaryPerHour = ?, phoneNumber = ?, address = ?, otherInformation = ?, createdAt = ? WHERE id = ?");
         preparedStatement.setString(1,employee.getName());
         preparedStatement.setInt(2,employee.getAccountID());
         preparedStatement.setInt(3,employee.getSalaryPerHour());
@@ -53,10 +50,11 @@ public class EmployeeDAOImpl extends BaseDAO implements IEmployeeDAO{
         preparedStatement.setString(5, employee.getAddress());
         preparedStatement.setString(6,employee.getOtherInformation());
         preparedStatement.setDate(7,new  java.sql.Date(employee.getCreatedAt().getTime()));
-        preparedStatement.setDate(8, null);
-        preparedStatement.setInt(9,employee.getId());
+        preparedStatement.setInt(8,employee.getId());
         preparedStatement.executeUpdate();
-        return employee;
+        var result = preparedStatement.executeUpdate();
+        preparedStatement.close();
+        return result > 0 ? this.findById(employee.getId()) : null;
     }
     @Override
     public boolean delete(Integer integer) throws SQLException {
