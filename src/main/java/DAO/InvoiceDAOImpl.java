@@ -125,5 +125,15 @@ public class InvoiceDAOImpl extends BaseDAO implements IInvoiceDAO {
         return listInvoice;
     }
 
+    @Override
+    public List<Invoice> findByEmployeeId(int employeeId, Invoice.InvoiceType type) throws SQLException {
+        var sql = "select * from Invoice where createdBy = ? and type = ? and deletedAt is null";
+        try(var preparedStatement = this.prepareStatement(sql)) {
+            preparedStatement.setInt(1, employeeId);
+            preparedStatement.setInt(2, type.ordinal());
+            var resultSet = preparedStatement.executeQuery();
+            return ConnectionFactory.toList(resultSet, Invoice.class);
+        }
+    }
 }
 
