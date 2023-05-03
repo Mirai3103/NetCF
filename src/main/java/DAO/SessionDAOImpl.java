@@ -1,6 +1,7 @@
 package DAO;
 
 import DAO.Interface.ISessionDAO;
+import DTO.Invoice;
 import DTO.Session;
 
 import java.sql.SQLException;

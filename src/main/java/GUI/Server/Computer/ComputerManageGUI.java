@@ -110,6 +110,7 @@ public class ComputerManageGUI extends javax.swing.JPanel {
     private void renderTableData()  {
         var model = (DefaultTableModel) jTable1.getModel();
         model.setRowCount(0);
+        computerService.updateListComputerStatus(filteredComputers);
 
         for (var computer : filteredComputers) {
             model.addRow(new Object[]{
@@ -335,7 +336,7 @@ public class ComputerManageGUI extends javax.swing.JPanel {
         jPanel12.setLayout(new java.awt.BorderLayout());
 
         jLabel6.setFont(new java.awt.Font("Nunito SemiBold", 0, 26)); // NOI18N
-        jLabel6.setText("Danh sách máy tính ");
+        jLabel6.setText("");
         jPanel12.add(jLabel6, java.awt.BorderLayout.NORTH);
 
         jPanel13.setBackground(new java.awt.Color(255, 255, 255));

@@ -1,6 +1,7 @@
 package DAO;
 
 import DAO.Interface.IProductDAO;
+import DTO.Invoice;
 import DTO.Product;
 
 import java.sql.SQLException;
@@ -12,10 +13,10 @@ public class ProductDAOImpl extends BaseDAO implements IProductDAO {
     public Product create(Product product) throws SQLException {
         var preprapedStament = ConnectionFactory.
                 getConnection().
-                prepareStatement("INSERT INTO Product(name, price, type, stock, description, image, createdAt, deletedAt) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
+                prepareStatement("INSERT INTO Product(name, price, type, stok, description, image, createAt, deletedAt) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
         preprapedStament.setString(1, product.getName());
         preprapedStament.setDouble(2,product.getPrice());
-        preprapedStament.setInt(3,product.getType().ordinal());
+        preprapedStament.setString(3,product.getType().toString());
         preprapedStament.setInt(4,product.getStock());
         preprapedStament.setString(5, product.getDescription());
         preprapedStament.setString(6,product.getImage());
@@ -29,7 +30,6 @@ public class ProductDAOImpl extends BaseDAO implements IProductDAO {
                 return this.findById(newId);
             }
         }
-        preprapedStament.close();
         return null;
     }
 
@@ -43,10 +43,10 @@ public class ProductDAOImpl extends BaseDAO implements IProductDAO {
                 " description = ?, " +
                 " image = ?, " +
                 " createdAt = ? " +
-                " WHERE id = ?");
+                " WHERE id = ? ");
         preparedStatement.setString(1,product.getName());
         preparedStatement.setDouble(2,product.getPrice());
-        preparedStatement.setInt(3,product.getType().ordinal());
+        preparedStatement.setString(3,product.getType().toString());
         preparedStatement.setInt(4,product.getStock());
         preparedStatement.setString(5,product.getDescription());
         preparedStatement.setString(6,product.getImage());
@@ -59,7 +59,7 @@ public class ProductDAOImpl extends BaseDAO implements IProductDAO {
 
     @Override
     public boolean delete(Integer integer) throws SQLException {
-        var preparedStatement = this.prepareStatement("UPDATE product SET deletedAt = ? WHERE id = ?");
+        var preparedStatement = this.prepareStatement("UPDATE product p SET p.deletedAt = ? WHERE p.id = ?");
         preparedStatement.setDate(1, new java.sql.Date(new java.util.Date().getTime()));
         preparedStatement.setInt(2,integer);
         var result = preparedStatement.executeUpdate();
@@ -88,7 +88,7 @@ public class ProductDAOImpl extends BaseDAO implements IProductDAO {
 
     @Override
     public Product findByName(String name) throws SQLException {
-        var statement = this.prepareStatement("SELECT * FROM product p WHERE p.name ? and p.deleteAt is null");
+        var statement = this.prepareStatement("SELECT * FROM product p WHERE p.name = ? and p.deletedAt is null");
         statement.setString(1,name);
         var resultSet = statement.executeQuery();
         var products = ConnectionFactory.toList(resultSet, Product.class);

@@ -34,7 +34,7 @@ public class ProductGUI extends JFrame {
         this.setSize(new Dimension(1030,1030));
         initComponents();
         this.setVisible(true);
-        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
     }
 
     private void initComponents() {

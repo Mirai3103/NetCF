@@ -1,6 +1,7 @@
 package BUS;
 
 import DAO.Interface.IInvoiceDAO;
+import DAO.InvoiceDAOImpl;
 import Utils.Helper;
 import DAO.Interface.IInvoiceDetailDAO;
 import DTO.CreateInvoiceInputDTO;
@@ -11,6 +12,7 @@ import DTO.Invoice;
 import DTO.InvoiceDetail;
 
 import java.sql.SQLException;
+import java.util.Date;
 import java.util.List;
 
 public class InvoiceService {
@@ -39,21 +41,29 @@ public class InvoiceService {
 
 
     public boolean ValidateInforFilter(InforFilter inforFilter){
+        try {
+            int total = Integer.parseInt(inforFilter.getTotalFrom());
+            total = Integer.parseInt(inforFilter.getTotalTo());
+        }catch (Exception e){
+            return false;
+        }
         //neu nguoi dung nhap ngay vao ma khong dung theo format("yyyy-mm-dd") thi se tra ve false;
-        if(Helper.ValidateDate(inforFilter.getDateFrom()) == false || Helper.ValidateDate((inforFilter.getDateTo()))==false){
+        if(!Helper.ValidateDate(inforFilter.getDateFrom()) || !Helper.ValidateDate((inforFilter.getDateTo()))){
             return  false;
         }
 //        trong khung tìm kiếm có hai ngày,"từ ngày" và "đến ngày", nếu "đến ngày" mà nhỏ hơn "từ ngày" thì trả về false
-        if(Helper.compareDate(inforFilter.getDateFrom(),inforFilter.getDateTo()) == false){
+        if(!Helper.compareDate(inforFilter.getDateFrom(), inforFilter.getDateTo())) {
             return false;
         }
-        //nếu tổng tiền nhập vào mà khôgn phải số thì sẽ trả về false
-        if(Helper.isNumber(inforFilter.getTotalFrom()) == false || Helper.isNumber(inforFilter.getTotalTo()) ==false){
-            return false;
-        }
-        if(Double.parseDouble(inforFilter.getTotalTo()) < Double.parseDouble(inforFilter.getTotalFrom())){
-            return false;
-        }
+        if(!inforFilter.getTotalFrom().equals(""))
+            if(!Helper.isNumber(inforFilter.getTotalFrom()))
+                return false;
+
+        if(!inforFilter.getTotalTo().equals(""))
+            if(!Helper.isNumber(inforFilter.getTotalTo()))
+                return false;
+        if(!inforFilter.getTotalFrom().equals("") && !inforFilter.getTotalTo().equals(""))
+            return !(Double.parseDouble(inforFilter.getTotalTo()) < Double.parseDouble(inforFilter.getTotalFrom()));
         return true;
     }
 
@@ -118,8 +128,27 @@ public class InvoiceService {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-
     }
+
+
+    public Invoice createInvoice(Invoice invoice){
+        try {
+            return new InvoiceDAOImpl().create(invoice);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+
+    public Invoice updateInvoice(Invoice invoice){
+        try {
+            return invoiceDAO.update(invoice);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+
     public int countExportInvoiceSellByEmployeeId(int employeeId) {
         try {
             return invoiceDAO.findByEmployeeId(employeeId, Invoice.InvoiceType.EXPORT).size();

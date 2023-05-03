@@ -169,6 +169,7 @@ public class AccountGUI extends JPanel {
                     throw new RuntimeException(ex);
                 }
                 reloadTableData();
+                JOptionPane.showMessageDialog(this, "Xóa thành công", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
             }
         });
         menuItem3.addActionListener(e -> {
@@ -369,5 +370,6 @@ public class AccountGUI extends JPanel {
     private JScrollPane scrollPane1;
     private JTable table1;
     // JFormDesigner - End of variables declaration  //GEN-END:variables  @formatter:on
+
 
 }

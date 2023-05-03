@@ -1,6 +1,7 @@
 package DAO;
 
 import DAO.Interface.IMessageDAO;
+import DTO.Invoice;
 import DTO.Message;
 
 import java.sql.PreparedStatement;

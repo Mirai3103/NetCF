@@ -22,6 +22,21 @@ import java.util.List;
 public class Invoice implements Serializable {
     @Serial
     private static final long serialVersionUID = 264603467L;
+
+    public Invoice(int createdToAccountId, Account createdToAccount, int computerId, Computer createdToComputer, Double total, Date createdAt,Status status,boolean isPaid, int createdBy, Employee createdByEmployee, InvoiceType type) {
+        this.createdToAccountId = createdToAccountId;
+        this.createdToAccount = createdToAccount;
+        this.computerId = computerId;
+        this.createdToComputer = createdToComputer;
+        this.total = total;
+        this.deletedAt = createdAt;
+        this.status = status;
+        this.isPaid = isPaid;
+        this.createdBy = createdBy;
+        this.createdByEmployee = createdByEmployee;
+        this.type = type;
+    }
+
     public enum InvoiceType {
           IMPORT,
             EXPORT,

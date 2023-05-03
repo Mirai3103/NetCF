@@ -1,8 +1,8 @@
 package DAO.Interface;
 
+import DTO.Invoice;
+
 import java.sql.SQLException;
-import java.text.ParseException;
-import java.util.Collection;
 import java.util.List;
 
 public interface IDAO<T, ID> {

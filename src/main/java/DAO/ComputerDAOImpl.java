@@ -2,6 +2,7 @@ package DAO;
 
 import DAO.Interface.IComputerDAO;
 import DTO.Computer;
+import DTO.Invoice;
 
 import java.sql.SQLException;
 import java.sql.Statement;
