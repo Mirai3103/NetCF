@@ -15,10 +15,10 @@ import org.jdesktop.swingx.WrapLayout;
 import javax.swing.*;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 /**
- *
  * @author Laffy
  */
 public class FoodOrder extends javax.swing.JFrame {
@@ -26,32 +26,90 @@ public class FoodOrder extends javax.swing.JFrame {
     /**
      * Creates new form FoodOrder
      */
-    private List<ProductCard> productCards = new java.util.ArrayList<>();
+    private final List<ProductCard> productCards = new java.util.ArrayList<>();
     public static List<Product> products;
+    public void renderProductCards() {
+        jPanelProduct.removeAll();
+        productCards.forEach(p -> {
+           if(p.isVisible()){
+               jPanelProduct.add(p);
+           }
+        });
+        jPanelProduct.revalidate();
+        jPanelProduct.repaint();
+        jScrollPane1.revalidate();
+        jScrollPane1.repaint();
+    }
     public FoodOrder() {
         initComponents();
 
         var wrapLayout = new WrapLayout();
         wrapLayout.setAlignment(java.awt.FlowLayout.LEFT);
-        wrapLayout.setHgap(10);        wrapLayout.setVgap(20);
+        wrapLayout.setHgap(10);
+        wrapLayout.setVgap(20);
         this.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-            products.forEach(p->{
-                var productCard = new ProductCard(p.getImage(), p.getName(), (float) p.getPrice());
-                productCard.setProduct(p);
-                productCards.add(productCard);
-                productCard.setBounds(0, 0, 200, 200);
-                jPanelProduct.add(productCard);
-            });
+        products.forEach(p -> {
+            var productCard = new ProductCard(p.getImage(), p.getName(), (float) p.getPrice());
+            productCard.setProduct(p);
+            productCards.add(productCard);
+            productCard.setBounds(0, 0, 200, 200);
+            jPanelProduct.add(productCard);
+        });
+        jPanelProduct.setLayout(wrapLayout);
+        jPanelProduct.revalidate();
+        jPanelProduct.repaint();
+        var model = new DefaultComboBoxModel<TypeProductCbItem>();
+        model.addElement(new TypeProductCbItem(-1, "Tất cả"));
+        model.addElement(new TypeProductCbItem(Product.ProductType.FOOD.ordinal(), "Đồ ăn"));
+        model.addElement(new TypeProductCbItem(Product.ProductType.DRINK.ordinal(), "Đồ uống"));
+        model.addElement(new TypeProductCbItem(Product.ProductType.CARD.ordinal(), "Thẻ "));
+        jComboBoxLoaiSp.setModel(model);
+        //default
+        jComboBoxLoaiSp.setSelectedIndex(0);
+        var model2 = new  DefaultComboBoxModel<String>();
+        model2.addElement("Giá tăng dần");
+        model2.addElement("Giá giảm dần");
+        model2.addElement("Tên A-Z");
+        model2.addElement("Tên Z-A");
+        jComboBoxOrderBy.setModel(model2);
+        //default
+        jComboBoxOrderBy.setSelectedIndex(2);
+        jPanelProduct.revalidate();
+        jPanelProduct.repaint();
+        initEvent();
 
+    }
 
-            jPanelProduct.setLayout(wrapLayout);
+    private record TypeProductCbItem(Integer value, String text) {
+        @Override
+        public String toString() {
+            return text;
+        }
+    }
 
+    public void initEvent() {
+        jButton1.addActionListener(e->{
+            if(jTextFieldName.getText().trim().length()>0){
+                productCards.forEach(p -> p.setVisible(p.getProduct().getName().toLowerCase().contains(jTextFieldName.getText().trim().toLowerCase())));
+            }
+            else {
+                productCards.forEach(p -> p.setVisible(true));
+            }
+            switch (jComboBoxOrderBy.getSelectedIndex()) {
+                case 0 -> productCards.sort(Comparator.comparingDouble(ProductCard::getPrice));
+                case 1 -> productCards.sort((p1, p2) -> Double.compare(p2.getPrice(), p1.getPrice()));
+                case 3 -> productCards.sort((p1, p2) -> p2.getProductName().compareTo(p1.getProductName()));
+                default -> productCards.sort(Comparator.comparing(ProductCard::getProductName));
+            }
+            switch (jComboBoxLoaiSp.getSelectedIndex()) {
+                case 1 -> productCards.forEach(p -> p.setVisible(p.getProduct().getType() == Product.ProductType.FOOD));
+                case 2 -> productCards.forEach(p -> p.setVisible(p.getProduct().getType() == Product.ProductType.DRINK));
+                case 3 -> productCards.forEach(p -> p.setVisible(p.getProduct().getType() == Product.ProductType.CARD));
+                default ->  productCards.forEach(p -> p.setVisible(true));
+            }
 
-            jPanelProduct.revalidate();
-            jPanelProduct.repaint();
-
-
-        
+           renderProductCards();
+        });
     }
 
     /**
@@ -68,13 +126,13 @@ public class FoodOrder extends javax.swing.JFrame {
         jPanel2 = new javax.swing.JPanel();
         jPanel6 = new javax.swing.JPanel();
         jLabel8 = new javax.swing.JLabel();
-        jComboBoxFromEmployee1 = new javax.swing.JComboBox();
+        jComboBoxLoaiSp = new javax.swing.JComboBox();
         jPanel7 = new javax.swing.JPanel();
         jLabel4 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
+        jTextFieldName = new javax.swing.JTextField();
         jPanel8 = new javax.swing.JPanel();
         jLabel9 = new javax.swing.JLabel();
-        jComboBoxFromEmployee2 = new javax.swing.JComboBox();
+        jComboBoxOrderBy = new javax.swing.JComboBox();
         jPanel9 = new javax.swing.JPanel();
         jLabel6 = new javax.swing.JLabel();
         jPanel3 = new javax.swing.JPanel();
@@ -106,10 +164,10 @@ public class FoodOrder extends javax.swing.JFrame {
         jLabel8.setText("Loại sản phẩm");
         jPanel6.add(jLabel8);
 
-        jComboBoxFromEmployee1.setFont(new java.awt.Font("Nunito", 0, 16)); // NOI18N
-        jComboBoxFromEmployee1.setOpaque(true);
-        jComboBoxFromEmployee1.setPreferredSize(new java.awt.Dimension(300, 35));
-        jPanel6.add(jComboBoxFromEmployee1);
+        jComboBoxLoaiSp.setFont(new java.awt.Font("Nunito", 0, 16)); // NOI18N
+        jComboBoxLoaiSp.setOpaque(true);
+        jComboBoxLoaiSp.setPreferredSize(new java.awt.Dimension(300, 35));
+        jPanel6.add(jComboBoxLoaiSp);
 
         jPanel2.add(jPanel6);
 
@@ -120,9 +178,9 @@ public class FoodOrder extends javax.swing.JFrame {
         jLabel4.setText("Lọc theo tên");
         jPanel7.add(jLabel4);
 
-        jTextField1.setFont(new java.awt.Font("Nunito", 0, 16)); // NOI18N
-        jTextField1.setPreferredSize(new java.awt.Dimension(300, 35));
-        jPanel7.add(jTextField1);
+        jTextFieldName.setFont(new java.awt.Font("Nunito", 0, 16)); // NOI18N
+        jTextFieldName.setPreferredSize(new java.awt.Dimension(300, 35));
+        jPanel7.add(jTextFieldName);
 
         jPanel2.add(jPanel7);
 
@@ -134,10 +192,10 @@ public class FoodOrder extends javax.swing.JFrame {
         jLabel9.setText("Sắp xếp theo:");
         jPanel8.add(jLabel9);
 
-        jComboBoxFromEmployee2.setFont(new java.awt.Font("Nunito", 0, 16)); // NOI18N
-        jComboBoxFromEmployee2.setOpaque(true);
-        jComboBoxFromEmployee2.setPreferredSize(new java.awt.Dimension(300, 35));
-        jPanel8.add(jComboBoxFromEmployee2);
+        jComboBoxOrderBy.setFont(new java.awt.Font("Nunito", 0, 16)); // NOI18N
+        jComboBoxOrderBy.setOpaque(true);
+        jComboBoxOrderBy.setPreferredSize(new java.awt.Dimension(300, 35));
+        jPanel8.add(jComboBoxOrderBy);
 
         jPanel2.add(jPanel8);
 
@@ -154,12 +212,12 @@ public class FoodOrder extends javax.swing.JFrame {
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
-            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 729, Short.MAX_VALUE)
+                jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGap(0, 729, Short.MAX_VALUE)
         );
         jPanel3Layout.setVerticalGroup(
-            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 45, Short.MAX_VALUE)
+                jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGap(0, 45, Short.MAX_VALUE)
         );
 
         jPanel2.add(jPanel3);
@@ -224,11 +282,11 @@ public class FoodOrder extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-  
+
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-   
+
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
@@ -243,11 +301,8 @@ public class FoodOrder extends javax.swing.JFrame {
                         build());
             }
         });
-        Cart cartView= new Cart(list);
-        cartView.setVisible(true);
-        cartView.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        cartView.setModal(true);
-        cartView.setLocationRelativeTo(this);
+        Cart cartView = new Cart(list);
+
         cartView.setOnClearAll(() -> {
             this.productCards.forEach((card) -> {
                 card.setAddedToCart(false);
@@ -262,6 +317,10 @@ public class FoodOrder extends javax.swing.JFrame {
                 }
             });
         });
+        cartView.setVisible(true);
+        cartView.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        cartView.setLocationRelativeTo(null);
+
 
     }//GEN-LAST:event_jButton4ActionPerformed
 
@@ -273,7 +332,7 @@ public class FoodOrder extends javax.swing.JFrame {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
+         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html
          */
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
@@ -306,8 +365,8 @@ public class FoodOrder extends javax.swing.JFrame {
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton4;
-    private javax.swing.JComboBox jComboBoxFromEmployee1;
-    private javax.swing.JComboBox jComboBoxFromEmployee2;
+    private javax.swing.JComboBox<TypeProductCbItem> jComboBoxLoaiSp;
+    private javax.swing.JComboBox<String> jComboBoxOrderBy;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel6;
@@ -324,6 +383,6 @@ public class FoodOrder extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel9;
     private javax.swing.JPanel jPanelProduct;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTextField jTextField1;
+    private javax.swing.JTextField jTextFieldName;
     // End of variables declaration//GEN-END:variables
 }

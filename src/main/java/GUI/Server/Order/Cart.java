@@ -8,6 +8,7 @@ import DTO.CreateInvoiceInputDTO;
 import DTO.InvoiceDetailInputDTO;
 import GUI.Client.Main;
 import Utils.Helper;
+import lombok.Getter;
 import lombok.Setter;
 
 import java.awt.*;
@@ -27,11 +28,12 @@ public class Cart extends javax.swing.JDialog {
     @Setter
     private DeleteCallBack onDelete;
 
+
     public Cart(Frame owner, List<InvoiceDetailInputDTO> listDetail) {
         super(owner);
         this.invoice.setInvoiceDetailDTOList(listDetail);
-//        this.invoice.setAccountId(Main.session.getUsingBy());
-//        this.invoice.setComputerId(Main.session.getComputerID());
+        this.invoice.setAccountId(Main.session.getUsingBy());
+        this.invoice.setComputerId(Main.session.getComputerID());
         initComponents();
         this.setSize(700, 800);
         renderTable();
@@ -223,9 +225,14 @@ public class Cart extends javax.swing.JDialog {
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
         var note = JOptionPane.showInputDialog(this, "Thêm ghi chú cho nhân viên (có thể trống):");
         this.invoice.setNote(note);
-//           toDo: đặt hàng
+        if(this.onClearAll!=null){
+            this.onClearAll.run();
+        }
         Main.socket.emit("order", this.invoice);
-        JOptionPane.showMessageDialog(this, "Đặt hàng thành công!");
+        JOptionPane.showMessageDialog(this, "Đặt hàng thành công!, vui lòng chờ nhân viên xác nhận!");
+      this.setVisible(false);
+        this.dispose();
+
     }//GEN-LAST:event_jButton4ActionPerformed
 
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed

@@ -36,6 +36,7 @@ public class Home extends JPanel {
     private final SessionService sessionService;
     private final MessageService messageService;
 
+
     public Home() {
         initComponents();
         computerService = ServiceProvider.getInstance().getService(ComputerService.class);
@@ -84,6 +85,11 @@ public class Home extends JPanel {
         var offlineImg = Helper.getIcon("/icons/computerOff.png", 100, 100);
         var lockImg = Helper.getIcon("/icons/computerLocking.png", 100, 100);
         var onlineImg = Helper.getIcon("/icons/computerUsing.png", 100, 100);
+        try {
+            computers = computerService.getAllComputers();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
         computers = computerService.updateListComputerStatus(computers);
         computers.forEach(computer -> {
             JPopupMenu popupMenu = new JPopupMenu();
@@ -223,14 +229,18 @@ public class Home extends JPanel {
                     moMayTraTruoc.setEnabled(false);
                     tinNhan.setEnabled(true);
                     lockItem.setEnabled(true);
-                    tatItem.setEnabled(false);
+                    tatItem.setEnabled(true);
                 }
             }
             button.setFont(Fonts.getFont(Font.BOLD, 20));
             button.setVerticalTextPosition(SwingConstants.BOTTOM);
             button.setBackground(new Color(0x00ffffff, true));
             button.setHorizontalTextPosition(SwingConstants.CENTER);
-
+            tatItem.addActionListener(e -> {
+                    Server.getInstance().getClients().stream().filter(c -> c.getMachineId() == computer.getId()).findFirst().ifPresent(c -> {
+                        c.emit("forceLock", null);
+                    });
+            });
             computerPanel.add(button);
         });
 

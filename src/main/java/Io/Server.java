@@ -92,17 +92,6 @@ public class Server extends ServerSocket {
                 try {
                     Io.Socket client = new Io.Socket(accept());
                     clients.add(client);
-                    client.on("identify", (t, arg) -> {
-                        client.setMachineId((int) arg);
-                        Helper.showSystemNoitification("Máy "+client.getMachineId()+" đã kết nối!", "", TrayIcon.MessageType.INFO);
-                        ArrayList<Product> listProduct = null;
-                        try {
-                            listProduct = new ArrayList<>(ServiceProvider.getInstance().getService(ProductService.class).findAll());
-                        } catch (SQLException e) {
-                            throw new RuntimeException(e);
-                        }
-                        client.emit("listProduct", listProduct);
-                    });
 
 
                     for (Callback callback : onConnection) {
@@ -116,6 +105,19 @@ public class Server extends ServerSocket {
                     for (Callback callback : onDisconnection) {
                         client.on("onDisconnection", callback);
                     }
+                    client.on("identify", (t, arg) -> {
+                        client.setMachineId((int) arg);
+                        Helper.showSystemNoitification("Máy "+client.getMachineId()+" đã kết nối!", "", TrayIcon.MessageType.INFO);
+                        ArrayList<Product> listProduct = null;
+                        try {
+                            listProduct = new ArrayList<>(ServiceProvider.getInstance().getService(ProductService.class).findAll());
+                            client.emit("listProduct", listProduct);
+
+                        } catch (SQLException e) {
+                            throw new RuntimeException(e);
+                        }
+                    });
+
                 } catch (IOException e) {
                     e.printStackTrace();
                 }

@@ -17,13 +17,13 @@ import java.util.Objects;
 @AllArgsConstructor
 @NoArgsConstructor
 
-public class Socket  implements Serializable {
+public class Socket implements Serializable {
     private final Map<String, List<Callback>> eventHandlers = new java.util.HashMap<>();
     private java.io.ObjectInputStream in;
     private java.io.ObjectOutputStream out;
-    private  java.net.Socket socket;
+    private java.net.Socket socket;
     private Thread listenThread;
-    private  int machineId;
+    private int machineId;
 
     private Integer intervalId;
 
@@ -37,6 +37,7 @@ public class Socket  implements Serializable {
         listenThread.interrupt();
         socket.close();
     }
+
     public Socket(String host, int port) throws IOException {
         this(new java.net.Socket(host, port));
     }
@@ -48,50 +49,54 @@ public class Socket  implements Serializable {
         }
         eventHandlers.get(eventType).add(callback);
     }
+
     public void removeListener(String eventType, Callback callback) {
         if (eventHandlers.containsKey(eventType)) {
             eventHandlers.get(eventType).remove(callback);
         }
     }
+
     public void removeAllListeners(String eventType) {
         if (eventHandlers.containsKey(eventType)) {
             eventHandlers.get(eventType).clear();
         }
     }
-    public void emit(String eventType, Serializable arg){
+
+    public void emit(String eventType, Serializable arg) {
         try {
             out.writeObject(EventArg.builder().eventType(eventType).arg(arg).build());
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
+
     public void listen() throws IOException {
         out = new java.io.ObjectOutputStream(socket.getOutputStream());
         in = new java.io.ObjectInputStream(socket.getInputStream());
         listenThread = new Thread(() -> {
             while (socket.isConnected()) {
-                    EventArg payload = null;
-                    try {
-                        payload  = (EventArg) in.readObject();
-                    } catch (IOException e) {
-                            break;
-                    } catch (ClassNotFoundException e) {
-                        continue;
-                    }
+                EventArg payload = null;
+                try {
+                    payload = (EventArg) in.readObject();
+                } catch (IOException e) {
+                    break;
+                } catch (ClassNotFoundException e) {
+                    continue;
+                }
                 if (payload == null)
-                        continue;
-                    if (eventHandlers.containsKey(payload.getEventType())) {
-                        for (Callback callback : eventHandlers.get(payload.getEventType())) {
-                            callback.invoke(this,payload.getArg());
-                        }
+                    continue;
+                if (eventHandlers.containsKey(payload.getEventType())) {
+                    for (Callback callback : eventHandlers.get(payload.getEventType())) {
+                        callback.invoke(this, payload.getArg());
                     }
+                }
 
             }
-           if (eventHandlers.containsKey("onDisconnection")) {
-               for (Callback callback : eventHandlers.get("onDisconnection")) {
-                   callback.invoke(this,null);
-               }
-           }
+            if (eventHandlers.containsKey("onDisconnection")) {
+                for (Callback callback : eventHandlers.get("onDisconnection")) {
+                    callback.invoke(this, null);
+                }
+            }
         });
         listenThread.start();
 

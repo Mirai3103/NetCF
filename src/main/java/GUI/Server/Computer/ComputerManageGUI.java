@@ -1,5 +1,6 @@
 package GUI.Server.Computer;
 
+import Io.Server;
 import Utils.Helper;
 import Utils.ServiceProvider;
 import DTO.Computer;
@@ -8,8 +9,10 @@ import BUS.ComputerService;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.sql.SQLException;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Locale;
+import java.util.Objects;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 
@@ -69,6 +72,7 @@ public class ComputerManageGUI extends javax.swing.JPanel {
         a.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
     private void reDesign(){
+        idtextField.setFocusable(false);
         addBtn.setBackground(new Color(0x0bc5ea));
         addBtn.setForeground(Color.WHITE);
         //#ff8780
@@ -91,6 +95,8 @@ public class ComputerManageGUI extends javax.swing.JPanel {
                 nameTf.setText(name.toString());
                 pricetf.setText(price.toString());
                 typecb.setSelectedItem(type.toString());
+            }else {
+               this.clearBtn.doClick();
             }
         });
         searchnametf.addKeyListener(new java.awt.event.KeyAdapter() {
@@ -412,6 +418,7 @@ public class ComputerManageGUI extends javax.swing.JPanel {
         nameTf.setText("");
         pricetf.setText("");
         typecb.setSelectedIndex(0);
+        idtextField.setText((computers.stream().max(Comparator.comparing(Computer::getId)).orElse(Computer.builder().id(0).build()).getId()+1)+"");
     }//GEN-LAST:event_clearBtnActionPerformed
 
     private void deleteBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteBtnActionPerformed
@@ -424,20 +431,70 @@ public class ComputerManageGUI extends javax.swing.JPanel {
         }
       var agree= JOptionPane.showConfirmDialog(this, "Bạn có chắc chắn muốn xóa " + jTable1.getValueAt(row, 1) + " không?", "Xác nhận", JOptionPane.YES_NO_OPTION);
       if (agree == JOptionPane.OK_OPTION){
-          JOptionPane.showMessageDialog(this, "Xóa thành công", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
+            var id = jTable1.getValueAt(row, 0).toString();
+          try {
+              this.computerService.deleteComputer(Integer.parseInt(id));
+              JOptionPane.showMessageDialog(this, "Xóa thành công", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
+
+          } catch (SQLException e) {
+              throw new RuntimeException(e);
+          }
       }
       else {
           JOptionPane.showMessageDialog(this, "Đã hủy xóa", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
       }
+        getData();
+        Server.getInstance().emitSelf("statusChange", null);
 
     }//GEN-LAST:event_deleteBtnActionPerformed
 
     private void addBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addBtnActionPerformed
         // TODO add your handling code here:
+        var name = nameTf.getText();
+        var price = pricetf.getText();
+        var type = Objects.requireNonNull(typecb.getSelectedItem()).toString();
+        var id = idtextField.getText();
+        if (name.isBlank() || price.isBlank() || type.isBlank() || id.isBlank()) {
+            JOptionPane.showMessageDialog(this, "Bạn chưa nhập đủ thông tin", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
+            return;
+        }
+        var computer = Computer.builder().id(Integer.parseInt(id)).name(name).price(Double.parseDouble(price)).build();
+        computer.setType(type);
+        try {
+            computerService.addComputer(computer);
+            JOptionPane.showMessageDialog(this, "Thêm thành công", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        getData();        Server.getInstance().emitSelf("statusChange", null);
+
     }//GEN-LAST:event_addBtnActionPerformed
 
     private void saveBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveBtnActionPerformed
         // TODO add your handling code here:
+        var row = jTable1.getSelectedRow();
+        if (row == -1) {
+            JOptionPane.showMessageDialog(this, "Bạn chưa chọn dòng để sửa", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
+            return;
+        }
+        var name = nameTf.getText();
+        var price = pricetf.getText();
+        var type = Objects.requireNonNull(typecb.getSelectedItem()).toString();
+        var id = idtextField.getText();
+        if (name.isBlank() || price.isBlank() || type.isBlank() || id.isBlank()) {
+            JOptionPane.showMessageDialog(this, "Bạn chưa nhập đủ thông tin", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
+            return;
+        }
+        var computer = Computer.builder().id(Integer.parseInt(id)).name(name).price(Double.parseDouble(price)).build();
+        computer.setType(type);
+        try {
+            computerService.updateComputer(computer);
+            JOptionPane.showMessageDialog(this, "Sửa thành công", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        Server.getInstance().emitSelf("statusChange", null);
+        getData();
     }//GEN-LAST:event_saveBtnActionPerformed
 
 

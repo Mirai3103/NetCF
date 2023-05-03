@@ -56,9 +56,10 @@ public class EmployeeService {
     public Employee updateEmployee(Employee employee) throws SQLException {
         return employeeDAO.update(employee);
     }
-    public void delete(Integer integer) throws SQLException {
-         this.employeeDAO.delete(integer);
+    public void deleteEmployee(Integer id) throws SQLException {
+        employeeDAO.delete(id);
     }
+
 }
 
 

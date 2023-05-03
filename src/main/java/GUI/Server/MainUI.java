@@ -119,7 +119,7 @@ public class MainUI extends JFrame {
         setLocationRelativeTo(getOwner());
         var userPanel = new JPanel();
         userPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
-        userPanel.setPreferredSize(new Dimension(300, 100));
+        userPanel.setPreferredSize(new Dimension(300, 150));
         var xinChaoLabel = new JLabel("Xin chào: ");
         xinChaoLabel.setBorder(new EmptyBorder(10, 10, 0, 10));
         xinChaoLabel.setFont(Fonts.getFont(Font.PLAIN, 20));
