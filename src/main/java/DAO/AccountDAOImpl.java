@@ -59,7 +59,7 @@ public class AccountDAOImpl extends BaseDAO implements IAccountDAO {
     }
 
     public boolean delete(Integer integer) throws SQLException {
-        var preparedStatement = this.prepareStatement("Update account a SET a.deletedAt = ? WHERE a.id = ?");
+        var preparedStatement = this.prepareStatement("Update account SET deletedAt = ? WHERE id = ?");
         preparedStatement.setDate(1, new java.sql.Date(new java.util.Date().getTime()));
         preparedStatement.setInt(2, integer);
         var result = preparedStatement.executeUpdate();

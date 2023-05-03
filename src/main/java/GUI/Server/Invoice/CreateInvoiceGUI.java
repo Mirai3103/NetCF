@@ -67,7 +67,7 @@ public class CreateInvoiceGUI extends JPanel{
                 BorderFactory.createLineBorder(new Color(0, 0, 0, 1)),
                 BorderFactory.createEmptyBorder(20, 0, 20, 0)
         ));
-        titleCreateInvoice.setFont(new Font("serif", Font.BOLD, 30));
+        titleCreateInvoice.setFont(new Font("nunito", Font.BOLD, 30));
         JPanel headerCreateInvoice = new JPanel();
         headerCreateInvoice.add(titleCreateInvoice);
         headerCreateInvoice.setBorder(BorderFactory.createCompoundBorder(
@@ -77,7 +77,7 @@ public class CreateInvoiceGUI extends JPanel{
 
 
         JLabel titleInforInvoice = new JLabel("Thông tin hóa đơn", JLabel.CENTER);
-        titleInforInvoice.setFont(new Font("serif", Font.BOLD, 25));
+        titleInforInvoice.setFont(new Font("nunito", Font.BOLD, 25));
         titleInforInvoice.setBorder(BorderFactory.createCompoundBorder(
                 BorderFactory.createMatteBorder(0, 0, 0, 0, new Color(42, 121, 255)),
                 BorderFactory.createEmptyBorder(20, 0, 10, 0)
@@ -87,10 +87,10 @@ public class CreateInvoiceGUI extends JPanel{
 
 
         titleDateCreate = new JLabel("Ngày tạo");
-        titleDateCreate.setFont(new Font("serif", Font.PLAIN, 17));
+        titleDateCreate.setFont(new Font("nunito", Font.PLAIN, 17));
         dateCreate = new JDateChooser();
         dateCreate.setDateFormatString("yyyy-MM-dd");
-        dateCreate.setFont(new Font("serif", Font.PLAIN, 16));
+        dateCreate.setFont(new Font("nunito", Font.PLAIN, 16));
         dateCreate.setDate(new Date());
         dateCreate.setPreferredSize(new Dimension(110, 25));
         JTextField dateChooserEditer =(JTextField) dateCreate.getDateEditor();
@@ -104,7 +104,7 @@ public class CreateInvoiceGUI extends JPanel{
         Image imgEmployee = employeesIcon.getImage().getScaledInstance(20, 20, Image.SCALE_SMOOTH);
         employeesIcon = new ImageIcon(imgEmployee);
         titleEmployeeCreate = new JLabel("Nhân viên", employeesIcon, JLabel.LEFT);
-        titleEmployeeCreate.setFont(new Font("serif", Font.PLAIN, 17));
+        titleEmployeeCreate.setFont(new Font("nunito", Font.PLAIN, 17));
 
         listEmployeeID = new JComboBox();
         List<Employee> allEmployee;
@@ -130,7 +130,7 @@ public class CreateInvoiceGUI extends JPanel{
         imgComputerIcon = imgComputerIcon.getScaledInstance(20, 20, Image.SCALE_SMOOTH);
         computerIcon = new ImageIcon(imgComputerIcon);
         titleListComputerID = new JLabel("Máy", computerIcon, JLabel.LEFT);
-        titleListComputerID.setFont(new Font("serif", Font.PLAIN, 17));
+        titleListComputerID.setFont(new Font("nunito", Font.PLAIN, 17));
 
         listComputerID = new JComboBox();
         ComputerService computerService = ServiceProvider.getInstance().getService(ComputerService.class);
@@ -153,7 +153,7 @@ public class CreateInvoiceGUI extends JPanel{
         containCoumputerID.add(listComputerID);
 
         titleListAccountID = new JLabel("Tài khoản");
-        titleListAccountID.setFont(new Font("serif", Font.PLAIN, 17));
+        titleListAccountID.setFont(new Font("nunito", Font.PLAIN, 17));
         listAccountID = new JComboBox();
         AccountService accountService = ServiceProvider.getInstance().getService(AccountService.class);
         List<Account> allAccount;
@@ -179,7 +179,7 @@ public class CreateInvoiceGUI extends JPanel{
         containAccountID.add(listAccountID);
 
         titleProduct = new JLabel("Chọn sản phẩm");
-        titleProduct.setFont(new Font("serif", Font.PLAIN, 17));
+        titleProduct.setFont(new Font("nunito", Font.PLAIN, 17));
         JMenuBar menu = new JMenuBar();
         menuProduct = new JMenu("Sản phẩm");
         menuProduct.setMargin(new Insets(0, 40, 0, 0));
@@ -246,7 +246,7 @@ public class CreateInvoiceGUI extends JPanel{
 
 
         JLabel titleListProductInvoice = new JLabel("Sản phẩm hóa đơn", JLabel.CENTER);
-        titleListProductInvoice.setFont(new Font("serif", Font.BOLD, 25));
+        titleListProductInvoice.setFont(new Font("nunito", Font.BOLD, 25));
         titleListProductInvoice.setBorder(BorderFactory.createCompoundBorder(
                 BorderFactory.createLineBorder(new Color(0, 0, 0, 1)),
                 BorderFactory.createEmptyBorder(20, 0, 20, 0)
@@ -256,12 +256,12 @@ public class CreateInvoiceGUI extends JPanel{
         JTable listProductInvoice = new JTable();
         listProductInvoice.setComponentPopupMenu(operationForProductInvoice(listProductInvoice, listProductInvoiceModel));
         listProductInvoice.getTableHeader().setPreferredSize(new Dimension(0, 35));
-        listProductInvoice.getTableHeader().setFont(new Font("serif", Font.BOLD, 17));
+        listProductInvoice.getTableHeader().setFont(new Font("nunito", Font.BOLD, 17));
         listProductInvoice.setModel(listProductInvoiceModel);
         JScrollPane listProductInvoiceScrollPane = new JScrollPane(listProductInvoice);
 
         lbTotalInvoice = new JLabel("Tổng tiền: " + "0.0" + " VNĐ", JLabel.RIGHT);
-        lbTotalInvoice.setFont(new Font("serif", Font.ITALIC, 17));
+        lbTotalInvoice.setFont(new Font("nunito", Font.ITALIC, 17));
         lbTotalInvoice.setBorder(BorderFactory.createCompoundBorder(
                 BorderFactory.createLineBorder(new Color(0, 0, 0, 1)),
                 BorderFactory.createEmptyBorder(20, 0, 20, 100)

@@ -1,5 +1,6 @@
 package GUI.Server.Invoice;
 
+import Utils.Helper;
 import Utils.ServiceProvider;
 import com.toedter.calendar.JDateChooser;
 import DTO.*;
@@ -48,7 +49,7 @@ public class InvoiceManageGUI extends JPanel{
     JTable listInvoiceExport;
     JTable listInvoiceImport;
     JLabel lbtotalMoneyAllInvoice;
-    
+
 
     public InvoiceManageGUI(){
         this.setLayout(new BorderLayout());
@@ -58,6 +59,14 @@ public class InvoiceManageGUI extends JPanel{
         loadJTable(Invoice.InvoiceType.EXPORT,invoices);
     }
 
+    @Override
+    public void setVisible(boolean aFlag) {
+        if (aFlag){
+            List<Invoice> invoices = invoiceService.findAllByType(Invoice.InvoiceType.EXPORT);
+            loadJTable(Invoice.InvoiceType.EXPORT,invoices);
+        }
+
+    }
 
     //Cac phuogn thuc duoc dung trong code
     public static InvoiceManageGUI getInstance(){
@@ -108,7 +117,7 @@ public class InvoiceManageGUI extends JPanel{
 //        2.2-------Nut them hoa don moi-START
         btnCreateInvoice = new JButton("+ tạo mới");
         btnCreateInvoice.setBackground(new Color(238,238,238));
-        btnCreateInvoice.setFont(new Font("srief",Font.PLAIN,17));
+        btnCreateInvoice.setFont(new Font("nunito",Font.PLAIN,17));
         btnCreateInvoice.setCursor(new Cursor(Cursor.HAND_CURSOR));
         btnCreateInvoice.setFocusPainted(false);//dung de bo border cua text ben trong button
         btnCreateInvoice.setBorder(BorderFactory.createCompoundBorder(
@@ -249,10 +258,10 @@ public class InvoiceManageGUI extends JPanel{
         listAccountComboboxItem.get(0).setValue("Khách vãn lai");
         accountToFilter.addItem(listAccountComboboxItem.get(0).getValue());
         for(int i = 0; i < allAccount.size();i++){
-           listAccountComboboxItem.add(new ComboboxItem());
-           listAccountComboboxItem.get(i+1).setId(allAccount.get(i).getId());
-           listAccountComboboxItem.get(i+1).setValue(allAccount.get(i).getUsername());
-           accountToFilter.addItem(listAccountComboboxItem.get(i+1).getValue());
+            listAccountComboboxItem.add(new ComboboxItem());
+            listAccountComboboxItem.get(i+1).setId(allAccount.get(i).getId());
+            listAccountComboboxItem.get(i+1).setValue(allAccount.get(i).getUsername());
+            accountToFilter.addItem(listAccountComboboxItem.get(i+1).getValue());
         }
 
         accountToFilter.setSelectedItem(null);
@@ -347,7 +356,7 @@ public class InvoiceManageGUI extends JPanel{
 
 //            a----Hoa don ban----
         listInvoiceModelExport = new DefaultTableModel();
-        String columnsInvoiceExport[] = {"ID","Tài khoản","Máy","Ngày tạo","Nhân viên","Thanh toán","Trạng thái","Tổng tiền"};
+        String[] columnsInvoiceExport = {"ID","Tài khoản","Máy","Ngày tạo","Nhân viên","Thanh toán","Trạng thái","Tổng tiền"};
         listInvoiceModelExport.setColumnIdentifiers(columnsInvoiceExport);
 
         listInvoiceExport = new JTable();
@@ -371,7 +380,7 @@ public class InvoiceManageGUI extends JPanel{
 
 //        b----Hoa don nhap ---
         listInvoiceModelImport = new DefaultTableModel();
-        String columnsInvoiceImport[] = {"ID","Ngày tạo","Nhân viên","Thanh toán","Trạng thái","Tổng tiền"};
+        String[] columnsInvoiceImport = {"ID","Ngày tạo","Nhân viên","Thanh toán","Trạng thái","Tổng tiền"};
         listInvoiceModelImport.setColumnIdentifiers(columnsInvoiceImport);
         listInvoiceImport = new JTable();
         listInvoiceImport.setRowSelectionAllowed(true);
@@ -396,6 +405,7 @@ public class InvoiceManageGUI extends JPanel{
         ));
 
         lbtotalMoneyAllInvoice = new JLabel("Tổng tiền: 0.0 VNĐ");
+        lbtotalMoneyAllInvoice.setFont(new Font("nunito",Font.BOLD,20));
         JPanel bodyFooter = new JPanel(new FlowLayout(FlowLayout.RIGHT,60,0));
         bodyFooter.add(lbtotalMoneyAllInvoice);
         bodyFooter.setPreferredSize(new Dimension(945,40));
@@ -497,13 +507,13 @@ public class InvoiceManageGUI extends JPanel{
                 CreateInvoiceGUI createInvoice = new CreateInvoiceGUI();
                 String[] options = {"Hóa đơn bán","Hóa đơn nhập"};
                 int userOption = JOptionPane.showOptionDialog(null,"Hóa đơn muốn tạo ?","Options create invoice ",JOptionPane.UNDEFINED_CONDITION,JOptionPane.QUESTION_MESSAGE,null,options,null);
-                if(userOption == 0 && userOption != JOptionPane.CLOSED_OPTION){
+                if(userOption == 0){
                     createInvoice.showDiaLog(Invoice.InvoiceType.EXPORT);
                     createInvoice.setOnsave((type,invoices)->{
                         loadJTable(type,invoices);
                     });
                 }
-                else if(userOption == 1 && userOption != JOptionPane.CLOSED_OPTION){
+                else if(userOption == 1){
                     createInvoice.showDiaLog(Invoice.InvoiceType.IMPORT);
                     createInvoice.setOnsave((type,invoices)->{
                         loadJTable(type,invoices);
@@ -521,20 +531,20 @@ public class InvoiceManageGUI extends JPanel{
         btnCancel.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-               dateChooserFrom.setDate(new Date());
-               dateChooserTo.setDate(new Date());
-               limitTotalFrom.setText("");
-               limitTotalTo.setText("");
-               computersToFilter.setSelectedItem(null);
-               employeeToFilter.setSelectedItem(null);
-               accountToFilter.setSelectedItem(null);
+                dateChooserFrom.setDate(new Date());
+                dateChooserTo.setDate(new Date());
+                limitTotalFrom.setText("");
+                limitTotalTo.setText("");
+                computersToFilter.setSelectedItem(null);
+                employeeToFilter.setSelectedItem(null);
+                accountToFilter.setSelectedItem(null);
 
                 Invoice.InvoiceType type = getTypeInvoice();
                 List<Invoice> invoices = invoiceService.findAllByType(type);
-               if(getTypeInvoice() == Invoice.InvoiceType.EXPORT)
-                   loadJTable(Invoice.InvoiceType.EXPORT,invoices);
-               else
-                   loadJTable(Invoice.InvoiceType.IMPORT,invoices);
+                if(getTypeInvoice() == Invoice.InvoiceType.EXPORT)
+                    loadJTable(Invoice.InvoiceType.EXPORT,invoices);
+                else
+                    loadJTable(Invoice.InvoiceType.IMPORT,invoices);
             }
         });
 
@@ -558,16 +568,16 @@ public class InvoiceManageGUI extends JPanel{
                     Invoice.InvoiceType type = getTypeInvoice();
                     InforFilter inforFilter = getInforFilter(type);//lay thong tin can search
                     List<Invoice> listInvoiceSearch;
-                        if (invoiceService.ValidateInforFilter(inforFilter)) {
+                    if (invoiceService.ValidateInforFilter(inforFilter)) {
 
-                            listInvoiceSearch = invoiceService.findInvoiceByInforFilter(type, inforFilter);
-                            loadJTable(type, listInvoiceSearch);
-                            if (listInvoiceSearch.size() == 0) {
-                                JOptionPane.showMessageDialog(null, "Không có hóa đơn nào");
-                            }
-                        } else {
-                            JOptionPane.showMessageDialog(null, "Thông tin lọc hóa đơn chưa chính xác", "message", JOptionPane.ERROR_MESSAGE);
+                        listInvoiceSearch = invoiceService.findInvoiceByInforFilter(type, inforFilter);
+                        loadJTable(type, listInvoiceSearch);
+                        if (listInvoiceSearch.size() == 0) {
+                            JOptionPane.showMessageDialog(null, "Không có hóa đơn nào");
                         }
+                    } else {
+                        JOptionPane.showMessageDialog(null, "Thông tin lọc hóa đơn chưa chính xác", "message", JOptionPane.ERROR_MESSAGE);
+                    }
                 }
             }
         });
@@ -600,47 +610,44 @@ public class InvoiceManageGUI extends JPanel{
     }
 
 
-public void loadJTable(Invoice.InvoiceType type,List<Invoice> invoices){
-        Double totalMoneyAllInvoice = 0.0;
-    if(type == Invoice.InvoiceType.EXPORT){
-        listInvoiceModelExport.setRowCount(0);
-        for(int i = 0; i < invoices.size();i++){
-            totalMoneyAllInvoice+=invoices.get(i).getTotal();
-            Invoice invoice = invoices.get(i);
-            String userNameAccount = null,computerName = null;
-            String nameEmployee = employeeService.findEmployeeById(invoice.getCreatedBy()).getName();
-            try {
-                if(invoice.getCreatedToAccountId() == null){
-                    userNameAccount = "Khach van lai";
+    public void loadJTable(Invoice.InvoiceType type,List<Invoice> invoices){
+        double totalMoneyAllInvoice = 0.0;
+        if(type == Invoice.InvoiceType.EXPORT){
+            listInvoiceModelExport.setRowCount(0);
+            for (Invoice value : invoices) {
+                totalMoneyAllInvoice += value.getTotal();
+                String userNameAccount = null, computerName = null;
+                String nameEmployee = employeeService.findEmployeeById(value.getCreatedBy()).getName();
+                try {
+                    if (value.getCreatedToAccountId() == null) {
+                        userNameAccount = "Khách vãng lai";
+                    } else {
+                        userNameAccount = accountService.findById(value.getCreatedToAccountId()).getUsername();
+                    }
+                    computerName = computerService.getComputerById(value.getComputerId()).getName();
+                } catch (SQLException e) {
+                    throw new RuntimeException(e);
                 }
-                else {
-                    userNameAccount = accountService.findById(invoice.getCreatedToAccountId()).getUsername();
-                }
-                computerName = computerService.getComputerById(invoice.getComputerId()).getName();
-            } catch (SQLException e) {
-                throw new RuntimeException(e);
+                listInvoiceModelExport.addRow(new Object[]{value.getId(), userNameAccount, computerName, value.getCreatedAt(), nameEmployee, value.explainIsPaid(), value.getStatus(), value.getTotal()});
             }
-            listInvoiceModelExport.addRow(new Object[]{invoice.getId(),userNameAccount ,computerName,invoice.getCreatedAt(),nameEmployee,invoice.explainIsPaid(),invoice.getStatus(),invoice.getTotal()});
+
         }
+        else {
+            listInvoiceModelImport.setRowCount(0);
+            for (Invoice value : invoices) {
+                totalMoneyAllInvoice += value.getTotal();
+                String nameEmployee = employeeService.findEmployeeById(value.getCreatedBy()).getName();
+                listInvoiceModelImport.addRow(new Object[]{value.getId(), value.getCreatedAt(), nameEmployee, value.explainIsPaid(), value.getStatus(), value.getTotal()});
+            }
+        }
+        lbtotalMoneyAllInvoice.setText("Tổng tiền: " + Helper.formatMoney(totalMoneyAllInvoice));
 
     }
-    else {
-        listInvoiceModelImport.setRowCount(0);
-        for(int i = 0; i < invoices.size();i++){
-            totalMoneyAllInvoice+=invoices.get(i).getTotal();
-            Invoice invoice = invoices.get(i);
-            String nameEmployee = employeeService.findEmployeeById(invoice.getCreatedBy()).getName();
-            listInvoiceModelImport.addRow(new Object[]{invoice.getId(),invoice.getCreatedAt(),nameEmployee,invoice.explainIsPaid(),invoice.getStatus(),invoice.getTotal()});
-        }
-    }
-    lbtotalMoneyAllInvoice.setText("Tổng tiền: " +totalMoneyAllInvoice+" VNĐ");
-
-}
 
 
 
     public Invoice.InvoiceType getTypeInvoice(){
-        if(titleContainShowListInvoice.getText().toLowerCase().equals("danh sách hóa đơn bán")){
+        if(titleContainShowListInvoice.getText().equalsIgnoreCase("danh sách hóa đơn bán")){
             return Invoice.InvoiceType.EXPORT;
         }
         return Invoice.InvoiceType.IMPORT;
@@ -726,10 +733,9 @@ public void loadJTable(Invoice.InvoiceType type,List<Invoice> invoices){
         InvoiceDetailService invoiceDetailService = new InvoiceDetailService();
         List<InvoiceDetail> listInvoiceDetail = invoiceDetailService.findByInvoiceId(idInvoiceIsSelected);
         if(type == Invoice.InvoiceType.EXPORT){
-            for(int i = 0; i < listInvoiceDetail.size();i++){
-                InvoiceDetail invoiceDetail = listInvoiceDetail.get(i);
+            for (InvoiceDetail invoiceDetail : listInvoiceDetail) {
                 Product product = productService.findProductById(invoiceDetail.getProductId());
-                createInvoiceGUI.listProductInvoiceModel.addRow(new Object[]{invoiceDetail.getProductId(),product.getName(),invoiceDetail.getQuantity(),invoiceDetail.getPrice(),invoiceDetail.getPrice()*invoiceDetail.getQuantity()});
+                createInvoiceGUI.listProductInvoiceModel.addRow(new Object[]{invoiceDetail.getProductId(), product.getName(), invoiceDetail.getQuantity(), invoiceDetail.getPrice(), invoiceDetail.getPrice() * invoiceDetail.getQuantity()});
             }
 
             createInvoiceGUI.listComputerID.setSelectedIndex(invoiceIsSelect.getComputerId()-1);
@@ -741,10 +747,9 @@ public void loadJTable(Invoice.InvoiceType type,List<Invoice> invoices){
             }
         }
         else{
-            for(int i = 0; i < listInvoiceDetail.size();i++){
-                InvoiceDetail invoiceDetail = listInvoiceDetail.get(i);
+            for (InvoiceDetail invoiceDetail : listInvoiceDetail) {
                 Product product = productService.findProductById(invoiceDetail.getProductId());
-                createInvoiceGUI.listProductInvoiceModel.addRow(new Object[]{product.getId(),product.getName(),invoiceDetail.getQuantity(),invoiceDetail.getPrice(),invoiceDetail.getPrice()*invoiceDetail.getQuantity()});
+                createInvoiceGUI.listProductInvoiceModel.addRow(new Object[]{product.getId(), product.getName(), invoiceDetail.getQuantity(), invoiceDetail.getPrice(), invoiceDetail.getPrice() * invoiceDetail.getQuantity()});
                 createInvoiceGUI.lbTotalInvoice.setText(String.valueOf(createInvoiceGUI.caculateTotalMoney()) + "VNĐ");
             }
             createInvoiceGUI.listComputerID.setSelectedItem(null);
@@ -755,12 +760,8 @@ public void loadJTable(Invoice.InvoiceType type,List<Invoice> invoices){
         //do du lieu len
         createInvoiceGUI.dateCreate.setDate(invoiceIsSelect.getCreatedAt());
         createInvoiceGUI.listEmployeeID.setSelectedIndex(invoiceIsSelect.getCreatedBy()-1);
-        if(invoiceIsSelect.isPaid()){//neu isPaid la true tuc la hoa don da duoc thanh toan roi
-            createInvoiceGUI.isPaid.setSelected(true);
-        }
-        else {
-            createInvoiceGUI.isPaid.setSelected(false);
-        }
+        //neu isPaid la true tuc la hoa don da duoc thanh toan roi
+        createInvoiceGUI.isPaid.setSelected(invoiceIsSelect.isPaid());
         createInvoiceGUI.status.setSelectedItem(invoiceIsSelect.getStatus());
         createInvoiceGUI.idInvoiceSelected.setText(String.valueOf(idInvoiceIsSelected));//lay id cua hoa don muon edit de luu vao lable
         createInvoiceGUI.setOnsave((a,b)->{
