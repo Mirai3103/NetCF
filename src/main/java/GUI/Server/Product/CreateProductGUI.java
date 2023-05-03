@@ -32,7 +32,7 @@ public class CreateProductGUI extends JFrame {
         this.setLayout(new BorderLayout());
         initComponents();
         this.setVisible(true);
-        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
     }
 
     private void initComponents() {

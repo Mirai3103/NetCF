@@ -1,16 +1,15 @@
 package GUI.Components;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 
-@Data
 public class Input extends JTextField implements FocusListener {
+    @Getter
+    @Setter
     private String placeHolder = "";
 
     public void initEvent() {
