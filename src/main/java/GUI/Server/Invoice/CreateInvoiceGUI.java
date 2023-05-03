@@ -76,7 +76,7 @@ public class CreateInvoiceGUI extends JPanel{
         ));
 
 
-        JLabel titleInforInvoice = new JLabel("Thong tin hoa don", JLabel.CENTER);
+        JLabel titleInforInvoice = new JLabel("Thông tin hóa đơn", JLabel.CENTER);
         titleInforInvoice.setFont(new Font("serif", Font.BOLD, 25));
         titleInforInvoice.setBorder(BorderFactory.createCompoundBorder(
                 BorderFactory.createMatteBorder(0, 0, 0, 0, new Color(42, 121, 255)),
@@ -103,7 +103,7 @@ public class CreateInvoiceGUI extends JPanel{
         ImageIcon employeesIcon = new ImageIcon("D:\\projectJava\\src\\GUI\\img\\nhanvien.png");
         Image imgEmployee = employeesIcon.getImage().getScaledInstance(20, 20, Image.SCALE_SMOOTH);
         employeesIcon = new ImageIcon(imgEmployee);
-        titleEmployeeCreate = new JLabel("Nhan vien", employeesIcon, JLabel.LEFT);
+        titleEmployeeCreate = new JLabel("Nhân viên", employeesIcon, JLabel.LEFT);
         titleEmployeeCreate.setFont(new Font("serif", Font.PLAIN, 17));
 
         listEmployeeID = new JComboBox();
@@ -129,7 +129,7 @@ public class CreateInvoiceGUI extends JPanel{
         Image imgComputerIcon = computerIcon.getImage();
         imgComputerIcon = imgComputerIcon.getScaledInstance(20, 20, Image.SCALE_SMOOTH);
         computerIcon = new ImageIcon(imgComputerIcon);
-        titleListComputerID = new JLabel("May", computerIcon, JLabel.LEFT);
+        titleListComputerID = new JLabel("Máy", computerIcon, JLabel.LEFT);
         titleListComputerID.setFont(new Font("serif", Font.PLAIN, 17));
 
         listComputerID = new JComboBox();
@@ -152,7 +152,7 @@ public class CreateInvoiceGUI extends JPanel{
         containCoumputerID.add(titleListComputerID);
         containCoumputerID.add(listComputerID);
 
-        titleListAccountID = new JLabel("Tai khoan");
+        titleListAccountID = new JLabel("Tài khoản");
         titleListAccountID.setFont(new Font("serif", Font.PLAIN, 17));
         listAccountID = new JComboBox();
         AccountService accountService = ServiceProvider.getInstance().getService(AccountService.class);
@@ -165,7 +165,7 @@ public class CreateInvoiceGUI extends JPanel{
         listAccountComboboxItem = new ArrayList<ComboboxItem>();
         listAccountComboboxItem.add(new ComboboxItem());
         listAccountComboboxItem.get(0).setId(0);
-        listAccountComboboxItem.get(0).setValue("Khach van lai");
+        listAccountComboboxItem.get(0).setValue("Khách vãn lai");
         listAccountID.addItem(listAccountComboboxItem.get(0).getValue());
         for (int i = 0; i < allAccount.size(); i++) {
             listAccountComboboxItem.add(new ComboboxItem());
@@ -178,10 +178,10 @@ public class CreateInvoiceGUI extends JPanel{
         containAccountID.add(titleListAccountID);
         containAccountID.add(listAccountID);
 
-        titleProduct = new JLabel("Chon san pham");
+        titleProduct = new JLabel("Chọn sản phẩm");
         titleProduct.setFont(new Font("serif", Font.PLAIN, 17));
         JMenuBar menu = new JMenuBar();
-        menuProduct = new JMenu("San pham");
+        menuProduct = new JMenu("Sản phẩm");
         menuProduct.setMargin(new Insets(0, 40, 0, 0));
         menuProduct.setPreferredSize(new Dimension(100, 25));
 
@@ -245,7 +245,7 @@ public class CreateInvoiceGUI extends JPanel{
         inforInvoice.add(bodyInforInvoice, BorderLayout.CENTER);
 
 
-        JLabel titleListProductInvoice = new JLabel("San pham hoa don", JLabel.CENTER);
+        JLabel titleListProductInvoice = new JLabel("Sản phẩm hóa đơn", JLabel.CENTER);
         titleListProductInvoice.setFont(new Font("serif", Font.BOLD, 25));
         titleListProductInvoice.setBorder(BorderFactory.createCompoundBorder(
                 BorderFactory.createLineBorder(new Color(0, 0, 0, 1)),
@@ -260,7 +260,7 @@ public class CreateInvoiceGUI extends JPanel{
         listProductInvoice.setModel(listProductInvoiceModel);
         JScrollPane listProductInvoiceScrollPane = new JScrollPane(listProductInvoice);
 
-        lbTotalInvoice = new JLabel("Tong tien: " + "0.0" + " VNĐ", JLabel.RIGHT);
+        lbTotalInvoice = new JLabel("Tổng tiền: " + "0.0" + " VNĐ", JLabel.RIGHT);
         lbTotalInvoice.setFont(new Font("serif", Font.ITALIC, 17));
         lbTotalInvoice.setBorder(BorderFactory.createCompoundBorder(
                 BorderFactory.createLineBorder(new Color(0, 0, 0, 1)),
@@ -364,14 +364,12 @@ public class CreateInvoiceGUI extends JPanel{
                             listProductInvoiceModel.setValueAt((Integer.parseInt(quantity.getText())+oldQuantity)*product.getPrice(),rowOccur,4);
                         }
                         else{
-//                            listProductInvoiceModel.addRow(new Object[]{product.getId(),product.getName(),Integer.parseInt(quantity.getText()),product.getPrice(),product.getPrice() * quantity});
                             listProductInvoiceModel.addRow((Object[]) productInvoiceRow(Integer.parseInt(quantity.getText()),jCheckBoxMenuItem.getText(),0,Invoice.InvoiceType.EXPORT));
-//                            listProductInvoiceModel.addRow(new Object[]{product.getId(),product.getName(),quantity,product.getPrice(),product.getPrice() * Integer.parseInt(quantity.getText())});
                         }
                     }
                     else{
                         while ((!Helper.isNumber(quantity.getText()) || Integer.parseInt(quantity.getText()) < 0) && result != JOptionPane.CLOSED_OPTION) {
-                            JOptionPane.showMessageDialog(null, "So luong phai nhap so nguyen duong");
+                            JOptionPane.showMessageDialog(null, "Dữ liệu nhập chưa đúng !");
                             result = JOptionPane.showOptionDialog(null,message,null,JOptionPane.OK_OPTION,JOptionPane.QUESTION_MESSAGE,null,option,option[0]);
                         }
                         if(productIsOccur(listProductInvoiceModel.getRowCount(),product.getId()) != null){
@@ -381,10 +379,8 @@ public class CreateInvoiceGUI extends JPanel{
                             listProductInvoiceModel.setValueAt((Integer.parseInt(quantity.getText())+oldQuantity)*product.getPrice(),rowOccur,4);
                         }
                         else {
-//                            listProductInvoiceModel.addRow(new Object[]{product.getId(),product.getName(),Integer.parseInt(quantity.getText()),product.getPrice(),product.getPrice() * quantity});
                             listProductInvoiceModel.addRow((Object[]) productInvoiceRow(Integer.parseInt(quantity.getText()), jCheckBoxMenuItem.getText(), 0, Invoice.InvoiceType.EXPORT));
                         }
-//                        }
                     }
                 }
                 else {
@@ -408,7 +404,7 @@ public class CreateInvoiceGUI extends JPanel{
                     }
                     else{
                         while ((!Helper.isNumber(quantity.getText()) || Integer.parseInt(quantity.getText()) < 0 || !Helper.isNumber(price.getText()) || Double.parseDouble(price.getText()) < 0.0) && result != JOptionPane.CLOSED_OPTION) {
-                            JOptionPane.showMessageDialog(null, "Du lieu nhap vao phai la so nguyen duong");
+                            JOptionPane.showMessageDialog(null, "Dữ liệu nhật chưa đúng !");
                             result = JOptionPane.showOptionDialog(null,message,null,JOptionPane.OK_OPTION,JOptionPane.QUESTION_MESSAGE,null,option,option[0]);
                         }
                         if(productIsOccur(listProductInvoiceModel.getRowCount(),product.getId())!=null){
@@ -617,15 +613,12 @@ public class CreateInvoiceGUI extends JPanel{
     //Method nay co chuc nang lay tat ca cac hang san pham cua hoa don va luu no vao csdl
     //thong qua viec goi method createInvoiceDetail cua tang BUS
     public void createListInvoiceDetail(Integer invoiceId){
-//        List<InvoiceDetail> listInvoiceDetail = new ArrayList<>();
         for(int i = 0; i <listProductInvoiceModel.getRowCount();i++){
             int productId = (int) listProductInvoiceModel.getValueAt(i,0);
             int quantity = (int)listProductInvoiceModel.getValueAt(i,2);
             double price = (double) listProductInvoiceModel.getValueAt(i,3);
-//            listInvoiceDetail.add(new InvoiceDetail(invoice.getId(),productId,price,quantity));
             invoiceDetailService.createInvoiceDetail(new InvoiceDetail(invoiceId,productId,price,quantity));
         }
-//        invoice.setInvoiceDetails(listInvoiceDetail);
     }
 }
 

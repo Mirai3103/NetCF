@@ -39,9 +39,4 @@ public class InvoiceDetailService {
             throw new RuntimeException(e);
         }
     }
-    public static void main(String[] args){
-        InvoiceDetailService invoiceDetailService = new InvoiceDetailService();
-        InvoiceDetail invoiceDetail = new InvoiceDetail(92,1,15,1);
-        invoiceDetailService.updateDetailInvoice(invoiceDetail);
-    }
 }
