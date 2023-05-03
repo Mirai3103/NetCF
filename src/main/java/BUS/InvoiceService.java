@@ -41,25 +41,29 @@ public class InvoiceService {
 
 
     public boolean ValidateInforFilter(InforFilter inforFilter){
+        try {
+            int total = Integer.parseInt(inforFilter.getTotalFrom());
+            total = Integer.parseInt(inforFilter.getTotalTo());
+        }catch (Exception e){
+            return false;
+        }
         //neu nguoi dung nhap ngay vao ma khong dung theo format("yyyy-mm-dd") thi se tra ve false;
-        if(Helper.ValidateDate(inforFilter.getDateFrom()) == false || Helper.ValidateDate((inforFilter.getDateTo()))==false){
+        if(!Helper.ValidateDate(inforFilter.getDateFrom()) || !Helper.ValidateDate((inforFilter.getDateTo()))){
             return  false;
         }
 //        trong khung tìm kiếm có hai ngày,"từ ngày" và "đến ngày", nếu "đến ngày" mà nhỏ hơn "từ ngày" thì trả về false
-        if(Helper.compareDate(inforFilter.getDateFrom(),inforFilter.getDateTo()) == false) {
+        if(!Helper.compareDate(inforFilter.getDateFrom(), inforFilter.getDateTo())) {
             return false;
         }
         if(!inforFilter.getTotalFrom().equals(""))
-            if(Helper.isNumber(inforFilter.getTotalFrom()) == false )
+            if(!Helper.isNumber(inforFilter.getTotalFrom()))
                 return false;
 
         if(!inforFilter.getTotalTo().equals(""))
-            if(Helper.isNumber(inforFilter.getTotalTo()) == false )
+            if(!Helper.isNumber(inforFilter.getTotalTo()))
                 return false;
         if(!inforFilter.getTotalFrom().equals("") && !inforFilter.getTotalTo().equals(""))
-        if(Double.parseDouble(inforFilter.getTotalTo()) < Double.parseDouble(inforFilter.getTotalFrom())){
-            return false;
-        }
+            return !(Double.parseDouble(inforFilter.getTotalTo()) < Double.parseDouble(inforFilter.getTotalFrom()));
         return true;
     }
 
