@@ -149,17 +149,6 @@ public class InvoiceService {
     }
 
 
-    public static void main(String[] args){
-        InvoiceService invoiceService = new InvoiceService();
-        Invoice invoice = new Invoice(0,1,null,1,null,10000.0,new Date(), Invoice.Status.ACCEPTED,true,1,null, Invoice.InvoiceType.EXPORT,null,null,null);
-        Invoice signal = invoiceService.createInvoice(invoice);
-        if(signal == null){
-            System.out.print("Khong thanh cong");
-        }
-        else {
-            System.out.print("Them thanh cong");
-        }
-    }
     public int countExportInvoiceSellByEmployeeId(int employeeId) {
         try {
             return invoiceDAO.findByEmployeeId(employeeId, Invoice.InvoiceType.EXPORT).size();

@@ -31,7 +31,7 @@ public class ConnectionFactory {
     private static final String DATABASE_NAME = "NetCF";
     private static final String USER_NAME = "sa";
 
-    private static final String PASSWORD = "Kaito1412";
+    private static final String PASSWORD = "112244";
 
     private  Connection connection = null;
 

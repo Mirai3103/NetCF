@@ -47,6 +47,7 @@ public class InvoiceManageGUI extends JPanel{
     ArrayList<ComboboxItem> listEmployeeComboboxItem;
     JTable listInvoiceExport;
     JTable listInvoiceImport;
+    JLabel lbtotalMoneyAllInvoice;
     
 
     public InvoiceManageGUI(){
@@ -245,7 +246,7 @@ public class InvoiceManageGUI extends JPanel{
         listAccountComboboxItem = new ArrayList<ComboboxItem>();
         listAccountComboboxItem.add(new ComboboxItem());
         listAccountComboboxItem.get(0).setId(-1);
-        listAccountComboboxItem.get(0).setValue("Khach van lai");
+        listAccountComboboxItem.get(0).setValue("Khách vãn lai");
         accountToFilter.addItem(listAccountComboboxItem.get(0).getValue());
         for(int i = 0; i < allAccount.size();i++){
            listAccountComboboxItem.add(new ComboboxItem());
@@ -394,16 +395,23 @@ public class InvoiceManageGUI extends JPanel{
                 BorderFactory.createEmptyBorder(10,0,0,0)
         ));
 
+        lbtotalMoneyAllInvoice = new JLabel("Tổng tiền: 0.0 VNĐ");
+        JPanel bodyFooter = new JPanel(new FlowLayout(FlowLayout.RIGHT,60,0));
+        bodyFooter.add(lbtotalMoneyAllInvoice);
+        bodyFooter.setPreferredSize(new Dimension(945,40));
+
         containShowListInvoice = new JPanel(new BorderLayout(30,20));
         containShowListInvoice.setPreferredSize(new Dimension(945,495));
         containShowListInvoice.add(titleContainShowListInvoice,BorderLayout.PAGE_START);
         containShowListInvoice.add(listInvoiceScrollPaneExport,BorderLayout.CENTER);
+        containShowListInvoice.add(bodyFooter,BorderLayout.PAGE_END);
 //        2-------Body show list invoice-end-----
 
 
         JPanel managerInvoiceBody = new JPanel(new BorderLayout());
         managerInvoiceBody.add(managerInvoiceFilter,BorderLayout.LINE_START);
         managerInvoiceBody.add(containShowListInvoice,BorderLayout.CENTER);
+
 
 //        MANAGER BODY END
 
@@ -503,6 +511,7 @@ public class InvoiceManageGUI extends JPanel{
                 }
                 else {
                     createInvoice.setVisible(false);
+                    createInvoice.jDialog.dispose();
                 }
             }
         });
@@ -592,9 +601,11 @@ public class InvoiceManageGUI extends JPanel{
 
 
 public void loadJTable(Invoice.InvoiceType type,List<Invoice> invoices){
+        Double totalMoneyAllInvoice = 0.0;
     if(type == Invoice.InvoiceType.EXPORT){
         listInvoiceModelExport.setRowCount(0);
         for(int i = 0; i < invoices.size();i++){
+            totalMoneyAllInvoice+=invoices.get(i).getTotal();
             Invoice invoice = invoices.get(i);
             String userNameAccount = null,computerName = null;
             String nameEmployee = employeeService.findEmployeeById(invoice.getCreatedBy()).getName();
@@ -611,15 +622,18 @@ public void loadJTable(Invoice.InvoiceType type,List<Invoice> invoices){
             }
             listInvoiceModelExport.addRow(new Object[]{invoice.getId(),userNameAccount ,computerName,invoice.getCreatedAt(),nameEmployee,invoice.explainIsPaid(),invoice.getStatus(),invoice.getTotal()});
         }
+
     }
     else {
         listInvoiceModelImport.setRowCount(0);
         for(int i = 0; i < invoices.size();i++){
+            totalMoneyAllInvoice+=invoices.get(i).getTotal();
             Invoice invoice = invoices.get(i);
             String nameEmployee = employeeService.findEmployeeById(invoice.getCreatedBy()).getName();
             listInvoiceModelImport.addRow(new Object[]{invoice.getId(),invoice.getCreatedAt(),nameEmployee,invoice.explainIsPaid(),invoice.getStatus(),invoice.getTotal()});
         }
     }
+    lbtotalMoneyAllInvoice.setText("Tổng tiền: " +totalMoneyAllInvoice+" VNĐ");
 
 }
 
