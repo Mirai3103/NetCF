@@ -3,6 +3,7 @@ package DAO;
 import DAO.Interface.IComputerUsageDAO;
 import DTO.ComputerUsage;
 import DTO.ComputerUsageFilter;
+import DTO.Invoice;
 import Utils.Helper;
 
 import java.sql.SQLException;

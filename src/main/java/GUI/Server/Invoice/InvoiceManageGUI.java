@@ -1,6 +1,5 @@
 package GUI.Server.Invoice;
 
-import Utils.Helper;
 import Utils.ServiceProvider;
 import com.toedter.calendar.JDateChooser;
 import DTO.*;
@@ -13,10 +12,12 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+
 public class InvoiceManageGUI extends JPanel{
     JLabel actionShowInvoiceImport ;
     JLabel actionShowInvoiceExport ;
     JLabel titleContainShowListInvoice;
+
     JLabel titleContainAccountFilter;
     JLabel titleComputerFilter;
     JComboBox computersToFilter;
@@ -36,6 +37,7 @@ public class InvoiceManageGUI extends JPanel{
     EmployeeService employeeService = ServiceProvider.getInstance().getService(EmployeeService.class);
     AccountService accountService = ServiceProvider.getInstance().getService(AccountService.class);
     ComputerService computerService = ServiceProvider.getInstance().getService(ComputerService.class);
+    ProductService productService = ServiceProvider.getInstance().getService(ProductService.class);
 
     JTextField limitTotalFrom;
     JTextField limitTotalTo;
@@ -44,14 +46,14 @@ public class InvoiceManageGUI extends JPanel{
     ArrayList<ComboboxItem> listEmployeeComboboxItem;
     JTable listInvoiceExport;
     JTable listInvoiceImport;
+    
+
     public InvoiceManageGUI(){
         this.setLayout(new BorderLayout());
         initManagerInvoice();
         event();
         List<Invoice> invoices = invoiceService.findAllByType(Invoice.InvoiceType.EXPORT);
-        double tongTien = invoices.stream().mapToDouble(Invoice::getTotal).sum();
-        // labelTonTien.setText("Tổng tiền: "+ Helper.getDecimalFormat().format(tongTien)+" VND");
-        showInvoice(Invoice.InvoiceType.EXPORT,invoices,listInvoiceModelExport);
+        loadJTable(Invoice.InvoiceType.EXPORT,invoices);
     }
 
 
@@ -64,7 +66,7 @@ public class InvoiceManageGUI extends JPanel{
         //manager header START
 //        1-----Title Quan Ly hoa don-START---
         JLabel titleManagerInvoice = new JLabel("Quản lý hóa đơn");
-        titleManagerInvoice.setFont(new Font("nunito",Font.BOLD,30));
+        titleManagerInvoice.setFont(new Font("serif",Font.BOLD,30));
         titleManagerInvoice.setForeground(Color.WHITE);
         titleManagerInvoice.setBorder(BorderFactory.createCompoundBorder(
                 BorderFactory.createLineBorder(new Color(0,0,0,1)),
@@ -81,7 +83,7 @@ public class InvoiceManageGUI extends JPanel{
 //        2-------ACTION IN HEADER-START-----
 //        2.1------Hoa don nhap-Hoa don ban-START-----
         actionShowInvoiceExport = new JLabel("Hóa đơn bán");
-        actionShowInvoiceExport.setFont(new Font("nunito",Font.BOLD,20));
+        actionShowInvoiceExport.setFont(new Font("serif",Font.BOLD,20));
         actionShowInvoiceExport.setCursor(new Cursor(Cursor.HAND_CURSOR));
         actionShowInvoiceExport.setForeground(Color.WHITE);
         actionShowInvoiceExport.setBorder(BorderFactory.createCompoundBorder(
@@ -89,7 +91,7 @@ public class InvoiceManageGUI extends JPanel{
                 BorderFactory.createEmptyBorder(0,0,5,0)
         ));
         actionShowInvoiceImport = new JLabel("Hóa đơn nhập");
-        actionShowInvoiceImport.setFont(new Font("nunito",Font.BOLD,20));
+        actionShowInvoiceImport.setFont(new Font("serif",Font.BOLD,20));
         actionShowInvoiceImport.setCursor(new Cursor(Cursor.HAND_CURSOR));
         actionShowInvoiceImport.setForeground(Color.WHITE);
         JPanel containShowInvoiceAction = new JPanel(new FlowLayout(FlowLayout.LEFT));
@@ -102,15 +104,17 @@ public class InvoiceManageGUI extends JPanel{
 
 
 //        2.2-------Nut them hoa don moi-START
-        btnCreateInvoice = new JButton("+ Tạo mới");
+        btnCreateInvoice = new JButton("+ tạo mới");
         btnCreateInvoice.setBackground(new Color(238,238,238));
-        btnCreateInvoice.setFont(new Font("nunito",Font.BOLD,20));
+        btnCreateInvoice.setFont(new Font("srief",Font.PLAIN,17));
         btnCreateInvoice.setCursor(new Cursor(Cursor.HAND_CURSOR));
         btnCreateInvoice.setFocusPainted(false);//dung de bo border cua text ben trong button
         btnCreateInvoice.setBorder(BorderFactory.createCompoundBorder(
                 BorderFactory.createLineBorder(new Color(0,0,0,1)),
                 BorderFactory.createEmptyBorder(5,20,5,20)
         ));
+
+        JTextField searchField = new JTextField(20);
 
         JPanel containCreateNewInvoiceAction = new JPanel(new FlowLayout(FlowLayout.RIGHT,30,5));//muc dich set hgap va vgap de cang chinh JButton
         containCreateNewInvoiceAction.setBackground(new Color(42,121,255));
@@ -141,39 +145,37 @@ public class InvoiceManageGUI extends JPanel{
         Image imgFilter = iconFilter.getImage().getScaledInstance(30,30,Image.SCALE_SMOOTH);
         iconFilter = new ImageIcon(imgFilter);
         JLabel titleFilter = new JLabel("Lọc tìm kiếm",iconFilter,JLabel.CENTER);
-        titleFilter.setFont(new Font("nunito",Font.BOLD,17));
+        titleFilter.setFont(new Font("serif",Font.BOLD,17));
         JPanel containTitleFilter = new JPanel(new FlowLayout(FlowLayout.LEFT));
         containTitleFilter.setPreferredSize(new Dimension(245,50));
         containTitleFilter.add(titleFilter);
 
 
-
 //            b------Date limit of filter------
         JLabel limitDateFrom = new JLabel("Từ ngày");
         dateChooserFrom = new JDateChooser();
-        dateChooserFrom.setFont(new Font("nunito",Font.PLAIN,16));
-        dateChooserFrom.setDateFormatString("dd-MM-yyyy");
+        dateChooserFrom.setFont(new Font("serif",Font.PLAIN,16));
+        dateChooserFrom.setDateFormatString("yyyy-MM-dd");
         dateChooserFrom.setDate(new Date());
-        dateChooserFrom.setPreferredSize(new Dimension(115,30));
         JPanel containDateFrom = new JPanel(new GridLayout(2,1,0,0));
-        containDateFrom.setPreferredSize(new Dimension(140,50));
+        containDateFrom.setPreferredSize(new Dimension(112,50));
         containDateFrom.add(limitDateFrom);
         containDateFrom.add(dateChooserFrom);
 
 
         JLabel limitDateTo = new JLabel("Đến ngày");
         dateChooserTo = new JDateChooser();
-        dateChooserTo.setFont(new Font("nunito",Font.PLAIN,16));
-        dateChooserTo.setDateFormatString("dd-MM-yyyy");
+        dateChooserTo.setFont(new Font("serif",Font.PLAIN,16));
+        dateChooserTo.setDateFormatString("yyyy-MM-dd");
         dateChooserTo.setDate(new Date());;
 
         JPanel containDateTo = new JPanel(new GridLayout(2,1,0,0));
-        containDateTo.setPreferredSize(new Dimension(140,50));
+        containDateTo.setPreferredSize(new Dimension(112,50));
         containDateTo.add(limitDateTo);
         containDateTo.add(dateChooserTo);
 
         JPanel containLimitDate = new JPanel(new FlowLayout(FlowLayout.LEFT));
-        containLimitDate.setPreferredSize(new Dimension(300,60));
+        containLimitDate.setPreferredSize(new Dimension(245,60));
         containLimitDate.add(containDateFrom);
         containLimitDate.add(new JLabel(""));
         containLimitDate.add(containDateTo);
@@ -185,12 +187,12 @@ public class InvoiceManageGUI extends JPanel{
         Image imgMoney = totalIcon.getImage();
         imgMoney = imgMoney.getScaledInstance(20,20,Image.SCALE_SMOOTH);
         totalIcon = new ImageIcon(imgMoney);
-        JLabel titleLimitTotal = new JLabel("Khoảng tiền từ",totalIcon,JLabel.LEFT);
+        JLabel titleLimitTotal = new JLabel("Khoảng total",totalIcon,JLabel.LEFT);
         titleLimitTotal.setPreferredSize(new Dimension(150,30));
-        limitTotalFrom = new JTextField(5);
-        limitTotalFrom.setPreferredSize(new Dimension(0,33));
-        limitTotalTo = new JTextField(5);
-        limitTotalTo.setPreferredSize(new Dimension(0,33));
+        limitTotalFrom = new JTextField(11);
+        limitTotalFrom.setPreferredSize(new Dimension(0,25));
+        limitTotalTo = new JTextField(11);
+        limitTotalTo.setPreferredSize(new Dimension(0,25));
         JPanel containLimitTotal = new JPanel(new FlowLayout(FlowLayout.LEFT,4,0));
         containLimitTotal.setPreferredSize(new Dimension(245,60));
         containLimitTotal.add(titleLimitTotal);
@@ -218,7 +220,8 @@ public class InvoiceManageGUI extends JPanel{
             employeeToFilter.addItem(listEmployeeComboboxItem.get(i).getValue());
         }
 
-        employeeToFilter.setPreferredSize(new Dimension(150,33));
+        employeeToFilter.setPreferredSize(new Dimension(120,25));
+        employeeToFilter.setSelectedItem(null);
         JPanel containEmployeeFilter = new JPanel(new FlowLayout());
         containEmployeeFilter.add(titleContainEmployeeFilter);
         containEmployeeFilter.add(new JLabel("    "));
@@ -231,7 +234,6 @@ public class InvoiceManageGUI extends JPanel{
         userIcon = new ImageIcon(imgUser);
         titleContainAccountFilter = new JLabel("Tên tài khoản ",userIcon,JLabel.LEFT);
         accountToFilter = new JComboBox();
-
         List<Account> allAccount;
         try {
             allAccount = accountService.getAllAccounts();
@@ -240,7 +242,7 @@ public class InvoiceManageGUI extends JPanel{
         }
         listAccountComboboxItem = new ArrayList<ComboboxItem>();
         listAccountComboboxItem.add(new ComboboxItem());
-        listAccountComboboxItem.get(0).setId(0);
+        listAccountComboboxItem.get(0).setId(-1);
         listAccountComboboxItem.get(0).setValue("Khach van lai");
         accountToFilter.addItem(listAccountComboboxItem.get(0).getValue());
         for(int i = 0; i < allAccount.size();i++){
@@ -250,7 +252,8 @@ public class InvoiceManageGUI extends JPanel{
            accountToFilter.addItem(listAccountComboboxItem.get(i+1).getValue());
         }
 
-        accountToFilter.setPreferredSize(new Dimension(150,33));
+        accountToFilter.setSelectedItem(null);
+        accountToFilter.setPreferredSize(new Dimension(120,25));
         JPanel containAccountFilter = new JPanel(new FlowLayout());
         containAccountFilter.add(titleContainAccountFilter);
         containAccountFilter.add(new JLabel(""));
@@ -268,7 +271,7 @@ public class InvoiceManageGUI extends JPanel{
                 BorderFactory.createEmptyBorder(0,0,0,24)
         ));
         computersToFilter = new JComboBox();
-        computersToFilter.setPreferredSize(new Dimension(120,33));
+        computersToFilter.setPreferredSize(new Dimension(120,25));
         List<Computer> allComputer;
         try {
             allComputer = computerService.getAllComputers();
@@ -284,6 +287,7 @@ public class InvoiceManageGUI extends JPanel{
             computersToFilter.addItem(listComputerComboboxItem.get(i).getValue());
         }
 
+        computersToFilter.setSelectedItem(null);
         JPanel containComputerFilter = new JPanel(new FlowLayout(FlowLayout.LEFT));
         containComputerFilter.setPreferredSize(new Dimension(245,40));
         containComputerFilter.add(titleComputerFilter);
@@ -343,14 +347,13 @@ public class InvoiceManageGUI extends JPanel{
         String columnsInvoiceExport[] = {"ID","Tài khoản","Máy","Ngày tạo","Nhân viên","Thanh toán","Trạng thái","Tổng tiền"};
         listInvoiceModelExport.setColumnIdentifiers(columnsInvoiceExport);
 
-
         listInvoiceExport = new JTable();
         listInvoiceExport.setRowSelectionAllowed(true);
         listInvoiceExport.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
         listInvoiceExport.setComponentPopupMenu(operationForInvoice(listInvoiceExport,listInvoiceModelExport));
         listInvoiceExport.setModel(listInvoiceModelExport);
         listInvoiceExport.getTableHeader().setPreferredSize(new Dimension(0,40));
-        listInvoiceExport.getTableHeader().setFont(new Font("nunito",Font.BOLD,17));
+        listInvoiceExport.getTableHeader().setFont(new Font("serif",Font.BOLD,17));
         listInvoiceExport.getColumnModel().getColumn(0).setPreferredWidth(10);
         listInvoiceExport.getColumnModel().getColumn(1).setPreferredWidth(100);
         listInvoiceExport.getColumnModel().getColumn(2).setPreferredWidth(100);
@@ -373,15 +376,17 @@ public class InvoiceManageGUI extends JPanel{
         listInvoiceImport.setComponentPopupMenu(operationForInvoice(listInvoiceImport,listInvoiceModelImport));
         listInvoiceImport.setModel(listInvoiceModelImport);
         listInvoiceImport.getTableHeader().setPreferredSize(new Dimension(0,40));
-        listInvoiceImport.getTableHeader().setFont(new Font("nunito",Font.BOLD,17));
+        listInvoiceImport.getTableHeader().setFont(new Font("serif",Font.BOLD,17));
         listInvoiceImport.setRowHeight(30);
+
 
 
         listInvoiceScrollPaneExport = new JScrollPane(listInvoiceExport);
         listInvoiceScrollPaneImport = new JScrollPane(listInvoiceImport);
 
+
         titleContainShowListInvoice = new JLabel("Danh sách hóa đơn bán",JLabel.CENTER);
-        titleContainShowListInvoice.setFont(new Font("nunito",Font.BOLD,25));
+        titleContainShowListInvoice.setFont(new Font("serif",Font.BOLD,25));
         titleContainShowListInvoice.setBorder(BorderFactory.createCompoundBorder(
                 BorderFactory.createLineBorder(new Color(0,0,0,1)),
                 BorderFactory.createEmptyBorder(10,0,0,0)
@@ -411,8 +416,6 @@ public class InvoiceManageGUI extends JPanel{
 
 
 
-
-
     //phan xu ly su kien
     public void event(){
         actionShowInvoiceImport.addMouseListener(new MouseAdapter() {
@@ -421,25 +424,30 @@ public class InvoiceManageGUI extends JPanel{
                 actionShowInvoiceImport.setBorder(BorderFactory.createCompoundBorder(
                         BorderFactory.createMatteBorder(0,0,2,0,Color.WHITE),
                         BorderFactory.createEmptyBorder(0,0,5,0)
-                ));//dung de tao border buttom ben duoi chu "Hoa don ban" khi nhan vao no
+                ));
                 actionShowInvoiceExport.setBorder(BorderFactory.createCompoundBorder(
                         BorderFactory.createLineBorder(new Color(0,0,0,1)),
                         BorderFactory.createEmptyBorder(0,0,0,0)
                 ));
 
                 titleContainShowListInvoice.setText("Danh sách hóa đơn nhập");
-                computersToFilter.setEnabled(false);
+                computersToFilter.setSelectedItem(null);
                 titleComputerFilter.setEnabled(false);
+                computersToFilter.setEnabled(false);
                 titleContainAccountFilter.setEnabled(false);
+                accountToFilter.setSelectedItem(null);
                 accountToFilter.setEnabled(false);
+                employeeToFilter.setSelectedItem(null);
 
                 containShowListInvoice.remove(listInvoiceScrollPaneExport);
                 containShowListInvoice.add(listInvoiceScrollPaneImport);
 
                 List<Invoice> invoices = invoiceService.findAllByType(Invoice.InvoiceType.IMPORT);
-                showInvoice(Invoice.InvoiceType.IMPORT,invoices,listInvoiceModelImport);
+                loadJTable(Invoice.InvoiceType.IMPORT,invoices);
             }
         });
+
+
 
         actionShowInvoiceExport.addMouseListener(new MouseAdapter() {
             @Override
@@ -458,12 +466,14 @@ public class InvoiceManageGUI extends JPanel{
                 titleComputerFilter.setEnabled(true);
                 titleContainAccountFilter.setEnabled(true);
                 accountToFilter.setEnabled(true);
+                computersToFilter.setSelectedItem(null);
+                accountToFilter.setSelectedItem(null);
+                employeeToFilter.setSelectedItem(null);
 
                 containShowListInvoice.remove(listInvoiceScrollPaneImport);
                 containShowListInvoice.add(listInvoiceScrollPaneExport);
-
                 List<Invoice> invoices = invoiceService.findAllByType(Invoice.InvoiceType.EXPORT);
-                showInvoice(Invoice.InvoiceType.EXPORT,invoices,listInvoiceModelExport);
+                loadJTable(Invoice.InvoiceType.EXPORT,invoices);
             }
         });
 
@@ -474,20 +484,27 @@ public class InvoiceManageGUI extends JPanel{
         btnCreateInvoice.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                String[] options = {"Hoa don ban","Hoa don nhap"};
-                int userOption = JOptionPane.showOptionDialog(null,"Hoa don muon tao ?","Options create invoice ",JOptionPane.UNDEFINED_CONDITION,JOptionPane.QUESTION_MESSAGE,null,options,null);
-                if(userOption == 0){
-                    CreateInvoiceGUI createInvoice = new CreateInvoiceGUI();
-                    createInvoice.getTitleCreateInvoice().setText("Tạo hóa đơn bán");
-                    createInvoice.showDiaLog();
+                CreateInvoiceGUI createInvoice = new CreateInvoiceGUI();
+                String[] options = {"Hóa đơn bán","Hóa đơn nhập"};
+                int userOption = JOptionPane.showOptionDialog(null,"Hóa đơn muốn tạo ?","Options create invoice ",JOptionPane.UNDEFINED_CONDITION,JOptionPane.QUESTION_MESSAGE,null,options,null);
+                if(userOption == 0 && userOption != JOptionPane.CLOSED_OPTION){
+                    createInvoice.showDiaLog(Invoice.InvoiceType.EXPORT);
+                    createInvoice.setOnsave((type,invoices)->{
+                        loadJTable(type,invoices);
+                    });
                 }
-                else if(userOption == 1){
-                    CreateInvoiceGUI createInvoice = new CreateInvoiceGUI();
-                    createInvoice.getTitleCreateInvoice().setText("Tạo hóa đơn nhập");
-                    createInvoice.showDiaLog();
+                else if(userOption == 1 && userOption != JOptionPane.CLOSED_OPTION){
+                    createInvoice.showDiaLog(Invoice.InvoiceType.IMPORT);
+                    createInvoice.setOnsave((type,invoices)->{
+                        loadJTable(type,invoices);
+                    });
+                }
+                else {
+                    createInvoice.setVisible(false);
                 }
             }
         });
+
 
 
         btnCancel.addActionListener(new ActionListener() {
@@ -497,57 +514,48 @@ public class InvoiceManageGUI extends JPanel{
                dateChooserTo.setDate(new Date());
                limitTotalFrom.setText("");
                limitTotalTo.setText("");
-               computersToFilter.setSelectedIndex(0);
-               employeeToFilter.setSelectedIndex(0);
-               accountToFilter.setSelectedIndex(0);
+               computersToFilter.setSelectedItem(null);
+               employeeToFilter.setSelectedItem(null);
+               accountToFilter.setSelectedItem(null);
+
+                Invoice.InvoiceType type = getTypeInvoice();
+                List<Invoice> invoices = invoiceService.findAllByType(type);
+               if(getTypeInvoice() == Invoice.InvoiceType.EXPORT)
+                   loadJTable(Invoice.InvoiceType.EXPORT,invoices);
+               else
+                   loadJTable(Invoice.InvoiceType.IMPORT,invoices);
             }
         });
 
         btnSearch.addActionListener(new ActionListener() {
-            JTextField getDateFrom = (JTextField)dateChooserFrom.getDateEditor().getUiComponent();
-            JTextField getDateTo = (JTextField)dateChooserTo.getDateEditor().getUiComponent();
             @Override
             public void actionPerformed(ActionEvent e) {
+                JTextField getDateFrom = (JTextField) dateChooserFrom.getDateEditor().getUiComponent();
+                JTextField getDateTo = (JTextField) dateChooserTo.getDateEditor().getUiComponent();
                 int countLossInforFilter = 0;
-                if(getDateFrom.getText().equals("dd-mm-yyyy") || getDateFrom.getText().equals("")){
-                    countLossInforFilter +=1;
+                if (getDateFrom.getText().equals("dd-mm-yyyy") || getDateFrom.getText().equals("")) {
+                    countLossInforFilter += 1;
                 }
-                if(getDateTo.getText().equals("dd-mm-yyyy") || getDateTo.getText().equals("")){
-                    countLossInforFilter +=1;
-                }
-                if(limitTotalFrom.getText().equals("") || limitTotalTo.getText().equals("")){
-                    countLossInforFilter +=1;
+                if (getDateTo.getText().equals("dd-mm-yyyy") || getDateTo.getText().equals("")) {
+                    countLossInforFilter += 1;
                 }
 
-                if(countLossInforFilter !=0){
-                    JOptionPane.showMessageDialog(null,"Bạn phải nhập đủ thông tin tìm kiếm","message",JOptionPane.ERROR_MESSAGE);
+                if (countLossInforFilter != 0) {
+                    JOptionPane.showMessageDialog(null, "Bạn phải nhập đủ thông tin tìm kiếm", "message", JOptionPane.ERROR_MESSAGE);
                     return;
-                }
-                else{
-                    List<Invoice> listInvoiceSearch;
-                    if(titleContainShowListInvoice.getText().toLowerCase().equals("danh sách hóa đơn bán")){
-                        InforFilter inforFilter = getInforFilter(Invoice.InvoiceType.EXPORT);//lay thong tin can search
-                        if(invoiceService.ValidateInforFilter(inforFilter) == true){
-                            listInvoiceSearch = invoiceService.findInvoiceByInforFilter(Invoice.InvoiceType.EXPORT,inforFilter);
-                            System.out.print(listInvoiceSearch.size());
-                            System.out.print(inforFilter.toString());
-                            showInvoice(Invoice.InvoiceType.EXPORT,listInvoiceSearch,listInvoiceModelExport);
+                } else {
+                    Invoice.InvoiceType type = getTypeInvoice();
+                    InforFilter inforFilter = getInforFilter(type);//lay thong tin can search
+                    List<Invoice> listInvoiceSearch = invoiceService.findInvoiceByInforFilter(type,inforFilter);
+                        if (invoiceService.ValidateInforFilter(inforFilter) == true) {
+                            listInvoiceSearch = invoiceService.findInvoiceByInforFilter(type, inforFilter);
+                            loadJTable(type, listInvoiceSearch);
+                            if (listInvoiceSearch.size() == 0) {
+                                JOptionPane.showMessageDialog(null, "Không có hóa đơn nào");
+                            }
+                        } else {
+                            JOptionPane.showMessageDialog(null, "Thông tin lọc hóa đơn chưa chính xác", "message", JOptionPane.ERROR_MESSAGE);
                         }
-                        else {
-                            JOptionPane.showMessageDialog(null,"Thông tin lọc hóa đơn chưa chính xác","message",JOptionPane.ERROR_MESSAGE);
-                        }
-                    }
-                    else {
-                        InforFilter inforFilter = getInforFilter(Invoice.InvoiceType.IMPORT);//lay thong tin can searc
-                        System.out.print(inforFilter.toString()+"\n");
-                        if(invoiceService.ValidateInforFilter(inforFilter) == true){
-                            listInvoiceSearch = invoiceService.findInvoiceByInforFilter(Invoice.InvoiceType.IMPORT,inforFilter);
-                            showInvoice(Invoice.InvoiceType.IMPORT,listInvoiceSearch,listInvoiceModelImport);
-                        }
-                        else {
-                            JOptionPane.showMessageDialog(null,"Thông tin lọc hóa đơn chưa chính xác","message",JOptionPane.ERROR_MESSAGE);
-                        }
-                    };
                 }
             }
         });
@@ -556,81 +564,119 @@ public class InvoiceManageGUI extends JPanel{
 
 
     public InforFilter getInforFilter(Invoice.InvoiceType type){
-        int accountID,computerID;
+        int accountID,computerID,employeeID;
         if(type == Invoice.InvoiceType.EXPORT){
-            accountID = listAccountComboboxItem.get(accountToFilter.getSelectedIndex()).getId();
-            computerID = listComputerComboboxItem.get(computersToFilter.getSelectedIndex()).getId();
+            if(accountToFilter.getSelectedItem() == null)
+                accountID = 0;
+            else
+                accountID = listAccountComboboxItem.get(accountToFilter.getSelectedIndex()).getId();
+            if (computersToFilter.getSelectedItem() == null)
+                computerID = 0;
+            else
+                computerID = listComputerComboboxItem.get(computersToFilter.getSelectedIndex()).getId();
         }
         else {
             accountID = computerID = 0;
         }
-        int  employeeID = listEmployeeComboboxItem.get(employeeToFilter.getSelectedIndex()).getId();
+        if(employeeToFilter.getSelectedItem() == null)
+            employeeID = 0;
+        else
+            employeeID = listEmployeeComboboxItem.get(employeeToFilter.getSelectedIndex()).getId();
         String strdateFrom = ((JTextField)dateChooserFrom.getDateEditor().getUiComponent()).getText();
         String strdateTo = ((JTextField)dateChooserTo.getDateEditor().getUiComponent()).getText();
         return new InforFilter(strdateFrom,strdateTo,limitTotalFrom.getText(),limitTotalTo.getText(),computerID,employeeID,accountID);
     }
 
 
-
-
-
-    public void showInvoice(Invoice.InvoiceType type,List<Invoice> listInvoice,DefaultTableModel model){
-
-        model.setRowCount(0);
-        if(type == Invoice.InvoiceType.EXPORT){
-            for(int i = 0; i < listInvoice.size();i++){
-                Invoice invoice = listInvoice.get(i);
-                String userNameAccount = null,computerName = null;
-                String nameEmployee = employeeService.findEmployeeById(invoice.getCreatedBy()).getName();
-                try {
-                    if(invoice.getCreatedToAccountId() == null){
-                        userNameAccount = "Khach van lai";
-                    }
-                    else {
-                        userNameAccount = accountService.findById(invoice.getCreatedToAccountId()).getUsername();
-                    }
-                    computerName = computerService.getComputerById(invoice.getComputerId()).getName();
-                } catch (SQLException e) {
-                    throw new RuntimeException(e);
+public void loadJTable(Invoice.InvoiceType type,List<Invoice> invoices){
+    if(type == Invoice.InvoiceType.EXPORT){
+        listInvoiceModelExport.setRowCount(0);
+        for(int i = 0; i < invoices.size();i++){
+            Invoice invoice = invoices.get(i);
+            String userNameAccount = null,computerName = null;
+            String nameEmployee = employeeService.findEmployeeById(invoice.getCreatedBy()).getName();
+            try {
+                if(invoice.getCreatedToAccountId() == null){
+                    userNameAccount = "Khach van lai";
                 }
-                model.addRow(new Object[]{invoice.getId(),userNameAccount ,computerName,invoice.getCreatedAt(),nameEmployee,invoice.explainIsPaid(),invoice.getStatus(),invoice.getTotal()});
+                else {
+                    userNameAccount = accountService.findById(invoice.getCreatedToAccountId()).getUsername();
+                }
+                computerName = computerService.getComputerById(invoice.getComputerId()).getName();
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
             }
+            listInvoiceModelExport.addRow(new Object[]{invoice.getId(),userNameAccount ,computerName,invoice.getCreatedAt(),nameEmployee,invoice.explainIsPaid(),invoice.getStatus(),invoice.getTotal()});
         }
-        else {
-            for(int i = 0; i < listInvoice.size();i++){
-                Invoice invoice = listInvoice.get(i);
-                String nameEmployee = employeeService.findEmployeeById(invoice.getCreatedBy()).getName();
-                model.addRow(new Object[]{invoice.getId(),invoice.getCreatedAt(),nameEmployee,invoice.explainIsPaid(),invoice.getStatus(),invoice.getTotal()});
-            }
+    }
+    else {
+        listInvoiceModelImport.setRowCount(0);
+        for(int i = 0; i < invoices.size();i++){
+            Invoice invoice = invoices.get(i);
+            String nameEmployee = employeeService.findEmployeeById(invoice.getCreatedBy()).getName();
+            listInvoiceModelImport.addRow(new Object[]{invoice.getId(),invoice.getCreatedAt(),nameEmployee,invoice.explainIsPaid(),invoice.getStatus(),invoice.getTotal()});
         }
     }
 
+}
 
-    public JPopupMenu operationForInvoice(JTable jtabel,DefaultTableModel model){
-        List<Invoice> listInvoice = invoiceService.findAll();
+
+
+    public Invoice.InvoiceType getTypeInvoice(){
+        if(titleContainShowListInvoice.getText().toLowerCase().equals("danh sách hóa đơn bán")){
+            return Invoice.InvoiceType.EXPORT;
+        }
+        return Invoice.InvoiceType.IMPORT;
+    }
+
+
+
+    public JPopupMenu operationForInvoice(JTable jtabel,DefaultTableModel model) {
+        List<Invoice> invoices = invoiceService.findAll();
         JMenuItem delete = new JMenuItem("delete");
         delete.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if(jtabel.getSelectedRowCount() == 1){
-                    int confirmDeleteInvoice = JOptionPane.showConfirmDialog(null,"Ban muon xoa hoa don nay?");
-                    if(confirmDeleteInvoice == JOptionPane.NO_OPTION){
+                if (jtabel.getSelectedRowCount() == 1) {
+                    int confirmDeleteInvoice = JOptionPane.showConfirmDialog(null, "Bạn muốn xóa hóa đơn này ?");
+                    if (confirmDeleteInvoice == JOptionPane.NO_OPTION) {
                         return;
-                    }
-                    else if(confirmDeleteInvoice == JOptionPane.YES_OPTION){
+                    } else if (confirmDeleteInvoice == JOptionPane.YES_OPTION) {
                         int indexRowSelected = jtabel.getSelectedRow();
-                        int idInvoiceSelected = (int)jtabel.getValueAt(indexRowSelected,0);
+                        int idInvoiceSelected = (int) jtabel.getValueAt(indexRowSelected, 0);
                         invoiceService.deleteInvoice(idInvoiceSelected);
                         model.removeRow(indexRowSelected);
+                        JOptionPane.showMessageDialog(null, "Xóa thành công", null, JOptionPane.INFORMATION_MESSAGE);
                     }
-                }
-                else {
-                    JOptionPane.showMessageDialog(null,"Khong the xoa nhieu hoa don","Anounce",JOptionPane.ERROR_MESSAGE);
+                } else {
+                    JOptionPane.showMessageDialog(null, "Không thể xóa nhiều hóa đơn cùng lúc", "Anounce", JOptionPane.ERROR_MESSAGE);
                 }
             }
         });
+
         JMenuItem edit = new JMenuItem("edit");
+        edit.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                CreateInvoiceGUI createInvoiceGUI = new CreateInvoiceGUI();
+                loadInvoice(createInvoiceGUI);
+                createInvoiceGUI.btnAddInvoice.setVisible(false);
+                createInvoiceGUI.btnSaveInvoice.setVisible(true);
+            }
+        });
+
+
         JMenuItem showDetailInvoice = new JMenuItem("detail invoice");
+        showDetailInvoice.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                CreateInvoiceGUI createInvoiceGUI = new CreateInvoiceGUI();
+                loadInvoice(createInvoiceGUI);
+                createInvoiceGUI.btnSaveInvoice.setVisible(false);
+                createInvoiceGUI.btnAddInvoice.setVisible(false);
+            }
+        });
+
         JPopupMenu listOperation = new JPopupMenu();
         listOperation.add(delete);
         listOperation.add(edit);
@@ -639,17 +685,80 @@ public class InvoiceManageGUI extends JPanel{
     }
 
 
+    public void loadInvoice(CreateInvoiceGUI createInvoiceGUI){
+//        CreateInvoiceGUI createInvoiceGUI = new CreateInvoiceGUI();
+        Invoice.InvoiceType type = getTypeInvoice();
+        JTable jTable;
+        createInvoiceGUI.showDiaLog(type);
+        //thay doi tieu de "Tao hoa don ban" thanh "Chi tiet hoa don ban"
+        if(type == Invoice.InvoiceType.EXPORT){
+            createInvoiceGUI.titleCreateInvoice.setText("Chi tiết hóa đơn bán");
+            jTable = listInvoiceExport;
+        }
+        else{
+            createInvoiceGUI.titleCreateInvoice.setText("Chi tiết hóa đơn nhập");
+            jTable = listInvoiceImport;
+        }
+        //lay thong tin invoice
+        //goi toi table luu du thong tin hoa don, lay id cua hoa don, goi toi ham tim hoa don bang id,
+        int rowIsSelected = jTable.getSelectedRow();//lay hang duoc select
+        int idInvoiceIsSelected = (int)jTable.getModel().getValueAt(rowIsSelected,0);//lay id cua hoa don
+        Invoice invoiceIsSelect = invoiceService.findInvoiceById(idInvoiceIsSelected);//lay hoa don tu csdl len
+
+        //lay detailInvoice cua invoice do
+        InvoiceDetailService invoiceDetailService = new InvoiceDetailService();
+        List<InvoiceDetail> listInvoiceDetail = invoiceDetailService.findByInvoiceId(idInvoiceIsSelected);
+        if(type == Invoice.InvoiceType.EXPORT){
+            for(int i = 0; i < listInvoiceDetail.size();i++){
+                InvoiceDetail invoiceDetail = listInvoiceDetail.get(i);
+                Product product = productService.findProductById(invoiceDetail.getProductId());
+                createInvoiceGUI.listProductInvoiceModel.addRow(new Object[]{invoiceDetail.getProductId(),product.getName(),invoiceDetail.getQuantity(),invoiceDetail.getPrice(),invoiceDetail.getPrice()*invoiceDetail.getQuantity()});
+            }
+
+            createInvoiceGUI.listComputerID.setSelectedIndex(invoiceIsSelect.getComputerId()-1);
+            if(invoiceIsSelect.getCreatedToAccountId() == null){
+                createInvoiceGUI.listAccountID.setSelectedItem(0);//neu ma id cua tai khoan la null thi set mac dinh do la khach hang van lai
+            }
+            else{
+                createInvoiceGUI.listAccountID.setSelectedIndex(invoiceIsSelect.getCreatedToAccountId());
+            }
+        }
+        else{
+            for(int i = 0; i < listInvoiceDetail.size();i++){
+                InvoiceDetail invoiceDetail = listInvoiceDetail.get(i);
+                Product product = productService.findProductById(invoiceDetail.getProductId());
+                createInvoiceGUI.listProductInvoiceModel.addRow(new Object[]{product.getId(),product.getName(),invoiceDetail.getQuantity(),invoiceDetail.getPrice(),invoiceDetail.getPrice()*invoiceDetail.getQuantity()});
+                createInvoiceGUI.lbTotalInvoice.setText(String.valueOf(createInvoiceGUI.caculateTotalMoney()) + "VNĐ");
+            }
+            createInvoiceGUI.listComputerID.setSelectedItem(null);
+            createInvoiceGUI.listAccountID.setSelectedItem(null);
+        }
+        createInvoiceGUI.lbTotalInvoice.setText(String.valueOf(createInvoiceGUI.caculateTotalMoney()) + "VNĐ");
+
+        //do du lieu len
+        createInvoiceGUI.dateCreate.setDate(invoiceIsSelect.getCreatedAt());
+        createInvoiceGUI.listEmployeeID.setSelectedIndex(invoiceIsSelect.getCreatedBy()-1);
+        if(invoiceIsSelect.isPaid()){//neu isPaid la true tuc la hoa don da duoc thanh toan roi
+            createInvoiceGUI.isPaid.setSelected(true);
+        }
+        else {
+            createInvoiceGUI.isPaid.setSelected(false);
+        }
+        createInvoiceGUI.status.setSelectedItem(invoiceIsSelect.getStatus());
+        createInvoiceGUI.idInvoiceSelected.setText(String.valueOf(idInvoiceIsSelected));//lay id cua hoa don muon edit de luu vao lable
+        createInvoiceGUI.setOnsave((a,b)->{
+            loadJTable(a,b);
+        });
+    }
 
     public static void main(String[] args){
-        Helper.initUI();
         ServiceProvider.init();
         InvoiceManageGUI quanlyhoadon = new InvoiceManageGUI();
         JFrame frame = new JFrame();
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
         frame.setLayout(new BorderLayout());
         frame.add(quanlyhoadon,BorderLayout.CENTER);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setVisible(true);
     }
-
 }

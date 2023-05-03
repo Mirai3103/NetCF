@@ -14,7 +14,7 @@ public class InvoiceDAOImpl extends BaseDAO implements IInvoiceDAO {
             preparedStatement.setInt(1, invoice.getComputerId());
             preparedStatement.setTimestamp(2, new java.sql.Timestamp(invoice.getCreatedAt().getTime()));
             preparedStatement.setInt(3, invoice.getCreatedBy());
-            preparedStatement.setObject(4, invoice.getCreatedToAccountId());
+            preparedStatement.setInt(4, invoice.getCreatedToAccountId());
             preparedStatement.setNull(5, Types.TIMESTAMP);
             preparedStatement.setBoolean(6, invoice.isPaid());
             preparedStatement.setString(7, invoice.getNote());
@@ -135,6 +135,5 @@ public class InvoiceDAOImpl extends BaseDAO implements IInvoiceDAO {
             return ConnectionFactory.toList(resultSet, Invoice.class);
         }
     }
-
 }
 
