@@ -1,26 +1,26 @@
 package Io;
 
+import BUS.*;
 import Payload.LoginPayload;
 import Utils.Helper;
+import Utils.Interval;
 import Utils.ServiceProvider;
 import DTO.Message;
-import BUS.AccountService;
-import BUS.ComputerService;
-import BUS.MessageService;
-import BUS.SessionService;
 
 import java.awt.*;
 import java.io.IOException;
 import java.io.Serializable;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Date;
 
 public class SocketController {
     private final SessionService sessionService;
     private final AccountService accountService;
     private final Server server;
-    private final MessageService messageService ;
+    private final MessageService messageService;
     private final ComputerService computerService;
+    private final InvoiceService invoiceService;
 
     public SocketController(Server server) {
         this.server = server;
@@ -28,14 +28,24 @@ public class SocketController {
         accountService = ServiceProvider.getInstance().getService(AccountService.class);
         messageService = ServiceProvider.getInstance().getService(MessageService.class);
         computerService = ServiceProvider.getInstance().getService(ComputerService.class);
+        invoiceService = ServiceProvider.getInstance().getService(InvoiceService.class);
     }
+
     public void startListen() throws IOException {
         server.listen();
         server.on("login", this::onLogin);
         server.on("message", this::onMessage);
         server.on("changePassword", this::onChangePassword);
-        server.on("logout",this::onLogout);
-        server.on("shutdown",this::onShutDown);
+        server.on("logout", this::onLogout);
+        server.on("shutdown", this::onShutDown);
+        server.on("order", this::onOrder);
+
+    }
+
+    private void onOrder(Socket socket, Serializable invoice) {
+        Helper.showSystemNoitification("Thông báo", "Có đơn hàng mới", TrayIcon.MessageType.INFO);
+        invoiceService.order((DTO.CreateInvoiceInputDTO) invoice);
+        System.out.println(invoice);
     }
 
     private void onChangePassword(Socket socket, Serializable serializable) {
@@ -49,7 +59,6 @@ public class SocketController {
             server.emit("errorMessage", "Đổi mật khẩu thất bại");
         }
     }
-
     public void onMessage(Socket client, Serializable data) {
         try {
             var session = sessionService.findByComputerId(client.getMachineId());
@@ -58,7 +67,7 @@ public class SocketController {
                 server.emit("errorMessage", "Lỗi máy tính");
                 return;
             }
-            var message = Message.builder().id(null).content((String) data).fromType(Message.FROM.CLIENT).createdAt(new Date()).sessionId(session.getId()).build()  ;
+            var message = Message.builder().id(null).content((String) data).fromType(Message.FROM.CLIENT).createdAt(new Date()).sessionId(session.getId()).build();
             messageService.create(message);
             Helper.showSystemNoitification("Tin nhắn từ máy " + computer.getName(), (String) data, TrayIcon.MessageType.INFO);
         } catch (SQLException e) {
@@ -69,8 +78,8 @@ public class SocketController {
         try {
             LoginPayload loginPayload = (LoginPayload) data;
             var account = accountService.login(loginPayload.getUsername(), loginPayload.getPassword());
-        
-            if (sessionService.checkIfSessionExist(client.getMachineId())){
+
+            if (sessionService.checkIfSessionExist(client.getMachineId())) {
                 server.emit("errorMessage", "Lỗi máy tính");
                 return;
             }
@@ -83,25 +92,29 @@ public class SocketController {
                     server.emit("errorMessage", "Tài khoản của bạn không đủ tiền");
                     return;
                 }
-                var session=   sessionService.createSession(account, client.getMachineId());
+                var session = sessionService.createSession(account, client.getMachineId());
 
                 server.emit("loginSuccess", session);
-               client.setIntervalId( this.sessionService.startSession(session,client));
+                Helper.showSystemNoitification("Máy " + client.getMachineId() + " đã đăng nhập!", "", TrayIcon.MessageType.INFO);
+                client.setIntervalId(this.sessionService.startSession(session, client));
             } else {
                 server.emit("errorMessage", "Sai tên đăng nhập hoặc mật khẩu");
             }
-        }catch (SQLException e){
+        } catch (SQLException e) {
             e.printStackTrace();
         }
     }
-
     private void onLogout(Socket socket, Serializable serializable) {
         this.sessionService.logout(socket.getMachineId());
-        server.emitSelf("statusChange",null);
+        Helper.showSystemNoitification("Máy " + socket.getMachineId() + " đã đăng xuất!", "", TrayIcon.MessageType.INFO);
+        server.emitSelf("statusChange", null);
     }
     private void onShutDown(Socket socket, Serializable serializable) {
         Server.getInstance().removeClient(socket.getMachineId());
+        Helper.showSystemNoitification("Máy " + socket.getMachineId() + " đã ngắt kết nối!", "", TrayIcon.MessageType.INFO);
         this.sessionService.shutDown(socket.getMachineId());
-        server.emitSelf("statusChange",null);
+        Interval.clearInterval(socket.getIntervalId());
+        System.out.println("ok");
+        server.emitSelf("statusChange", null);
     }
 }

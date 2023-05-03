@@ -53,8 +53,8 @@ public class Invoice implements Serializable {
     public enum Status {
         WAITING_FOR_ACCEPT,
         ACCEPTED,
-        DONE,
         REJECTED,
+        DONE
 
         ;
         @Override

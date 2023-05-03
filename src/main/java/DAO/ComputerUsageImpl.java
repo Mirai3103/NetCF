@@ -73,7 +73,7 @@ public class ComputerUsageImpl extends BaseDAO implements IComputerUsageDAO {
     public List<ComputerUsage> findByFilter(ComputerUsageFilter filter) throws Exception {
         String sql = "SELECT * FROM ComputerUsage WHERE 1 = 1 ";
         if (filter.getUsedByAccountId() != null) {
-            sql += " AND usedByAccountId = " + filter.getUsedByAccountId();
+            sql += " AND usedByAccountId  " + (filter.getUsedByAccountId()==-1?"is NULL":"= " + filter.getUsedByAccountId());
         }
         if (filter.getComputerID() != null) {
             sql += " AND computerID = " + filter.getComputerID();

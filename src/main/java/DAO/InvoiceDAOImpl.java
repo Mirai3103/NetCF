@@ -1,50 +1,43 @@
 package DAO;
 
 import DAO.Interface.IInvoiceDAO;
-import DTO.Account;
 import DTO.InforFilter;
 import DTO.Invoice;
 
 import java.sql.*;
-import java.util.Date;
 import java.util.List;
 
 public class InvoiceDAOImpl extends BaseDAO implements IInvoiceDAO {
+    @Override
+    public Invoice create(Invoice invoice) throws SQLException {
+        try(var preparedStatement = this.prepareStatement("insert into Invoice (computerId, createdAt, createdBy, createdToAccountId, deletedAt, isPaid, note, status, total, type) values (?,?,?,?,?,?,?,?,?,?)", Statement.RETURN_GENERATED_KEYS)) {
+            preparedStatement.setInt(1, invoice.getComputerId());
+            preparedStatement.setTimestamp(2, new java.sql.Timestamp(invoice.getCreatedAt().getTime()));
+            preparedStatement.setInt(3, invoice.getCreatedBy());
+            preparedStatement.setInt(4, invoice.getCreatedToAccountId());
+            preparedStatement.setNull(5, Types.TIMESTAMP);
+            preparedStatement.setBoolean(6, invoice.isPaid());
+            preparedStatement.setString(7, invoice.getNote());
+            preparedStatement.setInt(8, invoice.getStatus().ordinal());
+            preparedStatement.setDouble(9, invoice.getTotal());
+            preparedStatement.setInt(10, invoice.getType().ordinal());
 
+            var result = preparedStatement.executeUpdate();
+            if (result > 0) {
+                var resultSet = preparedStatement.getGeneratedKeys();
+                if (resultSet.next()) {
+                    var newId = resultSet.getInt(1);
+                    return this.findById(newId);
+                }
+            }
+        }
+        return null;
+    }
 
     @Override
     public Invoice update(Invoice invoice) throws SQLException {
-            String sqlUpdateInvoice = """
-                UPDATE invoice 
-                SET computerId = ?,createdBy = ?,createdToAccountId = ?,isPaid = ?,status = ?,total = ?
-                WHERE id = ?
-                """;
-            var stt = this.prepareStatement(sqlUpdateInvoice);
-            if(invoice.getComputerId() == 0){//khi tao phieu nhap thi computer set null
-                stt.setString(1,null);
-            }
-            else {
-                stt.setInt(1, invoice.getComputerId());
-            }
-
-            if(invoice.getCreatedToAccountId() == 0){
-                stt.setString(3,null);
-            }
-            else {
-                stt.setInt(3, invoice.getCreatedToAccountId());
-            }
-            stt.setInt(2,invoice.getCreatedBy());
-            System.out.print(invoice.isPaid());
-            stt.setInt(4,invoice.isPaid() ? 1:0);
-            stt.setInt(5,invoice.getStatus().ordinal());
-            stt.setDouble(6,invoice.getTotal());
-            stt.setInt(7,invoice.getId());
-            var rowEffect = stt.executeUpdate();
-            stt.close();
-            return rowEffect == 1 ? findById(invoice.getId()):null;
+        return null;
     }
-
-
 
     @Override
     public boolean delete(Integer integer) throws SQLException {
@@ -65,8 +58,7 @@ public class InvoiceDAOImpl extends BaseDAO implements IInvoiceDAO {
         String sqlSelectById = """
                 select *
                 from invoice
-                where id = ? and deletedAt is null
-                ORDER BY id DESC;
+                where id = ? and deletedAt is null;
                 """;
         var stt = this.prepareStatement(sqlSelectById);
         stt.setInt(1,integer);
@@ -79,12 +71,9 @@ public class InvoiceDAOImpl extends BaseDAO implements IInvoiceDAO {
     @Override
     public List<Invoice> findAll() throws SQLException {
 
-            String sqlSelectALlRow = """
-                    select * 
-                    from Invoice 
-                    where deletedAt is null
-                    ORDER BY id DESC;
-                    """;
+            String sqlSelectALlRow = "select * " +
+                    "from Invoice " +
+                    "where deletedAt is null";
             var stt =this.createStatement();
             var rs = stt.executeQuery(sqlSelectALlRow);
             var listInvoice = ConnectionFactory.toList(rs, Invoice.class);
@@ -98,10 +87,8 @@ public class InvoiceDAOImpl extends BaseDAO implements IInvoiceDAO {
     public List<Invoice> findAllByType(Invoice.InvoiceType type) throws SQLException {
         String sqlSelectALlRow = """
                 select *
-                from Invoice
-                where deletedAt is null and type = ?
-                ORDER BY id DESC;
-                 """;
+                 from Invoice
+                 where deletedAt is null and type = ?""";
         var stt =this.prepareStatement(sqlSelectALlRow);
         stt.setInt(1,type.ordinal());
         var rs = stt.executeQuery();
@@ -112,108 +99,31 @@ public class InvoiceDAOImpl extends BaseDAO implements IInvoiceDAO {
 
     @Override
     public List<Invoice> findInvoiceByInforFilter(Invoice.InvoiceType type, InforFilter inforFilter) throws SQLException {
-        int quantityQuestionMark = 4;
         String sqlSelectInvoiceByInforFilter = """
                  select *
-                 from Invoice
-                 where ((createdAt between ? and ?)
-                 and (total between ? and  ?)
+                                from Invoice\s
+                                where ((createdAt between ? and ?)
+                                and (total between ? and  ?)
+                                and ((createdToAccountId is NULL) or (createdToAccountId = ?))
+                                and computerId = ?
+                                and createdBy = ?
+                 			   and deletedAt is NULL
+                 			   and type = ?)
                 """;
-        if(inforFilter.getAccountID() != 0 && inforFilter.getAccountID() != -1 ){
-            sqlSelectInvoiceByInforFilter += "and (createdToAccountId = ?) ";
-        }
-
-        if(inforFilter.getAccountID() == -1 ){//neu bang -1 thi la khach van lai
-            sqlSelectInvoiceByInforFilter += "and  (createdToAccountId is NULL) ";
-        }
-
-        if(inforFilter.getComputerID() != 0){
-            sqlSelectInvoiceByInforFilter+= " and (computerId = ?)";
-        }
-        if(inforFilter.getEmployeeID() != 0){
-            sqlSelectInvoiceByInforFilter += "and (createdBy = ?)";
-        }
-        sqlSelectInvoiceByInforFilter+= """
-                 and deletedAt is NULL
-                 and type = ?)
-                 ORDER BY id DESC;
-                """;
-
-
         var stt = this.prepareStatement(sqlSelectInvoiceByInforFilter);
         stt.setString(1,inforFilter.getDateFrom());
         stt.setString(2,inforFilter.getDateTo());
-        if(inforFilter.getTotalFrom().equals(""))
-            stt.setDouble(3,0);
-        else
-            stt.setDouble(3,Double.parseDouble(inforFilter.getTotalFrom()));
-
-        if(inforFilter.getTotalTo().equals(""))
-            stt.setDouble(4,Integer.MAX_VALUE);//set totalTo la max
-        else
-            stt.setDouble(4,Double.parseDouble(inforFilter.getTotalTo()));
-
-        if(inforFilter.getAccountID() != 0  && inforFilter.getAccountID() != -1){
-            quantityQuestionMark+=1;
-            stt.setInt(quantityQuestionMark,inforFilter.getAccountID());
-        }
-        if(inforFilter.getComputerID() != 0){
-            quantityQuestionMark+=1;
-            stt.setInt(quantityQuestionMark,inforFilter.getComputerID());
-        }
-
-        if(inforFilter.getEmployeeID() != 0){
-            quantityQuestionMark+=1;
-            stt.setInt(quantityQuestionMark,inforFilter.getEmployeeID());
-        }
-
-        quantityQuestionMark+=1;
-        stt.setInt(quantityQuestionMark,type.ordinal());
+        stt.setDouble(3,Double.parseDouble(inforFilter.getTotalFrom()));
+        stt.setDouble(4,Double.parseDouble(inforFilter.getTotalTo()));
+        stt.setInt(5,inforFilter.getAccountID());
+        stt.setInt(6,inforFilter.getComputerID());
+        stt.setInt(7,inforFilter.getEmployeeID());
+        stt.setInt(8,type.ordinal());
         var rs = stt.executeQuery();
         var listInvoice = ConnectionFactory.toList(rs,Invoice.class);
         stt.close();
         return listInvoice;
     }
 
-
-    @Override
-    public Invoice create(Invoice invoice) throws SQLException {
-        System.out.print(invoice.toString());
-        try(var stt = this.prepareStatement("insert into Invoice (computerId, createdAt, createdBy, createdToAccountId, deletedAt, isPaid, note, status, total, type) values (?,?,?,?,?,?,?,?,?,?)", Statement.RETURN_GENERATED_KEYS)) {
-            if(invoice.getComputerId() == 0){//khi tao phieu nhap thi computer set null
-                stt.setString(1,null);
-            }
-            else {
-                stt.setInt(1, invoice.getComputerId());
-            }
-
-            if(invoice.getCreatedToAccountId() == 0){
-                stt.setString(4,null);
-            }
-            else {
-                stt.setInt(4, invoice.getCreatedToAccountId());
-            }
-
-            System.out.print(new java.sql.Timestamp(invoice.getCreatedAt().getTime()));
-            stt.setTimestamp(2, new java.sql.Timestamp(invoice.getCreatedAt().getTime()));
-            stt.setInt(3, invoice.getCreatedBy());
-            stt.setNull(5, Types.TIMESTAMP);
-            stt.setBoolean(6, invoice.isPaid());
-            stt.setString(7, invoice.getNote());
-            stt.setInt(8, invoice.getStatus().ordinal());
-            stt.setDouble(9, invoice.getTotal());
-            stt.setInt(10, invoice.getType().ordinal());
-
-            var result = stt.executeUpdate();
-            if (result > 0) {
-                var resultSet = stt.getGeneratedKeys();
-                if (resultSet.next()) {
-                    var newId = resultSet.getInt(1);
-                    return this.findById(newId);
-                }
-            }
-        }
-        return null;
-    }
 }
 

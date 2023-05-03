@@ -65,7 +65,8 @@ public List<ComputerUsage> getAll()  {
         return list;
     }
     public List<ComputerUsage> findByFilter(DTO.ComputerUsageFilter filter) throws Exception {
-        return includeDetail(computerUsageDAO.findByFilter(filter));
+        var raw =computerUsageDAO.findByFilter(filter );
+        return includeDetail(raw);
     }
     public ComputerUsage update(ComputerUsage computerUsage) throws SQLException {
         return computerUsageDAO.update(computerUsage);

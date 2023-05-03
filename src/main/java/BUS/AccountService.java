@@ -17,8 +17,8 @@ public class AccountService {
     public AccountService() {
 
     }
-    public void create(Account account) throws SQLException {
-        this.accountDAO.create(account);
+    public Account create(Account account) throws SQLException {
+     return   this.accountDAO.create(account);
     }
 
     public void update(Account account) throws SQLException {

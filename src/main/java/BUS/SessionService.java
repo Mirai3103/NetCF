@@ -4,6 +4,7 @@ import DAO.Interface.ISessionDAO;
 import DTO.Computer;
 import Io.Server;
 import Io.Socket;
+import Utils.Helper;
 import Utils.Interval;
 import lombok.Setter;
 import DTO.Account;
@@ -11,6 +12,7 @@ import DTO.ComputerUsage;
 import DTO.Session;
 
 import javax.swing.*;
+import java.awt.*;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -34,6 +36,7 @@ public class SessionService {
         var session = sessionDAO.findByAccountId(account.getId());
         return session != null;
     }
+
     public void logout(Integer machineId) {
 
         Session session = null;
@@ -41,32 +44,32 @@ public class SessionService {
         Computer computer = null;
         try {
             session = sessionDAO.findByComputerId(machineId);
-            account = accountService.findById(session.getUsingBy());
+            account =session.getUsingBy()!=null? accountService.findById(session.getUsingBy()):null;
             computer = computerService.getComputerById(machineId);
             session.setUsingComputer(computer);
             session.setUsingByAccount(account);
-        var computerUsage = ComputerUsage.builder()
-                .computerID(machineId)
-                .endAt(new java.util.Date(System.currentTimeMillis()))
-                .createdAt(new java.util.Date(session.getStartTime().getTime()))
-                .isEmployeeUsing(session.getUsingByAccount() != null && session.getUsingByAccount().getRole() != Account.Role.USER)
-                .usedByAccountId(session.getUsingBy())
-                .build();
+            var computerUsage = ComputerUsage.builder()
+                    .computerID(machineId)
+                    .endAt(new java.util.Date(System.currentTimeMillis()))
+                    .createdAt(new java.util.Date(session.getStartTime().getTime()))
+                    .isEmployeeUsing(session.getUsingByAccount() != null && session.getUsingByAccount().getRole() != Account.Role.USER)
+                    .usedByAccountId(session.getUsingBy())
+                    .build();
 
             tinhTien(session, computerUsage);
             if (session.getUsingByAccount() != null) {
-            var newBalance = account.getBalance() - computerUsage.getTotalMoney();
-            newBalance = newBalance < 100 ? 0 : newBalance;
-            account.setBalance(newBalance);
-            accountService.update(account);
-        }
-
-        sessionDAO.delete(session.getId());
+                var newBalance = account.getBalance() - computerUsage.getTotalMoney();
+                newBalance = newBalance < 100 ? 0 : newBalance;
+                account.setBalance(newBalance);
+                accountService.update(account);
+            }
+            sessionDAO.delete(session.getId());
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
     }
-    public void shutDown(Integer computerId){
+
+    public void shutDown(Integer computerId) {
         try {
             var session = sessionDAO.findByComputerId(computerId);
 
@@ -77,6 +80,7 @@ public class SessionService {
             throw new RuntimeException(e);
         }
     }
+
     private void tinhTien(Session session, ComputerUsage computerUsage) throws SQLException {
         if (!computerUsage.isEmployeeUsing()) {
             var machine = computerService.getComputerById(session.getComputerID());
@@ -164,7 +168,9 @@ public class SessionService {
                             e.printStackTrace();
                             if (e.getMessage().equals("Time out")) {
                                 client.emit("timeOut", null);
+                                Helper.showSystemNoitification("Hết giờ", "Máy " + session.getComputerID() + " hết thời gian! ", TrayIcon.MessageType.INFO);
                                 cleanUp.run();
+
                                 return;  // stop interval
                             }
                         }
@@ -264,13 +270,15 @@ public class SessionService {
 
         sessionDAO.delete(session.getId());
     }
+
     public Session findByComputerId(int machineId) throws SQLException {
         return sessionDAO.findByComputerId(machineId);
     }
-    public List<Session> findAll()  {
+
+    public List<Session> findAll() {
         try {
-         return    sessionDAO.findAll();
-        }catch (
+            return sessionDAO.findAll();
+        } catch (
                 SQLException e) {
             JOptionPane.showMessageDialog(null, "Error: " + e.getMessage());
         }

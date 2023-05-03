@@ -1,5 +1,7 @@
 package GUI.Client;
 
+import DTO.Product;
+import GUI.Server.Order.FoodOrder;
 import Io.Socket;
 import Utils.Constants;
 import Utils.Helper;
@@ -9,9 +11,10 @@ import org.jdesktop.swingx.JXDatePicker;
 import javax.swing.*;
 import java.awt.*;
 import java.io.IOException;
+import java.util.List;
 
 public class Main {
-    private static final int COMPUTER_ID = 2;
+    private static final int COMPUTER_ID = 4;
     public static final Socket socket;
 
     static {
@@ -34,6 +37,10 @@ public class Main {
         });
         socket.on("notification", (c,data) -> {
             Helper.showSystemNoitification("Thông báo", (String) data, TrayIcon.MessageType.INFO);
+        });
+        socket.on("listProduct",(c,data)->{
+            List<Product> products = (List<Product>) data;
+            FoodOrder.products = products;
         });
         Helper.initUI();
         //shutdown hook

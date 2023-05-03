@@ -39,7 +39,6 @@ public class TestOrderService {
                             )
                     ).build();
             var invoice = invoiceService.order(orderInput);
-            System.out.println(invoice);
         });
     }
 }

@@ -37,7 +37,8 @@ public class Account implements java.io.Serializable {
         }
         public boolean isGreaterThan(Role role){
             return role.ordinal() > this.ordinal();
-        } public boolean isLessThan(Role role){
+        }
+        public boolean isLessThan(Role role){
             return role.ordinal()< this.ordinal();
         }
     }

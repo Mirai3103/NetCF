@@ -69,6 +69,7 @@ public class ProductGUI extends JPanel {
         // logo Quản Lý Sản Phẩm
         // start logo
         logoLabel = new JLabel("Quản Lý Sản Phẩm");
+        logoLabel.setHorizontalAlignment(SwingConstants.CENTER);
         logoLabel.setFont(Fonts.getFont(Font.BOLD, 25));
         panelHeader.add(logoLabel, BorderLayout.CENTER);
         // end logo
@@ -84,8 +85,7 @@ public class ProductGUI extends JPanel {
         });
         addProductButton.setIcon(Helper.getIcon("/icons/addIcon.png", 14, 14));
         addProductButton.setFont(Fonts.getFont(Font.BOLD, 14));
-        addProductButton.setPreferredSize(new Dimension(150, 30));
-        addProductButton.setBackground(Color.CYAN);
+        addProductButton.setPreferredSize(new Dimension(180, 30));
         panelHeader.add(addProductButton, BorderLayout.LINE_END);
         // end add button
 
@@ -104,7 +104,7 @@ public class ProductGUI extends JPanel {
         // start logoListProduct
         txtListProduct = new JLabel("Danh Sách Sản Phẩm");
         txtListProduct.setFont(Fonts.getFont(Font.BOLD, 18));
-        txtListProduct.setBorder(new EmptyBorder(0, 5, 0, 0));
+        txtListProduct.setBorder(new EmptyBorder(0, 25, 0, 0));
         txtListProduct.setPreferredSize(new Dimension(500 - 35, 20));
         panelBody1.add(txtListProduct, BorderLayout.CENTER);
         // end logoListProduct
@@ -172,9 +172,11 @@ public class ProductGUI extends JPanel {
             public void actionPerformed(ActionEvent e) {
                 try {
                     list = localProductService.findListByName(findByName.getText());
+                    System.out.println(list);
                 } catch (SQLException ex) {
                     throw new RuntimeException(ex);
                 }
+                showTable();
             }
         });
         findByName.setFont(Fonts.getFont(Font.PLAIN, 15));
@@ -280,7 +282,6 @@ public class ProductGUI extends JPanel {
 
 
     public void showTable() {
-        this.list.forEach(System.out::println);
         var model = (DefaultTableModel)this.table.getModel();
         model.setRowCount(0);
         for (Product p : list) {
@@ -353,6 +354,8 @@ public class ProductGUI extends JPanel {
     public static void main(String[] args) {
         Helper.initUI();
         ServiceProvider.init();
-        new ProductGUI();
+        JFrame frame = new JFrame();
+        frame.add(new ProductGUI());
+        frame.setVisible(true);
     }
 }

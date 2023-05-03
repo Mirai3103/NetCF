@@ -42,6 +42,7 @@ public class SideBar {
                     childItem.setText(child.getTitle());
                     childItem.setIcon(child.getIcon());
                     childItem.setContentPanel(child.getContentPanel());
+
                     navItemElement.getChildren().add(childItem);
                     childItem.setVisible(false);
                     rootPanel.add(childItem);
@@ -63,6 +64,7 @@ public class SideBar {
                 if (item.getChildren().size() == 0) {
                     contentPanel.removeAll();
                     contentPanel.add(item.getParent().getContentPanel());
+                    item.getParent().getContentPanel().setVisible(true);
                     contentPanel.repaint();
                     contentPanel.revalidate();
                     item.getParent().setSelected(true);

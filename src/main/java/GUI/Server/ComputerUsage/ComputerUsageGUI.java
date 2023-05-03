@@ -11,6 +11,8 @@ import DTO.Account;
 import DTO.Computer;
 import DTO.ComputerUsage;
 import DTO.ComputerUsageFilter;
+import GUI.Server.MainUI;
+import Utils.Constants;
 import Utils.Helper;
 import Utils.ServiceProvider;
 
@@ -42,7 +44,22 @@ public class ComputerUsageGUI extends javax.swing.JPanel {
     private ComputerService computerService;
     private AccountService accountService;
     private List<ComputerUsage> computerUsages;
+
+    @Override
+    public void setVisible(boolean aFlag) {
+
+        if (aFlag){
+            if (MainUI.getCurrentUser().getAccount().getRole().isLessThan(Account.Role.MANAGER)){
+                MainUI.getInstance().getSideBar().navigateTo("home");
+                JOptionPane.showMessageDialog(MainUI.getInstance(), "Bạn không có quyền truy cập vào mục này");
+                return;
+            }
+        }
+        super.setVisible(aFlag);
+    }
+
     public ComputerUsageGUI() {
+
         this.computerUsageService = ServiceProvider.getInstance().getService(ComputerUsageService.class);
         this.computerService = ServiceProvider.getInstance().getService(ComputerService.class);
         this.accountService = ServiceProvider.getInstance().getService(AccountService.class);
@@ -351,6 +368,7 @@ public class ComputerUsageGUI extends javax.swing.JPanel {
                 .computerID(jComboBoxFromComputer.getSelectedItem() == null || ((ComputerComboItem) jComboBoxFromComputer.getSelectedItem()).computer == null ? null : ((ComputerComboItem) jComboBoxFromComputer.getSelectedItem()).computer.getId())
                 .startFrom(jXDatePicker1.getDate())
                 .startTo(jXDatePicker2.getDate())
+                .isEmployeeUsing(false)
                 .usedByAccountId(jComboBoxConsumer.getSelectedItem() == null || ((AccountComboItem) jComboBoxConsumer.getSelectedItem()).account==null ? null : ((AccountComboItem) jComboBoxConsumer.getSelectedItem()).account.getId())
                 .sortBy(jComboBox1.getSelectedItem() == null ? " createdAt desc " : ((SortItem) jComboBox1.getSelectedItem()).value)
                 .build();

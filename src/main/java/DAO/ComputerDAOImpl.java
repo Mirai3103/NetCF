@@ -6,6 +6,7 @@ import DTO.Invoice;
 
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.Date;
 import java.util.List;
 
 public class ComputerDAOImpl extends BaseDAO implements IComputerDAO{
@@ -18,7 +19,7 @@ public class ComputerDAOImpl extends BaseDAO implements IComputerDAO{
         preparedStatement.setString(1, computer.getName());
         preparedStatement.setDouble(2, computer.getPrice());
         preparedStatement.setInt(3, computer.getType().ordinal());
-        preparedStatement.setDate(4, new java.sql.Date(computer.getCreatedAt().getTime()));
+        preparedStatement.setTimestamp(4, new java.sql.Timestamp(computer.getCreatedAt()==null? new Date().getTime():computer.getCreatedAt().getTime()));
         preparedStatement.setDate(5, null);
         preparedStatement.executeUpdate();
         var resultSet = preparedStatement.getGeneratedKeys();
@@ -30,13 +31,12 @@ public class ComputerDAOImpl extends BaseDAO implements IComputerDAO{
 
     @Override
     public Computer update(Computer computer) throws SQLException {
-         var preparedStatement = this.prepareStatement("UPDATE computer SET name = ?, price = ?, type = ?, createdAt = ?, deletedAt = ? WHERE id = ?");
+         var preparedStatement = this.prepareStatement("UPDATE computer SET name = ?, price = ?, type = ?, createdAt = ? WHERE id = ?");
         preparedStatement.setString(1, computer.getName());
         preparedStatement.setDouble(2, computer.getPrice());
         preparedStatement.setInt(3, computer.getType().ordinal());
-        preparedStatement.setDate(4, new java.sql.Date(computer.getCreatedAt().getTime()));
-        preparedStatement.setDate(5, null);
-        preparedStatement.setInt(6, computer.getId());
+        preparedStatement.setTimestamp(4, new java.sql.Timestamp(computer.getCreatedAt()==null? new Date().getTime():computer.getCreatedAt().getTime()));
+        preparedStatement.setInt(5, computer.getId());
         preparedStatement.executeUpdate();
         return computer;
     }

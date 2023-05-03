@@ -23,7 +23,6 @@ public class Message {
     private FROM fromType;
     private Date createdAt = new Date();
     public void setFromType(Integer fromType) {
-        System.out.println(fromType);
         this.fromType = FROM.values()[fromType];
     }
   
