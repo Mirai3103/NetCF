@@ -46,7 +46,7 @@ public class ProductDAOImpl extends BaseDAO implements IProductDAO {
                 " WHERE id = ? ");
         preparedStatement.setString(1,product.getName());
         preparedStatement.setDouble(2,product.getPrice());
-        preparedStatement.setString(3,product.getType().toString());
+        preparedStatement.setInt(3,product.getType().ordinal());
         preparedStatement.setInt(4,product.getStock());
         preparedStatement.setString(5,product.getDescription());
         preparedStatement.setString(6,product.getImage());
