@@ -27,18 +27,18 @@ public class ConnectionFactory {
         return getInstance().connection;
     }
 
-    private static final String SERVER = "localhost:1433";
+    private static final String SERVER = "localhost:1434";
     private static final String DATABASE_NAME = "NetCF";
-    private static final String USER_NAME = "sa";
+    private static final String USER_NAME = "root";
 
-    private static final String PASSWORD = "Kaito1412";
+    private static final String PASSWORD = "123";
 
     private  Connection connection = null;
 
 
     public ConnectionFactory() throws SQLException  {
         String url = String
-                .format("jdbc:sqlserver://localhost:1433;databaseName=NetCF;trustServerCertificate=true;encrypt=true;", SERVER, DATABASE_NAME);
+                .format("jdbc:sqlserver://localhost:1434;databaseName=NetCF;trustServerCertificate=true;encrypt=true;", SERVER, DATABASE_NAME);
         connection = DriverManager.getConnection(url, USER_NAME, PASSWORD);
     }
 

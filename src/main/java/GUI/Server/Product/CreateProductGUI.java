@@ -35,7 +35,7 @@ public class CreateProductGUI extends JFrame {
         typeProduct = 999;
         productService = ServiceProvider.getInstance().getService(ProductService.class);
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-        this.setSize(1000,1000);
+        this.setSize(1030,1030);
         this.setLayout(new BorderLayout());
         this.setLocationRelativeTo(null);
         initComponents();
@@ -49,7 +49,12 @@ public class CreateProductGUI extends JFrame {
 
         parentPanel = new JPanel();
         BorderLayout borderLayout = new BorderLayout(5,30);
-        parentPanel.setPreferredSize(new Dimension(900,800));
+        parentPanel.setMinimumSize(new Dimension(1000,1000));
+        Dimension minSize = parentPanel.getMinimumSize();
+
+        setMinimumSize(new Dimension(minSize.width + getInsets().left + getInsets().right,
+                minSize.height + getInsets().top + getInsets().bottom));
+
         parentPanel.setLayout(borderLayout);
         add(parentPanel,BorderLayout.CENTER);
 
