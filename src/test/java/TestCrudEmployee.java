@@ -24,8 +24,9 @@ public class TestCrudEmployee {
 
     @BeforeAll
     public static void init() {
+        System.out.println("init");
         ServiceProvider.init();
-        var employeeService = ServiceProvider.getInstance().getService(EmployeeService.class);
+         employeeService = ServiceProvider.getInstance().getService(EmployeeService.class);
         accountService = ServiceProvider.getInstance().getService(AccountService.class);
         var account = accountService.login("admin", "admin");
         var employee = employeeService.findEmployeeByAccountID(account.getId());
@@ -35,6 +36,7 @@ public class TestCrudEmployee {
     @Test
     @DisplayName("create an employee then delete it")
     public void createAEmployee() {
+
         assertDoesNotThrow(() -> {
             var employee = Employee.builder().accountID(null).address("test1")
                     .createdAt(new Date()).name("test1")
@@ -42,11 +44,15 @@ public class TestCrudEmployee {
                     .phoneNumber("0123456789")
                     .salaryPerHour(7000).deletedAt(null)
                     .build();
-            employeeService.createEmployee(employee);
+         employee =  employeeService.createEmployee(employee);
             var employee1 = employeeService.findEmployeeByAccountID(employee.getAccountID());
+            assertNull(employee1);
+            Employee finalEmployee = employee;
             assertDoesNotThrow(() -> {
-                employeeService.deleteEmployee(employee1.getId());
+                employeeService.delete(finalEmployee.getId());
             });
+            employee = employeeService.findEmployeeById(employee.getId());
+            assertNull(employee);
         });
     }
 
@@ -68,7 +74,7 @@ public class TestCrudEmployee {
         });
         var employee = employeeService.findEmployeeByAccountID(accountService.login("employee2test", "employee2test").getId());
         assertDoesNotThrow(() -> {
-            employeeService.deleteEmployee(employee.getId());
+            employeeService.delete(employee.getId());
         });
         var employeeAccount = accountService.findById(employee.getAccountID());
         assertNull(employeeAccount);

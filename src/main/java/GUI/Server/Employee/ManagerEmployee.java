@@ -25,7 +25,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ManagerEmployee extends JFrame {
+public class ManagerEmployee extends JPanel {
     EmployeeService employeeService;
     private List<Employee> list;
     private EmployeeDAOImpl employeeDAO;
@@ -65,8 +65,7 @@ public class ManagerEmployee extends JFrame {
     private JPanel containTimkiem;
 
     public ManagerEmployee(){
-        this.setExtendedState(JFrame.MAXIMIZED_BOTH);
-        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
         this.setLayout(new BorderLayout());
     }
     public void sizeInComputer(JPanel jpanel){
@@ -301,7 +300,7 @@ public class ManagerEmployee extends JFrame {
         managerEmployeeContentPane.setBorder(BorderFactory.createMatteBorder(0,2,2,2,new Color(42,121,255)));
         managerEmployeeContentPane.add(containTitleManagerEmployee,BorderLayout.PAGE_START);
         managerEmployeeContentPane.add(managerEmployeeFilter,BorderLayout.CENTER);
-        this.getContentPane().add(managerEmployeeContentPane,BorderLayout.CENTER);
+        this.add(managerEmployeeContentPane,BorderLayout.CENTER);
         this.setVisible(true);
     }
 
@@ -362,7 +361,6 @@ public class ManagerEmployee extends JFrame {
         employee = employeeService.findEmployeeById(employeeID);
         if (employee == null) {
             JOptionPane.showMessageDialog(this, "Không tìm thấy nhân viên", "Lỗi", JOptionPane.ERROR_MESSAGE);
-            this.dispose();
         }
 //        } catch (SQLException ex) {
 //            JOptionPane.showMessageDialog(this, "Lỗi nhân viên", "Lỗi", JOptionPane.ERROR_MESSAGE);
@@ -413,5 +411,9 @@ public class ManagerEmployee extends JFrame {
         Helper.initUI();
         ServiceProvider.init();
         quanlynhanvien.initManagerEmployee();
+        JFrame frame = new JFrame("Quản Lý Nhân Viên");
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.add(quanlynhanvien);
+        frame.setVisible(true);
     }
 }
