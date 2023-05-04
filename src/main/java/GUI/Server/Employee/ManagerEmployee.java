@@ -357,7 +357,22 @@ public class ManagerEmployee extends JFrame {
         }
     }
 
+    private void editEmployee(int employeeID){
+        //try {
+        employee = employeeService.findEmployeeById(employeeID);
+        if (employee == null) {
+            JOptionPane.showMessageDialog(this, "Không tìm thấy nhân viên", "Lỗi", JOptionPane.ERROR_MESSAGE);
+            this.dispose();
+        }
+//        } catch (SQLException ex) {
+//            JOptionPane.showMessageDialog(this, "Lỗi nhân viên", "Lỗi", JOptionPane.ERROR_MESSAGE);
+//            this.dispose();
+//            ex.printStackTrace();
+//        }
+        employee.setId(employeeID);
+    }
     private void btnEditActionPerformed(java.awt.event.ActionEvent evt){
+        editEmployee((int)listEmployee.getValueAt(listEmployee.getSelectedRow(),0));
         DefaultTableModel model=(DefaultTableModel) listEmployee.getModel();
         //getid
         model.setValueAt(inputNameNV.getText(), listEmployee.getSelectedRow(), 1);
@@ -365,7 +380,12 @@ public class ManagerEmployee extends JFrame {
         model.setValueAt(inputLuongNV.getText(), listEmployee.getSelectedRow(), 3);
         model.setValueAt(inputSdtNV.getText(), listEmployee.getSelectedRow(), 4);
         model.setValueAt(inputDiachiNV.getText(), listEmployee.getSelectedRow(), 5);
-        try {
+        employee.setName(inputNameNV.getText());
+        employee.setAccountID(Integer.parseInt(inputIdNV.getText()));
+        employee.setSalaryPerHour(Integer.parseInt(inputLuongNV.getText()));
+        employee.setPhoneNumber(inputSdtNV.getText());
+        employee.setAddress(inputDiachiNV.getText());
+        try{
             employeeService.updateEmployee(employee);
         } catch (SQLException ex){
             throw new RuntimeException(ex);
@@ -378,13 +398,6 @@ public class ManagerEmployee extends JFrame {
 
     private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt){
         DefaultTableModel model=(DefaultTableModel) listEmployee.getModel();
-//        model.removeRow(listEmployee.getSelectedRow());
-//        int idEmployee=(int)listEmployee.getValueAt(listEmployee.getSelectedRow(),0);
-//        try {
-//            employeeService.delete(idEmployee);//xoa theo id
-//        } catch (SQLException ex) {
-//            throw new RuntimeException(ex);
-//        }
         int indexRowSelected = listEmployee.getSelectedRow();
         int idEmployeeSelected = (int)listEmployee.getValueAt(indexRowSelected,0);
         try {
