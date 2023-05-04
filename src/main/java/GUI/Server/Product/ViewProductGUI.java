@@ -42,6 +42,7 @@ public class ViewProductGUI extends JFrame {
         this.setSize(1000,1000);
         this.setLayout(new BorderLayout());
         this.setLocationRelativeTo(null);
+        this.setResizable(false);
         initComponents();
         this.setVisible(true);
         this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -154,7 +155,7 @@ public class ViewProductGUI extends JFrame {
         txtProductPrice.setColumns(50);
         txtProductPrice.setBackground(bg);
         panelLeft1.add(txtProductPrice,BorderLayout.CENTER);
-        //
+
 
         panelRight1 = new JPanel();
         panelRight1.setLayout(new BorderLayout());
