@@ -2,7 +2,6 @@ package DAO;
 
 import DAO.Interface.IEmployeeDAO;
 import DTO.Employee;
-import DTO.Invoice;
 
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -40,13 +39,13 @@ public class EmployeeDAOImpl extends BaseDAO implements IEmployeeDAO{
         }catch (Exception e){
             e.printStackTrace();
         }
-    return null;
+        return null;
 
     }
 
     @Override
     public Employee update(Employee employee) throws SQLException {
-        var preparedStatement=this.prepareStatement("UPDATE employee SET name = ?, accountID = ?, salaryPerHour = ?, phoneNumber = ?, address = ?, otherInformation = ?, createdAt = ?, deletedAt = ? WHERE id = ?");
+        var preparedStatement=this.prepareStatement("UPDATE employee SET name = ?, accountID = ?, salaryPerHour = ?, phoneNumber = ?, address = ?, otherInformation = ?, createdAt = ? WHERE id = ?");
         preparedStatement.setString(1,employee.getName());
         preparedStatement.setInt(2,employee.getAccountID());
         preparedStatement.setInt(3,employee.getSalaryPerHour());
@@ -54,17 +53,19 @@ public class EmployeeDAOImpl extends BaseDAO implements IEmployeeDAO{
         preparedStatement.setString(5, employee.getAddress());
         preparedStatement.setString(6,employee.getOtherInformation());
         preparedStatement.setDate(7,new  java.sql.Date(employee.getCreatedAt().getTime()));
-        preparedStatement.setDate(8, null);
-        preparedStatement.setInt(9,employee.getId());
-        preparedStatement.executeUpdate();
-        return employee;
+        preparedStatement.setInt(8,employee.getId());
+        var result=preparedStatement.executeUpdate();
+        preparedStatement.close();
+        return result>0?this.findById(employee.getId()):null;
     }
     @Override
     public boolean delete(Integer integer) throws SQLException {
         var preparedStatement = this.prepareStatement("UPDATE employee SET deletedAt = ? WHERE id = ?");
         preparedStatement.setDate(1, new java.sql.Date(new java.util.Date().getTime()));
         preparedStatement.setInt(2, integer);
-        return preparedStatement.executeUpdate() > 0;
+        var result = preparedStatement.executeUpdate();
+        preparedStatement.close();
+        return result > 0;
     }
 
     @Override
@@ -89,4 +90,3 @@ public class EmployeeDAOImpl extends BaseDAO implements IEmployeeDAO{
     }
 
 }
-
