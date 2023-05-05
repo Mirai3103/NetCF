@@ -114,9 +114,12 @@ public class UpdateProductGUI extends JFrame {
                     if (Helper.checkNumber(txtProductPrice.getText())) {
                         product.setPrice(Double.parseDouble(txtProductPrice.getText()));
                     }
-                    product.setStock(Integer.parseInt(txtNumberOfProduct.getText()));
+                    if (Helper.checkNumber(txtNumberOfProduct.getText())) {
+                        product.setStock(Integer.parseInt(txtNumberOfProduct.getText()));
+                    }
                     try {
                         productService.update(product);
+                        JOptionPane.showMessageDialog(null,"Cập Nhật Thành Công","Thông Báo",JOptionPane.INFORMATION_MESSAGE);
                     } catch (SQLException ex) {
                         throw new RuntimeException(ex);
                     }
