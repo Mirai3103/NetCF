@@ -68,12 +68,18 @@ public class AccountGUI extends JPanel {
             try {
                 if (accountDetailGUI.getStatus() == JOptionPane.OK_OPTION) {
                     accountService.create(accountDetailGUI.getAccount());
+
                     JOptionPane.showMessageDialog(this, "Tạo tài khoản thành công");
 
                     reloadTableData();
                 }
-            } catch (SQLException ex) {
-                throw new RuntimeException(ex);
+            } catch (Exception ex) {
+               //Username existed
+                if (ex.getMessage().equals("Username existed")) {
+                    JOptionPane.showMessageDialog(this, "Tên tài khoản đã tồn tại");
+                } else {
+                    throw new RuntimeException(ex);
+                }
             }
 
 
@@ -251,7 +257,6 @@ public class AccountGUI extends JPanel {
         label4 = new JLabel();
         panel10 = new JPanel();
         label5 = new JLabel();
-        comboBox1 = new JComboBox<>();
         panel2 = new JPanel();
         scrollPane1 = new JScrollPane();
         table1 = new JTable();
@@ -275,7 +280,7 @@ public class AccountGUI extends JPanel {
             button1.setPreferredSize(new Dimension(200, 50));
             button1.setBackground(new Color(0x0bc5ea));
             button1.setForeground(Color.white);
-            button1.setFont(new Font("Segoe UI", Font.PLAIN, 18));
+            button1.setFont(new Font("nunito", Font.PLAIN, 18));
             panel1.add(button1, BorderLayout.EAST);
         }
         add(panel1, BorderLayout.NORTH);
@@ -323,13 +328,11 @@ public class AccountGUI extends JPanel {
                     panel10.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 10));
 
                     //---- label5 ----
-                    label5.setText("L\u1ecdc theo t\u00ecnh tr\u1ea1ng:");
+                    label5.setText("");
                     panel10.add(label5);
 
                     //---- comboBox1 ----
-                    comboBox1.setPreferredSize(new Dimension(200, 30));
-                    comboBox1.setModel(new DefaultComboBoxModel<>(new String[]{"\u0110ang ho\u1ea1t \u0111\u1ed9ng", "Offline"}));
-                    panel10.add(comboBox1);
+
                 }
                 panel4.add(panel10, BorderLayout.WEST);
             }
@@ -365,7 +368,6 @@ public class AccountGUI extends JPanel {
     private JLabel label4;
     private JPanel panel10;
     private JLabel label5;
-    private JComboBox<String> comboBox1;
     private JPanel panel2;
     private JScrollPane scrollPane1;
     private JTable table1;

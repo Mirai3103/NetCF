@@ -7,12 +7,15 @@ import Utils.ServiceProvider;
 import DTO.Product;
 import BUS.ProductService;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.IOException;
 import java.sql.SQLException;
 import java.util.Date;
 
@@ -212,7 +215,7 @@ public class UpdateProductGUI extends JFrame {
         comboBox.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                String selected = (String)comboBox.getSelectedItem();
+                String selected = (String) comboBox.getSelectedItem();
                 if (selected.equals("Nước Uống")) {
                     product.setType(1);
                 }
@@ -320,11 +323,22 @@ public class UpdateProductGUI extends JFrame {
                 JFileChooser chooser = new JFileChooser();
                 int result = chooser.showOpenDialog(UpdateProductGUI.this);
                 if (result == JFileChooser.APPROVE_OPTION) {
-                    File selectedFile = chooser.getSelectedFile();
-                    String path = selectedFile.getAbsolutePath();
-                    path = path.replace("/", "");
-                    System.out.println(path);
-                    image.setIcon(Helper.getImageIcon(path, 200, 300));
+                    try {
+                        File selectedFile = chooser.getSelectedFile();
+                        String path = selectedFile.getAbsolutePath();
+                        var newPath = "src/main/resources/images/" + selectedFile.getName();
+                        BufferedImage selectedImage = null;
+                        selectedImage = ImageIO.read(new File(path));
+                        var newimage = new File(newPath);
+                        newimage.createNewFile();
+                        ImageIO.write(selectedImage, "png", newimage);
+                        System.out.println(newimage.getAbsolutePath());
+                        product.setImage("images/" + selectedFile.getName());
+                        newPath=product.getImage();
+                        image.setIcon(new ImageIcon(selectedImage.getScaledInstance(200, 300, Image.SCALE_SMOOTH)));
+                    } catch (IOException ex) {
+                        throw new RuntimeException(ex);
+                    }
                 }
             }
         });

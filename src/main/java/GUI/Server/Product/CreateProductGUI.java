@@ -7,9 +7,11 @@ import Utils.ServiceProvider;
 import DTO.Product;
 import BUS.ProductService;
 
+import javax.imageio.ImageIO;
 import javax.sql.rowset.serial.SQLOutputImpl;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
+import javax.swing.filechooser.FileFilter;
 import javax.xml.transform.Source;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -312,17 +314,38 @@ public class CreateProductGUI extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 JFileChooser chooser = new JFileChooser();
-                int result = chooser.showOpenDialog(CreateProductGUI.this);
-                if (result == JFileChooser.APPROVE_OPTION) {
-                    File selectedFile = chooser.getSelectedFile();
-                    String path = selectedFile.getAbsolutePath();
-                    path = path.replace("/","");
-                    System.out.println(path);
-                    image.setIcon(Helper.getImageIcon(path,200,300));
-                    String fileName = selectedFile.getName();
-                    newPath = "/images/" + fileName;
-                    product.setImage(newPath);
+                chooser.setFileFilter(new FileFilter() {
+                    @Override
+                    public boolean accept(File f) {
+                        var name = f.getName();
+                        return f.isDirectory() || name.endsWith(".jpg") || name.endsWith(".png") || name.endsWith(".jpeg");
+                    }
+
+                    @Override
+                    public String getDescription() {
+                        return "Image File (*.jpg, *.png, *.jpeg)";
+                    }
                 }
+                );
+                int result = chooser.showOpenDialog(CreateProductGUI.this);
+                try {
+                    if (result == JFileChooser.APPROVE_OPTION) {
+                        File selectedFile = chooser.getSelectedFile();
+                        String path = selectedFile.getAbsolutePath();
+                        var newPatht = "src/main/resources/images/" + selectedFile.getName();
+                        var selectedImage = ImageIO.read(new File(path));
+                        var newimage = new File(newPatht);
+                        newimage.createNewFile();
+                        ImageIO.write(selectedImage,"png",newimage);
+                        System.out.println(newimage.getAbsolutePath());
+                        product.setImage("images/" + selectedFile.getName());
+                        newPath = product.getImage();
+                       image.setIcon(new ImageIcon(selectedImage.getScaledInstance(200,300,Image.SCALE_SMOOTH)));
+                    }
+                }catch (Exception ex) {
+                    ex.printStackTrace();
+                }
+
             }
         });
         panel3.add(chooseButton,BorderLayout.CENTER);

@@ -67,6 +67,7 @@ public class ManagerEmployee extends JPanel {
     public ManagerEmployee(){
 
         this.setLayout(new BorderLayout());
+        this.initManagerEmployee();
     }
     public void sizeInComputer(JPanel jpanel){
         jpanel.setPreferredSize(new Dimension(1200,650));

@@ -5,6 +5,7 @@ import DTO.Invoice;
 import DTO.Product;
 
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.List;
 
 public class ProductDAOImpl extends BaseDAO implements IProductDAO {
@@ -13,7 +14,7 @@ public class ProductDAOImpl extends BaseDAO implements IProductDAO {
     public Product create(Product product) throws SQLException {
         var preprapedStament = ConnectionFactory.
                 getConnection().
-                prepareStatement("INSERT INTO Product(name, price, type, stock, description, image, createdAt, deletedAt) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
+                prepareStatement("INSERT INTO Product(name, price, type, stock, description, image, createdAt, deletedAt) VALUES (?, ?, ?, ?, ?, ?, ?, ?)", Statement.RETURN_GENERATED_KEYS);
         preprapedStament.setString(1, product.getName());
         preprapedStament.setDouble(2,product.getPrice());
         preprapedStament.setInt(3,product.getType().ordinal());
