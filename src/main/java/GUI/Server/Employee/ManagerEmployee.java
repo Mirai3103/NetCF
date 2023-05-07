@@ -101,13 +101,13 @@ public class ManagerEmployee extends JPanel {
 
     public void setPlaceHoder(String textPlaceHoder, JTextField jtextField) {
         jtextField.setText(textPlaceHoder);
-        jtextField.setFont(new Font("serif", Font.PLAIN, 16));
+        jtextField.setFont(new Font("nunito", Font.PLAIN, 16));
     }
 
     public void initManagerEmployee() throws SQLException {
         //header-title
         titleManagerEmployee = new JLabel("Quản lý nhân viên");
-        titleManagerEmployee.setFont(new Font("serif", Font.BOLD, 30));
+        titleManagerEmployee.setFont(new Font("nunito", Font.BOLD, 30));
         titleManagerEmployee.setForeground(Color.WHITE);
         setMarginJLabel(0, 20, 0, 0, titleManagerEmployee);
         containTitleManagerEmployee = new JPanel();
@@ -212,6 +212,14 @@ public class ManagerEmployee extends JPanel {
         gbcBody.gridy = 3;
         gbcBody.fill = GridBagConstraints.HORIZONTAL;
         gbcBody.gridwidth = 2;
+        JPopupMenu popupMenu = new JPopupMenu();
+        JMenuItem menuItem = new JMenuItem("Refresh");
+        menuItem.setFont(new Font("nunito", Font.BOLD, 16));
+        menuItem.addActionListener(e->{
+            list = employeeService.findAllEmployee();
+           showTable();
+        });
+        popupMenu.add(menuItem);
 
 
         //tim kiem,them sua xoa
@@ -304,7 +312,7 @@ public class ManagerEmployee extends JPanel {
         listEmployee = new JTable();
         listEmployee.setModel(listEmployeeModel);
         listEmployee.getTableHeader().setPreferredSize(new Dimension(0, 40));
-        listEmployee.getTableHeader().setFont(new Font("serif", Font.BOLD, 17));
+        listEmployee.getTableHeader().setFont(new Font("nunito", Font.BOLD, 17));
         listEmployee.getColumnModel().getColumn(0).setPreferredWidth(30);
         listEmployee.getColumnModel().getColumn(1).setPreferredWidth(100);
         listEmployee.getColumnModel().getColumn(2).setPreferredWidth(100);
@@ -329,7 +337,7 @@ public class ManagerEmployee extends JPanel {
 
         listEmployeeScrollPane = new JScrollPane(listEmployee);
         titleContainShowListEmployee = new JLabel("Danh sách nhân viên", JLabel.CENTER);
-        titleContainShowListEmployee.setFont(new Font("serif", Font.BOLD, 25));
+        titleContainShowListEmployee.setFont(new Font("nunito", Font.BOLD, 25));
         titleContainShowListEmployee.setBorder(BorderFactory.createCompoundBorder(
                 BorderFactory.createLineBorder(new Color(0, 0, 0, 1)),
                 BorderFactory.createEmptyBorder(10, 0, 0, 0)
@@ -349,6 +357,7 @@ public class ManagerEmployee extends JPanel {
         managerEmployeeContentPane.add(managerEmployeeFilter, BorderLayout.CENTER);
         this.add(managerEmployeeContentPane, BorderLayout.CENTER);
         this.setVisible(true);
+        listEmployee.setComponentPopupMenu(popupMenu);
     }
 
     @Override
@@ -371,9 +380,7 @@ public class ManagerEmployee extends JPanel {
         accounts.forEach(a -> model.addElement(new TaiKhoanComboBoxItem(a.getId(), a.getUsername())));
         inputIdNV.setModel(model);
     }
-
-    public void showTable() {
-
+    public void showTable(List<Employee> list) {
         var model = (DefaultTableModel) this.listEmployeeModel;
         model.setRowCount(0);
         for (Employee e : list) {
@@ -382,8 +389,18 @@ public class ManagerEmployee extends JPanel {
             });
         }
     }
+    public void showTable() {
+        showTable(this.list);
+
+    }
 
     private void btnSearchActionPerformed(ActionEvent evt) {
+        var searchTxt =JOptionPane.showInputDialog(null, "Nhập tên nhân viên, mã, hoặc số điện thoại", "Tìm kiếm nhân viên", JOptionPane.INFORMATION_MESSAGE);
+        if(searchTxt == null) {
+            return;
+        }
+       var fileredList =this.list.stream().filter(e -> e.getName().toLowerCase().contains(searchTxt.toLowerCase()) || String.valueOf(e.getId()).contains(searchTxt) || e.getPhoneNumber().contains(searchTxt)).toList();
+        showTable(fileredList);
     }
 
     private void clearInput() {
