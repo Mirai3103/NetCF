@@ -21,9 +21,9 @@ public class EmployeeDAOImpl extends BaseDAO implements IEmployeeDAO{
     @Override
     public Employee create(Employee employee) throws SQLException {
 
-        try(var  preparedStatement=this.prepareStatement("INSERT INTO employee (name, accountID, accountID, phoneNumber, address, otherInformation, createdAt, deletedAt) VALUES (?, ?, ?, ?, ?, ?, ?, ?)", Statement.RETURN_GENERATED_KEYS)) {
+        try(var  preparedStatement=this.prepareStatement("INSERT INTO employee (name, accountID, salaryPerHour, phoneNumber, address, otherInformation, createdAt, deletedAt) VALUES (?, ?, ?, ?, ?, ?, ?, ?)", Statement.RETURN_GENERATED_KEYS)) {
             preparedStatement.setString(1,employee.getName());
-            preparedStatement.setInt(2,employee.getAccountID());
+            preparedStatement.setObject(2,employee.getAccountID());
             preparedStatement.setInt(3,employee.getSalaryPerHour());
             preparedStatement.setString(4, employee.getPhoneNumber());
             preparedStatement.setString(5, employee.getAddress());
@@ -47,7 +47,7 @@ public class EmployeeDAOImpl extends BaseDAO implements IEmployeeDAO{
     public Employee update(Employee employee) throws SQLException {
         var preparedStatement=this.prepareStatement("UPDATE employee SET name = ?, accountID = ?, salaryPerHour = ?, phoneNumber = ?, address = ?, otherInformation = ?, createdAt = ? WHERE id = ?");
         preparedStatement.setString(1,employee.getName());
-        preparedStatement.setInt(2,employee.getAccountID());
+        preparedStatement.setObject(2,employee.getAccountID());
         preparedStatement.setInt(3,employee.getSalaryPerHour());
         preparedStatement.setString(4, employee.getPhoneNumber());
         preparedStatement.setString(5, employee.getAddress());

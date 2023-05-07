@@ -361,7 +361,6 @@ public class ManagerEmployee extends JPanel {
         employee = employeeService.findEmployeeById(employeeID);
         if (employee == null) {
             JOptionPane.showMessageDialog(this, "Không tìm thấy nhân viên", "Lỗi", JOptionPane.ERROR_MESSAGE);
-//            this.dispose();
         }
 //        } catch (SQLException ex) {
 //            JOptionPane.showMessageDialog(this, "Lỗi nhân viên", "Lỗi", JOptionPane.ERROR_MESSAGE);
@@ -412,5 +411,9 @@ public class ManagerEmployee extends JPanel {
         Helper.initUI();
         ServiceProvider.init();
         quanlynhanvien.initManagerEmployee();
+        JFrame frame = new JFrame("Quản Lý Nhân Viên");
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.add(quanlynhanvien);
+        frame.setVisible(true);
     }
 }

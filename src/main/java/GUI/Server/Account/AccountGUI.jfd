@@ -22,7 +22,7 @@ new FormModel {
 					"preferredSize": new java.awt.Dimension( 200, 50 )
 					"background": new java.awt.Color( 11, 197, 234, 255 )
 					"foreground": sfield java.awt.Color white
-					"font": new java.awt.Font( "Segoe UI", 0, 18 )
+					"font": new java.awt.Font( "nunito", 0, 18 )
 				}, new FormLayoutConstraints( class java.lang.String ) {
 					"value": "East"
 				} )

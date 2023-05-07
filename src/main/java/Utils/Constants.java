@@ -3,6 +3,7 @@ package Utils;
 import GUI.Server.Account.AccountGUI;
 import GUI.Server.Computer.ComputerManageGUI;
 import GUI.Server.ComputerUsage.ComputerUsageGUI;
+import GUI.Server.Employee.ManagerEmployee;
 import GUI.Server.EmployeeSalary.EmployeeSalary;
 import GUI.Server.Home.Home;
 import GUI.Server.Invoice.CreateInvoiceGUI;
@@ -56,9 +57,8 @@ public final class Constants {
                Tab.builder().title("Quản lý").key("manage").children(new ArrayList<>(
                         List.of(
                                Tab.builder().title("Quản lý tài khoản").key("manage-account").contentPanel(new AccountGUI()).build(),
-                               Tab.builder().title("Quản lý khách hàng").key("manage-customer").contentPanel(createPanelWithText("Quản lý khách hàng")).build(),
                                Tab.builder().title("Quản lý sản phẩm").key("manage-product").contentPanel(new ProductGUI()).build(),
-                               Tab.builder().title("Quản lý nhân viên").key("manage-report").contentPanel(createPanelWithText("Quản lý báo cáo")).build(),
+                               Tab.builder().title("Quản lý nhân viên").key("manage-employee").contentPanel(new ManagerEmployee()).build(),
                                 Tab.builder().title("Quản lý hoá đơn").key("manage-invoice").contentPanel(new InvoiceManageGUI()).build(),
                                 Tab.builder().title("Quản lý máy").key("manage-computer").contentPanel(new ComputerManageGUI()).build()
                         )

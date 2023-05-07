@@ -18,6 +18,10 @@ public class AccountService {
 
     }
     public Account create(Account account) throws SQLException {
+        var existedAccount = this.findByUsername(account.getUsername());
+        if (existedAccount != null) {
+            throw new RuntimeException("Username existed");
+        }
      return   this.accountDAO.create(account);
     }
 

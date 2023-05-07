@@ -6,11 +6,14 @@ package GUI.Server.Account;
 
 import javax.swing.border.*;
 
+import GUI.Server.Main;
+import GUI.Server.MainUI;
 import Utils.Helper;
 import lombok.Getter;
 import DTO.Account;
 
 import java.awt.*;
+import java.util.Arrays;
 import javax.swing.*;
 
 /**
@@ -21,73 +24,77 @@ public class AccountDetailGUI extends JDialog {
     @Getter
     private Account account;
     private Mode mode;
-   public enum Mode {
-         EDIT, READ_ONLY,CREATE
+
+    public enum Mode {
+        EDIT, READ_ONLY, CREATE
     }
 
     public AccountDetailGUI(Window owner, Account account, Mode mode) {
-       this.account = account;
-         this.mode = mode;
+        this.account = account;
+        this.mode = mode;
         initComponents();
         reDesign();
         initEvent();
         setModal(true);
         setModalityType(ModalityType.APPLICATION_MODAL);
     }
-    private boolean getAccountFromInput(){
-       if (textField2.getText().trim().equals("")) {
-           JOptionPane.showMessageDialog(this, "Tên đăng nhập không được để trống");
-           return false;
-         }
-       if (textField3.getText().trim().equals("")) {
-           JOptionPane.showMessageDialog(this, "Mật khẩu không được để trống");
-           return false;
-       }
-       if (!Helper.isNumber(textField4.getText().trim())) {
-           JOptionPane.showMessageDialog(this, "Số dư không hợp lệ");
-           return false;
-         }
+
+    private boolean getAccountFromInput() {
+        if (textField2.getText().trim().equals("")) {
+            JOptionPane.showMessageDialog(this, "Tên đăng nhập không được để trống");
+            return false;
+        }
+        if (textField3.getText().trim().equals("")) {
+            JOptionPane.showMessageDialog(this, "Mật khẩu không được để trống");
+            return false;
+        }
+        if (!Helper.isNumber(textField4.getText().trim())) {
+            JOptionPane.showMessageDialog(this, "Số dư không hợp lệ");
+            return false;
+        }
         this.account.setUsername(textField2.getText());
         this.account.setPassword(textField3.getText());
         this.account.setRole(((Account.Role) roleComboBox.getSelectedItem()).ordinal());
         this.account.setBalance(Double.parseDouble(textField4.getText()));
         return true;
     }
+
     @Getter
     private int status = JOptionPane.CANCEL_OPTION;
+
     private void initEvent() {
 
-       cancel.addActionListener(e->{
+        cancel.addActionListener(e -> {
             this.status = JOptionPane.CANCEL_OPTION;
 
-           dispose();
-       });
-       ok.addActionListener(e->{
-              this.status = JOptionPane.OK_OPTION;
-           if ((mode == Mode.CREATE || mode == Mode.EDIT )&&this.getAccountFromInput()) {
-               dispose();
-           }
-       });
+            dispose();
+        });
+        ok.addActionListener(e -> {
+            this.status = JOptionPane.OK_OPTION;
+            if ((mode == Mode.CREATE || mode == Mode.EDIT) && this.getAccountFromInput()) {
+                dispose();
+            }
+        });
 
     }
 
     public AccountDetailGUI(Window owner) {
-        this(owner,Account.builder().username("").password("").build(), Mode.CREATE);
+        this(owner, Account.builder().username("").password("").build(), Mode.CREATE);
     }
+
     public AccountDetailGUI(Window owner, Account account) {
-        this(owner,account, Mode.EDIT);
+        this(owner, account, Mode.EDIT);
     }
+
     private void reDesign() {
-       Account.Role[] roleItems = new Account.Role[]{
-               Account.Role.ADMIN,
-               Account.Role.MANAGER,
-               Account.Role.EMPLOYEE,
-               Account.Role.USER
-       };
-         roleComboBox.setModel(new DefaultComboBoxModel<>(roleItems));
-         textField1.setEditable(false);
+
+        var userRole = MainUI.getCurrentUser().getAccount().getRole();
+        var lowerRole = Arrays.stream(Account.Role.values()).filter(r->r.isLessThan(userRole)).toArray();
+
+        roleComboBox.setModel(new DefaultComboBoxModel<>(lowerRole));
+        textField1.setEditable(false);
         switch (mode) {
-            case CREATE ->{
+            case CREATE -> {
                 label1.setText("Tạo tài khoản");
                 cancel.setText("Hủy");
                 ok.setText("Tạo");
@@ -96,11 +103,11 @@ public class AccountDetailGUI extends JDialog {
                 label1.setText("Chỉnh sửa tài khoản");
                 cancel.setText("Hủy");
                 ok.setText("Lưu");
-                textField1.setText(account.getId()+"");
+                textField1.setText(account.getId() + "");
                 textField2.setText(account.getUsername());
                 textField3.setText(account.getPassword());
-                textField4.setText(account.getBalance()+"");
-                roleComboBox.setSelectedItem(roleItems[account.getRole().ordinal()]);
+                textField4.setText(account.getBalance() + "");
+                roleComboBox.setSelectedIndex(roleComboBox.getItemCount() - 1);
 
             }
             case READ_ONLY -> {
@@ -115,11 +122,9 @@ public class AccountDetailGUI extends JDialog {
 
             }
         }
-        roleComboBox.addItemListener(e->{
+        roleComboBox.addItemListener(e -> {
         });
     }
-
-
 
 
     private void initComponents() {

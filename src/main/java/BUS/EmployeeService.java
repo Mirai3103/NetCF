@@ -34,7 +34,9 @@ public class EmployeeService {
         return employees;
 
     }
-    public Employee findEmployeeByAccountID(int id) {
+    public Employee findEmployeeByAccountID(Integer id) {
+        if(id==null)
+            return null;
         try {
             return employeeDAO.findByAccountID(id);
         } catch (SQLException e) {
@@ -57,7 +59,11 @@ public class EmployeeService {
         return employeeDAO.update(employee);
     }
     public void delete(Integer id) throws SQLException {
+        var employee=  employeeDAO.findById(id);
         employeeDAO.delete(id);
+        if(employee.getAccountID()!=null){
+            accountService.delete(employee.getAccountID());
+        }
     }
 
 }
