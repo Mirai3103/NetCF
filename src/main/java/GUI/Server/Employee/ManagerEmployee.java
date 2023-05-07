@@ -65,7 +65,6 @@ public class ManagerEmployee extends JPanel {
     private JPanel containTimkiem;
 
     public ManagerEmployee(){
-
         this.setLayout(new BorderLayout());
         this.initManagerEmployee();
     }
@@ -137,7 +136,7 @@ public class ManagerEmployee extends JPanel {
         gbcBody.gridx = 0;
         gbcBody.gridy = 1;
         luongNV=new JLabel("Lương (VND/h)",JLabel.LEFT);
-        inputLuongNV=new JTextField("",15);
+        inputLuongNV=new JTextField("",14);
         inputLuongNV.setPreferredSize(new Dimension(0,25));
         containLuongNV=new JPanel(new FlowLayout());
         containLuongNV.add(luongNV);
@@ -161,7 +160,7 @@ public class ManagerEmployee extends JPanel {
         gbcBody.fill = GridBagConstraints.HORIZONTAL;
         gbcBody.gridwidth = 2;
         diachiNV=new JLabel("Địa chỉ",JLabel.LEFT);
-        inputDiachiNV=new JTextField("",44);
+        inputDiachiNV=new JTextField("",43);
         inputDiachiNV.setPreferredSize(new Dimension(0,25));
         containDiachiNV=new JPanel(new FlowLayout());
         containDiachiNV.add(diachiNV);
@@ -174,7 +173,7 @@ public class ManagerEmployee extends JPanel {
         gbcBody.fill = GridBagConstraints.HORIZONTAL;
         gbcBody.gridwidth = 2;
         timkiem=new JLabel("Tìm kiếm ID",JLabel.LEFT);
-        inputTimkiem=new JTextField("",44);
+        inputTimkiem=new JTextField("",41);
         inputTimkiem.setPreferredSize(new Dimension(0,25));
         containTimkiem=new JPanel(new FlowLayout());
         containTimkiem.add(timkiem);
@@ -290,7 +289,7 @@ public class ManagerEmployee extends JPanel {
         ));
 
         containShowListEmployee=new JPanel(new BorderLayout(30,20));
-        containShowListEmployee.setPreferredSize(new Dimension(945,495));
+        containShowListEmployee.setPreferredSize(new Dimension(945,400));
         containShowListEmployee.add(titleContainShowListEmployee,BorderLayout.PAGE_START);
         containShowListEmployee.add(listEmployeeScrollPane,BorderLayout.CENTER);
         managerEmployeeFilter.add(containShowListEmployee,BorderLayout.SOUTH);

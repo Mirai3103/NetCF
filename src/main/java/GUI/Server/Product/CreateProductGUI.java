@@ -29,17 +29,16 @@ public class CreateProductGUI extends JFrame {
     private Product product = Product.builder().image("/images/imageWhite.jpg").id(0).name("").price(0).createdAt(new Date()).description("").stock(0).build();
     private ProductService productService;
     private JLabel image;
-    private int typeProduct;
     private JCheckBox placeBox;
     private String newPath;
     private JComboBox comboBox;
     public CreateProductGUI() {
-        typeProduct = 999;
         productService = ServiceProvider.getInstance().getService(ProductService.class);
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         this.setSize(1030,1030);
         this.setLayout(new BorderLayout());
         this.setLocationRelativeTo(null);
+        this.setResizable(false);
         initComponents();
         this.setVisible(true);
         this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -102,7 +101,8 @@ public class CreateProductGUI extends JFrame {
                     JOptionPane.showMessageDialog(null, "Số Lượng Sản Phẩm Bạn Không Được Để Trống", "Lỗi", JOptionPane.ERROR_MESSAGE);
                 } else if (txtNumberOfProduct.getText().equals("[a-zA-Z]+")||txtNumberOfProduct.getText().equals(".*[!@#$%].*")) {
                     JOptionPane.showMessageDialog(null, "Giá Bán Của Sản Phẩm Không Chứa Các Ký Tự Chữ Cái Hoặc Ký Tự Đặt Biệt", "Lỗi", JOptionPane.ERROR_MESSAGE);
-                } else {
+                }
+                else {
                     product.setName(txtProductName.getText());
                     try {
                         product.setPrice(Double.parseDouble(txtProductPrice.getText()));
@@ -110,9 +110,14 @@ public class CreateProductGUI extends JFrame {
                         JOptionPane.showMessageDialog(null,"Giá Tiền Phải Là Chữ Số","Lỗi",JOptionPane.ERROR_MESSAGE);
                     }
                     product.setDescription(txtProductDescription.getText());
-                    product.setStock(Integer.parseInt(txtNumberOfProduct.getText()));
+                    try {
+                        product.setPrice(Integer.parseInt(txtNumberOfProduct.getText()));
+                    } catch (NumberFormatException exception) {
+                        JOptionPane.showMessageDialog(null,"Số Lượng Sản Phẩm Phải Là Chữ Số","Lỗi",JOptionPane.ERROR_MESSAGE);
+                    }
                     try {
                         productService.create(product);
+                        JOptionPane.showMessageDialog(null,"Thêm Sản Phẩm Mới Thành Công","Thông Báo",JOptionPane.INFORMATION_MESSAGE);
                     } catch (SQLException ex) {
                         throw new RuntimeException(ex);
                     }
@@ -212,6 +217,9 @@ public class CreateProductGUI extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 String selected = (String)comboBox.getSelectedItem();
+                if (selected.equals("Vui Lòng Chọn Loại Sản Phẩm")) {
+                    JOptionPane.showMessageDialog(null,"Chọn Loại Sản Phẩm","Thông Báo",JOptionPane.ERROR_MESSAGE);
+                }
                 if (selected.equals("Nước Uống")) {
                     product.setType(1);
                 }

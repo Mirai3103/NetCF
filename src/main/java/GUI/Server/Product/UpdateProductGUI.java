@@ -48,6 +48,7 @@ public class UpdateProductGUI extends JFrame {
         this.setLayout(new BorderLayout());
         this.setLocationRelativeTo(null);
         initComponents();
+        this.setResizable(false);
         this.setVisible(true);
         this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
     }
