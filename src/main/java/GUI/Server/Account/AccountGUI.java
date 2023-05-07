@@ -31,9 +31,9 @@ public class AccountGUI extends JPanel {
     private List<Account> filteredAccounts;
 
     public AccountGUI() {
-        accountService = ServiceProvider.getInstance().getService(AccountService.class);
         initComponents();
-        label1.putClientProperty("FlatLaf.style", "font: $h0.font");
+        accountService = ServiceProvider.getInstance().getService(AccountService.class);
+        label1.setFont(Fonts.getFont( Font.BOLD, 36));
         try {
             accounts = accountService.getAllAccounts();
             filteredAccounts = accounts.stream().filter(a->a.getRole().isLessThan(MainUI.getCurrentUser().getAccount().getRole())).toList();
@@ -45,7 +45,16 @@ public class AccountGUI extends JPanel {
             throw new RuntimeException(e);
         }
         initEvent();
+        // onLoad
+        this.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                repaint();
+                revalidate();
+                update(getGraphics());
+            }
+        });
     }
+
 
     private void initEvent() {
         searchTextField.addKeyListener(new KeyAdapter() {
@@ -211,7 +220,7 @@ public class AccountGUI extends JPanel {
 
 
         DefaultTableModel model = new DefaultTableModel();
-        String[] columnNames = {"ID", "Tên tài khoản", "Số dư", "Vai trò", "Trạng thái", "Ngày tạo"};
+        String[] columnNames = {"ID", "Tên tài khoản", "Số dư", "Vai trò", "Ngày tạo"};
         model.setColumnIdentifiers(columnNames);
         table1.setModel(model);
         table1.setDefaultEditor(Object.class, null);
@@ -241,7 +250,23 @@ public class AccountGUI extends JPanel {
         DefaultTableModel model = (DefaultTableModel) table1.getModel();
         // clear table
         model.setRowCount(0);
-        filteredAccounts.stream().map(account -> new Object[]{account.getId(), account.getUsername(), account.getBalance(), account.getRole(), account.getCurrentSession() == null ? "Offline" : "Dùng máy " + account.getCurrentSession().getComputerID(), Helper.getDateString(account.getCreatedAt())}).forEach(model::addRow);
+        filteredAccounts.stream().map(account -> new Object[]{account.getId(), account.getUsername(),Helper.formatMoney( account.getBalance()), account.getRole(), Helper.getDateString(account.getCreatedAt())}).forEach(model::addRow);
+    }
+
+    @Override
+    public void setVisible(boolean aFlag) {
+        super.setVisible(aFlag);
+        if (aFlag) {
+            try {
+                accounts = accountService.getAllAccounts();
+                filteredAccounts = new ArrayList<>(accounts);
+                reloadTableData();
+
+
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
+        }
     }
 
     private void initComponents() {
@@ -262,12 +287,12 @@ public class AccountGUI extends JPanel {
         table1 = new JTable();
 
         //======== this ========
-        setBackground(new Color(0x00f2f2f2, true));
+        setBackground(Color.white);
         setLayout(new BorderLayout());
 
         //======== panel1 ========
         {
-            panel1.setBackground(new Color(0x00f2f2f2, true));
+            panel1.setBackground(Color.white);
             panel1.setLayout(new BorderLayout());
 
             //---- label1 ----
