@@ -7,7 +7,7 @@ import DTO.Message;
 import java.sql.SQLException;
 import java.util.List;
 
-public class MessageService {
+public class MessageBUS {
     @Setter
     private IMessageDAO messageDAOImpl;
 

@@ -33,6 +33,6 @@ public class Interval {
         return id;
     }
     public static void clearInterval(int id) {
-        ids.remove(id);
+        ids.removeIf(i -> i == id);
     }
 }

@@ -1,18 +1,14 @@
 package GUI.Server.Product;
 
-import GUI.Components.Input;
 import Utils.Fonts;
 import Utils.Helper;
 import Utils.ServiceProvider;
 import DTO.Product;
-import BUS.ProductService;
+import BUS.ProductBUS;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.io.File;
 import java.sql.SQLException;
 import java.util.Date;
 
@@ -22,13 +18,13 @@ public class ViewProductGUI extends JFrame {
     private JLabel logo, productName , productPrice, productType, numberOfProduct, productDescription, productImage;
     private JTextField txtProductName, txtProductPrice, txtNumberOfProduct, txtProductDescription;
     private Product product = Product.builder().image("/images/gtaV.jpg").id(0).name("").price(0).createdAt(new Date()).description("").stock(0).build();
-    private ProductService productService;
+    private ProductBUS productBUS;
     private JCheckBox placeBox;
     private JComboBox comboBox;
     public ViewProductGUI(int productId) {
-        productService = ServiceProvider.getInstance().getService(ProductService.class);
+        productBUS = ServiceProvider.getInstance().getService(ProductBUS.class);
         try {
-            product = productService.findById(productId);
+            product = productBUS.findById(productId);
             if (product == null) {
                 JOptionPane.showMessageDialog(this,"Không tìm thấy sản phẩm","Lỗi",JOptionPane.ERROR_MESSAGE);
                 this.dispose();

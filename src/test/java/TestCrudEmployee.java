@@ -1,34 +1,30 @@
 import DTO.Account;
-import DTO.CreateInvoiceInputDTO;
 import DTO.Employee;
-import DTO.InvoiceDetailInputDTO;
 import GUI.Server.MainUI;
 import Utils.ServiceProvider;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import BUS.AccountService;
-import BUS.EmployeeService;
-import BUS.InvoiceService;
+import BUS.AccountBUS;
+import BUS.EmployeeBUS;
 
 import java.sql.SQLException;
 import java.util.Date;
-import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
 public class TestCrudEmployee {
-    static EmployeeService employeeService;
-    static AccountService accountService;
+    static EmployeeBUS employeeService;
+    static AccountBUS accountBUS;
 
     @BeforeAll
     public static void init() {
         System.out.println("init");
         ServiceProvider.init();
-         employeeService = ServiceProvider.getInstance().getService(EmployeeService.class);
-        accountService = ServiceProvider.getInstance().getService(AccountService.class);
-        var account = accountService.login("admin", "admin");
+         employeeService = ServiceProvider.getInstance().getService(EmployeeBUS.class);
+        accountBUS = ServiceProvider.getInstance().getService(AccountBUS.class);
+        var account = accountBUS.login("admin", "admin");
         var employee = employeeService.findEmployeeByAccountID(account.getId());
         MainUI.setCurrentUser(employee);
     }
@@ -61,7 +57,7 @@ public class TestCrudEmployee {
     public void createAEmployeeWithAccount() throws SQLException {
         assertDoesNotThrow(() -> {
             var newAccount = Account.builder().username("employee2test").password("employee2test").role(Account.Role.EMPLOYEE).createdAt(new Date()).balance(0).deletedAt(null).build();
-            newAccount = accountService.create(newAccount);
+            newAccount = accountBUS.create(newAccount);
             var employee = Employee.builder().accountID(
                             newAccount.getId()
                     ).address("test2")
@@ -72,11 +68,11 @@ public class TestCrudEmployee {
                     .build();
             employeeService.createEmployee(employee);
         });
-        var employee = employeeService.findEmployeeByAccountID(accountService.login("employee2test", "employee2test").getId());
+        var employee = employeeService.findEmployeeByAccountID(accountBUS.login("employee2test", "employee2test").getId());
         assertDoesNotThrow(() -> {
             employeeService.delete(employee.getId());
         });
-        var employeeAccount = accountService.findById(employee.getAccountID());
+        var employeeAccount = accountBUS.findById(employee.getAccountID());
         assertNull(employeeAccount);
     }
     @Test
@@ -84,7 +80,7 @@ public class TestCrudEmployee {
     public void updateAEmployeeWithAccount() throws SQLException {
         assertDoesNotThrow(() -> {
             var newAccount = Account.builder().username("employee3test").password("employee3test").role(Account.Role.EMPLOYEE).createdAt(new Date()).balance(0).deletedAt(null).build();
-            newAccount = accountService.create(newAccount);
+            newAccount = accountBUS.create(newAccount);
             var employee = Employee.builder().accountID(
                             newAccount.getId()
                     ).address("test3")
@@ -96,7 +92,7 @@ public class TestCrudEmployee {
             employeeService.createEmployee(employee);
         });
         assertDoesNotThrow(() -> {
-            var employee = employeeService.findEmployeeByAccountID(accountService.login("employee3test", "employee3test").getId());
+            var employee = employeeService.findEmployeeByAccountID(accountBUS.login("employee3test", "employee3test").getId());
             employee.setAddress("day la test update");
             employee.setPhoneNumber("0123456789");
             employeeService.updateEmployee(employee);

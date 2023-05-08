@@ -4,7 +4,7 @@
 
 package GUI.Server;
 
-import BUS.ComputerUsageService;
+import BUS.ComputerUsageBUS;
 import GUI.Blur;
 import GUI.Components.SideBar.SideBar;
 import Utils.Constants;
@@ -32,7 +32,7 @@ public class MainUI extends JFrame {
     @Getter
     @Setter
     private static Employee currentUser;
-    private ComputerUsageService computerUsageService ;
+    private ComputerUsageBUS computerUsageBUS;
 
     public static void login(Employee currentUser) {
         MainUI.currentUser = currentUser;
@@ -65,7 +65,7 @@ public class MainUI extends JFrame {
     private SideBar sideBar;
 
     private MainUI() {
-        computerUsageService = ServiceProvider.getInstance().getService(ComputerUsageService.class);
+        computerUsageBUS = ServiceProvider.getInstance().getService(ComputerUsageBUS.class);
         initComponents();
         sideBar = new SideBar(panel3, panel2);
         sideBar.initComponent(Constants.getTabs());
@@ -142,7 +142,7 @@ public class MainUI extends JFrame {
         logoutButton.addActionListener(e -> {
             setVisible(false);
             try {
-                computerUsageService.createForEmployee(
+                computerUsageBUS.createForEmployee(
                         loginTime,
                         new Date(),
                         currentUser.getAccountID()

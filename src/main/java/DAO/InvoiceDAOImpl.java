@@ -201,8 +201,8 @@ public class InvoiceDAOImpl extends BaseDAO implements IInvoiceDAO {
                 stt.setInt(1, invoice.getComputerId());
             }
 
-            if(invoice.getCreatedToAccountId() == 0){
-                stt.setString(4,null);
+            if(invoice.getCreatedToAccountId() == null){
+                stt.setObject(4,null);
             }
             else {
                 stt.setInt(4, invoice.getCreatedToAccountId());

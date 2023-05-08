@@ -1,7 +1,5 @@
 package GUI.Server.Product;
 
-import DAO.*;
-import DAO.Interface.*;
 import GUI.Components.Input;
 import Utils.Fonts;
 import Utils.Helper;
@@ -11,12 +9,9 @@ import BUS.*;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
-import javax.swing.event.CellEditorListener;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableCellEditor;
-import javax.swing.table.TableColumn;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -24,12 +19,11 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.EventObject;
 import java.util.List;
 
 public class ProductGUI extends JPanel {
     private List<Product> list;
-    private ProductService productService;
+    private ProductBUS productBUS;
     private JPanel parentPanel, panelHeader, panelBody, panelBody1, panelBody2, buttonPanel;
     private JLabel txtListProduct, logoLabel;
     private JComboBox comboBox;
@@ -41,7 +35,7 @@ public class ProductGUI extends JPanel {
 
     public ProductGUI() {
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-        productService = ServiceProvider.getInstance().getService(ProductService.class);
+        productBUS = ServiceProvider.getInstance().getService(ProductBUS.class);
         this.setLayout(new BorderLayout());
         this.setSize(new Dimension(screenSize.width,screenSize.height));
         initComponents();
@@ -121,7 +115,7 @@ public class ProductGUI extends JPanel {
         comboBox.setFont(Fonts.getFont(Font.ITALIC, 15));
         comboBox.setPreferredSize(new Dimension(250, 25));
         list = new ArrayList<>();
-        var localProductService = this.productService;
+        var localProductService = this.productBUS;
         var dtm1 = this.dtm;
         try {
             list = localProductService.findAll();
@@ -253,7 +247,7 @@ public class ProductGUI extends JPanel {
                 int indexRowSelected = table.getSelectedRow();
                 int idProduct = (int)table.getValueAt(indexRowSelected,0);
                 try {
-                    productService.delete(idProduct);
+                    productBUS.delete(idProduct);
                 } catch (SQLException ex) {
                     throw new RuntimeException(ex);
                 }
@@ -317,7 +311,7 @@ public class ProductGUI extends JPanel {
     private ArrayList<Product> getAllItems() {
         ArrayList<Product> itemList = new ArrayList<>();
         try {
-            itemList = (ArrayList<Product>) this.productService.findAll();
+            itemList = (ArrayList<Product>) this.productBUS.findAll();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -327,7 +321,7 @@ public class ProductGUI extends JPanel {
     private ArrayList<Product> getFoodItems() {
         ArrayList<Product> itemList = new ArrayList<>();
         try {
-            itemList = (ArrayList<Product>) this.productService.filterByTypeProduct(Product.ProductType.FOOD);
+            itemList = (ArrayList<Product>) this.productBUS.filterByTypeProduct(Product.ProductType.FOOD);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -337,7 +331,7 @@ public class ProductGUI extends JPanel {
     private ArrayList<Product> getDrinkItems() {
         ArrayList<Product> itemList = new ArrayList<>();
         try {
-            itemList = (ArrayList<Product>) this.productService.filterByTypeProduct(Product.ProductType.DRINK);
+            itemList = (ArrayList<Product>) this.productBUS.filterByTypeProduct(Product.ProductType.DRINK);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -347,7 +341,7 @@ public class ProductGUI extends JPanel {
     private ArrayList<Product> getCardItems() {
         ArrayList<Product> itemList = new ArrayList<>();
         try {
-            itemList = (ArrayList<Product>) this.productService.filterByTypeProduct(Product.ProductType.CARD);
+            itemList = (ArrayList<Product>) this.productBUS.filterByTypeProduct(Product.ProductType.CARD);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }

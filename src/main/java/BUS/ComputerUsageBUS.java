@@ -8,21 +8,21 @@ import java.sql.SQLException;
 import java.util.Date;
 import java.util.List;
 
-public class ComputerUsageService {
+public class ComputerUsageBUS {
     @Setter
     private IComputerUsageDAO computerUsageDAO;
     @Setter
-    private EmployeeService employeeService;
+    private EmployeeBUS employeeBUS;
     @Setter
-    private AccountService accountService;
+    private AccountBUS accountBUS;
     @Setter
-    private ComputerService computerService;
+    private ComputerBUS computerBUS;
 
     public ComputerUsage create(ComputerUsage computerUsage) throws SQLException {
          return computerUsageDAO.create(computerUsage);
     }
     public ComputerUsage createForEmployee(Date startAt, Date endAt,int accountId) throws SQLException {
-        var employee = employeeService.findEmployeeByAccountID(accountId);
+        var employee = employeeBUS.findEmployeeByAccountID(accountId);
         var salaryPerHour = employee.getSalaryPerHour();
         var salaryPerMinute = salaryPerHour / 60;
         var minuteDiff = (endAt.getTime() - startAt.getTime()) / 1000 / 60;
@@ -50,13 +50,13 @@ public List<ComputerUsage> getAll()  {
         list.forEach(computerUsage -> {
             if (computerUsage.getUsedByAccountId() != null) {
                 try {
-                    computerUsage.setUsedBy(accountService.findById(computerUsage.getUsedByAccountId()));
+                    computerUsage.setUsedBy(accountBUS.findById(computerUsage.getUsedByAccountId()));
                 } catch (SQLException e) {
                     throw new RuntimeException(e);
                 }
             }
             try {
-                var computer = computerUsage.getComputerID()==null?null:computerService.getComputerById(computerUsage.getComputerID());
+                var computer = computerUsage.getComputerID()==null?null: computerBUS.getComputerById(computerUsage.getComputerID());
                 computerUsage.setComputer(computer);
             } catch (SQLException e) {
                 throw new RuntimeException(e);

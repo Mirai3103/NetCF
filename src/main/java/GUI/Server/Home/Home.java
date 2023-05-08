@@ -14,9 +14,9 @@ import Utils.Helper;
 import Utils.ServiceProvider;
 import DTO.Computer;
 import DTO.Message;
-import BUS.ComputerService;
-import BUS.MessageService;
-import BUS.SessionService;
+import BUS.ComputerBUS;
+import BUS.MessageBUS;
+import BUS.SessionBUS;
 
 import java.awt.*;
 import java.awt.event.WindowAdapter;
@@ -30,20 +30,26 @@ import javax.swing.*;
  * @author Laffy
  */
 public class Home extends JPanel {
+    @Override
+    public void setVisible(boolean aFlag) {
+        super.setVisible(aFlag);
+       fetchComputers();
+    }
+
     private List<JButton> computerButtons;
     private List<Computer> computers;
-    private final ComputerService computerService;
-    private final SessionService sessionService;
-    private final MessageService messageService;
+    private final ComputerBUS computerBUS;
+    private final SessionBUS sessionBUS;
+    private final MessageBUS messageBUS;
 
 
     public Home() {
         initComponents();
-        computerService = ServiceProvider.getInstance().getService(ComputerService.class);
-        sessionService = ServiceProvider.getInstance().getService(SessionService.class);
-        messageService = ServiceProvider.getInstance().getService(MessageService.class);
+        computerBUS = ServiceProvider.getInstance().getService(ComputerBUS.class);
+        sessionBUS = ServiceProvider.getInstance().getService(SessionBUS.class);
+        messageBUS = ServiceProvider.getInstance().getService(MessageBUS.class);
         try {
-            computers = computerService.getAllComputers();
+            computers = computerBUS.getAllComputers();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -86,11 +92,11 @@ public class Home extends JPanel {
         var lockImg = Helper.getIcon("/icons/computerLocking.png", 100, 100);
         var onlineImg = Helper.getIcon("/icons/computerUsing.png", 100, 100);
         try {
-            computers = computerService.getAllComputers();
+            computers = computerBUS.getAllComputers();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-        computers = computerService.updateListComputerStatus(computers);
+        computers = computerBUS.updateListComputerStatus(computers);
         computers.forEach(computer -> {
             JPopupMenu popupMenu = new JPopupMenu();
             JMenuItem tatItem = new JMenuItem("Tắt máy");
@@ -120,18 +126,18 @@ public class Home extends JPanel {
                 try {
                     int prePaid = Integer.parseInt(result);
                     if (prePaid <= 1000) throw new RuntimeException();
-                    sessionService.createSession(prePaid, computer.getId());
+                    sessionBUS.createSession(prePaid, computer.getId());
                 } catch (Exception ex) {
                     ex.printStackTrace();
                     JOptionPane.showMessageDialog(this, "Số tiền không hợp lệ");
                 }
             });
             moMayTraSau.addActionListener(e -> {
-                this.sessionService.createSession(computer.getId());
+                this.sessionBUS.createSession(computer.getId());
             });
             lockItem.addActionListener(e -> {
                 try {
-                    this.sessionService.closeSession(computer.getId());
+                    this.sessionBUS.closeSession(computer.getId());
                     Server.getInstance().emitSelf("statusChange", null);
                 } catch (SQLException ex) {
                     throw new RuntimeException(ex);
@@ -139,8 +145,8 @@ public class Home extends JPanel {
             });
             tinNhan.addActionListener(e -> {
                 try {
-                    var session = sessionService.findByComputerId(computer.getId());
-                    var list = messageService.findAllBySessionId(session.getId());
+                    var session = sessionBUS.findByComputerId(computer.getId());
+                    var list = messageBUS.findAllBySessionId(session.getId());
                     list.forEach(m -> {
                         m.setSession(session);
                     });
@@ -154,7 +160,7 @@ public class Home extends JPanel {
                     }
                     chatGUI.setOnSendListener((message) -> {
                         try {
-                            messageService.create(
+                            messageBUS.create(
                                     Message.builder()
                                             .sessionId(session.getId())
                                             .content(message)

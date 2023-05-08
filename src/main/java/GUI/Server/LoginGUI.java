@@ -6,8 +6,8 @@ import Utils.Fonts;
 import Utils.Helper;
 import Utils.ServiceProvider;
 import DTO.Account;
-import BUS.AccountService;
-import BUS.EmployeeService;
+import BUS.AccountBUS;
+import BUS.EmployeeBUS;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -18,7 +18,7 @@ import java.awt.event.ActionListener;
 import java.io.File;
 
 public class LoginGUI extends JFrame {
-    private AccountService accountService;
+    private AccountBUS accountBUS;
     private ImagePanel backgroundPanel;
     private JPanel loginPanel, pageStartPanel, buttonPanel, passwordPanel, usernamePanel;
     private JLabel passwordLabel, usernameLabel, statusLabel, logoLoginLabel;
@@ -30,7 +30,7 @@ public class LoginGUI extends JFrame {
     }
 
     private void initComponents() {
-        accountService = ServiceProvider.getInstance().getService(AccountService.class);
+        accountBUS = ServiceProvider.getInstance().getService(AccountBUS.class);
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 
         // set vị trí cho khung đăng nhập
@@ -164,7 +164,7 @@ public class LoginGUI extends JFrame {
 
     private void btnLoginActionPerformed(ActionEvent e) {        var username = txtUsername.getText();
         var password = txtPassword.getText();
-        var user = accountService.login(username, password);
+        var user = accountBUS.login(username, password);
         if (user == null) {
             var result = "Tài Khoản đăng nhập hoặc Mật Khẩu của bạn không đúng, vui lòng nhập lại";
             JOptionPane.showMessageDialog(null, result, null, JOptionPane.INFORMATION_MESSAGE);
@@ -173,7 +173,7 @@ public class LoginGUI extends JFrame {
                 JOptionPane.showMessageDialog(null, "Bạn không có quyền truy cập vào chức năng này", null, JOptionPane.WARNING_MESSAGE);
                 return;
             }
-            var emp = ServiceProvider.getInstance().getService(EmployeeService.class).findEmployeeByAccountID(user.getId());
+            var emp = ServiceProvider.getInstance().getService(EmployeeBUS.class).findEmployeeByAccountID(user.getId());
             if (emp == null) {
                 JOptionPane.showMessageDialog(null, "Bạn không có quyền truy cập vào chức năng này", null, JOptionPane.WARNING_MESSAGE);
                 return;

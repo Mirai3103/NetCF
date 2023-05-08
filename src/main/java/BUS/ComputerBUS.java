@@ -11,7 +11,7 @@ import java.sql.SQLException;
 import java.util.List;
 
 @NoArgsConstructor
-public class ComputerService {
+public class ComputerBUS {
     @Setter
     private ISessionDAO sessionDAO;
     @Setter

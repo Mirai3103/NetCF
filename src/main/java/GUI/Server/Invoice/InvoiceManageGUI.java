@@ -35,11 +35,11 @@ public class InvoiceManageGUI extends JPanel{
     JDateChooser dateChooserTo;
     DefaultTableModel listInvoiceModelExport;
     DefaultTableModel listInvoiceModelImport;
-    InvoiceService invoiceService = ServiceProvider.getInstance().getService(InvoiceService.class);
-    EmployeeService employeeService = ServiceProvider.getInstance().getService(EmployeeService.class);
-    AccountService accountService = ServiceProvider.getInstance().getService(AccountService.class);
-    ComputerService computerService = ServiceProvider.getInstance().getService(ComputerService.class);
-    ProductService productService = ServiceProvider.getInstance().getService(ProductService.class);
+    InvoiceBUS invoiceBUS = ServiceProvider.getInstance().getService(InvoiceBUS.class);
+    EmployeeBUS employeeService = ServiceProvider.getInstance().getService(EmployeeBUS.class);
+    AccountBUS accountBUS = ServiceProvider.getInstance().getService(AccountBUS.class);
+    ComputerBUS computerBUS = ServiceProvider.getInstance().getService(ComputerBUS.class);
+    ProductBUS productBUS = ServiceProvider.getInstance().getService(ProductBUS.class);
 
     JTextField limitTotalFrom;
     JTextField limitTotalTo;
@@ -55,14 +55,14 @@ public class InvoiceManageGUI extends JPanel{
         this.setLayout(new BorderLayout());
         initManagerInvoice();
         event();
-        List<Invoice> invoices = invoiceService.findAllByType(Invoice.InvoiceType.EXPORT);
+        List<Invoice> invoices = invoiceBUS.findAllByType(Invoice.InvoiceType.EXPORT);
         loadJTable(Invoice.InvoiceType.EXPORT,invoices);
     }
 
     @Override
     public void setVisible(boolean aFlag) {
         if (aFlag){
-            List<Invoice> invoices = invoiceService.findAllByType(Invoice.InvoiceType.EXPORT);
+            List<Invoice> invoices = invoiceBUS.findAllByType(Invoice.InvoiceType.EXPORT);
             loadJTable(Invoice.InvoiceType.EXPORT,invoices);
         }
 
@@ -248,7 +248,7 @@ public class InvoiceManageGUI extends JPanel{
         accountToFilter = new JComboBox();
         List<Account> allAccount;
         try {
-            allAccount = accountService.getAllAccounts();
+            allAccount = accountBUS.getAllAccounts();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -286,7 +286,7 @@ public class InvoiceManageGUI extends JPanel{
         computersToFilter.setPreferredSize(new Dimension(120,32));
         List<Computer> allComputer;
         try {
-            allComputer = computerService.getAllComputers();
+            allComputer = computerBUS.getAllComputers();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -462,7 +462,7 @@ public class InvoiceManageGUI extends JPanel{
                 containShowListInvoice.remove(listInvoiceScrollPaneExport);
                 containShowListInvoice.add(listInvoiceScrollPaneImport);
 
-                List<Invoice> invoices = invoiceService.findAllByType(Invoice.InvoiceType.IMPORT);
+                List<Invoice> invoices = invoiceBUS.findAllByType(Invoice.InvoiceType.IMPORT);
                 loadJTable(Invoice.InvoiceType.IMPORT,invoices);
             }
         });
@@ -492,7 +492,7 @@ public class InvoiceManageGUI extends JPanel{
 
                 containShowListInvoice.remove(listInvoiceScrollPaneImport);
                 containShowListInvoice.add(listInvoiceScrollPaneExport);
-                List<Invoice> invoices = invoiceService.findAllByType(Invoice.InvoiceType.EXPORT);
+                List<Invoice> invoices = invoiceBUS.findAllByType(Invoice.InvoiceType.EXPORT);
                 loadJTable(Invoice.InvoiceType.EXPORT,invoices);
             }
         });
@@ -540,7 +540,7 @@ public class InvoiceManageGUI extends JPanel{
                 accountToFilter.setSelectedItem(null);
 
                 Invoice.InvoiceType type = getTypeInvoice();
-                List<Invoice> invoices = invoiceService.findAllByType(type);
+                List<Invoice> invoices = invoiceBUS.findAllByType(type);
                 if(getTypeInvoice() == Invoice.InvoiceType.EXPORT)
                     loadJTable(Invoice.InvoiceType.EXPORT,invoices);
                 else
@@ -568,9 +568,9 @@ public class InvoiceManageGUI extends JPanel{
                     Invoice.InvoiceType type = getTypeInvoice();
                     InforFilter inforFilter = getInforFilter(type);//lay thong tin can search
                     List<Invoice> listInvoiceSearch;
-                    if (invoiceService.ValidateInforFilter(inforFilter)) {
+                    if (invoiceBUS.ValidateInforFilter(inforFilter)) {
 
-                        listInvoiceSearch = invoiceService.findInvoiceByInforFilter(type, inforFilter);
+                        listInvoiceSearch = invoiceBUS.findInvoiceByInforFilter(type, inforFilter);
                         loadJTable(type, listInvoiceSearch);
                         if (listInvoiceSearch.size() == 0) {
                             JOptionPane.showMessageDialog(null, "Không có hóa đơn nào");
@@ -622,9 +622,9 @@ public class InvoiceManageGUI extends JPanel{
                     if (value.getCreatedToAccountId() == null) {
                         userNameAccount = "Khách vãng lai";
                     } else {
-                        userNameAccount = accountService.findById(value.getCreatedToAccountId()).getUsername();
+                        userNameAccount = accountBUS.findById(value.getCreatedToAccountId()).getUsername();
                     }
-                    computerName = computerService.getComputerById(value.getComputerId()).getName();
+                    computerName = computerBUS.getComputerById(value.getComputerId()).getName();
                 } catch (SQLException e) {
                     throw new RuntimeException(e);
                 }
@@ -656,7 +656,7 @@ public class InvoiceManageGUI extends JPanel{
 
 
     public JPopupMenu operationForInvoice(JTable jtabel,DefaultTableModel model) {
-        List<Invoice> invoices = invoiceService.findAll();
+        List<Invoice> invoices = invoiceBUS.findAll();
         JMenuItem delete = new JMenuItem("delete");
         delete.addActionListener(new ActionListener() {
             @Override
@@ -668,7 +668,7 @@ public class InvoiceManageGUI extends JPanel{
                     } else if (confirmDeleteInvoice == JOptionPane.YES_OPTION) {
                         int indexRowSelected = jtabel.getSelectedRow();
                         int idInvoiceSelected = (int) jtabel.getValueAt(indexRowSelected, 0);
-                        invoiceService.deleteInvoice(idInvoiceSelected);
+                        invoiceBUS.deleteInvoice(idInvoiceSelected);
                         model.removeRow(indexRowSelected);
                         JOptionPane.showMessageDialog(null, "Xóa thành công", null, JOptionPane.INFORMATION_MESSAGE);
                     }
@@ -727,14 +727,14 @@ public class InvoiceManageGUI extends JPanel{
         //goi toi table luu du thong tin hoa don, lay id cua hoa don, goi toi ham tim hoa don bang id,
         int rowIsSelected = jTable.getSelectedRow();//lay hang duoc select
         int idInvoiceIsSelected = (int)jTable.getModel().getValueAt(rowIsSelected,0);//lay id cua hoa don
-        Invoice invoiceIsSelect = invoiceService.findInvoiceById(idInvoiceIsSelected);//lay hoa don tu csdl len
+        Invoice invoiceIsSelect = invoiceBUS.findInvoiceById(idInvoiceIsSelected);//lay hoa don tu csdl len
 
         //lay detailInvoice cua invoice do
-        InvoiceDetailService invoiceDetailService = new InvoiceDetailService();
-        List<InvoiceDetail> listInvoiceDetail = invoiceDetailService.findByInvoiceId(idInvoiceIsSelected);
+        InvoiceDetailBUS invoiceDetailBUS = new InvoiceDetailBUS();
+        List<InvoiceDetail> listInvoiceDetail = invoiceDetailBUS.findByInvoiceId(idInvoiceIsSelected);
         if(type == Invoice.InvoiceType.EXPORT){
             for (InvoiceDetail invoiceDetail : listInvoiceDetail) {
-                Product product = productService.findProductById(invoiceDetail.getProductId());
+                Product product = productBUS.findProductById(invoiceDetail.getProductId());
                 createInvoiceGUI.listProductInvoiceModel.addRow(new Object[]{invoiceDetail.getProductId(), product.getName(), invoiceDetail.getQuantity(), invoiceDetail.getPrice(), invoiceDetail.getPrice() * invoiceDetail.getQuantity()});
             }
 
@@ -748,7 +748,7 @@ public class InvoiceManageGUI extends JPanel{
         }
         else{
             for (InvoiceDetail invoiceDetail : listInvoiceDetail) {
-                Product product = productService.findProductById(invoiceDetail.getProductId());
+                Product product = productBUS.findProductById(invoiceDetail.getProductId());
                 createInvoiceGUI.listProductInvoiceModel.addRow(new Object[]{product.getId(), product.getName(), invoiceDetail.getQuantity(), invoiceDetail.getPrice(), invoiceDetail.getPrice() * invoiceDetail.getQuantity()});
                 createInvoiceGUI.lbTotalInvoice.setText(String.valueOf(createInvoiceGUI.caculateTotalMoney()) + "VNĐ");
             }

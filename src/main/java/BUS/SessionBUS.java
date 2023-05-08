@@ -17,15 +17,15 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SessionService {
+public class SessionBUS {
     @Setter
     private ISessionDAO sessionDAO;
     @Setter
-    private ComputerUsageService computerUsageService;
+    private ComputerUsageBUS computerUsageBUS;
     @Setter
-    private AccountService accountService;
+    private AccountBUS accountBUS;
     @Setter
-    private ComputerService computerService;
+    private ComputerBUS computerBUS;
 
     public boolean checkIfSessionExist(Integer machineId) throws SQLException {
         var session = sessionDAO.findByComputerId(machineId);
@@ -44,8 +44,8 @@ public class SessionService {
         Computer computer = null;
         try {
             session = sessionDAO.findByComputerId(machineId);
-            account =session.getUsingBy()!=null? accountService.findById(session.getUsingBy()):null;
-            computer = computerService.getComputerById(machineId);
+            account =session.getUsingBy()!=null? accountBUS.findById(session.getUsingBy()):null;
+            computer = computerBUS.getComputerById(machineId);
             session.setUsingComputer(computer);
             session.setUsingByAccount(account);
             var computerUsage = ComputerUsage.builder()
@@ -61,7 +61,7 @@ public class SessionService {
                 var newBalance = account.getBalance() - computerUsage.getTotalMoney();
                 newBalance = newBalance < 100 ? 0 : newBalance;
                 account.setBalance(newBalance);
-                accountService.update(account);
+                accountBUS.update(account);
             }
             sessionDAO.delete(session.getId());
         } catch (SQLException e) {
@@ -83,7 +83,7 @@ public class SessionService {
 
     private void tinhTien(Session session, ComputerUsage computerUsage) throws SQLException {
         if (!computerUsage.isEmployeeUsing()) {
-            var machine = computerService.getComputerById(session.getComputerID());
+            var machine = computerBUS.getComputerById(session.getComputerID());
             if (machine == null) {
                 throw new RuntimeException("Machine not found");
             }
@@ -93,7 +93,7 @@ public class SessionService {
             var price = Math.round(usedTimeInHour * cost);
             computerUsage.setTotalMoney(price);
         }
-        computerUsageService.create(computerUsage);
+        computerUsageBUS.create(computerUsage);
     }
 
     public Session createSession(Account account, Integer machineId) {
@@ -110,7 +110,7 @@ public class SessionService {
                 .build();
 
         try {
-            var machine = computerService.getComputerById(machineId);
+            var machine = computerBUS.getComputerById(machineId);
             if (machine == null) {
                 throw new RuntimeException("Machine not found");
             }
@@ -140,7 +140,7 @@ public class SessionService {
                 .build();
 
         try {
-            var machine = computerService.getComputerById(machineId);
+            var machine = computerBUS.getComputerById(machineId);
             if (machine == null) {
                 throw new RuntimeException("Machine not found");
             }
@@ -197,7 +197,7 @@ public class SessionService {
                 .build();
 
         try {
-            var machine = computerService.getComputerById(machineId);
+            var machine = computerBUS.getComputerById(machineId);
             if (machine == null) {
                 throw new RuntimeException("Machine not found");
             }
@@ -265,7 +265,7 @@ public class SessionService {
             var newBalance = account.getBalance() - computerUsage.getTotalMoney();
             newBalance = newBalance < 100 ? 0 : newBalance;
             account.setBalance(newBalance);
-            accountService.update(account);
+            accountBUS.update(account);
         }
 
         sessionDAO.delete(session.getId());

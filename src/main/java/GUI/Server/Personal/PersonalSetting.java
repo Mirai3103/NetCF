@@ -4,17 +4,14 @@
  */
 package GUI.Server.Personal;
 
-import BUS.AccountService;
-import BUS.ComputerUsageService;
-import BUS.EmployeeService;
-import BUS.InvoiceService;
+import BUS.AccountBUS;
+import BUS.ComputerUsageBUS;
+import BUS.EmployeeBUS;
+import BUS.InvoiceBUS;
 import DTO.ComputerUsage;
 import DTO.ComputerUsageFilter;
 import DTO.Employee;
-import GUI.Server.ComputerUsage.ComputerUsageGUI;
-import GUI.Server.Main;
 import GUI.Server.MainUI;
-import Utils.Helper;
 import Utils.ServiceProvider;
 
 import javax.swing.*;
@@ -25,20 +22,20 @@ import java.sql.SQLException;
  * @author Laffy
  */
 public class PersonalSetting extends javax.swing.JPanel {
-    private EmployeeService employeeService ;
-    private ComputerUsageService computerUsageService;
-    private AccountService accountService;
-    private InvoiceService invoiceService;
+    private EmployeeBUS employeeService ;
+    private ComputerUsageBUS computerUsageBUS;
+    private AccountBUS accountBUS;
+    private InvoiceBUS invoiceBUS;
 
 
     /**
      * Creates new form PersonalSetting
      */
     public PersonalSetting() {
-        employeeService = ServiceProvider.getInstance().getService(EmployeeService.class);
-        computerUsageService = ServiceProvider.getInstance().getService(ComputerUsageService.class);
-accountService = ServiceProvider.getInstance().getService(AccountService.class);
-        invoiceService = ServiceProvider.getInstance().getService(InvoiceService.class);
+        employeeService = ServiceProvider.getInstance().getService(EmployeeBUS.class);
+        computerUsageBUS = ServiceProvider.getInstance().getService(ComputerUsageBUS.class);
+accountBUS = ServiceProvider.getInstance().getService(AccountBUS.class);
+        invoiceBUS = ServiceProvider.getInstance().getService(InvoiceBUS.class);
         initComponents();
         reDesign();
 
@@ -47,7 +44,7 @@ accountService = ServiceProvider.getInstance().getService(AccountService.class);
     private void reDesign() {
         var employee = MainUI.getCurrentUser();
         try {
-            var computerUsage = computerUsageService.findByFilter(
+            var computerUsage = computerUsageBUS.findByFilter(
                     ComputerUsageFilter.builder().isEmployeeUsing(true).usedByAccountId(employee.getAccount().getId()).build());
             jTextFieldName.setText(employee.getName());
             jTextFieldUsername.setText(employee.getAccount().getUsername());
@@ -86,7 +83,7 @@ accountService = ServiceProvider.getInstance().getService(AccountService.class);
             var currentMonthTimeWorkString = String.format("%.2f", currentMonthTimeWork);
             jTextFieldSalaryInMonth.setText(currentMonthSalaryString);
             jTextFieldTimeInMonth.setText(currentMonthTimeWorkString);
-            jTextFieldInvoice.setText(invoiceService.countExportInvoiceSellByEmployeeId(employee.getId()) + "");
+            jTextFieldInvoice.setText(invoiceBUS.countExportInvoiceSellByEmployeeId(employee.getId()) + "");
 
         } catch (Exception e) {
             throw new RuntimeException(e);
@@ -466,7 +463,7 @@ accountService = ServiceProvider.getInstance().getService(AccountService.class);
                 }
               MainUI.getCurrentUser().getAccount().setPassword(newPass);
            try {
-               accountService.update( MainUI.getCurrentUser().getAccount());
+               accountBUS.update( MainUI.getCurrentUser().getAccount());
                JOptionPane.showMessageDialog(this, "Đổi mật khẩu thành công", "Đổi mật khẩu", JOptionPane.INFORMATION_MESSAGE);
            } catch (SQLException e) {
                throw new RuntimeException(e);

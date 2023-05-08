@@ -1,8 +1,7 @@
 package GUI.Server.Product;
 
-import BUS.ProductService;
+import BUS.ProductBUS;
 import DTO.Product;
-import GUI.Components.Input;
 import Utils.Helper;
 import Utils.ServiceProvider;
 
@@ -15,11 +14,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ProductPanel extends JPanel {
-    private ProductService productService;
+    private ProductBUS productBUS;
     private Product product;
     public ProductPanel(Product product) {
         this.product = product;
-        productService = ServiceProvider.getInstance().getService(ProductService.class);
+        productBUS = ServiceProvider.getInstance().getService(ProductBUS.class);
         initComponent();
     }
 
@@ -62,7 +61,7 @@ public class ProductPanel extends JPanel {
         removeAll();
 
         try {
-            List<Product> products = productService.findAll();
+            List<Product> products = productBUS.findAll();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -76,21 +75,21 @@ public class ProductPanel extends JPanel {
 
         if (productType.equals("FOOD")){
             try {
-                List<Product> products = productService.filterByTypeProduct(Product.ProductType.FOOD);
+                List<Product> products = productBUS.filterByTypeProduct(Product.ProductType.FOOD);
             } catch (SQLException e) {
                 throw new RuntimeException(e);
             }
         }
         if (productType.equals("DRINK")) {
             try {
-                List<Product> products = productService.filterByTypeProduct(Product.ProductType.DRINK);
+                List<Product> products = productBUS.filterByTypeProduct(Product.ProductType.DRINK);
             } catch (SQLException e) {
                 throw new RuntimeException(e);
             }
         }
         if (productType.equals("CARD")){
             try {
-                List<Product> products = productService.filterByTypeProduct(Product.ProductType.CARD);
+                List<Product> products = productBUS.filterByTypeProduct(Product.ProductType.CARD);
             } catch (SQLException e) {
                 throw new RuntimeException(e);
             }
@@ -103,7 +102,7 @@ public class ProductPanel extends JPanel {
         Helper.initUI();
         ServiceProvider.init();
         JFrame frame = new JFrame();
-        ProductService p = ServiceProvider.getInstance().getService(ProductService.class);
+        ProductBUS p = ServiceProvider.getInstance().getService(ProductBUS.class);
         List<Product> list = new ArrayList<>();
         try {
             list = p.findAll();

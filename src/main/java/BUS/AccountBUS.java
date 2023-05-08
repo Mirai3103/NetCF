@@ -7,14 +7,14 @@ import DTO.Account;
 import java.sql.SQLException;
 import java.util.List;
 
-public class AccountService {
+public class AccountBUS {
     @Setter
-    private SessionService sessionService;
+    private SessionBUS sessionBUS;
     @Setter
     private IAccountDAO accountDAO;
 
 
-    public AccountService() {
+    public AccountBUS() {
 
     }
     public Account create(Account account) throws SQLException {
@@ -50,11 +50,14 @@ public class AccountService {
 
     public List<Account> getAllAccounts() throws  SQLException {
         var accounts =this.accountDAO.findAll();
-        var sessions = this.sessionService.findAll();
+        var sessions = this.sessionBUS.findAll();
         sessions.forEach(s->{
-            var account = accounts.stream().filter(a->a.getId()==s.getUsingBy()).findFirst().orElse(null);
-            if (account!=null) {
-                account.setCurrentSession(s);
+
+            if(s.getUsingBy()!=null){
+                var account = accounts.stream().filter(a->a.getId()==s.getUsingBy()).findFirst().orElse(null);
+                if (account!=null) {
+                    account.setCurrentSession(s);
+                }
             }
         });
         return accounts;

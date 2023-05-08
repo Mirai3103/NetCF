@@ -4,15 +4,14 @@
  */
 package GUI.Server.ComputerUsage;
 
-import BUS.AccountService;
-import BUS.ComputerService;
-import BUS.ComputerUsageService;
+import BUS.AccountBUS;
+import BUS.ComputerBUS;
+import BUS.ComputerUsageBUS;
 import DTO.Account;
 import DTO.Computer;
 import DTO.ComputerUsage;
 import DTO.ComputerUsageFilter;
 import GUI.Server.MainUI;
-import Utils.Constants;
 import Utils.Helper;
 import Utils.ServiceProvider;
 
@@ -40,9 +39,9 @@ public class ComputerUsageGUI extends javax.swing.JPanel {
     /**
      * Creates new form ComputerUsageGUI
      */
-    private ComputerUsageService computerUsageService ;
-    private ComputerService computerService;
-    private AccountService accountService;
+    private ComputerUsageBUS computerUsageBUS;
+    private ComputerBUS computerBUS;
+    private AccountBUS accountBUS;
     private List<ComputerUsage> computerUsages;
 
     @Override
@@ -60,10 +59,10 @@ public class ComputerUsageGUI extends javax.swing.JPanel {
 
     public ComputerUsageGUI() {
 
-        this.computerUsageService = ServiceProvider.getInstance().getService(ComputerUsageService.class);
-        this.computerService = ServiceProvider.getInstance().getService(ComputerService.class);
-        this.accountService = ServiceProvider.getInstance().getService(AccountService.class);
-        computerUsages = computerUsageService.getAll();
+        this.computerUsageBUS = ServiceProvider.getInstance().getService(ComputerUsageBUS.class);
+        this.computerBUS = ServiceProvider.getInstance().getService(ComputerBUS.class);
+        this.accountBUS = ServiceProvider.getInstance().getService(AccountBUS.class);
+        computerUsages = computerUsageBUS.getAll();
         initComponents();
         try {
             reDesign();
@@ -76,7 +75,7 @@ public class ComputerUsageGUI extends javax.swing.JPanel {
 
     private void initEvent() {
         jButton2.addActionListener(e -> {
-            computerUsages = computerUsageService.getAll();
+            computerUsages = computerUsageBUS.getAll();
             jXDatePicker1.setDate(null);
             jXDatePicker2.setDate(null);
             jComboBoxConsumer.setSelectedIndex(0);
@@ -87,8 +86,8 @@ public class ComputerUsageGUI extends javax.swing.JPanel {
     }
 
     private void reDesign() throws SQLException {
-        List< Computer > computers = computerService.getAllComputers();
-        List<DTO.Account> accounts = accountService.getAllAccounts();
+        List< Computer > computers = computerBUS.getAllComputers();
+        List<DTO.Account> accounts = accountBUS.getAllAccounts();
         jComboBoxConsumer.removeAllItems();
         jComboBoxFromComputer.removeAllItems();
         var accountModel =new DefaultComboBoxModel<>(new AccountComboItem[]{
@@ -373,7 +372,7 @@ public class ComputerUsageGUI extends javax.swing.JPanel {
                 .sortBy(jComboBox1.getSelectedItem() == null ? " createdAt desc " : ((SortItem) jComboBox1.getSelectedItem()).value)
                 .build();
         try {
-            computerUsages = computerUsageService.findByFilter(filter);
+            computerUsages = computerUsageBUS.findByFilter(filter);
             renderData();
 
         } catch (Exception e) {

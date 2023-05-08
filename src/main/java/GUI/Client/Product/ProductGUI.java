@@ -5,7 +5,7 @@ import Utils.Fonts;
 import Utils.Helper;
 import Utils.ServiceProvider;
 import DTO.Product;
-import BUS.ProductService;
+import BUS.ProductBUS;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -18,7 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ProductGUI extends JFrame {
-    private ProductService productService;
+    private ProductBUS productBUS;
     private JPanel parentPanel, panelHeader, panelBody, panelBody1, panelBody2, panel;
     private JLabel txtListProduct, logoLabel;
     private JComboBox comboBox;
@@ -29,7 +29,7 @@ public class ProductGUI extends JFrame {
 
     public ProductGUI() {
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-        productService = ServiceProvider.getInstance().getService(ProductService.class);
+        productBUS = ServiceProvider.getInstance().getService(ProductBUS.class);
         this.setLayout(new BorderLayout());
         this.setSize(new Dimension(1030,1030));
         initComponents();
@@ -103,7 +103,7 @@ public class ProductGUI extends JFrame {
         comboBox.setFont(Fonts.getFont(Font.ITALIC, 15));
         comboBox.setPreferredSize(new Dimension(250, 25));
         list = new ArrayList<>();
-        var localProductService = this.productService;
+        var localProductService = this.productBUS;
         try {
             list = localProductService.findAll();
         } catch (SQLException e) {

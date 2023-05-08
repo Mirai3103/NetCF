@@ -3,7 +3,6 @@ package GUI.Server.Invoice;
 import BUS.*;
 import DTO.*;
 import Utils.Helper;
-import Utils.Interval;
 import Utils.ServiceProvider;
 import com.toedter.calendar.JDateChooser;
 import lombok.Setter;
@@ -28,12 +27,12 @@ public class CreateInvoiceGUI extends JPanel{
     JMenu menuProduct;
     JMenu food, drinks, card;
     DefaultTableModel listProductInvoiceModel;
-    ProductService productService = ServiceProvider.getInstance().getService(ProductService.class);
-    AccountService accountService = ServiceProvider.getInstance().getService(AccountService.class);
-    ComputerService computerService = ServiceProvider.getInstance().getService(ComputerService.class);
-    EmployeeService employeeService = ServiceProvider.getInstance().getService(EmployeeService.class);
-    InvoiceService invoiceService = ServiceProvider.getInstance().getService(InvoiceService.class);
-    InvoiceDetailService invoiceDetailService = ServiceProvider.getInstance().getService(InvoiceDetailService.class);
+    ProductBUS productBUS = ServiceProvider.getInstance().getService(ProductBUS.class);
+    AccountBUS accountBUS = ServiceProvider.getInstance().getService(AccountBUS.class);
+    ComputerBUS computerBUS = ServiceProvider.getInstance().getService(ComputerBUS.class);
+    EmployeeBUS employeeService = ServiceProvider.getInstance().getService(EmployeeBUS.class);
+    InvoiceBUS invoiceBUS = ServiceProvider.getInstance().getService(InvoiceBUS.class);
+    InvoiceDetailBUS invoiceDetailBUS = ServiceProvider.getInstance().getService(InvoiceDetailBUS.class);
     JLabel lbTotalInvoice;
     List<ComboboxItem> listComputerComboboxItem;
     List<ComboboxItem> listAccountComboboxItem;
@@ -108,7 +107,7 @@ public class CreateInvoiceGUI extends JPanel{
 
         listEmployeeID = new JComboBox();
         List<Employee> allEmployee;
-        EmployeeService employeeService = ServiceProvider.getInstance().getService(EmployeeService.class);
+        EmployeeBUS employeeService = ServiceProvider.getInstance().getService(EmployeeBUS.class);
         allEmployee = employeeService.findAllEmployee();
 
         listEmployeeComboboxItem = new ArrayList<ComboboxItem>();
@@ -133,10 +132,10 @@ public class CreateInvoiceGUI extends JPanel{
         titleListComputerID.setFont(new Font("nunito", Font.PLAIN, 17));
 
         listComputerID = new JComboBox();
-        ComputerService computerService = ServiceProvider.getInstance().getService(ComputerService.class);
+        ComputerBUS computerBUS = ServiceProvider.getInstance().getService(ComputerBUS.class);
         List<Computer> allComputer;
         try {
-            allComputer = computerService.getAllComputers();
+            allComputer = computerBUS.getAllComputers();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -155,10 +154,10 @@ public class CreateInvoiceGUI extends JPanel{
         titleListAccountID = new JLabel("Tài khoản");
         titleListAccountID.setFont(new Font("nunito", Font.PLAIN, 17));
         listAccountID = new JComboBox();
-        AccountService accountService = ServiceProvider.getInstance().getService(AccountService.class);
+        AccountBUS accountBUS = ServiceProvider.getInstance().getService(AccountBUS.class);
         List<Account> allAccount;
         try {
-            allAccount = accountService.getAllAccounts();
+            allAccount = accountBUS.getAllAccounts();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -313,7 +312,7 @@ public class CreateInvoiceGUI extends JPanel{
     public JMenu showProductsByType(Product.ProductType type){
         List<Product> listProduct = null;
         try {
-            listProduct = productService.filterByTypeProduct(type);
+            listProduct = productBUS.filterByTypeProduct(type);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -346,7 +345,7 @@ public class CreateInvoiceGUI extends JPanel{
                 int result;
                 Product product;
                 try {
-                    product = productService.findByName(jCheckBoxMenuItem.getText());
+                    product = productBUS.findByName(jCheckBoxMenuItem.getText());
                 } catch (SQLException ex) {
                     throw new RuntimeException(ex);
                 }
@@ -430,7 +429,7 @@ public class CreateInvoiceGUI extends JPanel{
     public Object productInvoiceRow(int quantity,String nameProduct, double priceImport, Invoice.InvoiceType type){
         Product product = null;
         try {
-            product = productService.findByName(nameProduct);
+            product = productBUS.findByName(nameProduct);
         } catch (SQLException ex) {
             throw new RuntimeException(ex);
         }
@@ -465,10 +464,10 @@ public class CreateInvoiceGUI extends JPanel{
                 else {
                     type = Invoice.InvoiceType.IMPORT;
                 }
-                Invoice newInvoice = invoiceService.createInvoice(getInforInvoice(type));
+                Invoice newInvoice = invoiceBUS.createInvoice(getInforInvoice(type));
                 createListInvoiceDetail(newInvoice.getId());
                 JOptionPane.showMessageDialog(null,"Thêm hóa đơn thành công");
-                List<Invoice> invoices = invoiceService.findAllByType(type);
+                List<Invoice> invoices = invoiceBUS.findAllByType(type);
                 if(onsave != null){
                     onsave.loadJTable(type,invoices);
                 }
@@ -489,17 +488,17 @@ public class CreateInvoiceGUI extends JPanel{
                 Invoice invoice = getInforInvoice(type);
                 invoice.setId(Integer.parseInt(idInvoiceSelected.getText()));
                 //xoa tat ca cac sp cu cua hoa don don trong csdl
-                invoiceDetailService.deleteDetailInvoice(Integer.parseInt(idInvoiceSelected.getText()));
+                invoiceDetailBUS.deleteDetailInvoice(Integer.parseInt(idInvoiceSelected.getText()));
                 //goi toi ham updateInvoiceDetail
                 createListInvoiceDetail(invoice.getId());
-                Invoice signal = invoiceService.updateInvoice(invoice);
+                Invoice signal = invoiceBUS.updateInvoice(invoice);
                 if (signal == null) {
                     JOptionPane.showMessageDialog(null, "Sửa hóa đươn không thành công");
                 } else {
                     JOptionPane.showMessageDialog(null, "Sửa hóa đơn thành công");
                 }
 
-                List<Invoice> invoices = invoiceService.findAllByType(type);
+                List<Invoice> invoices = invoiceBUS.findAllByType(type);
                 if(onsave != null){
                     onsave.loadJTable(type,invoices);
                 }
@@ -540,8 +539,8 @@ public class CreateInvoiceGUI extends JPanel{
             computerID = listComputerComboboxItem.get(listComputerID.getSelectedIndex()).getId();
             accountID = listAccountComboboxItem.get(listAccountID.getSelectedIndex()).getId();
             try {
-                createdToComputer = computerService.getComputerById(computerID);
-                createdToAccount = accountService.findById(accountID);
+                createdToComputer = computerBUS.getComputerById(computerID);
+                createdToAccount = accountBUS.findById(accountID);
             } catch (SQLException e) {
                 throw new RuntimeException(e);
             }
@@ -617,7 +616,7 @@ public class CreateInvoiceGUI extends JPanel{
             int productId = (int) listProductInvoiceModel.getValueAt(i,0);
             int quantity = (int)listProductInvoiceModel.getValueAt(i,2);
             double price = (double) listProductInvoiceModel.getValueAt(i,3);
-            invoiceDetailService.createInvoiceDetail(new InvoiceDetail(invoiceId,productId,price,quantity));
+            invoiceDetailBUS.createInvoiceDetail(new InvoiceDetail(invoiceId,productId,price,quantity));
         }
     }
 }

@@ -4,7 +4,6 @@
  */
 package GUI.Server.Order;
 
-import BUS.ProductService;
 import DTO.InvoiceDetailInputDTO;
 import DTO.Product;
 import GUI.Components.ProductCard;
@@ -13,7 +12,6 @@ import Utils.ServiceProvider;
 import org.jdesktop.swingx.WrapLayout;
 
 import javax.swing.*;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;

@@ -1,11 +1,10 @@
 package GUI.Server.Product;
 
-import GUI.Components.Input;
 import Utils.Fonts;
 import Utils.Helper;
 import Utils.ServiceProvider;
 import DTO.Product;
-import BUS.ProductService;
+import BUS.ProductBUS;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -17,7 +16,6 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.sql.SQLException;
-import java.util.Date;
 
 public class UpdateProductGUI extends JFrame {
     private JPanel parentPanel, panelHeader, panelBody, panel1, panel2, panel3, panelLeftPN, panelRightPN, imageEnd, panelPDRight, panelPDLeft, panel2d, panelRighNOP, panelRigth2, panelLeftPB, panelLeft2, panel2b, panelRigthTCB, panelRight1, panelLeftPP, panelLeft1, panel2h;
@@ -25,14 +23,14 @@ public class UpdateProductGUI extends JFrame {
     private JLabel logo, productName, productPrice, productType, numberOfProduct, productDescription, productImage;
     private JTextField txtProductName, txtProductPrice, txtNumberOfProduct, txtProductDescription;
     private Product product;
-    private ProductService productService;
+    private ProductBUS productBUS;
     private JCheckBox placeBox;
     private JComboBox comboBox;
 
     public UpdateProductGUI(int productId) {
-        productService = ServiceProvider.getInstance().getService(ProductService.class);
+        productBUS = ServiceProvider.getInstance().getService(ProductBUS.class);
         try {
-            product = productService.findById(productId);
+            product = productBUS.findById(productId);
             if (product == null) {
                 JOptionPane.showMessageDialog(this, "Không tìm thấy sản phẩm", "Lỗi", JOptionPane.ERROR_MESSAGE);
                 this.dispose();
@@ -119,7 +117,7 @@ public class UpdateProductGUI extends JFrame {
                         product.setStock(Integer.parseInt(txtNumberOfProduct.getText()));
                     }
                     try {
-                        productService.update(product);
+                        productBUS.update(product);
                         JOptionPane.showMessageDialog(null,"Cập Nhật Thành Công","Thông Báo",JOptionPane.INFORMATION_MESSAGE);
                     } catch (SQLException ex) {
                         throw new RuntimeException(ex);

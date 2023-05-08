@@ -1,6 +1,6 @@
 import DAO.AccountDAOImpl;
 import DAO.Interface.IAccountDAO;
-import BUS.AccountService;
+import BUS.AccountBUS;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
@@ -12,10 +12,10 @@ import java.util.*;
 public class TestDependencyInjection {
     public static void main(String[] args) throws ParseException, SQLException {
         ServiceBuilder.getInstance()
-                .register(AccountService.class, AccountService.class)
+                .register(AccountBUS.class, AccountBUS.class)
                 .register(IAccountDAO.class, AccountDAOImpl.class)
                 .build();
-        var accountService = ServiceBuilder.getInstance().getService(AccountService.class);
+        var accountService = ServiceBuilder.getInstance().getService(AccountBUS.class);
     }
 }
 class ServiceBuilder{

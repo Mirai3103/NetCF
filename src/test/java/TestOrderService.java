@@ -5,23 +5,23 @@ import Utils.ServiceProvider;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import BUS.AccountService;
-import BUS.EmployeeService;
-import BUS.InvoiceService;
+import BUS.AccountBUS;
+import BUS.EmployeeBUS;
+import BUS.InvoiceBUS;
 
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 
 public class TestOrderService {
-    static InvoiceService invoiceService;
+    static InvoiceBUS invoiceBUS;
     @BeforeAll
     public static void init(){
         ServiceProvider.init();
-         invoiceService = ServiceProvider.getInstance().getService(InvoiceService.class);
-        var accountService = ServiceProvider.getInstance().getService(AccountService.class);
+         invoiceBUS = ServiceProvider.getInstance().getService(InvoiceBUS.class);
+        var accountService = ServiceProvider.getInstance().getService(AccountBUS.class);
         var account =accountService.login("employee1", "employee1");
-        var employee = ServiceProvider.getInstance().getService(EmployeeService.class).findEmployeeByAccountID(account.getId());
+        var employee = ServiceProvider.getInstance().getService(EmployeeBUS.class).findEmployeeByAccountID(account.getId());
         MainUI.setCurrentUser(employee);
     }
     @Test
@@ -38,7 +38,7 @@ public class TestOrderService {
                                     InvoiceDetailInputDTO.builder().productId(7).quantity(1).build()
                             )
                     ).build();
-            var invoice = invoiceService.order(orderInput);
+            var invoice = invoiceBUS.order(orderInput);
         });
     }
 }

@@ -4,13 +4,14 @@
  */
 package GUI.Server.EmployeeSalary;
 
-import BUS.AccountService;
-import BUS.ComputerService;
-import BUS.ComputerUsageService;
-import BUS.EmployeeService;
+import BUS.AccountBUS;
+import BUS.ComputerUsageBUS;
+import BUS.EmployeeBUS;
+import DTO.Account;
 import DTO.ComputerUsage;
 import DTO.ComputerUsageFilter;
 import GUI.Server.ComputerUsage.ComputerUsageGUI;
+import GUI.Server.MainUI;
 import Utils.Helper;
 import Utils.ServiceProvider;
 
@@ -24,17 +25,31 @@ import java.util.List;
  */
 public class EmployeeSalary extends javax.swing.JPanel {
 
+    @Override
+    public void setVisible(boolean aFlag) {
+        if (aFlag){
+            if (MainUI.getCurrentUser().getAccount().getRole().isLessThan(Account.Role.MANAGER)){
+                MainUI.getInstance().getSideBar().navigateTo("home");
+                JOptionPane.showMessageDialog(MainUI.getInstance(), "Bạn không có quyền truy cập vào mục này");
+                return;
+            }
+        }
+        super.setVisible(aFlag);
+
+    }
+
     /**
      * Creates new form EmployeeSalary
      */
-    private ComputerUsageService computerUsageService ;
+
+    private ComputerUsageBUS computerUsageBUS;
     private List<ComputerUsage> computerUsages;
-    private AccountService accountService;
-    private EmployeeService employeeService;
+    private AccountBUS accountBUS;
+    private EmployeeBUS employeeService;
     public EmployeeSalary() {
-        employeeService = ServiceProvider.getInstance().getService(EmployeeService.class);
-        computerUsageService = ServiceProvider.getInstance().getService(ComputerUsageService.class);
-        accountService = ServiceProvider.getInstance().getService(AccountService.class);
+        employeeService = ServiceProvider.getInstance().getService(EmployeeBUS.class);
+        computerUsageBUS = ServiceProvider.getInstance().getService(ComputerUsageBUS.class);
+        accountBUS = ServiceProvider.getInstance().getService(AccountBUS.class);
 
         initComponents();
         try {
@@ -61,7 +76,7 @@ public class EmployeeSalary extends javax.swing.JPanel {
                         new ComputerUsageGUI.SortItem("Giảm dần theo tiền"," totalMoney desc"),
                 }
         ));
-        computerUsages = computerUsageService.findByFilter(
+        computerUsages = computerUsageBUS.findByFilter(
                 ComputerUsageFilter.builder().sortBy(" totalMoney desc ").isEmployeeUsing(true).build()
         );
         renderTable();
@@ -311,7 +326,7 @@ public class EmployeeSalary extends javax.swing.JPanel {
         var employeeId= employee==null?null:((EmployeeComboBoxModal)employee).id;
         var computerUsageFilter= ComputerUsageFilter.builder().sortBy(sortBy).startFrom(fromDate).startTo(toDate).isEmployeeUsing(true).usedByAccountId(employeeId).build();
         try {
-             computerUsages= computerUsageService.findByFilter(computerUsageFilter);
+             computerUsages= computerUsageBUS.findByFilter(computerUsageFilter);
             renderTable();
         } catch (Exception e) {
             throw new RuntimeException(e);

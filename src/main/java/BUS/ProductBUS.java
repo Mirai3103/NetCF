@@ -1,19 +1,17 @@
 package BUS;
 
 import DAO.Interface.IProductDAO;
-import DAO.ProductDAOImpl;
-import Utils.ServiceProvider;
 import lombok.Setter;
 import DTO.Product;
 
 import java.sql.SQLException;
 import java.util.List;
 
-public class ProductService {
+public class ProductBUS {
     @Setter
     private IProductDAO productDAO;
 
-    public ProductService() {
+    public ProductBUS() {
     }
 
     public List<Product> findAllProduct(){

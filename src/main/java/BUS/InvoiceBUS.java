@@ -12,16 +12,15 @@ import DTO.Invoice;
 import DTO.InvoiceDetail;
 
 import java.sql.SQLException;
-import java.util.Date;
 import java.util.List;
 
-public class InvoiceService {
+public class InvoiceBUS {
     @Setter
     private IInvoiceDAO invoiceDAO;
     @Setter
    private IInvoiceDetailDAO invoiceDetailDAO;
     @Setter
-    private  ProductService productService;
+    private ProductBUS productBUS;
 
     public List<Invoice> findAll()  {
         try {
@@ -110,7 +109,7 @@ public class InvoiceService {
         try {
             var invoice = invoiceDAO.create(newInvoice);
             createInvoiceInputDTO.getInvoiceDetailDTOList().forEach(invoiceDetailDTO -> {
-                var product = productService.findProductById(invoiceDetailDTO.getProductId());
+                var product = productBUS.findProductById(invoiceDetailDTO.getProductId());
                 var newInvoiceDetail = InvoiceDetail.builder()
                         .invoiceId(invoice.getId())
                         .productId(invoiceDetailDTO.getProductId())

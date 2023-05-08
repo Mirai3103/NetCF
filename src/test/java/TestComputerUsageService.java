@@ -1,6 +1,6 @@
-import BUS.AccountService;
-import BUS.ComputerUsageService;
-import BUS.EmployeeService;
+import BUS.AccountBUS;
+import BUS.ComputerUsageBUS;
+import BUS.EmployeeBUS;
 import GUI.Server.MainUI;
 import Utils.ServiceProvider;
 import org.junit.jupiter.api.BeforeAll;
@@ -8,14 +8,14 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 public class TestComputerUsageService {
-    static ComputerUsageService computerUsageService;
+    static ComputerUsageBUS computerUsageBUS;
     @BeforeAll
     public static void init(){
         ServiceProvider.init();
-        computerUsageService = ServiceProvider.getInstance().getService(ComputerUsageService.class);
-        var accountService = ServiceProvider.getInstance().getService(AccountService.class);
+        computerUsageBUS = ServiceProvider.getInstance().getService(ComputerUsageBUS.class);
+        var accountService = ServiceProvider.getInstance().getService(AccountBUS.class);
         var account =accountService.login("employee1", "employee1");
-        var employee = ServiceProvider.getInstance().getService(EmployeeService.class).findEmployeeByAccountID(account.getId());
+        var employee = ServiceProvider.getInstance().getService(EmployeeBUS.class).findEmployeeByAccountID(account.getId());
         MainUI.setCurrentUser(employee);
     }
     @Test
@@ -24,7 +24,7 @@ public class TestComputerUsageService {
         assertDoesNotThrow(()->{
             var start =Utils.randomDate("13/01/2021", "13/04/2023");
                     var end = Utils.addRandomHour(start, 2, 10);
-            computerUsageService.createForEmployee(
+            computerUsageBUS.createForEmployee(
                    start,
                     end,
                     5
@@ -33,7 +33,7 @@ public class TestComputerUsageService {
         assertDoesNotThrow(()->{
             var start =Utils.randomDate("13/01/2021", "13/04/2023");
             var end = Utils.addRandomHour(start, 2, 10);
-            computerUsageService.createForEmployee(
+            computerUsageBUS.createForEmployee(
                     start,
                     end,
                     6
@@ -42,7 +42,7 @@ public class TestComputerUsageService {
         assertDoesNotThrow(()->{
             var start =Utils.randomDate("13/09/2021", "13/04/2023");
             var end = Utils.addRandomHour(start, 2, 10);
-            computerUsageService.createForEmployee(
+            computerUsageBUS.createForEmployee(
                     start,
                     end,
                     6

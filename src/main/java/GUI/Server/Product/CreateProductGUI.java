@@ -5,20 +5,17 @@ import Utils.Fonts;
 import Utils.Helper;
 import Utils.ServiceProvider;
 import DTO.Product;
-import BUS.ProductService;
+import BUS.ProductBUS;
 
 import javax.imageio.ImageIO;
-import javax.sql.rowset.serial.SQLOutputImpl;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import javax.swing.filechooser.FileFilter;
-import javax.xml.transform.Source;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.sql.SQLException;
-import java.sql.SQLOutput;
 import java.util.Date;
 
 public class CreateProductGUI extends JFrame {
@@ -27,13 +24,13 @@ public class CreateProductGUI extends JFrame {
     private JLabel logo, productName , productPrice, productType, numberOfProduct, productDescription, productImage;
     private Input txtProductName, txtProductPrice, txtNumberOfProduct, txtProductDescription;
     private Product product = Product.builder().image("/images/imageWhite.jpg").id(0).name("").price(0).createdAt(new Date()).description("").stock(0).build();
-    private ProductService productService;
+    private ProductBUS productBUS;
     private JLabel image;
     private JCheckBox placeBox;
     private String newPath;
     private JComboBox comboBox;
     public CreateProductGUI() {
-        productService = ServiceProvider.getInstance().getService(ProductService.class);
+        productBUS = ServiceProvider.getInstance().getService(ProductBUS.class);
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         this.setSize(1030,1030);
         this.setLayout(new BorderLayout());
@@ -116,7 +113,7 @@ public class CreateProductGUI extends JFrame {
                         JOptionPane.showMessageDialog(null,"Số Lượng Sản Phẩm Phải Là Chữ Số","Lỗi",JOptionPane.ERROR_MESSAGE);
                     }
                     try {
-                        productService.create(product);
+                        productBUS.create(product);
                         JOptionPane.showMessageDialog(null,"Thêm Sản Phẩm Mới Thành Công","Thông Báo",JOptionPane.INFORMATION_MESSAGE);
                     } catch (SQLException ex) {
                         throw new RuntimeException(ex);

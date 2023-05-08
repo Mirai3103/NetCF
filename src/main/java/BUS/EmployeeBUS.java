@@ -8,11 +8,11 @@ import java.sql.SQLException;
 import java.util.List;
 
 
-public class EmployeeService {
+public class EmployeeBUS {
     @Setter
     private IEmployeeDAO employeeDAO;
     @Setter
-    private  AccountService accountService;
+    private AccountBUS accountBUS;
     public Employee findEmployeeById(int id) {
 
         try {
@@ -26,7 +26,7 @@ public class EmployeeService {
     public List<Employee> includeAccount(List<Employee> employees) {
         employees.forEach(employee -> {
             try {
-                employee.setAccount(accountService.findById(employee.getAccountID()));
+                employee.setAccount(accountBUS.findById(employee.getAccountID()));
             } catch (SQLException e) {
                 throw new RuntimeException(e);
             }
@@ -62,7 +62,7 @@ public class EmployeeService {
         var employee=  employeeDAO.findById(id);
         employeeDAO.delete(id);
         if(employee.getAccountID()!=null){
-            accountService.delete(employee.getAccountID());
+            accountBUS.delete(employee.getAccountID());
         }
     }
 

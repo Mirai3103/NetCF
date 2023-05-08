@@ -1,12 +1,11 @@
 package GUI.Server.Employee;
 
 import BUS.*;
-import DAO.EmployeeDAOImpl;
 import DTO.Account;
 import DTO.Employee;
-import Utils.Helper;
+import GUI.Server.MainUI;
 
-import BUS.EmployeeService;
+import BUS.EmployeeBUS;
 import Utils.ServiceProvider;
 
 import javax.swing.*;
@@ -19,13 +18,11 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
 
 public class ManagerEmployee extends JPanel {
     private List<Employee> list;
-    private EmployeeService employeeService;
-    private AccountService accountService;
+    private EmployeeBUS employeeService;
+    private AccountBUS accountBUS;
 
     private Employee employee = Employee.builder().id(0).name("").accountID(null).salaryPerHour(0).phoneNumber("").address("").createdAt(new Date()).deletedAt(null).build();
     private JPanel managerEmployeeContentPane;
@@ -69,8 +66,8 @@ public class ManagerEmployee extends JPanel {
     private JScrollPane listEmployeeScrollPane;
 
     public ManagerEmployee() {
-        this.employeeService = ServiceProvider.getInstance().getService(EmployeeService.class);
-        this.accountService = ServiceProvider.getInstance().getService(AccountService.class);
+        this.employeeService = ServiceProvider.getInstance().getService(EmployeeBUS.class);
+        this.accountBUS = ServiceProvider.getInstance().getService(AccountBUS.class);
 
         this.setLayout(new BorderLayout());
         try {
@@ -130,7 +127,7 @@ public class ManagerEmployee extends JPanel {
         idNV = new JLabel("Id tài khoản", JLabel.LEFT);
         // Input idNV = new Input("");
         inputIdNV = new JComboBox<>();
-        var accounts = accountService.getAllAccounts().stream().filter(a -> a.getRole().isGreaterThan(Account.Role.USER));
+        var accounts = accountBUS.getAllAccounts().stream().filter(a -> a.getRole().isGreaterThan(Account.Role.USER));
         var model = new DefaultComboBoxModel<TaiKhoanComboBoxItem>();
         model.addElement(new TaiKhoanComboBoxItem(null, "Không chọn"));
         accounts.forEach(a -> model.addElement(new TaiKhoanComboBoxItem(a.getId(), a.getUsername())));
@@ -363,6 +360,14 @@ public class ManagerEmployee extends JPanel {
     @Override
     public void setVisible(boolean aFlag) {
         super.setVisible(aFlag);
+        if (aFlag){
+            if (MainUI.getCurrentUser().getAccount().getRole().isLessThan(Account.Role.MANAGER)){
+                MainUI.getInstance().getSideBar().navigateTo("home");
+                JOptionPane.showMessageDialog(MainUI.getInstance(), "Bạn không có quyền truy cập vào mục này");
+                return;
+            }
+        }
+        super.setVisible(aFlag);
         if(!aFlag) {
           return;
         }
@@ -373,7 +378,7 @@ public class ManagerEmployee extends JPanel {
         model.addElement(new TaiKhoanComboBoxItem(null, "Không chọn"));
         List<Account> accounts = null;
         try {
-            accounts = accountService.getAllAccounts().stream().filter(a -> a.getRole().isGreaterThan(Account.Role.USER)).toList();
+            accounts = accountBUS.getAllAccounts().stream().filter(a -> a.getRole().isGreaterThan(Account.Role.USER)).toList();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }

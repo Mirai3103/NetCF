@@ -6,14 +6,14 @@ import Payload.LoginPayload;
 import Utils.Fonts;
 import Utils.Helper;
 import DTO.Session;
-import BUS.AccountService;
+import BUS.AccountBUS;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
 
 public class LoginGUI extends JFrame {
-    private AccountService accountService;
+    private AccountBUS accountBUS;
     public LoginGUI() {
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 

@@ -1,7 +1,5 @@
 package GUI.Server.Product;
 
-import DAO.*;
-import DAO.Interface.*;
 import GUI.Components.Input;
 import Utils.Fonts;
 import Utils.Helper;
@@ -11,25 +9,17 @@ import BUS.*;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
-import javax.swing.event.CellEditorListener;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableCellEditor;
-import javax.swing.table.TableColumn;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.EventObject;
 import java.util.List;
 
 public class ProductGUIClient extends JFrame {
     private List<Product> list;
-    private ProductService productService;
+    private ProductBUS productBUS;
     private JPanel parentPanel, panelHeader, panelBody, panelBody1, panelBody2, buttonPanel;
     private JLabel txtListProduct, logoLabel;
     private JComboBox comboBox;
@@ -39,7 +29,7 @@ public class ProductGUIClient extends JFrame {
 
     public ProductGUIClient() {
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-        productService = ServiceProvider.getInstance().getService(ProductService.class);
+        productBUS = ServiceProvider.getInstance().getService(ProductBUS.class);
         this.setLayout(new BorderLayout());
         this.setVisible(true);
         this.setSize(1030,1030);
@@ -111,7 +101,7 @@ public class ProductGUIClient extends JFrame {
         comboBox.setFont(Fonts.getFont(Font.ITALIC, 15));
         comboBox.setPreferredSize(new Dimension(250, 25));
         list = new ArrayList<>();
-        var localProductService = this.productService;
+        var localProductService = this.productBUS;
         var dtm1 = this.dtm;
         panelBody2.add(comboBox, BorderLayout.LINE_START);
         // end typeProduct

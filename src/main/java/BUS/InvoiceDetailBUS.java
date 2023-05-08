@@ -4,10 +4,9 @@ import DAO.InvoiceDetailDAOImpl;
 import DTO.InvoiceDetail;
 
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 
-public class InvoiceDetailService {
+public class InvoiceDetailBUS {
     InvoiceDetailDAOImpl invoiceDetailDAO = new InvoiceDetailDAOImpl();
     public InvoiceDetail createInvoiceDetail(InvoiceDetail invoiceDetail){
         try {

@@ -1,10 +1,12 @@
 package GUI.Server.Computer;
 
+import DTO.Account;
+import GUI.Server.MainUI;
 import Io.Server;
 import Utils.Helper;
 import Utils.ServiceProvider;
 import DTO.Computer;
-import BUS.ComputerService;
+import BUS.ComputerBUS;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -30,7 +32,7 @@ public class ComputerManageGUI extends javax.swing.JPanel {
     /**
      * Creates new form ComputerManageGUI
      */
-    private ComputerService computerService;
+    private ComputerBUS computerBUS;
     private List<Computer> filteredComputers;
     private List<Computer> computers;
 
@@ -41,7 +43,7 @@ public class ComputerManageGUI extends javax.swing.JPanel {
 
     public ComputerManageGUI() {
 
-            computerService = ServiceProvider.getInstance().getService(ComputerService.class);
+            computerBUS = ServiceProvider.getInstance().getService(ComputerBUS.class);
 
             initComponents();
 
@@ -53,8 +55,8 @@ public class ComputerManageGUI extends javax.swing.JPanel {
     }
     private void getData(){
         try {
-            computers = computerService.getAllComputers();
-            computers = computerService.updateListComputerStatus(computers);
+            computers = computerBUS.getAllComputers();
+            computers = computerBUS.updateListComputerStatus(computers);
             setFilteredComputers(computers);
         } catch (SQLException e) {
             e.printStackTrace();
@@ -70,6 +72,17 @@ public class ComputerManageGUI extends javax.swing.JPanel {
        //full screen
         a.setExtendedState(JFrame.MAXIMIZED_BOTH);
         a.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    }
+    @Override
+    public void setVisible(boolean aFlag) {
+        if (aFlag){
+            if (MainUI.getCurrentUser().getAccount().getRole().isLessThan(Account.Role.MANAGER)){
+                MainUI.getInstance().getSideBar().navigateTo("home");
+                JOptionPane.showMessageDialog(MainUI.getInstance(), "Bạn không có quyền truy cập vào mục này");
+                return;
+            }
+        }
+        super.setVisible(aFlag);
     }
     private void reDesign(){
         idtextField.setFocusable(false);
@@ -110,7 +123,7 @@ public class ComputerManageGUI extends javax.swing.JPanel {
     private void renderTableData()  {
         var model = (DefaultTableModel) jTable1.getModel();
         model.setRowCount(0);
-        computerService.updateListComputerStatus(filteredComputers);
+        computerBUS.updateListComputerStatus(filteredComputers);
 
         for (var computer : filteredComputers) {
             model.addRow(new Object[]{
@@ -434,7 +447,7 @@ public class ComputerManageGUI extends javax.swing.JPanel {
       if (agree == JOptionPane.OK_OPTION){
             var id = jTable1.getValueAt(row, 0).toString();
           try {
-              this.computerService.deleteComputer(Integer.parseInt(id));
+              this.computerBUS.deleteComputer(Integer.parseInt(id));
               JOptionPane.showMessageDialog(this, "Xóa thành công", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
 
           } catch (SQLException e) {
@@ -462,7 +475,7 @@ public class ComputerManageGUI extends javax.swing.JPanel {
         var computer = Computer.builder().id(Integer.parseInt(id)).name(name).price(Double.parseDouble(price)).build();
         computer.setType(type);
         try {
-            computerService.addComputer(computer);
+            computerBUS.addComputer(computer);
             JOptionPane.showMessageDialog(this, "Thêm thành công", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -489,7 +502,7 @@ public class ComputerManageGUI extends javax.swing.JPanel {
         var computer = Computer.builder().id(Integer.parseInt(id)).name(name).price(Double.parseDouble(price)).build();
         computer.setType(type);
         try {
-            computerService.updateComputer(computer);
+            computerBUS.updateComputer(computer);
             JOptionPane.showMessageDialog(this, "Sửa thành công", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
         } catch (SQLException e) {
             throw new RuntimeException(e);

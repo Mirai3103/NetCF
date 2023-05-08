@@ -9,7 +9,7 @@ import Utils.Fonts;
 import Utils.Helper;
 import Utils.ServiceProvider;
 import DTO.Account;
-import BUS.AccountService;
+import BUS.AccountBUS;
 
 import java.awt.*;
 import java.awt.event.KeyAdapter;
@@ -26,16 +26,16 @@ import javax.swing.table.DefaultTableModel;
  * @author HuuHoang
  */
 public class AccountGUI extends JPanel {
-    private AccountService accountService;
+    private AccountBUS accountBUS;
     private List<Account> accounts;
     private List<Account> filteredAccounts;
 
     public AccountGUI() {
         initComponents();
-        accountService = ServiceProvider.getInstance().getService(AccountService.class);
+        accountBUS = ServiceProvider.getInstance().getService(AccountBUS.class);
         label1.setFont(Fonts.getFont( Font.BOLD, 36));
         try {
-            accounts = accountService.getAllAccounts();
+            accounts = accountBUS.getAllAccounts();
             filteredAccounts = accounts.stream().filter(a->a.getRole().isLessThan(MainUI.getCurrentUser().getAccount().getRole())).toList();
             reDesign();
 
@@ -76,7 +76,7 @@ public class AccountGUI extends JPanel {
 
             try {
                 if (accountDetailGUI.getStatus() == JOptionPane.OK_OPTION) {
-                    accountService.create(accountDetailGUI.getAccount());
+                    accountBUS.create(accountDetailGUI.getAccount());
 
                     JOptionPane.showMessageDialog(this, "Tạo tài khoản thành công");
 
@@ -120,7 +120,7 @@ public class AccountGUI extends JPanel {
             MainUI.getInstance().setBlur(false);
             try {
                 if (accountDetailGUI.getStatus() == JOptionPane.OK_OPTION) {
-                    accountService.update(accountDetailGUI.getAccount());
+                    accountBUS.update(accountDetailGUI.getAccount());
                     reloadTableData();
                     JOptionPane.showMessageDialog(this, "Cập nhật thành công");
                 }
@@ -147,7 +147,7 @@ public class AccountGUI extends JPanel {
             }
             int amount = Integer.parseInt(amountStr);
             try {
-                accountService.deposit(account.getId(), amount);
+                accountBUS.deposit(account.getId(), amount);
                 reloadTableData();
             } catch (SQLException ex) {
                 throw new RuntimeException(ex);
@@ -179,7 +179,7 @@ public class AccountGUI extends JPanel {
             int confirm = JOptionPane.showConfirmDialog(null, "Bạn có chắc chắn muốn xóa tài khoản này không?");
             if (confirm == JOptionPane.YES_OPTION) {
                 try {
-                    accountService.delete(id);
+                    accountBUS.delete(id);
                 } catch (SQLException ex) {
                     throw new RuntimeException(ex);
                 }
@@ -202,7 +202,7 @@ public class AccountGUI extends JPanel {
                 return;
             }
             try {
-                accountService.resetPassword(account.getId(), newPassword);
+                accountBUS.resetPassword(account.getId(), newPassword);
             } catch (SQLException ex) {
                 throw new RuntimeException(ex);
             }
@@ -238,7 +238,7 @@ public class AccountGUI extends JPanel {
 
     private void reloadTableData() {
         try {
-            accounts = accountService.getAllAccounts();
+            accounts = accountBUS.getAllAccounts();
             filteredAccounts = new ArrayList<>(accounts);
         } catch (SQLException ex) {
             throw new RuntimeException(ex);
@@ -258,7 +258,7 @@ public class AccountGUI extends JPanel {
         super.setVisible(aFlag);
         if (aFlag) {
             try {
-                accounts = accountService.getAllAccounts();
+                accounts = accountBUS.getAllAccounts();
                 filteredAccounts = new ArrayList<>(accounts);
                 reloadTableData();
 
