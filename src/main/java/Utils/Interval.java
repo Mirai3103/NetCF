@@ -32,7 +32,7 @@ public class Interval {
         thread.start();
         return id;
     }
-    public static void clearInterval(int id) {
+    public static void clearInterval(int id) {  
         ids.removeIf(i -> i == id);
     }
 }

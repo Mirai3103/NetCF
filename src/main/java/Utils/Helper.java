@@ -100,8 +100,12 @@ public class Helper {
     }
 
     public static ImageIcon getIcon(String path) {
-        var a = Helper.class.getResource(path);
-        return new ImageIcon(Objects.requireNonNull(a));
+        var projectPath = System.getProperty("user.dir");
+         path ="src/main/resources/"+path;
+        var joined = String.join("/", projectPath, path);
+
+
+        return new ImageIcon(joined);
     }
 
     public static String toHHMM(int seconds, boolean withColon) {
