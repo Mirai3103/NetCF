@@ -85,6 +85,7 @@ public class EmployeeSalary extends javax.swing.JPanel {
     private void renderTable() {
         var tableModal =(DefaultTableModel)this.jTable2.getModel();
         tableModal.setRowCount(0);
+        double totalMoney = computerUsages.stream().map(ComputerUsage::getTotalMoney).reduce(0.0, Double::sum);
         computerUsages.forEach(computerUsage -> {
             var employee = employeeService.findEmployeeByAccountID(computerUsage.getUsedByAccountId());
             tableModal.addRow(new Object[]{
@@ -96,7 +97,9 @@ public class EmployeeSalary extends javax.swing.JPanel {
                       Helper.getDateString(computerUsage.getEndAt())        ,
                     Helper.formatMoney(computerUsage.getTotalMoney()),
             });
+
         });
+        this.jLabelTongTien.setText(Helper.formatMoney(totalMoney));
     }
 
     public  record EmployeeComboBoxModal(Integer id, String name) {
