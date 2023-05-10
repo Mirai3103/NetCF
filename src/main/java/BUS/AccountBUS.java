@@ -1,6 +1,9 @@
 package BUS;
 
 import DAO.Interface.IAccountDAO;
+import GUI.Client.MainGUI;
+import GUI.Server.Main;
+import GUI.Server.MainUI;
 import lombok.Setter;
 import DTO.Account;
 
@@ -49,7 +52,7 @@ public class AccountBUS {
     }
 
     public List<Account> getAllAccounts() throws  SQLException {
-        var accounts =this.accountDAO.findAll();
+        var accounts =this.accountDAO.findAll(MainUI.getCurrentUser().getAccount().getRole());
         var sessions = this.sessionBUS.findAll();
         sessions.forEach(s->{
 

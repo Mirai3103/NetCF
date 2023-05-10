@@ -78,15 +78,19 @@ public class AccountDAOImpl extends BaseDAO implements IAccountDAO {
 
 
     public List<Account> findAll() throws SQLException {
-
         var statement = this.createStatement();
         var resultSet = statement.executeQuery("SELECT * FROM account a WHERE a.deletedAt is null");
         var accounts = ConnectionFactory.toList(resultSet, Account.class);
         statement.close();
         return accounts;
-
     }
-
+    public List<Account> findAll(Account.Role beforeRole) throws SQLException {
+        var statement = this.createStatement();
+        var resultSet = statement.executeQuery("SELECT * FROM account a WHERE a.deletedAt is null and a.role > "+beforeRole.ordinal());
+        var accounts = ConnectionFactory.toList(resultSet, Account.class);
+        statement.close();
+        return accounts;
+    }
     @Override
     public Account findByUsername(String username) throws SQLException {
 

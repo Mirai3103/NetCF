@@ -657,7 +657,8 @@ public class InvoiceManageGUI extends JPanel{
 
     public JPopupMenu operationForInvoice(JTable jtabel,DefaultTableModel model) {
         List<Invoice> invoices = invoiceBUS.findAll();
-        JMenuItem delete = new JMenuItem("delete");
+        JMenuItem delete = new JMenuItem("Xoá");
+        delete.setForeground(Color.RED);
         delete.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -678,7 +679,8 @@ public class InvoiceManageGUI extends JPanel{
             }
         });
 
-        JMenuItem edit = new JMenuItem("edit");
+        JMenuItem edit = new JMenuItem("Sửa");
+        edit.setFont(new Font("nunito", Font.BOLD, 16));
         edit.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -690,7 +692,10 @@ public class InvoiceManageGUI extends JPanel{
         });
 
 
-        JMenuItem showDetailInvoice = new JMenuItem("detail invoice");
+        JMenuItem showDetailInvoice = new JMenuItem("Xem chi tiết");
+        showDetailInvoice.setFont(new Font("nunito", Font.BOLD, 16));
+        delete.setFont(new Font("nunito", Font.BOLD, 16));
+
         showDetailInvoice.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {

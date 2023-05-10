@@ -172,6 +172,18 @@ public class ProductGUI extends JPanel {
                 showTable();
             }
         });
+        JPopupMenu popupMenu = new JPopupMenu();
+        JMenuItem reset = new JMenuItem("Refresh");
+        reset.setFont(Fonts.getFont(Font.BOLD, 16));
+        reset.addActionListener(e->{
+            try {
+                list = localProductService.findAll();
+            } catch (SQLException ex) {
+                throw new RuntimeException(ex);
+            }
+            showTable();
+        });
+        popupMenu.add(reset);
         findByName.setFont(Fonts.getFont(Font.PLAIN, 15));
         findByName.setPreferredSize(new Dimension(200, 25));
         panelBody2.add(findByName, BorderLayout.CENTER);
@@ -274,9 +286,23 @@ public class ProductGUI extends JPanel {
         });
 
         panelBody.add(buttonPanel,BorderLayout.LINE_END);
+        table.setComponentPopupMenu(popupMenu);
+
     }
 
-
+    @Override
+    public void setVisible(boolean aFlag) {
+        super.setVisible(aFlag);
+        comboBox.setSelectedIndex(0);
+        if (aFlag) {
+            try {
+                list = this.productBUS.findAll();
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
+            showTable();
+        }
+    }
 
     public void showTable() {
         var model = (DefaultTableModel)this.table.getModel();
