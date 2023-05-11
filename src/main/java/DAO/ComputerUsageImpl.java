@@ -3,7 +3,6 @@ package DAO;
 import DAO.Interface.IComputerUsageDAO;
 import DTO.ComputerUsage;
 import DTO.ComputerUsageFilter;
-import DTO.Invoice;
 import Utils.Helper;
 
 import java.sql.SQLException;
@@ -56,7 +55,7 @@ public class ComputerUsageImpl extends BaseDAO implements IComputerUsageDAO {
         var preparedStatement = this.prepareStatement("SELECT * FROM ComputerUsage WHERE id = ?");
         preparedStatement.setInt(1, integer);
         var resultSet = preparedStatement.executeQuery();
-        var list = ConnectionFactory.toList(resultSet, ComputerUsage.class);
+        var list = DBHelper.toList(resultSet, ComputerUsage.class);
         return list.size() > 0 ? list.get(0) : null;
     }
 
@@ -66,7 +65,7 @@ public class ComputerUsageImpl extends BaseDAO implements IComputerUsageDAO {
                 "where isEmployeeUsing = 0 " +
                 " order by createdAt desc");
         var resultSet = preparedStatement.executeQuery();
-        return ConnectionFactory.toList(resultSet, ComputerUsage.class);
+        return DBHelper.toList(resultSet, ComputerUsage.class);
     }
 
     @Override
@@ -93,7 +92,7 @@ public class ComputerUsageImpl extends BaseDAO implements IComputerUsageDAO {
 
         try (var statement = this.createStatement()) {
             var resultSet = statement.executeQuery(sql);
-            return ConnectionFactory.toList(resultSet, ComputerUsage.class);
+            return DBHelper.toList(resultSet, ComputerUsage.class);
         }
     }
 }

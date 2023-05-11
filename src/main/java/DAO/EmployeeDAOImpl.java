@@ -13,7 +13,7 @@ public class EmployeeDAOImpl extends BaseDAO implements IEmployeeDAO{
         var preparedStatement = this.prepareStatement("SELECT * FROM employee WHERE accountID = ?");
         preparedStatement.setInt(1, id);
         var resultSet = preparedStatement.executeQuery();
-        var employees = ConnectionFactory.toList(resultSet, Employee.class);
+        var employees = DBHelper.toList(resultSet, Employee.class);
         preparedStatement.close();
         return employees.size() > 0 ? employees.get(0) : null;
 
@@ -73,7 +73,7 @@ public class EmployeeDAOImpl extends BaseDAO implements IEmployeeDAO{
         var preparedStatement=this.prepareStatement("SELECT * FROM employee a WHERE a.id = ? and a.deletedAt is null");
         preparedStatement.setInt(1, id);
         var resultSet = preparedStatement.executeQuery();
-        var list =ConnectionFactory.toList(resultSet, Employee.class);
+        var list = DBHelper.toList(resultSet, Employee.class);
         if (list.size() > 0) {
             return list.get(0);
         }
@@ -84,7 +84,7 @@ public class EmployeeDAOImpl extends BaseDAO implements IEmployeeDAO{
     public List<Employee> findAll() throws SQLException {
         var statement = this.createStatement();
         var resultSet = statement.executeQuery("SELECT * FROM employee a WHERE a.deletedAt is null");
-        var employees = ConnectionFactory.toList(resultSet, Employee.class);
+        var employees = DBHelper.toList(resultSet, Employee.class);
         statement.close();
         return employees;
     }

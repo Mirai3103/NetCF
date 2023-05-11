@@ -1,7 +1,6 @@
 package DAO;
 
 import DAO.Interface.IAccountDAO;
-import DTO.Invoice;
 import lombok.NoArgsConstructor;
 import DTO.Account;
 
@@ -17,7 +16,7 @@ public class AccountDAOImpl extends BaseDAO implements IAccountDAO {
     }
 
     public Account create(Account account) throws SQLException {
-        var preparedStatement = ConnectionFactory
+        var preparedStatement = DBHelper
                 .getConnection()
                 .prepareStatement("INSERT INTO account (username, password, balance, role, createdAt, deletedAt) VALUES (?, ?, ?, ?, ?, ?)", Statement.RETURN_GENERATED_KEYS);
         preparedStatement.setString(1, account.getUsername());
@@ -71,7 +70,7 @@ public class AccountDAOImpl extends BaseDAO implements IAccountDAO {
         var preparedStatement = this.prepareStatement("SELECT * FROM account a WHERE a.id = ? and a.deletedAt is null");
         preparedStatement.setInt(1, id);
         var resultSet = preparedStatement.executeQuery();
-        var accounts = ConnectionFactory.toList(resultSet, Account.class);
+        var accounts = DBHelper.toList(resultSet, Account.class);
         preparedStatement.close();
         return accounts.size() > 0 ? accounts.get(0) : null;
     }
@@ -80,14 +79,14 @@ public class AccountDAOImpl extends BaseDAO implements IAccountDAO {
     public List<Account> findAll() throws SQLException {
         var statement = this.createStatement();
         var resultSet = statement.executeQuery("SELECT * FROM account a WHERE a.deletedAt is null");
-        var accounts = ConnectionFactory.toList(resultSet, Account.class);
+        var accounts = DBHelper.toList(resultSet, Account.class);
         statement.close();
         return accounts;
     }
     public List<Account> findAll(Account.Role beforeRole) throws SQLException {
         var statement = this.createStatement();
         var resultSet = statement.executeQuery("SELECT * FROM account a WHERE a.deletedAt is null and a.role > "+beforeRole.ordinal());
-        var accounts = ConnectionFactory.toList(resultSet, Account.class);
+        var accounts = DBHelper.toList(resultSet, Account.class);
         statement.close();
         return accounts;
     }
@@ -97,7 +96,7 @@ public class AccountDAOImpl extends BaseDAO implements IAccountDAO {
         var statement = this.prepareStatement("SELECT * FROM account a WHERE a.username = ? and a.deletedAt is null");
         statement.setString(1, username);
         var resultSet = statement.executeQuery();
-        var accounts = ConnectionFactory.toList(resultSet, Account.class);
+        var accounts = DBHelper.toList(resultSet, Account.class);
         return accounts.size() > 0 ? accounts.get(0) : null;
     }
 }

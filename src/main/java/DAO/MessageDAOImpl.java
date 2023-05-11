@@ -1,7 +1,6 @@
 package DAO;
 
 import DAO.Interface.IMessageDAO;
-import DTO.Invoice;
 import DTO.Message;
 
 import java.sql.PreparedStatement;
@@ -45,6 +44,6 @@ public class MessageDAOImpl extends BaseDAO implements IMessageDAO{
     public List<Message> findAllBySessionId(int sessionId) throws SQLException {
         PreparedStatement preparedStatement = this.prepareStatement("SELECT * FROM Message WHERE sessionId = ?");
         preparedStatement.setInt(1, sessionId);
-        return ConnectionFactory.toList(preparedStatement.executeQuery(), Message.class);
+        return DBHelper.toList(preparedStatement.executeQuery(), Message.class);
     }
 }

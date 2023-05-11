@@ -55,7 +55,7 @@ public class InvoiceDAOImpl extends BaseDAO implements IInvoiceDAO {
             preparedStatement.setInt(1, employeeId);
             preparedStatement.setInt(2, type.ordinal());
             var resultSet = preparedStatement.executeQuery();
-            return ConnectionFactory.toList(resultSet, Invoice.class);
+            return DBHelper.toList(resultSet, Invoice.class);
         }
     }
 
@@ -85,7 +85,7 @@ public class InvoiceDAOImpl extends BaseDAO implements IInvoiceDAO {
         var stt = this.prepareStatement(sqlSelectById);
         stt.setInt(1,integer);
         var rs = stt.executeQuery();
-        var invoices = ConnectionFactory.toList(rs,Invoice.class);
+        var invoices = DBHelper.toList(rs,Invoice.class);
         stt.close();
         return invoices.size() > 0 ? invoices.get(0): null;
     }
@@ -101,7 +101,7 @@ public class InvoiceDAOImpl extends BaseDAO implements IInvoiceDAO {
                     """;
         var stt =this.createStatement();
         var rs = stt.executeQuery(sqlSelectALlRow);
-        var listInvoice = ConnectionFactory.toList(rs, Invoice.class);
+        var listInvoice = DBHelper.toList(rs, Invoice.class);
         stt.close();
         return listInvoice;
     }
@@ -119,7 +119,7 @@ public class InvoiceDAOImpl extends BaseDAO implements IInvoiceDAO {
         var stt =this.prepareStatement(sqlSelectALlRow);
         stt.setInt(1,type.ordinal());
         var rs = stt.executeQuery();
-        var listInvoice = ConnectionFactory.toList(rs, Invoice.class);
+        var listInvoice = DBHelper.toList(rs, Invoice.class);
         stt.close();
         return listInvoice;
     }
@@ -184,7 +184,7 @@ public class InvoiceDAOImpl extends BaseDAO implements IInvoiceDAO {
         quantityQuestionMark+=1;
         stt.setInt(quantityQuestionMark,type.ordinal());
         var rs = stt.executeQuery();
-        var listInvoice = ConnectionFactory.toList(rs,Invoice.class);
+        var listInvoice = DBHelper.toList(rs,Invoice.class);
         stt.close();
         return listInvoice;
     }

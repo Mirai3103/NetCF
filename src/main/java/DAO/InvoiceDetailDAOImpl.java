@@ -1,7 +1,6 @@
 package DAO;
 
 import DAO.Interface.IInvoiceDetailDAO;
-import DTO.Invoice;
 import DTO.InvoiceDetail;
 
 import java.sql.PreparedStatement;
@@ -54,7 +53,7 @@ public class InvoiceDetailDAOImpl extends BaseDAO implements IInvoiceDetailDAO {
         var preparedStatement = this.prepareStatement(sql);
         preparedStatement.setInt(1, integer);
         var resultSet = preparedStatement.executeQuery();
-        var list = ConnectionFactory.toList(resultSet, InvoiceDetail.class);
+        var list = DBHelper.toList(resultSet, InvoiceDetail.class);
         return list.size() > 0 ? list.get(0) : null;
     }
 
@@ -76,7 +75,7 @@ public class InvoiceDetailDAOImpl extends BaseDAO implements IInvoiceDetailDAO {
             stt = this.prepareStatement(sqlFindByInvoiceId);
             stt.setInt(1,invoiceId);
             var result = stt.executeQuery();
-            return ConnectionFactory.toList(result,InvoiceDetail.class);
+            return DBHelper.toList(result,InvoiceDetail.class);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }

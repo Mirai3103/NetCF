@@ -1,7 +1,6 @@
 package DAO;
 
 import DAO.Interface.IProductDAO;
-import DTO.Invoice;
 import DTO.Product;
 
 import java.sql.SQLException;
@@ -12,7 +11,7 @@ public class ProductDAOImpl extends BaseDAO implements IProductDAO {
 
     @Override
     public Product create(Product product) throws SQLException {
-        var preprapedStament = ConnectionFactory.
+        var preprapedStament = DBHelper.
                 getConnection().
                 prepareStatement("INSERT INTO Product(name, price, type, stock, description, image, createdAt, deletedAt) VALUES (?, ?, ?, ?, ?, ?, ?, ?)", Statement.RETURN_GENERATED_KEYS);
         preprapedStament.setString(1, product.getName());
@@ -73,7 +72,7 @@ public class ProductDAOImpl extends BaseDAO implements IProductDAO {
         var preparedStatement = this.prepareStatement("SELECT * FROM Product p WHERE p.id = ? and p.deletedAt is null");
         preparedStatement.setInt(1,integer);
         var resultSet = preparedStatement.executeQuery();
-        var products = ConnectionFactory.toList(resultSet,Product.class);
+        var products = DBHelper.toList(resultSet,Product.class);
         preparedStatement.close();
         return products.size() > 0 ? products.get(0) : null;
     }
@@ -82,7 +81,7 @@ public class ProductDAOImpl extends BaseDAO implements IProductDAO {
     public List<Product> findAll() throws SQLException {
         var statement = this.createStatement();
         var resultSet = statement.executeQuery("SELECT * FROM product p WHERE p.deletedAt is null");
-        var products = ConnectionFactory.toList(resultSet,Product.class);
+        var products = DBHelper.toList(resultSet,Product.class);
         statement.close();
         return products;
     }
@@ -92,7 +91,7 @@ public class ProductDAOImpl extends BaseDAO implements IProductDAO {
         var statement = this.prepareStatement("SELECT * FROM product p WHERE p.name = ? and p.deletedAt is null");
         statement.setString(1,name);
         var resultSet = statement.executeQuery();
-        var products = ConnectionFactory.toList(resultSet, Product.class);
+        var products = DBHelper.toList(resultSet, Product.class);
         return products.size() > 0 ? products.get(0) : null;
     }
 
@@ -100,7 +99,7 @@ public class ProductDAOImpl extends BaseDAO implements IProductDAO {
     public List<Product> filterByTypeProduct(Product.ProductType type) throws SQLException {
         var statement = this.createStatement();
         var resultSet = statement.executeQuery("SELECT * FROM Product p WHERE p.type = " + type.ordinal() + " and p.deletedAt is null");
-        var products = ConnectionFactory.toList(resultSet,Product.class);
+        var products = DBHelper.toList(resultSet,Product.class);
         statement.close();
         return products;
     }
@@ -109,7 +108,7 @@ public class ProductDAOImpl extends BaseDAO implements IProductDAO {
     public List<Product> findListByName(String name) throws SQLException {
         var statement = this.createStatement();
         var resultSet = statement.executeQuery("SELECT * FROM Product p WHERE p.name LIKE N'%"+ name +"%'AND p.deletedAt is null");
-        var products = ConnectionFactory.toList(resultSet,Product.class);
+        var products = DBHelper.toList(resultSet,Product.class);
         statement.close();
         return products;
     }

@@ -1,7 +1,6 @@
 package DAO;
 
 import DAO.Interface.ISessionDAO;
-import DTO.Invoice;
 import DTO.Session;
 
 import java.sql.SQLException;
@@ -58,7 +57,7 @@ public class SessionDAOImpl extends BaseDAO implements ISessionDAO {
         var preparedStatement = this.prepareStatement("SELECT * FROM session WHERE id = ?");
         preparedStatement.setInt(1, integer);
         var resultSet = preparedStatement.executeQuery();
-        var list = ConnectionFactory.toList(resultSet, Session.class);
+        var list = DBHelper.toList(resultSet, Session.class);
         if (list.size() > 0) {
             return list.get(0);
         }
@@ -69,7 +68,7 @@ public class SessionDAOImpl extends BaseDAO implements ISessionDAO {
     public List<Session> findAll() throws SQLException {
         var preparedStatement = this.prepareStatement("SELECT * FROM session");
         var resultSet = preparedStatement.executeQuery();
-        return ConnectionFactory.toList(resultSet, Session.class);
+        return DBHelper.toList(resultSet, Session.class);
     }
 
     @Override
@@ -77,7 +76,7 @@ public class SessionDAOImpl extends BaseDAO implements ISessionDAO {
         var preparedStatement = this.prepareStatement("SELECT * FROM session where computerID = ?");
         preparedStatement.setInt(1,computerId);
         var resultSet = preparedStatement.executeQuery();
-        var resultList= ConnectionFactory.toList(resultSet, Session.class);
+        var resultList= DBHelper.toList(resultSet, Session.class);
         if (resultList.size() > 0) {
             return resultList.get(0);
         }

@@ -2,7 +2,6 @@ package DAO;
 
 import DAO.Interface.IComputerDAO;
 import DTO.Computer;
-import DTO.Invoice;
 
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -55,7 +54,7 @@ public class ComputerDAOImpl extends BaseDAO implements IComputerDAO{
       var preparedStatement = this.prepareStatement("SELECT * FROM computer WHERE id = ? AND deletedAt IS NULL");
         preparedStatement.setInt(1, integer);
         var resultSet = preparedStatement.executeQuery();
-        var list =ConnectionFactory.toList(resultSet, Computer.class);
+        var list = DBHelper.toList(resultSet, Computer.class);
         if (list.size() > 0) {
             return list.get(0);
         }
@@ -66,7 +65,7 @@ public class ComputerDAOImpl extends BaseDAO implements IComputerDAO{
     public List<Computer> findAll() throws SQLException {
         var preparedStatement = this.prepareStatement("SELECT * FROM computer WHERE deletedAt IS NULL");
         var resultSet = preparedStatement.executeQuery();
-        return ConnectionFactory.toList(resultSet, Computer.class);
+        return DBHelper.toList(resultSet, Computer.class);
     }
 
 }
