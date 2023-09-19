@@ -30,6 +30,7 @@ package GUI.Components;
 
 import DTO.Message;
 import DTO.Product;
+import GUI.Client.MainGUI;
 import Utils.Helper;
 import lombok.Getter;
 import lombok.Setter;
@@ -208,6 +209,10 @@ public class ProductCard extends javax.swing.JPanel {
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
        var newQuantity =Integer.parseInt(this.jTextFieldSoLuong.getText())+1;
+       if(newQuantity > product.getStock()){
+           JOptionPane.showConfirmDialog(null,"Không đủ số lượng","Lỗi",JOptionPane.OK_CANCEL_OPTION,JOptionPane.ERROR_MESSAGE);
+       return;
+       }
         this.setQuantity(newQuantity);
     }//GEN-LAST:event_jButton2ActionPerformed
 

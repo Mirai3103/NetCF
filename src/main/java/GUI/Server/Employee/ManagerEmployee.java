@@ -18,6 +18,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.regex.Pattern;
 
 public class ManagerEmployee extends JPanel {
     private List<Employee> list;
@@ -440,6 +441,12 @@ public class ManagerEmployee extends JPanel {
             JOptionPane.showMessageDialog(null, "Địa Chỉ Không Được Để Trống", "Lỗi", JOptionPane.ERROR_MESSAGE);
             return false;
         }
+        Pattern phonePattern = Pattern.compile("^[0-9]{10}$");
+        if (!phonePattern.matcher(inputSdtNV.getText().trim()).matches()) {
+            JOptionPane.showMessageDialog(null, "Số điện thoại không hợp lệ", "Lỗi", JOptionPane.ERROR_MESSAGE);
+            return false;
+        }
+
         return true;
 
     }
@@ -449,6 +456,7 @@ public class ManagerEmployee extends JPanel {
         if (!validateInput()) {
             return;
         }
+
         employee.setName(inputNameNV.getText());
         employee.setSalaryPerHour(Integer.parseInt(inputLuongNV.getText()));
         employee.setPhoneNumber(inputSdtNV.getText());

@@ -41,6 +41,12 @@ accountBUS = ServiceProvider.getInstance().getService(AccountBUS.class);
 
     }
 
+    @Override
+    public void setVisible(boolean aFlag) {
+        super.setVisible(aFlag);
+        if(aFlag)reDesign();
+    }
+
     private void reDesign() {
         var employee = MainUI.getCurrentUser();
         try {

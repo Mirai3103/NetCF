@@ -20,7 +20,7 @@ public class DBHelper {
         return getInstance().connection;
     }
 
-    private static final String SERVER = "localhost:1434";
+    private static final String SERVER = "localhost";
     private static final String DATABASE_NAME = "NetCF";
     private static final String USER_NAME = "sa";
 
@@ -31,12 +31,12 @@ public class DBHelper {
 
     public DBHelper() throws SQLException  {
         String url = String
-                .format("jdbc:sqlserver:/%s;databaseName=%s;trustServerCertificate=true;encrypt=true;", SERVER, DATABASE_NAME);
+                .format("jdbc:sqlserver://%s;databaseName=%s;trustServerCertificate=true;encrypt=true;", SERVER, DATABASE_NAME);
         connection = DriverManager.getConnection(url, USER_NAME, PASSWORD);
     }
     public static String getConnectionString(){
         return  String
-                .format("jdbc:sqlserver:/%s;databaseName=%s;trustServerCertificate=true;encrypt=true;", SERVER, DATABASE_NAME);
+                .format("jdbc:sqlserver://%s;databaseName=%s;trustServerCertificate=true;encrypt=true;", SERVER, DATABASE_NAME);
     }
 
     public static <T>List<T> toList(ResultSet resultSet, Class<T> clazz) throws SQLException {//Class<T> clazz là truyền vào một class cụ thể, trong đó clazz là một lớp cụ thể

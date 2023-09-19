@@ -14,12 +14,20 @@ import java.io.IOException;
 import java.util.List;
 
 public class Main {
-    private static final int COMPUTER_ID = 4;
+    private static  int COMPUTER_ID = 4;
     public static final Socket socket;
 
     static {
         try {
-            socket = new Socket("localhost", Constants.SOCKET_PORT);
+            String computerIdFromEnv = System.getenv("COMPUTER_ID");
+            if (computerIdFromEnv != null) {
+                    COMPUTER_ID = Integer.parseInt(computerIdFromEnv);
+            }
+            String serverIp = System.getenv("SERVER_IP");
+            if (serverIp == null) {
+                serverIp = "localhost";
+            }
+            socket = new Socket(serverIp, Constants.SOCKET_PORT);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

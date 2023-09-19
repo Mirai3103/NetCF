@@ -110,6 +110,17 @@ public class InvoiceBUS {
             var invoice = invoiceDAO.create(newInvoice);
             createInvoiceInputDTO.getInvoiceDetailDTOList().forEach(invoiceDetailDTO -> {
                 var product = productBUS.findProductById(invoiceDetailDTO.getProductId());
+                if(product.getStock()>0) {
+                    if (product.getStock()<invoiceDetailDTO.getQuantity()){
+                        throw new RuntimeException("Khong du");
+                    }
+                    product.setStock(product.getStock()-invoiceDetailDTO.getQuantity());
+                    try {
+                        productBUS.update(product);
+                    } catch (SQLException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
                 var newInvoiceDetail = InvoiceDetail.builder()
                         .invoiceId(invoice.getId())
                         .productId(invoiceDetailDTO.getProductId())

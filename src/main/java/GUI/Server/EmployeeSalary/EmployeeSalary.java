@@ -78,7 +78,7 @@ public class EmployeeSalary extends javax.swing.JPanel {
         ));
         computerUsages = computerUsageBUS.findByFilter(
                 ComputerUsageFilter.builder().sortBy(" totalMoney desc ").isEmployeeUsing(true).build()
-        );
+        ).stream().filter(e->e.getUsedByAccountId() !=1).toList();
         renderTable();
         this.jLabelTongTien.setText(Helper.formatMoney(computerUsages.stream().mapToDouble(ComputerUsage::getTotalMoney).sum()));
     }
@@ -92,7 +92,7 @@ public class EmployeeSalary extends javax.swing.JPanel {
                     employee.getId(),
                     employee.getName(),
 
-                    computerUsage.getUsedBy().getUsername(),
+                    computerUsage.getUsedBy()==null?"admin": computerUsage.getUsedBy().getUsername(),
                     Helper.getDateString(computerUsage.getCreatedAt()),
                       Helper.getDateString(computerUsage.getEndAt())        ,
                     Helper.formatMoney(computerUsage.getTotalMoney()),

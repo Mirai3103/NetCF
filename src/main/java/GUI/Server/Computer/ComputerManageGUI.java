@@ -468,7 +468,7 @@ public class ComputerManageGUI extends javax.swing.JPanel {
         var price = pricetf.getText();
         var type = Objects.requireNonNull(typecb.getSelectedItem()).toString();
         var id = idtextField.getText();
-        if (name.isBlank() || price.isBlank() || type.isBlank() || id.isBlank()) {
+        if (name.isBlank() || price.isBlank() || type.isBlank() ) {
             JOptionPane.showMessageDialog(this, "Bạn chưa nhập đủ thông tin", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
             return;
         }
