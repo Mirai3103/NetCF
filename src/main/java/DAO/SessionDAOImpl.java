@@ -43,8 +43,10 @@ public class SessionDAOImpl extends BaseDAO implements ISessionDAO {
         preparedStatement.setInt(9, session.getId());
         preparedStatement.executeUpdate();
         var rs= this.findByComputerId(session.getComputerID());
-        rs.setUsingByAccount(session.getUsingByAccount());
-        rs.setUsingComputer(session.getUsingComputer());
+        if(rs != null){
+            rs.setUsingByAccount(session.getUsingByAccount());
+            rs.setUsingComputer(session.getUsingComputer());
+        }
         return rs;
     }
 
@@ -80,7 +82,7 @@ public class SessionDAOImpl extends BaseDAO implements ISessionDAO {
         preparedStatement.setInt(1,computerId);
         var resultSet = preparedStatement.executeQuery();
         var resultList= DBHelper.toList(resultSet, Session.class);
-        if (resultList.size() > 0) {
+        if (!resultList.isEmpty()) {
             return resultList.get(0);
         }
         return null;

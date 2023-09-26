@@ -34,7 +34,11 @@ public class Server extends ServerSocket {
         clients.removeIf(c->c.getMachineId()==computerId);
     }
     public void emitSelf(String eventType, Serializable data) {
-        for (var callback : eventHandlers.get(eventType)) {
+        var callbacks = eventHandlers.get(eventType);
+        if (callbacks == null) {
+            return;
+        }
+        for (var callback : callbacks) {
             callback.invoke(null, data);
         }
     }

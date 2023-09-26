@@ -92,7 +92,10 @@ public class SocketController {
                     return;
                 }
                 var session = sessionBUS.createSession(account, client.getMachineId());
-
+                    if (session == null) {
+                        server.emit("errorMessage", "Lỗi máy tính");
+                        return;
+                    }
                 server.emit("loginSuccess", session);
                 Helper.showSystemNoitification("Máy " + client.getMachineId() + " đã đăng nhập!", "", TrayIcon.MessageType.INFO);
                 client.setIntervalId(this.sessionBUS.startSession(session, client));
@@ -104,6 +107,7 @@ public class SocketController {
         }
     }
     private void onLogout(Socket socket, Serializable serializable) {
+        //
         this.sessionBUS.logout(socket.getMachineId());
         Helper.showSystemNoitification("Máy " + socket.getMachineId() + " đã đăng xuất!", "", TrayIcon.MessageType.INFO);
         server.emitSelf("statusChange", null);

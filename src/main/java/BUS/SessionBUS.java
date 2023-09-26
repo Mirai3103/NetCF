@@ -120,6 +120,7 @@ public class SessionBUS {
             session.setUsingComputer(machine);
             return sessionDAO.create(session);
         } catch (SQLException e) {
+            e.printStackTrace();
             return null;
         }
     }
@@ -162,16 +163,22 @@ public class SessionBUS {
 
                     try {
                         try {
-                            client.emit("updateSession", new Session(this.increaseUsedTime(session)));
+
+                            var newSession = increaseUsedTime(session);
+                            if (newSession == null) {
+                                cleanUp.run();
+                                return;
+                            }
+                            client.emit("updateSession", new Session(newSession));
+
                         } catch (RuntimeException e) {
                             e.printStackTrace();
                             if (e.getMessage().equals("Time out")) {
                                 client.emit("timeOut", null);
                                 Helper.showSystemNoitification("Hết giờ", "Máy " + session.getComputerID() + " hết thời gian! ", TrayIcon.MessageType.INFO);
                                 cleanUp.run();
-
-                                return;  // stop interval
                             }
+
                         }
 
                     } catch (SQLException e) {
