@@ -108,7 +108,6 @@ public class SessionBUS {
                 .prepaidAmount(account.getBalance())
                 .usingByAccount(account)
                 .build();
-
         try {
             var machine = computerBUS.getComputerById(machineId);
             if (machine == null) {
@@ -231,7 +230,10 @@ public class SessionBUS {
                 throw new RuntimeException("Time out");
             }
         }
-
+        if (session.getUsingBy() >0 && session.getUsingByAccount() == null) {
+            var account = accountBUS.findById(session.getUsingBy());
+           session.setUsingByAccount(account);
+        }
         return this.update(session);
     }
 

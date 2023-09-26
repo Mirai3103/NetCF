@@ -42,7 +42,10 @@ public class SessionDAOImpl extends BaseDAO implements ISessionDAO {
         preparedStatement.setDouble(8, session.getPrepaidAmount());
         preparedStatement.setInt(9, session.getId());
         preparedStatement.executeUpdate();
-        return this.findByComputerId(session.getComputerID());
+        var rs= this.findByComputerId(session.getComputerID());
+        rs.setUsingByAccount(session.getUsingByAccount());
+        rs.setUsingComputer(session.getUsingComputer());
+        return rs;
     }
 
     @Override
