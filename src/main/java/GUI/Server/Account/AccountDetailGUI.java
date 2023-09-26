@@ -52,6 +52,10 @@ public class AccountDetailGUI extends JDialog {
             JOptionPane.showMessageDialog(this, "Số dư không hợp lệ");
             return false;
         }
+        if (Integer.parseInt(textField4.getText().trim())<1000) {
+            JOptionPane.showMessageDialog(this, "Số dư phải lớn hơn 1000");
+            return false;
+        }
         this.account.setUsername(textField2.getText());
         this.account.setPassword(textField3.getText());
         this.account.setRole(((Account.Role) roleComboBox.getSelectedItem()).ordinal());

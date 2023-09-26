@@ -51,7 +51,7 @@ public class ComputerDAOImpl extends BaseDAO implements IComputerDAO{
 
     @Override
     public Computer findById(Integer integer) throws SQLException {
-      var preparedStatement = this.prepareStatement("SELECT * FROM computer WHERE id = ? AND deletedAt IS NULL");
+      var preparedStatement = this.prepareStatement("SELECT * FROM computer WHERE id = ?  ");
         preparedStatement.setInt(1, integer);
         var resultSet = preparedStatement.executeQuery();
         var list = DBHelper.toList(resultSet, Computer.class);

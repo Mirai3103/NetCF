@@ -15,13 +15,13 @@ public class ProductDAOImpl extends BaseDAO implements IProductDAO {
                 getConnection().
                 prepareStatement("INSERT INTO Product(name, price, type, stock, description, image, createdAt, deletedAt) VALUES (?, ?, ?, ?, ?, ?, ?, ?)", Statement.RETURN_GENERATED_KEYS);
         preprapedStament.setString(1, product.getName());
-        preprapedStament.setDouble(2,product.getPrice());
-        preprapedStament.setInt(3,product.getType().ordinal());
-        preprapedStament.setInt(4,product.getStock());
+        preprapedStament.setDouble(2, product.getPrice());
+        preprapedStament.setInt(3, product.getType().ordinal());
+        preprapedStament.setInt(4, product.getStock());
         preprapedStament.setString(5, product.getDescription());
-        preprapedStament.setString(6,product.getImage());
-        preprapedStament.setDate(7,new java.sql.Date(new java.util.Date().getTime()));
-        preprapedStament.setDate(8,null);
+        preprapedStament.setString(6, product.getImage());
+        preprapedStament.setDate(7, new java.sql.Date(new java.util.Date().getTime()));
+        preprapedStament.setDate(8, null);
         var result = preprapedStament.executeUpdate();
         if (result > 0) {
             var resultSet = preprapedStament.getGeneratedKeys();
@@ -44,14 +44,14 @@ public class ProductDAOImpl extends BaseDAO implements IProductDAO {
                 " image = ?, " +
                 " createdAt = ? " +
                 " WHERE id = ? ");
-        preparedStatement.setString(1,product.getName());
-        preparedStatement.setDouble(2,product.getPrice());
-        preparedStatement.setInt(3,product.getType().ordinal());
-        preparedStatement.setInt(4,product.getStock());
-        preparedStatement.setString(5,product.getDescription());
-        preparedStatement.setString(6,product.getImage());
-        preparedStatement.setDate(7,new java.sql.Date(product.getCreatedAt().getTime()));
-        preparedStatement.setInt(8,product.getId());
+        preparedStatement.setString(1, product.getName());
+        preparedStatement.setDouble(2, product.getPrice());
+        preparedStatement.setInt(3, product.getType().ordinal());
+        preparedStatement.setInt(4, product.getStock());
+        preparedStatement.setString(5, product.getDescription());
+        preparedStatement.setString(6, product.getImage());
+        preparedStatement.setDate(7, new java.sql.Date(product.getCreatedAt().getTime()));
+        preparedStatement.setInt(8, product.getId());
         var result = preparedStatement.executeUpdate();
         preparedStatement.close();
         return result > 0 ? this.findById(product.getId()) : null;
@@ -61,7 +61,7 @@ public class ProductDAOImpl extends BaseDAO implements IProductDAO {
     public boolean delete(Integer integer) throws SQLException {
         var preparedStatement = this.prepareStatement("UPDATE product SET deletedAt = ? WHERE id = ?");
         preparedStatement.setDate(1, new java.sql.Date(new java.util.Date().getTime()));
-        preparedStatement.setInt(2,integer);
+        preparedStatement.setInt(2, integer);
         var result = preparedStatement.executeUpdate();
         preparedStatement.close();
         return result > 0;
@@ -69,10 +69,10 @@ public class ProductDAOImpl extends BaseDAO implements IProductDAO {
 
     @Override
     public Product findById(Integer integer) throws SQLException {
-        var preparedStatement = this.prepareStatement("SELECT * FROM Product p WHERE p.id = ? and p.deletedAt is null");
-        preparedStatement.setInt(1,integer);
+        var preparedStatement = this.prepareStatement("SELECT * FROM Product p WHERE p.id = ?");
+        preparedStatement.setInt(1, integer);
         var resultSet = preparedStatement.executeQuery();
-        var products = DBHelper.toList(resultSet,Product.class);
+        var products = DBHelper.toList(resultSet, Product.class);
         preparedStatement.close();
         return products.size() > 0 ? products.get(0) : null;
     }
@@ -81,7 +81,7 @@ public class ProductDAOImpl extends BaseDAO implements IProductDAO {
     public List<Product> findAll() throws SQLException {
         var statement = this.createStatement();
         var resultSet = statement.executeQuery("SELECT * FROM product p WHERE p.deletedAt is null");
-        var products = DBHelper.toList(resultSet,Product.class);
+        var products = DBHelper.toList(resultSet, Product.class);
         statement.close();
         return products;
     }
@@ -89,7 +89,7 @@ public class ProductDAOImpl extends BaseDAO implements IProductDAO {
     @Override
     public Product findByName(String name) throws SQLException {
         var statement = this.prepareStatement("SELECT * FROM product p WHERE p.name = ? and p.deletedAt is null");
-        statement.setString(1,name);
+        statement.setString(1, name);
         var resultSet = statement.executeQuery();
         var products = DBHelper.toList(resultSet, Product.class);
         return products.size() > 0 ? products.get(0) : null;
@@ -99,7 +99,7 @@ public class ProductDAOImpl extends BaseDAO implements IProductDAO {
     public List<Product> filterByTypeProduct(Product.ProductType type) throws SQLException {
         var statement = this.createStatement();
         var resultSet = statement.executeQuery("SELECT * FROM Product p WHERE p.type = " + type.ordinal() + " and p.deletedAt is null");
-        var products = DBHelper.toList(resultSet,Product.class);
+        var products = DBHelper.toList(resultSet, Product.class);
         statement.close();
         return products;
     }
@@ -107,8 +107,8 @@ public class ProductDAOImpl extends BaseDAO implements IProductDAO {
     @Override
     public List<Product> findListByName(String name) throws SQLException {
         var statement = this.createStatement();
-        var resultSet = statement.executeQuery("SELECT * FROM Product p WHERE p.name LIKE N'%"+ name +"%'AND p.deletedAt is null");
-        var products = DBHelper.toList(resultSet,Product.class);
+        var resultSet = statement.executeQuery("SELECT * FROM Product p WHERE p.name LIKE N'%" + name + "%'AND p.deletedAt is null");
+        var products = DBHelper.toList(resultSet, Product.class);
         statement.close();
         return products;
     }

@@ -67,7 +67,7 @@ public class AccountDAOImpl extends BaseDAO implements IAccountDAO {
     }
 
     public Account findById(Integer id) throws SQLException {
-        var preparedStatement = this.prepareStatement("SELECT * FROM account a WHERE a.id = ? and a.deletedAt is null");
+        var preparedStatement = this.prepareStatement("SELECT * FROM account a WHERE a.id = ?");
         preparedStatement.setInt(1, id);
         var resultSet = preparedStatement.executeQuery();
         var accounts = DBHelper.toList(resultSet, Account.class);

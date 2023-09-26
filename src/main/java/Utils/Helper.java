@@ -86,7 +86,7 @@ public class Helper {
         }
         var url = Helper.class.getResource(path);
         if (url == null) {
-            throw new RuntimeException("Resource not found: " + path);
+            return Helper.class.getResource("/images/notfound.png");
         }
         return url;
     }

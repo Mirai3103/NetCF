@@ -70,11 +70,12 @@ public class EmployeeDAOImpl extends BaseDAO implements IEmployeeDAO{
 
     @Override
     public Employee findById(Integer id) throws SQLException {
-        var preparedStatement=this.prepareStatement("SELECT * FROM employee a WHERE a.id = ? and a.deletedAt is null");
+        var preparedStatement=this.prepareStatement("SELECT * FROM employee a WHERE a.id = ?");
         preparedStatement.setInt(1, id);
+
         var resultSet = preparedStatement.executeQuery();
         var list = DBHelper.toList(resultSet, Employee.class);
-        if (list.size() > 0) {
+        if (!list.isEmpty()) {
             return list.get(0);
         }
         return null;

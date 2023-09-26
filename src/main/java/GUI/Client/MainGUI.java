@@ -107,6 +107,8 @@ public class MainGUI extends JFrame {
         this.textField3.setText(Helper.toHHMM(Main.session.getTotalTime() - Main.session.getUsedTime(), true));
 
         initEvent();
+        button5.setBackground(Color.BLACK);
+        button6.setBackground(Color.BLACK);
     }
 
     private void initEvent() {
@@ -115,16 +117,23 @@ public class MainGUI extends JFrame {
             chatGUI.setLocationRelativeTo(null);
         });
         button3.addActionListener(e -> {
-            if (Main.session.getUsingByAccount() == null && Main.session.getUsingBy() < 1) {
+            if (Main.session.getUsingByAccount() == null ) {
                 JOptionPane.showMessageDialog(this, "Không thể đổi mật khẩu khi đang sử dụng dịch vụ với tư cách khách vãng lai", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
                 return;
             }
             var oldPassword = JOptionPane.showInputDialog(this, "Nhập mật khẩu cũ", "Đổi mật khẩu", JOptionPane.INFORMATION_MESSAGE);
-            if (!oldPassword.equals(Main.session.getUsingByAccount().getPassword())) {
-                JOptionPane.showMessageDialog(this, "Mật khẩu cũ không đúng", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
+            if (oldPassword == null) {
+                return;
+            }
+             if (!oldPassword.equals(Main.session.getUsingByAccount().getPassword())) {
+                JOptionPane.showMessageDialog(this, "Mật khẩu cũ không đúng", "Thông báo", JOptionPane.ERROR_MESSAGE);
                 return;
             }
             var newPassword = JOptionPane.showInputDialog(this, "Nhập mật khẩu mới", "Đổi mật khẩu", JOptionPane.INFORMATION_MESSAGE);
+if (newPassword == null) {
+    JOptionPane.showMessageDialog(this, "Mật khẩu mới không được để trống", "Thông báo", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
             Main.socket.emit("changePassword", newPassword);
 
         });

@@ -50,7 +50,7 @@ public class InvoiceDAOImpl extends BaseDAO implements IInvoiceDAO {
 
     @Override
     public List<Invoice> findByEmployeeId(int employeeId, Invoice.InvoiceType type) throws SQLException {
-        var sql = "select * from Invoice where createdBy = ? and type = ? and deletedAt is null";
+        var sql = "select * from Invoice where createdBy = ? and type = ?";
         try(var preparedStatement = this.prepareStatement(sql)) {
             preparedStatement.setInt(1, employeeId);
             preparedStatement.setInt(2, type.ordinal());
@@ -79,7 +79,7 @@ public class InvoiceDAOImpl extends BaseDAO implements IInvoiceDAO {
         String sqlSelectById = """
                 select *
                 from invoice
-                where id = ? and deletedAt is null
+                where id = ? 
                 ORDER BY id DESC;
                 """;
         var stt = this.prepareStatement(sqlSelectById);
