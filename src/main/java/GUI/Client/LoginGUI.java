@@ -135,8 +135,7 @@ public class LoginGUI extends JFrame {
         button.addActionListener(e->{
 
             Main.socket.on("loginSuccess",(__,arg) -> {
-                Session session = (Session) arg;
-                Main.session = session;
+                Main.session = (Session) arg;
                 Main.socket.removeAllListeners("loginSuccess");
                 //toDo: chuyển sang màn hình chính
                 this.dispose();

@@ -37,7 +37,7 @@ public class MainGUI extends JFrame {
         });
         Main.socket.on("message", (c, data) -> {
             Message message = Message.builder().content(data.toString()).fromType(Message.FROM.SERVER).createdAt(new Date()).build();
-            Helper.showSystemNoitification("Tin nhắn từ máy chủ" , (String) data, TrayIcon.MessageType.INFO);
+            Helper.showSystemNoitification("Tin nhắn từ máy chủ", (String) data, TrayIcon.MessageType.INFO);
             messages.add(message);
             chatGUI.reloadMessageHistory();
         });
@@ -86,7 +86,7 @@ public class MainGUI extends JFrame {
             Main.session = null;
             this.dispose();
             var loginUI = new LoginGUI();
-            Main.socket.emit("shutdown",null);
+            Main.socket.emit("shutdown", null);
             JOptionPane.showMessageDialog(loginUI, "Máy đã khoá! ", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
             this.onCleanUp();
             System.exit(0);
@@ -108,26 +108,27 @@ public class MainGUI extends JFrame {
 
         initEvent();
     }
-    private void initEvent(){
+
+    private void initEvent() {
         button1.addActionListener(e -> {
             chatGUI.setVisible(true);
             chatGUI.setLocationRelativeTo(null);
         });
         button3.addActionListener(e -> {
-            if(Main.session.getUsingByAccount()==null){
+            if (Main.session.getUsingByAccount() == null && Main.session.getUsingBy() < 1) {
                 JOptionPane.showMessageDialog(this, "Không thể đổi mật khẩu khi đang sử dụng dịch vụ với tư cách khách vãng lai", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
                 return;
             }
             var oldPassword = JOptionPane.showInputDialog(this, "Nhập mật khẩu cũ", "Đổi mật khẩu", JOptionPane.INFORMATION_MESSAGE);
-            if (!oldPassword.equals(Main.session.getUsingByAccount().getPassword())){
+            if (!oldPassword.equals(Main.session.getUsingByAccount().getPassword())) {
                 JOptionPane.showMessageDialog(this, "Mật khẩu cũ không đúng", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
-            return;
+                return;
             }
             var newPassword = JOptionPane.showInputDialog(this, "Nhập mật khẩu mới", "Đổi mật khẩu", JOptionPane.INFORMATION_MESSAGE);
             Main.socket.emit("changePassword", newPassword);
 
         });
-        button4.addActionListener(e->{
+        button4.addActionListener(e -> {
             new FoodOrder().setVisible(true);
         });
     }
