@@ -30,46 +30,41 @@ public class SampleApiController {
         invoiceBUS = ServiceProvider.getInstance().getService(InvoiceBUS.class);
     }
 
-    public static class GetComputerQuery {
 
-        public String name;
-        public Computer.ComputerType type;
-        public Computer.ComputerStatus status;
-    }
 
     @Operation(summary = "API lấy danh sách máy tính", description = "API lấy danh sách máy tính")
-    @Parameter(in = ParameterIn.QUERY, name = "name", description = "Tên máy tính",allowEmptyValue = true)
-    @Parameter(in = ParameterIn.QUERY, name = "type", description = "Loại máy tính",allowEmptyValue = true)
-    @Parameter(in = ParameterIn.QUERY, name = "status", description = "Trạng thái máy tính",allowEmptyValue = true)
+    @Parameter(in = ParameterIn.QUERY, name = "name", description = "Tên máy tính", allowEmptyValue = true)
+    @Parameter(in = ParameterIn.QUERY, name = "type", description = "Loại máy tính", allowEmptyValue = true)
+    @Parameter(in = ParameterIn.QUERY, name = "status", description = "Trạng thái máy tính", allowEmptyValue = true)
     @GetMapping(value = "/computers")
 
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<List<Computer>> getComputers(
-            @ParameterObject
-            GetComputerQuery query
-
-
+            @Valid @ParameterObject
+                    @RequestParam(name = "name", required = false) String name,
+            @RequestParam(name = "type", required = false) Computer.ComputerType type,
+            @RequestParam(name = "status", required = false) Computer.ComputerStatus status
     ) throws SQLException {
         var computers = computerBUS.getAllComputers();
         var result = computerBUS.updateListComputerStatus(computers);
-        if (query.name != null) {
-            result = result.stream().filter(x -> x.getName().toLowerCase().contains(query.name.toLowerCase())).toList();
+        if (name != null) {
+            result = result.stream().filter(x -> x.getName().toLowerCase().contains(name.toLowerCase())).toList();
         }
-        if (query.type != null) {
-            result = result.stream().filter(x -> x.getType() == query.type).toList();
+        if (type != null) {
+            result = result.stream().filter(x -> x.getType() == type).toList();
         }
-        if (query.status != null) {
-            result = result.stream().filter(x -> x.getStatus() == query.status).toList();
+        if (status != null) {
+            result = result.stream().filter(x -> x.getStatus() == status).toList();
         }
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
 
     @PostMapping(value = "/tao-don-dat-hang")
-    @ResponseStatus(code = HttpStatus.OK,reason = "Đặt hàng thành công")
+    @ResponseStatus(code = HttpStatus.OK, reason = "Đặt hàng thành công")
 
     @Operation(summary = "API tạo đơn đặt hàng", description = "API tạo đơn đặt hàng")
-    public ResponseEntity<Invoice> createInvoice(@Valid CreateInvoiceInputDTO dto) throws SQLException {
+    public ResponseEntity<Invoice> createInvoice(@Valid @RequestBody CreateInvoiceInputDTO dto) throws SQLException {
         var result = invoiceBUS.order(dto);
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
