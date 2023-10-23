@@ -94,7 +94,7 @@ public class InvoiceBUS {
 
     }
 
-    public Invoice order(CreateInvoiceInputDTO createInvoiceInputDTO) {
+    public Invoice order(CreateInvoiceInputDTO createInvoiceInputDTO)  {
         var currentUser = MainUI.getCurrentUser();
         int currentUserId = 1;
         if (currentUser != null) {
@@ -138,12 +138,12 @@ public class InvoiceBUS {
                 try {
                     invoiceDetailDAO.create(newInvoiceDetail);
                 } catch (SQLException e) {
-                    throw new RuntimeException(e);
+                    throw new RuntimeException("Lỗi cơ sở dữ liệu");
                 }
             });
             return invoice;
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            throw new RuntimeException("Lỗi ràng buộc dữ liệu");
         }
     }
 
@@ -152,7 +152,7 @@ public class InvoiceBUS {
         try {
             return new InvoiceDAOImpl().create(invoice);
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            throw new RuntimeException("Lỗi ràng buộc dữ liệu");
         }
     }
 
