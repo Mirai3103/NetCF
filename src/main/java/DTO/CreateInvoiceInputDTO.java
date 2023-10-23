@@ -1,9 +1,9 @@
 package DTO;
 
 import io.swagger.v3.oas.annotations.media.Schema;
-import jakarta.validation.Valid;
-import jakarta.validation.constraints.Min;
-import jakarta.validation.constraints.Size;
+import javax.validation.Valid;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.Size;
 import lombok.*;
 
 import java.io.Serial;
@@ -23,10 +23,9 @@ public class CreateInvoiceInputDTO implements Serializable{
     private int computerId;
     @Min(value = 1, message = "Mã tài khoản không hợp lệ")
     private Integer accountId;
-    @Schema(hidden = true)
     private String note;
-    @Schema(hidden = true)
-    private boolean isUsingBalance = false;
+//    @Schema(hidden = true)
+//    private boolean isUsingBalance = false;
     @Size(min = 1, message = "Danh sách sản phẩm không được để trống")
     @Valid
     private List<InvoiceDetailInputDTO> invoiceDetailDTOList;

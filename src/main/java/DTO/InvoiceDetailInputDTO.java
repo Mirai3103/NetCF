@@ -1,8 +1,8 @@
 package DTO;
 
 import io.swagger.v3.oas.annotations.media.Schema;
-import jakarta.validation.constraints.Min;
-import jakarta.validation.constraints.Null;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.Null;
 import lombok.*;
 
 
