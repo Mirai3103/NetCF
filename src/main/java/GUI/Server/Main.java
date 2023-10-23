@@ -20,7 +20,7 @@ import java.util.Collections;
 
 
 @SpringBootApplication
-public class Main extends SpringBootServletInitializer {
+public class Main  {
     public static void main(String[] args) throws IOException {
         Helper.initUI();
      ServiceProvider.init();
@@ -28,10 +28,8 @@ public class Main extends SpringBootServletInitializer {
         SocketController socketController = new SocketController(socketServer);
         socketController.startListen();
         new LoginGUI();
-        SpringApplication app = new SpringApplication(Main.class);
-        System.out.println("Starting Running Tali Hotel Project...");
-        app.setDefaultProperties(Collections.singletonMap("server.port", "1802"));
-        app.run(args);
+        SpringApplication.run(Main.class, args);
+
 
     }
 }

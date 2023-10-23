@@ -9,12 +9,12 @@ import Utils.ServiceProvider;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
+import jakarta.validation.Valid;
 import org.springdoc.api.annotations.ParameterObject;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
 import java.sql.SQLException;
 import java.util.List;
 
@@ -38,7 +38,6 @@ public class SampleApiController {
     @Parameter(in = ParameterIn.QUERY, name = "status", description = "Trạng thái máy tính", allowEmptyValue = true)
     @GetMapping(value = "/computers")
 
-    @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<List<Computer>> getComputers(
             @Valid @ParameterObject
                     @RequestParam(name = "name", required = false) String name,
@@ -61,7 +60,6 @@ public class SampleApiController {
 
 
     @PostMapping(value = "/tao-don-dat-hang")
-    @ResponseStatus(code = HttpStatus.OK, reason = "Đặt hàng thành công")
 
     @Operation(summary = "API tạo đơn đặt hàng", description = "API tạo đơn đặt hàng")
     public ResponseEntity<Invoice> createInvoice(@Valid @RequestBody CreateInvoiceInputDTO dto) throws SQLException {

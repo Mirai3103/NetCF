@@ -1,10 +1,11 @@
 package DTO;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.Null;
 import lombok.*;
 
-import javax.validation.constraints.Min;
-import javax.validation.constraints.Null;
+
 import java.io.Serial;
 import java.io.Serializable;
 
@@ -20,7 +21,6 @@ public class InvoiceDetailInputDTO implements Serializable {
     private int productId;
     @Min(value = 1, message = "Số lượng phải lớn hơn hoặc bằng 1")
     private int quantity;
-    @Null
     @Schema(hidden = true)
     private Product product;
 }
