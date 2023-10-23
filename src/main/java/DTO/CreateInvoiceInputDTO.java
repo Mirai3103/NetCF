@@ -1,7 +1,10 @@
 package DTO;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.*;
 
+import javax.validation.constraints.Min;
+import javax.validation.constraints.Size;
 import java.io.Serial;
 import java.io.Serializable;
 import java.util.List;
@@ -15,9 +18,13 @@ import java.util.List;
 public class CreateInvoiceInputDTO implements Serializable{
     @Serial
     private static final long serialVersionUID = 74634344216L;
+    @Min(value = 1, message = "Mã máy tính không hợp lệ")
     private int computerId;
+    @Min(value = 1, message = "Mã tài khoản không hợp lệ")
     private Integer accountId;
+    @Schema(hidden = true)
     private String note;
     private boolean isUsingBalance;
+    @Size(min = 1, message = "Danh sách sản phẩm không được để trống")
     private List<InvoiceDetailInputDTO> invoiceDetailDTOList;
 }

@@ -16,6 +16,7 @@ public class ProductBUS {
 
     public List<Product> findAllProduct(){
         try {
+
             return this.productDAO.findAll();
         } catch (SQLException e) {
             throw new RuntimeException(e);

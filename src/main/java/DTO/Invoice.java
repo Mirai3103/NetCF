@@ -1,6 +1,7 @@
 package DTO;
 
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -70,9 +71,10 @@ public class Invoice implements Serializable {
 
     private int id;
     private Integer createdToAccountId = null   ;
-
+    @Schema(hidden = true)
     private Account createdToAccount;
     private Integer computerId = null;
+    @Schema(hidden = true)
     private Computer createdToComputer;
 
     private double total = 0.0f;
@@ -81,6 +83,7 @@ public class Invoice implements Serializable {
     private Status status = Status.WAITING_FOR_ACCEPT;
     private boolean isPaid = false;
     private int createdBy;
+    @Schema(hidden = true)
     private Employee createdByEmployee;
 
    

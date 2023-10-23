@@ -18,18 +18,19 @@ public class InvoiceBUS {
     @Setter
     private IInvoiceDAO invoiceDAO;
     @Setter
-   private IInvoiceDetailDAO invoiceDetailDAO;
+    private IInvoiceDetailDAO invoiceDetailDAO;
     @Setter
     private ProductBUS productBUS;
 
-    public List<Invoice> findAll()  {
+    public List<Invoice> findAll() {
         try {
             return invoiceDAO.findAll();
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
     }
-    public List<Invoice> findAllByType(Invoice.InvoiceType type)  {
+
+    public List<Invoice> findAllByType(Invoice.InvoiceType type) {
         try {
             return invoiceDAO.findAllByType(type);
         } catch (Exception e) {
@@ -38,45 +39,44 @@ public class InvoiceBUS {
     }
 
 
-
-    public boolean ValidateInforFilter(InforFilter inforFilter){
+    public boolean ValidateInforFilter(InforFilter inforFilter) {
         try {
             int total = Integer.parseInt(inforFilter.getTotalFrom());
             total = Integer.parseInt(inforFilter.getTotalTo());
-        }catch (Exception e){
+        } catch (Exception e) {
             return false;
         }
         //neu nguoi dung nhap ngay vao ma khong dung theo format("yyyy-mm-dd") thi se tra ve false;
-        if(!Helper.ValidateDate(inforFilter.getDateFrom()) || !Helper.ValidateDate((inforFilter.getDateTo()))){
-            return  false;
-        }
-//        trong khung tìm kiếm có hai ngày,"từ ngày" và "đến ngày", nếu "đến ngày" mà nhỏ hơn "từ ngày" thì trả về false
-        if(!Helper.compareDate(inforFilter.getDateFrom(), inforFilter.getDateTo())) {
+        if (!Helper.ValidateDate(inforFilter.getDateFrom()) || !Helper.ValidateDate((inforFilter.getDateTo()))) {
             return false;
         }
-        if(!inforFilter.getTotalFrom().equals(""))
-            if(!Helper.isNumber(inforFilter.getTotalFrom()))
+//        trong khung tìm kiếm có hai ngày,"từ ngày" và "đến ngày", nếu "đến ngày" mà nhỏ hơn "từ ngày" thì trả về false
+        if (!Helper.compareDate(inforFilter.getDateFrom(), inforFilter.getDateTo())) {
+            return false;
+        }
+        if (!inforFilter.getTotalFrom().equals(""))
+            if (!Helper.isNumber(inforFilter.getTotalFrom()))
                 return false;
 
-        if(!inforFilter.getTotalTo().equals(""))
-            if(!Helper.isNumber(inforFilter.getTotalTo()))
+        if (!inforFilter.getTotalTo().equals(""))
+            if (!Helper.isNumber(inforFilter.getTotalTo()))
                 return false;
-        if(!inforFilter.getTotalFrom().equals("") && !inforFilter.getTotalTo().equals(""))
+        if (!inforFilter.getTotalFrom().equals("") && !inforFilter.getTotalTo().equals(""))
             return !(Double.parseDouble(inforFilter.getTotalTo()) < Double.parseDouble(inforFilter.getTotalFrom()));
         return true;
     }
 
 
-    public List<Invoice> findInvoiceByInforFilter(Invoice.InvoiceType type,InforFilter inforFilter){
+    public List<Invoice> findInvoiceByInforFilter(Invoice.InvoiceType type, InforFilter inforFilter) {
         try {
-            return invoiceDAO.findInvoiceByInforFilter(type,inforFilter);
+            return invoiceDAO.findInvoiceByInforFilter(type, inforFilter);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
     }
 
 
-    public void deleteInvoice(Integer integer){
+    public void deleteInvoice(Integer integer) {
         try {
             invoiceDAO.delete(integer);
         } catch (SQLException e) {
@@ -93,13 +93,20 @@ public class InvoiceBUS {
         }
 
     }
+
     public Invoice order(CreateInvoiceInputDTO createInvoiceInputDTO) {
+        var currentUser = MainUI.getCurrentUser();
+        int currentUserId = 1;
+        if (currentUser != null) {
+            currentUserId = currentUser.getId();
+        }
+
         var newInvoice = Invoice.builder()
                 .computerId(createInvoiceInputDTO.getComputerId())
                 .createdToAccountId(createInvoiceInputDTO.getAccountId())
                 .type(Invoice.InvoiceType.EXPORT)
                 .createdAt(new java.util.Date())
-                .createdBy(MainUI.getCurrentUser().getId())
+                .createdBy(currentUserId)
                 .status(Invoice.Status.WAITING_FOR_ACCEPT)
                 .isPaid(false)
                 .note(createInvoiceInputDTO.getNote())
@@ -110,11 +117,11 @@ public class InvoiceBUS {
             var invoice = invoiceDAO.create(newInvoice);
             createInvoiceInputDTO.getInvoiceDetailDTOList().forEach(invoiceDetailDTO -> {
                 var product = productBUS.findProductById(invoiceDetailDTO.getProductId());
-                if(product.getStock()>0) {
-                    if (product.getStock()<invoiceDetailDTO.getQuantity()){
-                        throw new RuntimeException("Khong du");
+                if (product.getStock() > 0) {
+                    if (product.getStock() < invoiceDetailDTO.getQuantity()) {
+                        throw new RuntimeException("Số lượng sản phẩm trong kho không đủ");
                     }
-                    product.setStock(product.getStock()-invoiceDetailDTO.getQuantity());
+                    product.setStock(product.getStock() - invoiceDetailDTO.getQuantity());
                     try {
                         productBUS.update(product);
                     } catch (SQLException e) {
@@ -141,7 +148,7 @@ public class InvoiceBUS {
     }
 
 
-    public Invoice createInvoice(Invoice invoice){
+    public Invoice createInvoice(Invoice invoice) {
         try {
             return new InvoiceDAOImpl().create(invoice);
         } catch (SQLException e) {
@@ -150,7 +157,7 @@ public class InvoiceBUS {
     }
 
 
-    public Invoice updateInvoice(Invoice invoice){
+    public Invoice updateInvoice(Invoice invoice) {
         try {
             return invoiceDAO.update(invoice);
         } catch (SQLException e) {

@@ -1,6 +1,7 @@
 package DTO;
 
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -20,6 +21,7 @@ import java.util.List;
 public class Computer implements Serializable {
     @Serial
     private static final long serialVersionUID = 746559035L;
+
     public enum ComputerType {
         Vip,
         Normal,
@@ -62,16 +64,21 @@ public class Computer implements Serializable {
     private ComputerStatus status = ComputerStatus.OFF;
     private Date createdAt = new Date();
     private Date deletedAt = null;
-
+    @Schema(hidden = true)
     private List<ComputerUsage> computerUsages;
+    @Schema(hidden = true)
+
     private List<Invoice> invoices;
     private Session currentSession;
+
     public void setStatus(Integer status) {
         this.status = ComputerStatus.values()[status];
     }
+
     public void setType(Integer type) {
         this.type = ComputerType.values()[type];
     }
+
     public void setType(String type) {
         switch (type) {
             case "Máy VIP" -> this.type = ComputerType.Vip;
