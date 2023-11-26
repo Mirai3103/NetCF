@@ -146,6 +146,16 @@ public class AccountGUI extends JPanel {
                 return;
             }
             int amount = Integer.parseInt(amountStr);
+            int amount = Integer.parseInt(amountStr);
+            if (amount < 5000) {
+                JOptionPane.showMessageDialog(this, "Không có tiền thì biến");
+                return;
+            }
+
+            if (amount > 10000000) {
+                JOptionPane.showMessageDialog(this, "Không nạp quá 10 triệu");
+                return;
+            }
             try {
                 accountBUS.deposit(account.getId(), amount);
                 reloadTableData();
