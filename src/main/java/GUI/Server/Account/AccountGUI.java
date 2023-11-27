@@ -146,7 +146,6 @@ public class AccountGUI extends JPanel {
                 return;
             }
             int amount = Integer.parseInt(amountStr);
-            int amount = Integer.parseInt(amountStr);
             if (amount < 5000) {
                 JOptionPane.showMessageDialog(this, "Không có tiền thì biến");
                 return;
