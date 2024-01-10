@@ -93,4 +93,11 @@ public class SessionDAOImpl extends BaseDAO implements ISessionDAO {
     public Session findByAccountId(int accountId) throws SQLException {
         return null;
     }
+
+    @Override
+    public Session clearAllSession() throws SQLException {
+        var preparedStatement = this.prepareStatement("DELETE FROM session");
+        preparedStatement.executeUpdate();
+        return null;
+    }
 }

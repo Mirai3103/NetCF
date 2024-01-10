@@ -1,5 +1,6 @@
 package GUI.Server;
 
+import DAO.Interface.ISessionDAO;
 import Io.Server;
 import Io.SocketController;
 import Utils.Constants;
@@ -16,19 +17,19 @@ import org.springframework.context.annotation.ComponentScan;
 
 import java.io.IOException;
 import java.net.URI;
+import java.sql.SQLException;
 import java.util.Collections;
 
 
-@SpringBootApplication
 public class Main  {
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws IOException, SQLException {
         Helper.initUI();
      ServiceProvider.init();
+        ServiceProvider.getInstance().getService(ISessionDAO.class).clearAllSession();
         var socketServer=  Server.initInstance(Constants.SOCKET_PORT);
         SocketController socketController = new SocketController(socketServer);
         socketController.startListen();
         new LoginGUI();
-        SpringApplication.run(Main.class, args);
 
 
     }
